@@ -31,7 +31,7 @@ return array(
 	'description' => 'TAO LTI Tool library',
 	'version' => '0.9',
 	'author' => 'Open Assessment Technologies SA',
-	'dependencies' => array('taoDelivery'),
+	'dependencies' => array('tao'),
 	'models' => array(
 	 	'http://www.tao.lu/Ontologies/TAOLTI.rdf',
 	 	'http://www.imsglobal.org/imspurl/lis/v1/vocab/person',
