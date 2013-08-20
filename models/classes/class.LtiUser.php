@@ -87,12 +87,12 @@ class taoLti_models_classes_LtiUser
 	}
 	
 	public function getLanguage() {
+	    $returnValue = DEFAULT_LANG;
 	    if ($this->getLaunchData()->hasLaunchLanguage()) {
-	       taoLti_models_classes_LtiUtils::mapCode2InterfaceLanguage($this->getLaunchData()->getLaunchLanguage());
-	    } else {
-	        // no language given
-	        return DEFAULT_LANG;
+	        // maping not implemented yet
+            $returnValue = taoLti_models_classes_LtiUtils::mapCode2InterfaceLanguage($this->getLaunchData()->getLaunchLanguage());
 	    }
+	    return $returnValue;
 	}
 	
 	public function refresh() {
