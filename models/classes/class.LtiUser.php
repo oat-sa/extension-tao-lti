@@ -51,6 +51,7 @@ class taoLti_models_classes_LtiUser
 	public function __construct(taoLti_models_classes_LtiLaunchData $ltiLaunchData) {
 	    $this->ltiLaunchData = $ltiLaunchData;
 	    $this->userUri = taoLti_models_classes_LtiService::singleton()->findOrSpwanUser($ltiLaunchData)->getUri();
+	    $this->roles = $this->determinTaoRoles();
 	}
 	
 	/**
@@ -66,7 +67,7 @@ class taoLti_models_classes_LtiUser
 	 * @see common_user_User::getIdentifier()
 	 */
     public function getIdentifier() {
-        return $this->getTaoUser()->getUri();
+        return $this->userUri;
     }
     
 	public function getPropertyValues($property) {
@@ -77,7 +78,7 @@ class taoLti_models_classes_LtiUser
 	    	    $returnValue = array($this->getLanguage());
 	    	    break;
 	    	case PROPERTY_USER_ROLES :
-	    	    $returnValue = $this->getTaoUserRoles();
+	    	    $returnValue = $this->roles;
 	    	    break;
 	    	default:
 	    	    common_Logger::d('Unkown property '.$property.' requested from '.__CLASS__);
@@ -86,7 +87,11 @@ class taoLti_models_classes_LtiUser
 	    return $returnValue;
 	}
 	
-	public function getLanguage() {
+	public function refresh() {
+        // nothing to do	    
+	}
+	
+	private function getLanguage() {
 	    $returnValue = DEFAULT_LANG;
 	    if ($this->getLaunchData()->hasLaunchLanguage()) {
 	        // maping not implemented yet
@@ -95,28 +100,15 @@ class taoLti_models_classes_LtiUser
 	    return $returnValue;
 	}
 	
-	public function refresh() {
-        // nothing to do	    
-	}
-	
-	/**
-	 * @return core_kernel_classes_Resource
-	 */
-	public function getTaoUser() {
-	    return new core_kernel_classes_Resource($this->userUri);
-	}
-	
-	public function getTaoUserRoles() {
-	    if (is_null($this->roles)) {
-	        $this->roles = array();
-	        foreach ($this->getLaunchData()->getUserRoles() as $role) {
-	            $taoRole = taoLti_models_classes_LtiUtils::mapLTIRole2TaoRole($role);
-	            if (!is_null($taoRole)) {
-	                $this->roles[] = $taoRole->getUri();
-	            }
-	        }
-	    }
-	    return $this->roles;
+	private function determinTaoRoles() {
+        $roles = array();
+        foreach ($this->getLaunchData()->getUserRoles() as $role) {
+            $taoRole = taoLti_models_classes_LtiUtils::mapLTIRole2TaoRole($role);
+            if (!is_null($taoRole)) {
+                $roles[] = $taoRole->getUri();
+            }
+        }
+	    return $roles;
 	}
 	
 }

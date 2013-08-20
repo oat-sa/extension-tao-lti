@@ -76,17 +76,15 @@ class taoLti_models_classes_LtiUtils
     }
 
     /**
-     * Returns the tao language that corresponds to the code provided
+     * Returns the tao language code that corresponds to the code provided
      * not yet implemented, will always use default
      * 
      * @param string $code
-     * @return core_kernel_classes_Resource
+     * @return string
      */
     public static function mapCode2InterfaceLanguage($code)
     {
-        $returnValue = tao_models_classes_LanguageService::singleton()->getLanguageByCode(DEFAULT_LANG);
+        $returnValue = DEFAULT_LANG;
         return $returnValue;
     }
 }
-
-?>
