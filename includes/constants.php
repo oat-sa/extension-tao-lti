@@ -1,5 +1,5 @@
 <?php
-/*  
+/**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; under version 2
@@ -18,9 +18,8 @@
  *               
  * 
  */
-?>
-<?php
-//define specific constants to delivery extension:
+
+//define specific constants to the taoLti extension:
 $todefine = array(
 
 	'CLASS_LTI_CONSUMER'			=> 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIConsumer',
@@ -36,20 +35,10 @@ $todefine = array(
 	'PROPERTY_LTITOOL_ENTRYPOINT'	=> 'http://www.tao.lu/Ontologies/TAOLTI.rdf#ToolEntryPoint',
 	'PROPERTY_LTITOOL_SERVICE'		=> 'http://www.tao.lu/Ontologies/TAOLTI.rdf#ToolService',
 
-	'CLASS_LTI_LAUNCHURL'			=> 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTILaunchURL',
-	'PROPERTY_LTI_LAUNCHURL_TOOL'	=> 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTILaunchURLTool',
-	'PROPERTY_LTI_LAUNCHURL_PARAMETER'	=> 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTILaunchURLParameter',
-
 	'CLASS_LTI_LINK'				=> 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTILink',
 	'CLASS_LTI_INCOMINGLINK'		=> 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiIncomingLink',
 	'PROPERTY_LTI_LINK_ID'			=> 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTILinkId',
 	'PROPERTY_LTI_LINK_CONSUMER'	=> 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTILinkConsumer',
-//	'PROPERTY_LTI_LINK_TOOL'		=> 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTILinkTool',
+	'PROPERTY_LTI_LINK_LAUNCHURL'	=> 'http://www.tao.lu/Ontologies/TAOLTI.rdf#ResourceLinkLaunchUrl',
 
-/*
-	'CLASS_LTI_LAUNCHPARAMETER'		=> 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTILaunchParameter',
-	'PROPERTY_PARAMETER_NAME'		=> 'http://www.tao.lu/Ontologies/TAOLTI.rdf#ParameterName',
-	'PROPERTY_PARAMETER_VALUE'		=> 'http://www.tao.lu/Ontologies/TAOLTI.rdf#ParameterValue',
-	*/
 );
-?>
