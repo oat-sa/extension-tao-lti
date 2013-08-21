@@ -41,6 +41,7 @@ $todefine = array(
 	'PROPERTY_LTI_LAUNCHURL_PARAMETER'	=> 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTILaunchURLParameter',
 
 	'CLASS_LTI_LINK'				=> 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTILink',
+	'CLASS_LTI_INCOMINGLINK'		=> 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiIncomingLink',
 	'PROPERTY_LTI_LINK_ID'			=> 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTILinkId',
 	'PROPERTY_LTI_LINK_CONSUMER'	=> 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTILinkConsumer',
 //	'PROPERTY_LTI_LINK_TOOL'		=> 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTILinkTool',

@@ -32,16 +32,16 @@ class taoLti_models_classes_LtiAuthAdapter
 {
     /**
      * 
-     * @var tao_models_classes_oauth_Request
+     * @var common_http_Request
      */
 	private $request;
 	
 	/**
 	 * Creates an Authentication adapter from an OAuth Request
 	 * 
-	 * @param tao_models_classes_oauth_Request $request
+	 * @param common_http_Request $request
 	 */
-	public function __construct(tao_models_classes_oauth_Request $request) {
+	public function __construct(common_http_Request $request) {
 	    $this->request = $request;
 	}
 	
@@ -51,12 +51,13 @@ class taoLti_models_classes_LtiAuthAdapter
      */
     public function authenticate() {
     	
-        $oauthRequest = tao_models_classes_oauth_Request::fromRequest();
-        if (!$oauthRequest->isValid()) {
-    	    throw new taoLti_models_classes_LtiException('Invalid LTI signature');
-    	}
-    	$ltiLaunchData = new taoLti_models_classes_LtiLaunchData($oauthRequest->getParamters());
-    	
-    	return new taoLti_models_classes_LtiUser($ltiLaunchData);
+        $service = new tao_models_classes_oauth_Service();
+        try {
+            $service->validate($this->request);
+        	$ltiLaunchData = new taoLti_models_classes_LtiLaunchData($this->request->getParams());
+        	return new taoLti_models_classes_LtiUser($ltiLaunchData);
+        } catch (common_http_InvalidSignatureException $e) {
+            throw new taoLti_models_classes_LtiException('Invalid LTI signature');
+        }
     }
 }

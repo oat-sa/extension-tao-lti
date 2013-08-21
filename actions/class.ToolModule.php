@@ -35,7 +35,7 @@ abstract class taoLti_actions_ToolModule extends tao_actions_CommonModule
      */
     public function launch() {
 		try {
-		    taoLti_models_classes_LtiService::singleton()->startLtiSession(tao_models_classes_oauth_Request::fromRequest());
+		    taoLti_models_classes_LtiService::singleton()->startLtiSession(common_http_Request::currentRequest());
 			$this->run();
         } catch (common_user_auth_AuthFailedException $e) {
             $this->returnError(__('The LTI connection could not be established'));

@@ -36,10 +36,10 @@ class taoLti_models_classes_LtiService extends tao_models_classes_Service
 	/**
 	 * start a session from the provided OAuth Request
 	 * 
-	 * @param tao_models_classes_oauth_Request $request
+	 * @param common_http_Request $request
 	 * @throws common_user_auth_AuthFailedException
 	 */
-	public function startLtiSession(tao_models_classes_oauth_Request $request) {
+	public function startLtiSession(common_http_Request $request) {
         $adapter = new taoLti_models_classes_LtiAuthAdapter($request);
         $user = $adapter->authenticate();
         $session = new taoLti_models_classes_TaoLtiSession($user);

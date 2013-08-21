@@ -61,7 +61,7 @@ abstract class taoLti_models_classes_LtiTool extends tao_models_classes_Service
 	 * @return core_kernel_classes_Class
 	 */
 	public function getRemoteLinkClass() {
-		return new core_kernel_classes_Class(CLASS_LTI_LINK);
+		return new core_kernel_classes_Class(CLASS_LTI_INCOMINGLINK);
 	}
 	
 	public static function getToolService(core_kernel_classes_Resource $tool) {

@@ -40,7 +40,7 @@ class taoLti_actions_LtiConsumer extends tao_actions_CommonModule {
 		if (!$this->hasRequestParameter('ltiLaunchUrl')) {
 	        throw new common_exception_MissingParameter('ltiLaunchUrl', get_class($this));
 	    }
-	    $ltiConsumer = new core_kernel_classes_Resource($this->getRequestParameter('ltiConsumerUri'));
+	    $ltiConsumer = new tao_models_classes_oauth_Credentials($this->getRequestParameter('ltiConsumerUri'));
 	    $launchUrl =  $this->getRequestParameter('ltiLaunchUrl');
 	    
 	    $ltiData = array(
@@ -59,21 +59,24 @@ class taoLti_actions_LtiConsumer extends tao_actions_CommonModule {
 	    /*
 	    user_id:
 	    roles:
+	    
 	    lis_person_name_full:
 	    lis_person_name_family:
 	    lis_person_name_given:
 	    lis_person_contact_email_primary:
 	    lis_person_sourcedid:
+	    
 	    tool_consumer_info_product_family_code:
 	    tool_consumer_info_version:
 	    tool_consumer_instance_guid:
 	    tool_consumer_instance_description:
 	    */
-	    	  
-	    $signedParamters = tao_models_classes_oauth_Service::singleton()->getSignedRequestParameters($ltiConsumer, $launchUrl, 'POST', $ltiData);
+	    $request = new common_http_Request($launchUrl, common_http_Request::METHOD_POST, $ltiData);
+	    $service = new tao_models_classes_oauth_Service();
+	    $signedRequest = $service->sign($request, $ltiConsumer);
 	    
 	    $this->setData('launchUrl', $launchUrl);
-	    $this->setData('ltiData', $signedParamters);
+	    $this->setData('ltiData', $signedRequest->getParams());
 	    $this->setView('ltiConsumer.tpl');
 	}
 	

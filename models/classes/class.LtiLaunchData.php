@@ -33,6 +33,7 @@ class taoLti_models_classes_LtiLaunchData
 	const LIS_PERSON_CONTACT_EMAIL_PRIMARY	= 'lis_person_contact_email_primary';
 	
 	const LAUNCH_PRESENTATION_LOCALE = 'launch_presentation_locale';
+	const LAUNCH_PRESENTATION_RETURN_URL = 'launch_presentation_return_url';
 	
 	private $variables;
 	

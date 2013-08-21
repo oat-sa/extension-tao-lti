@@ -37,10 +37,11 @@ class OauthTestCase extends UnitTestCase {
 	public function setUp() {
 		TaoTestRunner::initTest();
 		$oauthClass = new core_kernel_classes_Class(CLASS_OAUTH_CONSUMER);
-		$this->oauthCustomer = $oauthClass->createInstanceWithProperties(array(
+		$resource = $oauthClass->createInstanceWithProperties(array(
 		    PROPERTY_OAUTH_KEY			    => 'test_key',
 		    PROPERTY_OAUTH_SECRET             => md5(rand()),
 		));
+		$this->oauthCustomer = new tao_models_classes_oauth_Credentials($resource);
 	}
 	
 	public function tearDown() {
@@ -48,8 +49,11 @@ class OauthTestCase extends UnitTestCase {
 	}
 
 	public function testSignature() {
-		$request = tao_models_classes_oauth_Request::createSigned($this->oauthCustomer, 'http://example.com/oauthtest');
-		$this->assertTrue($request->isValid());
+	    $request = new common_http_Request('http://example.com/oauthtest');
+	    $service = new tao_models_classes_oauth_Service();
+	    $signed =  $service->sign($request, $this->oauthCustomer);
+	    //assert no exception
+	    $service->validate($signed);
 	}
 
 }
