@@ -50,11 +50,11 @@ abstract class taoLti_actions_ToolModule extends tao_actions_CommonModule
 	abstract protected function run();
 	
 	/**
-	 * Returns the tool resource of this action
+	 * Returns the lti tool of this controller
 	 * 
-	 * @return core_kernel_classes_Resource
+	 * @return taoLti_models_classes_LtiTool
 	 */
-	abstract protected function getToolResource();
+	abstract protected function getTool();
 	
 	/**
 	 * Only launch should ever be called on a tool, and should be available even without session
