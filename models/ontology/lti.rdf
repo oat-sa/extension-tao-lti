@@ -9,6 +9,10 @@
 	xmlns:wf="http://www.tao.lu/middleware/wfEngine.rdf#"	
 >
 
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiObject">
+    <rdfs:subClassOf rdf:resource="http://www.tao.lu/Ontologies/TAO.rdf#TAOObject"/>
+    <rdfs:label xml:lang="en-US"><![CDATA[LTI Object]]></rdfs:label>
+  </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIConsumer">
     <rdfs:subClassOf rdf:resource="http://www.tao.lu/Ontologies/TAO.rdf#OauthConsumer"/>
     <rdfs:label xml:lang="en-US"><![CDATA[LTI Consumer]]></rdfs:label>
@@ -36,7 +40,7 @@
   </rdf:Description>
   
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTITool">
-    <rdfs:subClassOf rdf:resource="http://www.tao.lu/Ontologies/TAO.rdf#TAOObject"/>
+    <rdfs:subClassOf rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiObject"/>
     <rdfs:label xml:lang="en-US"><![CDATA[LTI Tool]]></rdfs:label>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOLTI.rdf#ToolService">
@@ -55,7 +59,7 @@
   </rdf:Description>
 
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTILink">
-    <rdfs:subClassOf rdf:resource="http://www.tao.lu/Ontologies/TAO.rdf#TAOObject"/>
+    <rdfs:subClassOf rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiObject"/>
     <rdfs:label xml:lang="en-US"><![CDATA[LTI Link]]></rdfs:label>
     <rdfs:comment xml:lang="en-US"><![CDATA[Link between Tool and Consumer]]></rdfs:comment>
   </rdf:Description>
