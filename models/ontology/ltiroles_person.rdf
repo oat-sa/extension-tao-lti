@@ -11,24 +11,25 @@
   <rdf:Description rdf:about="http://www.imsglobal.org/imspurl/lis/v1/vocab/person#Learner">
   	<rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
   	<rdfs:label xml:lang="en-US"><![CDATA[LTI Learner]]></rdfs:label>
-  	<rdfs:comment xml:lang="en-US"><![CDATA[The LTI Learner Role]]></rdfs:comment>
+  	<rdfs:comment xml:lang="en-US"><![CDATA[The LTI Institution Learner Role]]></rdfs:comment>
   	<taolti:RoleURN><![CDATA[urn:lti:instrole:ims/lis/Learner]]></taolti:RoleURN>
-  	<generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAO.rdf#DeliveryRole"/>
+  	<generis:includesRole rdf:resource="http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#Learner"/>
   	<generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.imsglobal.org/imspurl/lis/v1/vocab/person#Instructor">
   	<rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
   	<rdfs:label xml:lang="en-US"><![CDATA[LTI Instructor]]></rdfs:label>
-  	<rdfs:comment xml:lang="en-US"><![CDATA[The LTI Instructor Role]]></rdfs:comment>
+  	<rdfs:comment xml:lang="en-US"><![CDATA[The LTI Institution Instructor Role]]></rdfs:comment>
   	<taolti:RoleURN><![CDATA[urn:lti:instrole:ims/lis/Instructor]]></taolti:RoleURN>
+  	<generis:includesRole rdf:resource="http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#Instructor"/>
   	<generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.imsglobal.org/imspurl/lis/v1/vocab/person#Student">
   	<rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
-  	<rdfs:label xml:lang="en-US"><![CDATA[LTI Student]]></rdfs:label>
+  	<rdfs:label xml:lang="en-US"><![CDATA[LTI Institution Student]]></rdfs:label>
   	<rdfs:comment xml:lang="en-US"><![CDATA[The LTI Student Role]]></rdfs:comment>
   	<taolti:RoleURN><![CDATA[urn:lti:instrole:ims/lis/Student]]></taolti:RoleURN>
-  	<generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAO.rdf#DeliveryRole"/>
+  	<generis:includesRole rdf:resource="http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#Learner"/>
   	<generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
   </rdf:Description>
     
@@ -38,6 +39,7 @@
   	<rdfs:label xml:lang="en-US"><![CDATA[LTI Administrator]]></rdfs:label>
   	<rdfs:comment xml:lang="en-US"><![CDATA[The LTI Administrator Role]]></rdfs:comment>
   	<taolti:RoleURN><![CDATA[urn:lti:sysrole:ims/lis/Administrator]]></taolti:RoleURN>
+  	<generis:includesRole rdf:resource="http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#Administrator"/>
   	<generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
   </rdf:Description>
 

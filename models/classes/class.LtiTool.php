@@ -49,7 +49,7 @@ abstract class taoLti_models_classes_LtiTool extends tao_models_classes_Service
 		$actionID	= $action->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_ACL_ACTION_ID));
 		$moduleID	= $module->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_ACL_MODULE_ID));
 		$extID		= $extension->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_ACL_EXTENSION_ID));
-		//return tao_helpers_Uri::url($actionID, $moduleID, $extID, $parameters);
+
 		$fullAction = $actionID.'/'.base64_encode(serialize($parameters));
 		return tao_helpers_Uri::url($fullAction, $moduleID, $extID);
 	}
