@@ -35,6 +35,8 @@ class taoLti_models_classes_LtiLaunchData
 	const LAUNCH_PRESENTATION_LOCALE = 'launch_presentation_locale';
 	const LAUNCH_PRESENTATION_RETURN_URL = 'launch_presentation_return_url';
 	
+	const TOOL_CONSUMER_INSTANCE_NAME = 'tool_consumer_instance_name';
+	
 	private $variables;
 	
 	/**
