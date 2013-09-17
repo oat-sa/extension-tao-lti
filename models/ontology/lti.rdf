@@ -120,8 +120,6 @@
     <wf:PropertySupportServicesUrl><![CDATA[/taoLti/LtiConsumer/call?url=^ltiLaunchUrl&consumer=^ltiConsumerUri&height=100%&width=100%&]]></wf:PropertySupportServicesUrl>
     <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiLaunchUrl"/>
     <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiConsumerUri"/>
-    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="http://www.tao.lu/Ontologies/TAODelivery.rdf#FormalParamHeight"/>
-    <wf:PropertyServiceDefinitionsFormalParameterIn rdf:resource="http://www.tao.lu/Ontologies/TAODelivery.rdf#FormalParamWidth"/>
   </rdf:Description>
 
 </rdf:RDF>
