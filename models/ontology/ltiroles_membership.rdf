@@ -29,8 +29,6 @@
   	<rdfs:label xml:lang="en-US"><![CDATA[LTI Administrator]]></rdfs:label>
   	<rdfs:comment xml:lang="en-US"><![CDATA[The LTI Context Administrator Role]]></rdfs:comment>
   	<taolti:RoleURN><![CDATA[urn:lti:role:ims/lis/Administrator]]></taolti:RoleURN>
-  	<generis:includesRole rdf:resource="http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#Learner"/>
-  	<generis:includesRole rdf:resource="http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#Instructor"/>
   	<generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
   </rdf:Description>
  </rdf:RDF>
