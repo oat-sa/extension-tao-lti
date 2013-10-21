@@ -41,6 +41,8 @@ abstract class taoLti_actions_ToolModule extends tao_actions_CommonModule
             $this->returnError(__('The LTI connection could not be established'));
         } catch (taoLti_models_classes_LtiException $e) {
 			$this->returnError(__('The LTI connection could not be established'));
+        } catch (tao_models_classes_oauth_Exception $e) {
+			$this->returnError(__('The LTI connection could not be established'));
 		}
 	}
 	
