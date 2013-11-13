@@ -1,44 +1,45 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TAO v2.5-alpha\n"
-"PO-Revision-Date: 2013-08-19T12:23:38\n"
-"Last-Translator: TAO Translation Team <translation@tao.lu>\n"
+"PO-Revision-Date: 2013-11-11 12:55-0000\n"
+"Last-Translator: Paulo Amorim <paulo@amorims.com>\n"
 "MIME-Version: 1.0\n"
 "Language: pt-PT\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: \n"
+"Language-Team: \n"
+"X-Generator: Poedit 1.5.7\n"
 
 msgid "add Consumer"
-msgstr ""
+msgstr "Adicionar consumidor"
 
 msgid "Consumers"
-msgstr ""
+msgstr "Consumidores"
 
 msgid "delete"
-msgstr ""
+msgstr "Eliminar"
 
 msgid "Launch URL"
-msgstr ""
+msgstr "Abrir URL"
 
 msgid "Learning Tools Interoperability"
-msgstr ""
+msgstr "Ferramentas de aprendizagem inoperativas"
 
 msgid "link"
-msgstr ""
+msgstr "Atalho"
 
 msgid "LTI Consumers"
-msgstr ""
+msgstr "consumidores LTI "
 
 msgid "No LTI consumers defined"
-msgstr ""
+msgstr "Sem consumidores LTI definidos"
 
-#, tao-public
 msgid "Settings"
-msgstr ""
+msgstr "Configurações"
 
 msgid "The LTI connection could not be established"
-msgstr ""
+msgstr "A conexão LTI não foi estabelecida"
 
 msgid "The LTI Provider library."
-msgstr ""
-
+msgstr "Biblioteca de provimento LTI"
