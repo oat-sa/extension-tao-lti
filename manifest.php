@@ -48,6 +48,10 @@ return array(
 			dirname(__FILE__). '/models/ontology/ltiroles_membership.rdf'
 		)
 	),
+    'managementRole' => 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiManagerRole',
+    'acl' => array(
+        array('grant', 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiManagerRole', array('ext'=>'taoLti')),
+    ),    
 	'constants' => array(
 		# actions directory
 		"DIR_ACTIONS"			=> $extpath."actions".DIRECTORY_SEPARATOR,
