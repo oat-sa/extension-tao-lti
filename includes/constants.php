@@ -32,7 +32,6 @@ $todefine = array(
 	'PROPERTY_LTI_ROLES_URN'		=> 'http://www.tao.lu/Ontologies/TAOLTI.rdf#RoleURN',
 	
 	'CLASS_LTI_TOOL'				=> 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTITool',
-	'PROPERTY_LTITOOL_ENTRYPOINT'	=> 'http://www.tao.lu/Ontologies/TAOLTI.rdf#ToolEntryPoint',
 	'PROPERTY_LTITOOL_SERVICE'		=> 'http://www.tao.lu/Ontologies/TAOLTI.rdf#ToolService',
 
 	'CLASS_LTI_LINK'				=> 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTILink',
@@ -41,4 +40,5 @@ $todefine = array(
 	'PROPERTY_LTI_LINK_CONSUMER'	=> 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTILinkConsumer',
 	'PROPERTY_LTI_LINK_LAUNCHURL'	=> 'http://www.tao.lu/Ontologies/TAOLTI.rdf#ResourceLinkLaunchUrl',
 
+	'INSTANCE_ROLE_CONTEXT_LEARNER' => 'http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#Learner'
 );

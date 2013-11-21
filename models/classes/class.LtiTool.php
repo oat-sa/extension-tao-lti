@@ -29,41 +29,13 @@
 abstract class taoLti_models_classes_LtiTool extends tao_models_classes_Service
 {
 	/**
-	 * Returns the resource that describes this tool
-	 * 
-	 * @return core_kernel_classes_Resource
-	 */
-	public abstract function getToolResource();
-	
-	/**
 	 * Builds a launch url for this tool
 	 * 
 	 * @param array $parameters additional launch parameters
 	 * @return string
 	 */
-	public function getLaunchUrl($parameters = array()) {
-		$action	= $this->getToolResource()->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_LTITOOL_ENTRYPOINT));
-		$module	= $action->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_ACL_ACTION_MEMBEROF));
-		$extension	= $module->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_ACL_MODULE_EXTENSION));
-		
-		$actionID	= $action->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_ACL_ACTION_ID));
-		$moduleID	= $module->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_ACL_MODULE_ID));
-		$extID		= $extension->getUniquePropertyValue(new core_kernel_classes_Property(PROPERTY_ACL_EXTENSION_ID));
+	public abstract function getLaunchUrl($parameters = array());
 
-		$fullAction = $actionID.'/'.base64_encode(serialize($parameters));
-		return tao_helpers_Uri::url($fullAction, $moduleID, $extID);
-	}
-	
-	/**
-	 * returns the RDF class to use to create links
-	 * can be overriden by tools
-	 * 
-	 * @return core_kernel_classes_Class
-	 */
-	public function getRemoteLinkClass() {
-		return new core_kernel_classes_Class(CLASS_LTI_INCOMINGLINK);
-	}
-	
 	public static function getToolService(core_kernel_classes_Resource $tool) {
 		$services = $tool->getPropertyValues(new core_kernel_classes_Property(PROPERTY_LTITOOL_SERVICE));
 		if (count($services) > 0) {

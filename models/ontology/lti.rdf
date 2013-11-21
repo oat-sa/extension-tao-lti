@@ -50,13 +50,6 @@
     <rdfs:domain rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTITool"/>
     <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
   </rdf:Description>
-  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOLTI.rdf#ToolEntryPoint">
-    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
-    <rdfs:label xml:lang="en-US"><![CDATA[LTI Entry Point]]></rdfs:label>
-    <rdfs:comment xml:lang="en-US"><![CDATA[Action to execute when launching this tool]]></rdfs:comment>
-    <rdfs:domain rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTITool"/>
-    <rdfs:range rdf:resource="http://www.tao.lu/Ontologies/taoFuncACL.rdf#Action"/>
-  </rdf:Description>
 
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTILink">
     <rdfs:subClassOf rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiObject"/>
