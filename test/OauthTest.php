@@ -19,7 +19,7 @@
  * 
  */
 
-require_once dirname(__FILE__) . '/../../tao/test/TaoTestRunner.php';
+require_once dirname(__FILE__) . '/../../tao/test/TaoPhpUnitTestRunner.php';
 include_once dirname(__FILE__) . '/../includes/raw_start.php';
 
 /**
@@ -27,7 +27,7 @@ include_once dirname(__FILE__) . '/../includes/raw_start.php';
  * @package taoLti
  * @subpackage test
  */
-class OauthTestCase extends UnitTestCase {
+class OauthTestCase extends TaoPhpUnitTestRunner {
 	
 	private $oauthCustomer; 
 
@@ -35,7 +35,7 @@ class OauthTestCase extends UnitTestCase {
 	 * tests initialization
 	 */
 	public function setUp() {
-		TaoTestRunner::initTest();
+		TaoPhpUnitTestRunner::initTest();
 		$oauthClass = new core_kernel_classes_Class(CLASS_OAUTH_CONSUMER);
 		$resource = $oauthClass->createInstanceWithProperties(array(
 		    PROPERTY_OAUTH_KEY			    => 'test_key',
