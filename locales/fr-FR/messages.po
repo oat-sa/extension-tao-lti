@@ -9,36 +9,35 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 msgid "add Consumer"
-msgstr ""
+msgstr "ajouter Consommateur"
 
 msgid "Consumers"
-msgstr ""
+msgstr "Consommateurs"
 
 msgid "delete"
-msgstr ""
+msgstr "Supprimer"
 
 msgid "Launch URL"
-msgstr ""
+msgstr "Lancer l'URL"
 
 msgid "Learning Tools Interoperability"
-msgstr ""
+msgstr "Learning Tools Interoperability"
 
 msgid "link"
-msgstr ""
+msgstr "Lier"
 
 msgid "LTI Consumers"
-msgstr ""
+msgstr "Consommateurs LTI"
 
 msgid "No LTI consumers defined"
-msgstr ""
+msgstr "Pas de consommateur LTI défini."
 
 #, tao-public
 msgid "Settings"
-msgstr ""
+msgstr "Paramètres"
 
 msgid "The LTI connection could not be established"
-msgstr ""
+msgstr "La connexion LTI n'a pu être établie."
 
 msgid "The LTI Provider library."
-msgstr ""
-
+msgstr "La bibliothèque de fournitures LTI."
