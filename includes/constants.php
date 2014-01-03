@@ -40,5 +40,9 @@ $todefine = array(
 	'PROPERTY_LTI_LINK_CONSUMER'	=> 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTILinkConsumer',
 	'PROPERTY_LTI_LINK_LAUNCHURL'	=> 'http://www.tao.lu/Ontologies/TAOLTI.rdf#ResourceLinkLaunchUrl',
 
-	'INSTANCE_ROLE_CONTEXT_LEARNER' => 'http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#Learner'
+	'INSTANCE_ROLE_CONTEXT_LEARNER' => 'http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#Learner',
+	
+	'INSTANCE_LTI_CONSUMER_SERVICE' => 'http://www.tao.lu/Ontologies/TAOLTI.rdf#ServiceLtiConsumer',
+	'INSTANCE_FORMALPARAM_LTI_CONSUMER' => 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiConsumerUri',
+	'INSTANCE_FORMALPARAM_LTI_LAUNCH_URL' => 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiLaunchUrl'
 );

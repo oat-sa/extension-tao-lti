@@ -74,6 +74,15 @@ class taoLti_models_classes_LtiUtils
             return null;
         }
     }
+    
+    public static function mapTaoRole2LTIRoles($role)
+    {
+        $roles = array($role->getUri());
+        if ($role->getUri() == 'http://www.tao.lu/Ontologies/TAO.rdf#DeliveryRole') {
+            $roles[] = 'http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#Learner';
+        }
+        return $roles;
+    }
 
     /**
      * Returns the tao language code that corresponds to the code provided

@@ -27,7 +27,7 @@
  *
  */
 
-class taoLti_actions_LtiConsumer extends tao_actions_CommonModule {
+class taoLti_actions_LtiConsumer extends tao_actions_ServiceModule {
 	
 	
 	/**
@@ -43,6 +43,17 @@ class taoLti_actions_LtiConsumer extends tao_actions_CommonModule {
 	    $ltiConsumer = new tao_models_classes_oauth_Credentials($this->getRequestParameter('ltiConsumerUri'));
 	    $launchUrl =  $this->getRequestParameter('ltiLaunchUrl');
 	    
+	    $serviceCallId = $this->getServiceCallId().'_c';
+	    
+	    $session = common_session_SessionManager::getSession();
+	    
+	    $roles = array();
+	    foreach ($session->getUserRoles() as $role) {
+	        foreach (taoLti_models_classes_LtiUtils::mapTaoRole2LTIRoles($role) as $ltiRole) {
+	            $roles[] = $ltiRole;
+	        }
+	    }
+	    
 	    $ltiData = array(
 	        'lti_message_type' => 'basic-lti-launch-request',
 	        'lti_version' => 'LTI-1p0',
@@ -51,10 +62,18 @@ class taoLti_actions_LtiConsumer extends tao_actions_CommonModule {
 	        'resource_link_title' => 'Launch Title',
 	        'resource_link_label' => 'Launch label',
 	        
-	        'context_id' => rand(0, 9999999),
+	        'context_id' => $serviceCallId,
 	        'context_title' => 'Launch Title',
 	        'context_label' => 'Launch label',
+	        
+	        'user_id' => $session->getUserUri(),
+	        'roles' => implode(',',$roles),
+	        'lis_person_name_full' => $session->getUserLabel(),
+	        
+	        'tool_consumer_info_product_family_code' => PRODUCT_NAME,
+	        'tool_consumer_info_version' => TAO_VERSION
         );
+	    
 	    // @todo add:
 	    /*
 	    user_id:
