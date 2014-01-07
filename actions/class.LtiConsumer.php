@@ -96,6 +96,7 @@ class taoLti_actions_LtiConsumer extends tao_actions_ServiceModule {
 	    
 	    $this->setData('launchUrl', $launchUrl);
 	    $this->setData('ltiData', $signedRequest->getParams());
+            $this->setData('client_config_url', $this->getClientConfigUrl());
 	    $this->setView('ltiConsumer.tpl');
 	}
 	

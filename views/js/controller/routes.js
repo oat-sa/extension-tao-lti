@@ -19,5 +19,10 @@
  */
 define(function(){
     return {
+        'LtiConsumer' : {
+            'actions' : {
+                'call' : 'controller/ltiConsumer'
+            }
+        }
     };
 });
