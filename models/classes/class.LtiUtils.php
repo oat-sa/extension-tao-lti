@@ -69,7 +69,7 @@ class taoLti_models_classes_LtiUtils
             }
         }
         if (! is_null($taoRole) && $taoRole->exists()) {
-            return $taoRole;
+            return $taoRole->getUri();
         } else {
             return null;
         }

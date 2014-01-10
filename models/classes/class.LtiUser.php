@@ -105,7 +105,7 @@ class taoLti_models_classes_LtiUser
         foreach ($this->getLaunchData()->getUserRoles() as $role) {
             $taoRole = taoLti_models_classes_LtiUtils::mapLTIRole2TaoRole($role);
             if (!is_null($taoRole)) {
-                $roles[] = $taoRole->getUri();
+                $roles[] = $taoRole;
             }
         }
 	    return $roles;
