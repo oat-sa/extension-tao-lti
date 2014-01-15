@@ -31,18 +31,16 @@
 class taoLti_models_classes_TaoLtiSession extends common_session_DefaultSession
 {
 
+    /**
+     * @var core_kernel_classes_Resource
+     */
+    private $ltiLink = null;
+
     public function __construct(taoLti_models_classes_LtiUser $user)
     {
         parent::__construct($user);
     }
 
-    /**
-     * @return taoLti_models_classes_LtiLaunchData
-     */
-    public function getLaunchData() {
-        return $this->getUser()->getLaunchData();
-    }
-    
     /**
      * Override tje default label construction
      * (non-PHPdoc)
@@ -52,8 +50,21 @@ class taoLti_models_classes_TaoLtiSession extends common_session_DefaultSession
         return $this->getLaunchData()->getUserFullName();
     }
     
-    private $ltiLink = null;
-
+    /**
+     * Returns the data that was transmitted during launch
+     * 
+     * @return taoLti_models_classes_LtiLaunchData
+     */
+    public function getLaunchData() {
+        return $this->getUser()->getLaunchData();
+    }
+    
+    /**
+     * Returns an resource representing the incoming link
+     * 
+     * @throws common_exception_Error
+     * @return core_kernel_classes_Resource
+     */
     public function getLtiLinkResource()
     {
         if (is_null($this->ltiLink)) {
