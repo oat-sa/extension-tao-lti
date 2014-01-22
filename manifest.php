@@ -28,8 +28,9 @@ $taopath = dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'tao'.DIRECTORY_SEPARA
 
 return array(
 	'name' => 'taoLti',
-	'description' => 'TAO LTI Tool library',
-	'version' => '0.9',
+	'description' => 'TAO LTI library',
+    'license' => 'GPL-2.0',
+    'version' => '0.9',
 	'author' => 'Open Assessment Technologies SA',
 	'dependencies' => array('tao'),
 	'models' => array(
