@@ -38,11 +38,11 @@ abstract class taoLti_actions_ToolModule extends tao_actions_CommonModule
 		    taoLti_models_classes_LtiService::singleton()->startLtiSession(common_http_Request::currentRequest());
 			$this->run();
         } catch (common_user_auth_AuthFailedException $e) {
-            $this->returnError(__('The LTI connection could not be established'));
+            $this->returnError(__('The LTI connection could not be established'), false);
         } catch (taoLti_models_classes_LtiException $e) {
-			$this->returnError(__('The LTI connection could not be established'));
+			$this->returnError(__('The LTI connection could not be established'), false);
         } catch (tao_models_classes_oauth_Exception $e) {
-			$this->returnError(__('The LTI connection could not be established'));
+			$this->returnError(__('The LTI connection could not be established'), false);
 		}
 	}
 	
