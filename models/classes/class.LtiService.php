@@ -136,10 +136,9 @@ class taoLti_models_classes_LtiService extends tao_models_classes_Service
 		    /*
 			PROPERTY_USER_UILG			=> $lang,
 			PROPERTY_USER_DEFLG			=> $lang,
-			RDFS_LABEL					=> $ltiContext->getUserFullName()
 			*/
+			RDFS_LABEL					=> $ltiContext->getUserFullName()
 		);
-		/*
 		if ($ltiContext->hasVariable(taoLti_models_classes_LtiLaunchData::LIS_PERSON_NAME_GIVEN)) {
 			$props[PROPERTY_USER_FIRSTNAME] = $ltiContext->getUserGivenName();
 		}
@@ -149,17 +148,9 @@ class taoLti_models_classes_LtiService extends tao_models_classes_Service
 		if ($ltiContext->hasVariable(taoLti_models_classes_LtiLaunchData::LIS_PERSON_CONTACT_EMAIL_PRIMARY)) {
 			$props[PROPERTY_USER_MAIL] = $ltiContext->getUserEmail();
 		}
-		*/
 		$user = $class->createInstanceWithProperties($props);
 		common_Logger::i('added User '.$user->getLabel());
-		/*
-		$rolesService = tao_models_classes_RoleService::singleton();
-		foreach ($ltiContext->getTaoUserRoles() as $taoRoleUri) {
-            $taoRole = new core_kernel_classes_Resource($taoRoleUri);
-			common_Logger::i('added Role '.$taoRole->getLabel());
-			core_kernel_users_Service::singleton()->attachRole($user, $taoRole);
-		}
-		*/
+
 		return $user;
 	}
 }
