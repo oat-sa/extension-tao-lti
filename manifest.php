@@ -39,9 +39,6 @@ return array(
 	 	'http://www.imsglobal.org/imspurl/lis/v1/vocab/membership'
 	 ),
 	'install' => array(
-		'checks' => array(
-			array('type' => 'CheckFileSystemComponent', 'value' => array('id' => 'fs_taoLti_includes', 'location' => 'taoLti/includes', 'rights' => 'rw'))
-		),
 		'rdf' => array(
 			dirname(__FILE__). '/models/ontology/lti.rdf',
 			dirname(__FILE__). '/models/ontology/roledefinition.rdf',
