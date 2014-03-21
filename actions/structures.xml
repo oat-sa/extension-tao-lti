@@ -17,7 +17,7 @@
 				<actions>
 					<action name="add Consumer" url="/taoLti/ConsumerAdmin/addInstanceForm" context="class" />
 					<action name="delete" js="removeNode" url="/taoLti/ConsumerAdmin/delete" context="instance" />
-					<action name="export" url="/tao/Export/index"  context="*" />
+					<action name="export" url="/tao/Export/index"  context="resource" />
 					<action name="import" url="/tao/Import/index"  context="class" />					
 				</actions>
 			</section>
