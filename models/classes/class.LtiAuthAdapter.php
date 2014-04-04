@@ -24,8 +24,8 @@
  *
  * @access public
  * @author Joel Bout, <joel@taotesting.com>
- * @package core
- * @subpackage kernel_auth_adapter
+ * @package taoLti
+ 
  */
 class taoLti_models_classes_LtiAuthAdapter
 	implements common_user_auth_Adapter

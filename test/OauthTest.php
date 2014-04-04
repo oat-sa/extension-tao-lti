@@ -25,7 +25,7 @@ include_once dirname(__FILE__) . '/../includes/raw_start.php';
 /**
  * @author Joel Bout, <joel@taotesting.com>
  * @package taoLti
- * @subpackage test
+ 
  */
 class OauthTestCase extends TaoPhpUnitTestRunner {
 	

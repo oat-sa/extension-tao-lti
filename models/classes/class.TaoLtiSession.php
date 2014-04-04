@@ -26,7 +26,7 @@
  * @access public
  * @author Joel Bout, <joel@taotesting.com>
  * @package taoLti
- * @subpackage models_classes
+ 
  */
 class taoLti_models_classes_TaoLtiSession extends common_session_DefaultSession
 {

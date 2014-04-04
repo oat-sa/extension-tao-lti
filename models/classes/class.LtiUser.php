@@ -24,8 +24,8 @@
  *
  * @access public
  * @author Joel Bout, <joel@taotesting.com>
- * @package core
- * @subpackage kernel_users
+ * @package taoLti
+ 
  */
 class taoLti_models_classes_LtiUser
 	extends common_user_User
