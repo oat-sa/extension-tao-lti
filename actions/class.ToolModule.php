@@ -1,5 +1,4 @@
 <?php
-
 /**  
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -21,11 +20,9 @@
  */
 
 /**
- *
- * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
- * @license GPLv2 http://www.opensource.org/licenses/gpl-2.0.php
- * @package filemanager
- 
+ * An abstract tool controller to be extended by the concrete tools
+ * 
+ * @package taoLti
  */
 abstract class taoLti_actions_ToolModule extends tao_actions_CommonModule
 {
@@ -44,6 +41,10 @@ abstract class taoLti_actions_ToolModule extends tao_actions_CommonModule
         } catch (tao_models_classes_oauth_Exception $e) {
 			$this->returnError(__('The LTI connection could not be established'), false);
 		}
+	}
+	
+	public function redirect($url) {
+        parent::redirect(_url('verifyCookie', 'CookieUtils', 'taoLti', array('session' => session_id(),'redirect' => $url)));
 	}
 	
 	/**

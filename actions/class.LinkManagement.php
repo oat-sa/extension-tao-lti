@@ -1,5 +1,5 @@
 <?php
-/*  
+/**  
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; under version 2
@@ -56,4 +56,3 @@ abstract class taoLti_actions_LinkManagement extends tao_actions_CommonModule {
 	}
 	
 }
-?>
