@@ -21,96 +21,154 @@
 
 class taoLti_models_classes_LtiLaunchData
 {
-	const OAUTH_CONSUMER_KEY		= 'oauth_consumer_key';
-	const RESOURCE_LINK_ID			= 'resource_link_id';
-	const RESOURCE_LINK_TITLE		= 'resource_link_title';
-	
-	const USER_ID					= 'user_id';
-	const ROLES						= 'roles';
-	const LIS_PERSON_NAME_GIVEN		= 'lis_person_name_given';
-	const LIS_PERSON_NAME_FAMILY	= 'lis_person_name_family';
-	const LIS_PERSON_NAME_FULL		= 'lis_person_name_full';
-	const LIS_PERSON_CONTACT_EMAIL_PRIMARY	= 'lis_person_contact_email_primary';
-	
-	const LAUNCH_PRESENTATION_LOCALE = 'launch_presentation_locale';
-	const LAUNCH_PRESENTATION_RETURN_URL = 'launch_presentation_return_url';
-	
-	const TOOL_CONSUMER_INSTANCE_NAME = 'tool_consumer_instance_name';
-	
-	private $variables;
-	
-	/**
-	 * Spawns an LtiSession
-	 * 
-	 * @param array $ltiVariables
-	 */
-	public function __construct($ltiVariables) {
-		$this->variables	= $ltiVariables;
-	}
-	
-	public function hasVariable($key) {
-		return isset($this->variables[$key]);
-	}
-	
-	public function getVariable($key) {
-		if (isset($this->variables[$key])) {
-			return $this->variables[$key];
-		} else {
-			throw new taoLti_models_classes_LtiException('Undefined LTI variable '.$key);
-		}
-	}
+    const OAUTH_CONSUMER_KEY               = 'oauth_consumer_key';
+    const RESOURCE_LINK_ID                 = 'resource_link_id';
+    const RESOURCE_LINK_TITLE              = 'resource_link_title';
+    
+    const USER_ID                          = 'user_id';
+    const ROLES                            = 'roles';
+    const LIS_PERSON_NAME_GIVEN            = 'lis_person_name_given';
+    const LIS_PERSON_NAME_FAMILY           = 'lis_person_name_family';
+    const LIS_PERSON_NAME_FULL             = 'lis_person_name_full';
+    const LIS_PERSON_CONTACT_EMAIL_PRIMARY = 'lis_person_contact_email_primary';
+    
+    const LAUNCH_PRESENTATION_LOCALE       = 'launch_presentation_locale';
+    const LAUNCH_PRESENTATION_RETURN_URL   = 'launch_presentation_return_url';
+    
+    const TOOL_CONSUMER_INSTANCE_NAME      = 'tool_consumer_instance_name';
+    
+    /**
+     * LTI variables
+     * 
+     * @var array
+     */
+    private $variables;
+    
+    /**
+     * Custom parameters of the LTI call
+     * 
+     * @var array
+     */
+    private $customParams;
+    
+    
+    /**
+     * 
+     * @param common_http_Request $request
+     * @return taoLti_models_classes_LtiLaunchData
+     */
+    public static function fromRequest(common_http_Request $request) {
+        $extra = self::getParametersFromUrl($request->getUrl());
+        return new self($request->getParams(), $extra);
+    }
+    
+    private static function getParametersFromUrl($url)
+    {
+        $returnValue = array();
+        
+        // get parameters
+        parse_str(parse_url($url,PHP_URL_QUERY), $returnValue);
+    
+        // encoded in url
+        $parts = explode('/', tao_helpers_Request::getRelativeUrl($url), 4);
+        if (count($parts) == 4) {
+            list ($extension, $module, $action, $codedUri) = $parts;
+            $base64String = base64_decode($codedUri);
+            if ($base64String !== false) {
+                var_dump($base64String);
+                // old serialised url
+                if (substr($base64String, 0, strlen('a:')) == 'a:') {
+                    $additionalParams = unserialize($base64String);
+                } else {
+                    $additionalParams = json_decode($base64String);
+                }
+                if ($additionalParams !== false && is_array($additionalParams)) {
+                    foreach ($additionalParams as $key => $value) {
+                        $returnValue[$key] = $value;
+                    }
+                }
+            }
+        }
+        return $returnValue;
+    }
+    
+    /**
+     * Spawns an LtiSession
+     * 
+     * @param array $ltiVariables
+     */
+    private function __construct($ltiVariables, $customParameters) {
+        $this->variables    = $ltiVariables;
+        $this->customParams = $customParameters;
+    }
+    
+    public function hasVariable($key) {
+        return isset($this->variables[$key]);
+    }
+    
+    public function getVariable($key) {
+        if (isset($this->variables[$key])) {
+            return $this->variables[$key];
+        } else {
+            throw new taoLti_models_classes_LtiException('Undefined LTI variable '.$key);
+        }
+    }
+    
+    public function getCustomParameter($key) {
+        return isset($this->customParams[$key]) ? $this->customParams[$key] : null; 
+    }    
 
-	// simpler access
-	
-	public function getOauthKey() {
-		return $this->getVariable(self::OAUTH_CONSUMER_KEY);
-	}
-	
-	public function getResourceLinkID() {
-		return $this->getVariable(self::RESOURCE_LINK_ID);
-	}
-	
-	public function getResourceLinkTitle() {
-		if ($this->hasVariable(self::RESOURCE_LINK_TITLE)) {
-			return $this->getVariable(self::RESOURCE_LINK_TITLE);
-		} else {
-			return __('link');
-		}
-	}
-	
-	public function getUserID() {
-		return $this->getVariable(self::USER_ID);
-	}
-	
-	public function getUserGivenName() {
-		return $this->getVariable(self::LIS_PERSON_NAME_GIVEN);
-	}
-	
-	public function getUserFamilyName() {
-		return $this->getVariable(self::LIS_PERSON_NAME_FAMILY);
-	}
-	
-	public function getUserFullName() {
-		if ($this->hasVariable(self::LIS_PERSON_NAME_FULL)) {
-			return $this->getVariable(self::LIS_PERSON_NAME_FULL);
-		} else {
-			return $this->getUserGivenName().$this->getUserFamilyName();
-		}
-	}
-	
-	public function getUserEmail() {
-		return $this->getVariable(self::LIS_PERSON_CONTACT_EMAIL_PRIMARY);
-	}
-	
+    // simpler access
+    
+    public function getOauthKey() {
+        return $this->getVariable(self::OAUTH_CONSUMER_KEY);
+    }
+    
+    public function getResourceLinkID() {
+        return $this->getVariable(self::RESOURCE_LINK_ID);
+    }
+    
+    public function getResourceLinkTitle() {
+        if ($this->hasVariable(self::RESOURCE_LINK_TITLE)) {
+            return $this->getVariable(self::RESOURCE_LINK_TITLE);
+        } else {
+            return __('link');
+        }
+    }
+    
+    public function getUserID() {
+        return $this->getVariable(self::USER_ID);
+    }
+    
+    public function getUserGivenName() {
+        return $this->getVariable(self::LIS_PERSON_NAME_GIVEN);
+    }
+    
+    public function getUserFamilyName() {
+        return $this->getVariable(self::LIS_PERSON_NAME_FAMILY);
+    }
+    
+    public function getUserFullName() {
+        if ($this->hasVariable(self::LIS_PERSON_NAME_FULL)) {
+            return $this->getVariable(self::LIS_PERSON_NAME_FULL);
+        } else {
+            return $this->getUserGivenName().$this->getUserFamilyName();
+        }
+    }
+    
+    public function getUserEmail() {
+        return $this->getVariable(self::LIS_PERSON_CONTACT_EMAIL_PRIMARY);
+    }
+    
     public function getUserRoles() {
-    	return explode(',',$this->getVariable(self::ROLES));
+        return explode(',',$this->getVariable(self::ROLES));
     }
     
     public function hasLaunchLanguage() {
-		return $this->hasVariable(self::LAUNCH_PRESENTATION_LOCALE);
+        return $this->hasVariable(self::LAUNCH_PRESENTATION_LOCALE);
     }
         
     public function getLaunchLanguage() {
-		return $this->getVariable(self::LAUNCH_PRESENTATION_LOCALE);
-    }    
+        return $this->getVariable(self::LAUNCH_PRESENTATION_LOCALE);
+    }
 }

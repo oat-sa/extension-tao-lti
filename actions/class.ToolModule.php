@@ -33,7 +33,8 @@ abstract class taoLti_actions_ToolModule extends tao_actions_CommonModule
     public function launch() {
 		try {
 		    taoLti_models_classes_LtiService::singleton()->startLtiSession(common_http_Request::currentRequest());
-			$this->run();
+		    // check if cookie has been set
+		    $this->redirect(_url('verifyCookie', 'CookieUtils', 'taoLti', array('session' => session_id(),'redirect' => _url('run'))));
         } catch (common_user_auth_AuthFailedException $e) {
             $this->returnError(__('The LTI connection could not be established'), false);
         } catch (taoLti_models_classes_LtiException $e) {
@@ -43,14 +44,29 @@ abstract class taoLti_actions_ToolModule extends tao_actions_CommonModule
 		}
 	}
 	
-	public function redirect($url) {
-        parent::redirect(_url('verifyCookie', 'CookieUtils', 'taoLti', array('session' => session_id(),'redirect' => $url)));
+	/**
+	 * (non-PHPdoc)
+	 * @see tao_actions_CommonModule::returnError()
+	 */
+	protected function returnError($description, $returnLink = false) {
+        if (tao_helpers_Request::isAjax()) {
+            common_Logger::w('Called '.__FUNCTION__.' in an unsupported AJAX context');
+            throw new common_Exception($description); 
+        } else {
+            if (!empty($description)) {
+                $this->setData('message', $description);
+            }
+            if ($returnLink !== false) {
+                $this->setData('returnLink', $returnLink);
+            }
+            $this->setView('error.tpl', 'taoLti');
+        }
 	}
 	
 	/**
 	 * run() contains the actual tool's controller
 	 */
-	abstract protected function run();
+	abstract public function run();
 	
 	/**
 	 * Returns the lti tool of this controller
@@ -59,17 +75,4 @@ abstract class taoLti_actions_ToolModule extends tao_actions_CommonModule
 	 */
 	abstract protected function getTool();
 	
-	/**
-	 * Only launch should ever be called on a tool, and should be available even without session
-	 * 
-	 * (non-PHPdoc)
-	 * @see tao_actions_CommonModule::_isAllowed()
-	 */
-	protected function _isAllowed()
-	{
-		$context = Context::getInstance();
-		$action = $context->getActionName();
-		
-		return $action == 'launch';
-	}
 }

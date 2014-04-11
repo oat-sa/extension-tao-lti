@@ -54,7 +54,7 @@ class taoLti_models_classes_LtiAuthAdapter
         $service = new tao_models_classes_oauth_Service();
         try {
             $service->validate($this->request);
-        	$ltiLaunchData = new taoLti_models_classes_LtiLaunchData($this->request->getParams());
+        	$ltiLaunchData = taoLti_models_classes_LtiLaunchData::fromRequest($this->request);
         	return new taoLti_models_classes_LtiUser($ltiLaunchData);
         } catch (common_http_InvalidSignatureException $e) {
             throw new taoLti_models_classes_LtiException('Invalid LTI signature');

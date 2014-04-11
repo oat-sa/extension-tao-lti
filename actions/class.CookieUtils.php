@@ -37,9 +37,10 @@ class taoLti_actions_CookieUtils extends tao_actions_CommonModule
 	    $url = $this->getRequestParameter('redirect');
 	    $session = $this->getRequestParameter('session');
 	    if (session_id() == $session) {
-	        parent::redirect($url);
+	        $this->redirect($url);
 	    } else {
-	        $this->setData('url', _url('restoreSession', null, null, array('session' => $session, 'redirect' => $url)));
+	        $this->setData('session', $session);
+	        $this->setData('redirect', $url);
 	        $this->setView('cookieError.tpl');
 	    }
 	}
