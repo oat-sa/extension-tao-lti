@@ -75,12 +75,11 @@ class taoLti_models_classes_LtiLaunchData
             list ($extension, $module, $action, $codedUri) = $parts;
             $base64String = base64_decode($codedUri);
             if ($base64String !== false) {
-                var_dump($base64String);
                 // old serialised url
                 if (substr($base64String, 0, strlen('a:')) == 'a:') {
                     $additionalParams = unserialize($base64String);
                 } else {
-                    $additionalParams = json_decode($base64String);
+                    $additionalParams = json_decode($base64String, true);
                 }
                 if ($additionalParams !== false && is_array($additionalParams)) {
                     foreach ($additionalParams as $key => $value) {
