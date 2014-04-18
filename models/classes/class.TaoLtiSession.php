@@ -47,7 +47,19 @@ class taoLti_models_classes_TaoLtiSession extends common_session_DefaultSession
      * @see common_session_DefaultSession::getUserLabel()
      */
     public function getUserLabel() {
-        return $this->getLaunchData()->getUserFullName();
+        if ($this->getLaunchData()->hasVariable(taoLti_models_classes_LtiLaunchData::LIS_PERSON_NAME_FULL)) {
+            return $this->getLaunchData()->getUserFullName();
+        } else {
+            $parts = array();
+            if ($this->getLaunchData()->hasVariable(taoLti_models_classes_LtiLaunchData::LIS_PERSON_NAME_GIVEN)) {
+                $parts[] = $this->getLaunchData()->getUserGivenName();
+            }
+            if ($this->getLaunchData()->hasVariable(taoLti_models_classes_LtiLaunchData::LIS_PERSON_NAME_FAMILY)) {
+                $parts[] = $this->getLaunchData()->getUserFamilyName();
+            }
+            return empty($parts) ? __('user') : implode(' ', $parts); 
+        }
+        
     }
     
     /**

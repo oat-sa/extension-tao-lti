@@ -150,8 +150,6 @@ class taoLti_models_classes_LtiLaunchData
     public function getUserFullName() {
         if ($this->hasVariable(self::LIS_PERSON_NAME_FULL)) {
             return $this->getVariable(self::LIS_PERSON_NAME_FULL);
-        } else {
-            return $this->getUserGivenName().$this->getUserFamilyName();
         }
     }
     

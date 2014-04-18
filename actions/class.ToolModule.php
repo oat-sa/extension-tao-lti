@@ -19,12 +19,14 @@
  * 
  */
 
+use oat\taoLti\actions\LtiModule;
+
 /**
  * An abstract tool controller to be extended by the concrete tools
  * 
  * @package taoLti
  */
-abstract class taoLti_actions_ToolModule extends tao_actions_CommonModule
+abstract class taoLti_actions_ToolModule extends LtiModule
 {
 
     /**
@@ -34,7 +36,11 @@ abstract class taoLti_actions_ToolModule extends tao_actions_CommonModule
 		try {
 		    taoLti_models_classes_LtiService::singleton()->startLtiSession(common_http_Request::currentRequest());
 		    // check if cookie has been set
-		    $this->redirect(_url('verifyCookie', 'CookieUtils', 'taoLti', array('session' => session_id(),'redirect' => _url('run'))));
+		    if (tao_models_classes_accessControl_AclProxy::hasAccess('taoLti', 'CookieUtils', 'verifyCookie')) {
+		      $this->redirect(_url('verifyCookie', 'CookieUtils', 'taoLti', array('session' => session_id(),'redirect' => _url('run'))));
+		    } else {
+		        $this->returnError(__('You are not authorized to use this system'));
+		    }
         } catch (common_user_auth_AuthFailedException $e) {
             $this->returnError(__('The LTI connection could not be established'), false);
         } catch (taoLti_models_classes_LtiException $e) {
@@ -42,25 +48,6 @@ abstract class taoLti_actions_ToolModule extends tao_actions_CommonModule
         } catch (tao_models_classes_oauth_Exception $e) {
 			$this->returnError(__('The LTI connection could not be established'), false);
 		}
-	}
-	
-	/**
-	 * (non-PHPdoc)
-	 * @see tao_actions_CommonModule::returnError()
-	 */
-	protected function returnError($description, $returnLink = false) {
-        if (tao_helpers_Request::isAjax()) {
-            common_Logger::w('Called '.__FUNCTION__.' in an unsupported AJAX context');
-            throw new common_Exception($description); 
-        } else {
-            if (!empty($description)) {
-                $this->setData('message', $description);
-            }
-            if ($returnLink !== false) {
-                $this->setData('returnLink', $returnLink);
-            }
-            $this->setView('error.tpl', 'taoLti');
-        }
 	}
 	
 	/**

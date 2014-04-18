@@ -102,11 +102,15 @@ class taoLti_models_classes_LtiUser
 	
 	private function determinTaoRoles() {
         $roles = array();
-        foreach ($this->getLaunchData()->getUserRoles() as $role) {
-            $taoRole = taoLti_models_classes_LtiUtils::mapLTIRole2TaoRole($role);
-            if (!is_null($taoRole)) {
-                $roles[] = $taoRole;
+        if ($this->getLaunchData()->hasVariable(taoLti_models_classes_LtiLaunchData::ROLES)) {
+            foreach ($this->getLaunchData()->getUserRoles() as $role) {
+                $taoRole = taoLti_models_classes_LtiUtils::mapLTIRole2TaoRole($role);
+                if (!is_null($taoRole)) {
+                    $roles[] = $taoRole;
+                }
             }
+        } else {
+            return array(INSTANCE_ROLE_LTI_BASE);
         }
 	    return $roles;
 	}

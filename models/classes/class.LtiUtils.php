@@ -50,7 +50,7 @@ class taoLti_models_classes_LtiUtils
             }
             list ($prefix, $nid, $nss) = explode(':', $role, 3);
             if ($nid != 'lti') {
-                throw new common_Exception('Non LTI URN ' . $role . ' not supported');
+                common_Logger::w('Non LTI URN ' . $role . ' passed via LTI');
             }
             $urn = 'urn:' . strtolower($nid) . ':' . $nss;
             

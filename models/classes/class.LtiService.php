@@ -141,7 +141,7 @@ class taoLti_models_classes_LtiService extends tao_models_classes_Service
 			
 		);
                 
-                if ($ltiContext->hasVariable(taoLti_models_classes_LtiLaunchData::LIS_PERSON_NAME_FULL)) {
+        if ($ltiContext->hasVariable(taoLti_models_classes_LtiLaunchData::LIS_PERSON_NAME_FULL)) {
 			$props[RDFS_LABEL] = $ltiContext->getUserFullName();
 		}
                 
