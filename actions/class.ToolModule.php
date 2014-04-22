@@ -36,7 +36,7 @@ abstract class taoLti_actions_ToolModule extends LtiModule
 		try {
 		    taoLti_models_classes_LtiService::singleton()->startLtiSession(common_http_Request::currentRequest());
 		    // check if cookie has been set
-		    if (tao_models_classes_accessControl_AclProxy::hasAccess('taoLti', 'CookieUtils', 'verifyCookie')) {
+		    if (tao_models_classes_accessControl_AclProxy::hasAccess('verifyCookie', 'CookieUtils', 'taoLti')) {
 		      $this->redirect(_url('verifyCookie', 'CookieUtils', 'taoLti', array('session' => session_id(),'redirect' => _url('run'))));
 		    } else {
 		        $this->returnError(__('You are not authorized to use this system'));
