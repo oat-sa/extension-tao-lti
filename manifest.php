@@ -28,11 +28,14 @@ $taopath = dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'tao'.DIRECTORY_SEPARA
 
 return array(
 	'name' => 'taoLti',
-	'description' => 'TAO LTI library',
+	'label' => 'LTI library',
+    'description' => 'TAO LTI library and helpers',
     'license' => 'GPL-2.0',
-    'version' => '0.9',
+    'version' => '1.0',
 	'author' => 'Open Assessment Technologies SA',
-	'dependencies' => array('tao'),
+	'requires' => array(
+	   'tao' => '2.6'
+	),
 	'models' => array(
 	 	'http://www.tao.lu/Ontologies/TAOLTI.rdf',
 	 	'http://www.imsglobal.org/imspurl/lis/v1/vocab/person',
