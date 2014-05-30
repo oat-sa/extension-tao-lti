@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO v2.5-alpha\n"
-"PO-Revision-Date: 2013-08-19T12:23:38\n"
+"Project-Id-Version: TAO v2.6-beta2\n"
+"PO-Revision-Date: 2014-05-30T15:55:23\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: sv-SE\n"
@@ -15,6 +15,15 @@ msgid "Consumers"
 msgstr ""
 
 msgid "delete"
+msgstr ""
+
+msgid "Error"
+msgstr ""
+
+msgid "export"
+msgstr ""
+
+msgid "import"
 msgstr ""
 
 msgid "Launch URL"
@@ -32,6 +41,12 @@ msgstr ""
 msgid "No LTI consumers defined"
 msgstr ""
 
+msgid "Open in a new window"
+msgstr ""
+
+msgid "Server Error"
+msgstr ""
+
 #, tao-public
 msgid "Settings"
 msgstr ""
@@ -40,5 +55,20 @@ msgid "The LTI connection could not be established"
 msgstr ""
 
 msgid "The LTI Provider library."
+msgstr ""
+
+msgid "The LTI tool could not be opened in the current window. Please click on the button to open it in a new window."
+msgstr ""
+
+msgid "Third party cookies are not supported by your browser"
+msgstr ""
+
+msgid "Unable to restore Session"
+msgstr ""
+
+msgid "user"
+msgstr ""
+
+msgid "You are not authorized to use this system"
 msgstr ""
 

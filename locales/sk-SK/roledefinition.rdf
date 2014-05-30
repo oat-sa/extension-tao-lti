@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-    @sourceLanguage EN
+    @sourceLanguage en-US
     @targetLanguage sk-SK
 -->
 <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xml:base="http://www.tao.lu/Ontologies/TAOLTI.rdf#">
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole">
     <!--
-    @sourceLanguage EN
+    @sourceLanguage en-US
     @targetLanguage sk-SK
     @source LTI Roles
     @subject http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole
@@ -16,7 +16,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOLTI.rdf#RoleURN">
     <!--
-    @sourceLanguage EN
+    @sourceLanguage en-US
     @targetLanguage sk-SK
     @source URN
     @subject http://www.tao.lu/Ontologies/TAOLTI.rdf#RoleURN
@@ -24,7 +24,7 @@
     -->
     <rdfs:label xml:lang="sk-SK"><![CDATA[URN]]></rdfs:label>
     <!--
-    @sourceLanguage EN
+    @sourceLanguage en-US
     @targetLanguage sk-SK
     @source LTI Uniform Resource Name(deprecated)
     @subject http://www.tao.lu/Ontologies/TAOLTI.rdf#RoleURN
@@ -34,7 +34,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiBaseRole">
     <!--
-    @sourceLanguage EN
+    @sourceLanguage en-US
     @targetLanguage sk-SK
     @source LTI Base Role
     @subject http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiBaseRole
@@ -42,7 +42,7 @@
     -->
     <rdfs:label xml:lang="sk-SK"><![CDATA[LTI Base Role]]></rdfs:label>
     <!--
-    @sourceLanguage EN
+    @sourceLanguage en-US
     @targetLanguage sk-SK
     @source The LTI Base Role
     @subject http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiBaseRole

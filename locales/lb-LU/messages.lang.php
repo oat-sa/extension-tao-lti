@@ -1,7 +1,6 @@
 <?php
 $GLOBALS['__l10n']["Add / Edit lists"]="Lëschten dobeisetzen / editéiren";
 $GLOBALS['__l10n']["Add property"]="Proprietéit dobeisetzen";
-$GLOBALS['__l10n']["Add the source file"]="Quellfichier unhaenken";
 $GLOBALS['__l10n']["An error occured during user deletion"]="Während dem Läschen vum User gouf et e Fehler";
 $GLOBALS['__l10n']["Class"]="Klass";
 $GLOBALS['__l10n']["Create"]="Erstellen";
@@ -29,7 +28,6 @@ $GLOBALS['__l10n']["List"]="Lëscht";
 $GLOBALS['__l10n']["List values"]="Werter uweisen";
 $GLOBALS['__l10n']["Lists"]="Lëschten";
 $GLOBALS['__l10n']["Manage data list"]="Daten Lëschten verwalten";
-$GLOBALS['__l10n']["Manage deliveries"]="Ausliwwerungen managen";
 $GLOBALS['__l10n']["Manage groups"]="Gruppen verwalten";
 $GLOBALS['__l10n']["Manage items"]="Itemen verwalten";
 $GLOBALS['__l10n']["Manage test takers"]="Testpersounen verwalten";
@@ -60,7 +58,6 @@ $GLOBALS['__l10n']["Search results"]="An den Resultater sichen";
 $GLOBALS['__l10n']["select"]="auswielen";
 $GLOBALS['__l10n']["Select a language"]="Sprooch auswielen";
 $GLOBALS['__l10n']["Selection saved successfully"]="Auswiel erfollegraich gespaichert";
-$GLOBALS['__l10n']["Test takers"]="Testpersounen";
 $GLOBALS['__l10n']["Tests"]="Tester";
 $GLOBALS['__l10n']["The format of this field is not valid."]="Den Format vun desem Datenfeld as nit valid.";
 $GLOBALS['__l10n']["The uploaded file is too large"]="De ropgeluedene Fichier as ze grouss";
@@ -71,13 +68,11 @@ $GLOBALS['__l10n']["Translate to"]="Iwersetzen no";
 $GLOBALS['__l10n']["Translation parameters"]="Iwersetzungsparameter";
 $GLOBALS['__l10n']["Translation saved"]="Iwersetzung gespaichert";
 $GLOBALS['__l10n']["Type"]="Typ";
-$GLOBALS['__l10n']["Upload CSV File"]="CSF Fichier eroplueden";
 $GLOBALS['__l10n']["Use the * character to replace any string"]="Benotzt den * fir eng Zeecheketten ze ersetzen";
 $GLOBALS['__l10n']["User"]="User";
 $GLOBALS['__l10n']["User added"]="User dobeigesaat";
 $GLOBALS['__l10n']["User deleted successfully"]="User erfollegraich geläscht";
 $GLOBALS['__l10n']["User saved"]="User gespaichert";
-$GLOBALS['__l10n']["Users"]="Useren";
 $GLOBALS['__l10n']["You cannot modify this property"]="Dir kënnt des Proprietéit net änneren";
 
 ?>
