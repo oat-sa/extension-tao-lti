@@ -6,10 +6,10 @@
 		}
      ],
 
-    "name": "oat-sa/extension-tao-group",
+    "name": "oat-sa/extension-tao-lti",
     "type" : "tao-extension",
     "extra" : {
-    	"tao-extension-name" : "taoGroups"
+    	"tao-extension-name" : "taoLti"
     },
     "require": {
         "oat-sa/oatbox/extension-installer": "dev-master"
