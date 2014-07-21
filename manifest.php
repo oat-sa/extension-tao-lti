@@ -55,11 +55,6 @@ return array(
         array('grant', 'http://www.tao.lu/Ontologies/generis.rdf#AnonymousRole',array('ext'=>'taoLti','mod' => 'CookieUtils')),
         array('grant', 'http://www.tao.lu/Ontologies/TAO.rdf#BaseUserRole', array('ext'=>'taoLti','mod' => 'LtiConsumer', 'act' => 'call')),
     ),
-    'autoload' => array (
-        'psr-4' => array(
-            'oat\\taoLti\\' => dirname(__FILE__).DIRECTORY_SEPARATOR
-        )
-    ),
 	'constants' => array(
 		# actions directory
 		"DIR_ACTIONS"			=> $extpath."actions".DIRECTORY_SEPARATOR,
