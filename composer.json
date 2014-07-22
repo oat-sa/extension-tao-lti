@@ -33,7 +33,7 @@
           "role": "Developer"
           }
      ],
-     "description" : "extension to manage deliveries",
+     "description" : "extension to manage LTI services for TAO",
      "support": {
      "forum": "http://forum.taotesting.com",
      "issues": "http://forge.taotesting.com"
@@ -45,6 +45,7 @@
     "keywords" : [
           "tao",
           "oat",
+          "LTI",
           "computer-based-assessment"
      ],
 
