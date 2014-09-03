@@ -20,13 +20,19 @@ use oat\tao\helpers\Template;
 				    <?= get_data('message') ?>
 				<? endif; ?>
 			</p>
-			<? if (has_data('returnLink')): ?>
+            <?php if (has_data('returnUrl')) :?>
+            <a href="<?=get_data('returnUrl')?>" class="error_button" <?php if (has_data('consumerLabel')):?>title="<?=__('Return to %s.',get_data('consumerLabel'))?>"<?php endif;?>>
+            <?=__('Back');?>
+            </a>
+            <?php endif; ?>
+
+            <? if (has_data('returnLink')): ?>
 			<div id="redirect">
 				<a href="<?= get_data('returnLink') ?>" id="go_to_tao_bt" class="error_button">TAO Home</a>
 			</div>
 			<? endif; ?>
 		</div>
-	</div>
+    </div>
 </body>
 
 </html>
