@@ -33,9 +33,11 @@ abstract class taoLti_actions_ToolModule extends LtiModule
      * Entrypoint of every tool
      */
     public function launch() {
+
+
 		try {
 		    taoLti_models_classes_LtiService::singleton()->startLtiSession(common_http_Request::currentRequest());
-		    // check if cookie has been set
+            // check if cookie has been set
 		    if (tao_models_classes_accessControl_AclProxy::hasAccess('verifyCookie', 'CookieUtils', 'taoLti')) {
 		      $this->redirect(_url('verifyCookie', 'CookieUtils', 'taoLti', array('session' => session_id(),'redirect' => _url('run'))));
 		    } else {
@@ -44,12 +46,27 @@ abstract class taoLti_actions_ToolModule extends LtiModule
         } catch (common_user_auth_AuthFailedException $e) {
             $this->returnError(__('The LTI connection could not be established'), false);
         } catch (taoLti_models_classes_LtiException $e) {
-			$this->returnError(__('The LTI connection could not be established'), false);
+            // In regard of the IMS LTI standard, we have to show a back button that refer to the
+            // launch_presentation_return_url url param. So we have to retrieve this parameter before trying to start
+            // the session
+            $params = common_http_Request::currentRequest()->getParams();
+            if(isset($params[taoLti_models_classes_LtiLaunchData::TOOL_CONSUMER_INSTANCE_NAME])) {
+                $this->setData('consumerLabel', $params[taoLti_models_classes_LtiLaunchData::TOOL_CONSUMER_INSTANCE_NAME]);
+            } elseif(isset($params[taoLti_models_classes_LtiLaunchData::TOOL_CONSUMER_INSTANCE_DESCRIPTION])) {
+                $this->setData('consumerLabel', $params[taoLti_models_classes_LtiLaunchData::TOOL_CONSUMER_INSTANCE_DESCRIPTION]);
+            }
+
+            if(isset($params[taoLti_models_classes_LtiLaunchData::LAUNCH_PRESENTATION_RETURN_URL])) {
+                $this->setData('returnUrl', $params[taoLti_models_classes_LtiLaunchData::LAUNCH_PRESENTATION_RETURN_URL]);
+            }
+
+            $this->returnError(__('The LTI connection could not be established'), false);
         } catch (tao_models_classes_oauth_Exception $e) {
 			$this->returnError(__('The LTI connection could not be established'), false);
 		}
 	}
-	
+
+
 	/**
 	 * run() contains the actual tool's controller
 	 */
