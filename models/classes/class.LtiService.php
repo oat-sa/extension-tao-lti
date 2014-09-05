@@ -43,7 +43,7 @@ class taoLti_models_classes_LtiService extends tao_models_classes_Service
         $adapter = new taoLti_models_classes_LtiAuthAdapter($request);
         $user = $adapter->authenticate();
         $session = new taoLti_models_classes_TaoLtiSession($user);
-        core_kernel_classes_Session::singleton()->setSession($session);
+        common_session_SessionManager::startSession($session);
 	}
 	
 	/**
