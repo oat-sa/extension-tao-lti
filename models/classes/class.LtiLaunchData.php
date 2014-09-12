@@ -169,4 +169,29 @@ class taoLti_models_classes_LtiLaunchData
     public function getLaunchLanguage() {
         return $this->getVariable(self::LAUNCH_PRESENTATION_LOCALE);
     }
+    
+    /**
+     * Tries to return the tool consumer name
+     * 
+     * Returns null if no name found
+     * 
+     * @return string
+     */
+    public function getToolConsumerName() {
+        return $this->hasVariable(self::TOOL_CONSUMER_INSTANCE_NAME) 
+            ? $this->getVariable(self::TOOL_CONSUMER_INSTANCE_NAME)
+            : $this->hasVariable(self::TOOL_CONSUMER_INSTANCE_DESCRIPTION)
+                ? $this->getVariable(self::TOOL_CONSUMER_INSTANCE_DESCRIPTION)
+                : null;
+    }
+    
+    /**
+     * Return the returnUrl to the tool consumer
+     * 
+     * @return string
+     * @throws taoLti_models_classes_LtiException
+     */
+    public function getReturnUrl() {
+        return $this->getVariable(self::LAUNCH_PRESENTATION_RETURN_URL);
+    }
 }
