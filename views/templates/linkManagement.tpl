@@ -14,10 +14,10 @@ use oat\tao\helpers\Template;
 			<tr>
 				<th><?= __('Consumers')?></th>
 				<td>
-				<?if (count(get_data('consumers')) > 0) :?>
-    				<?foreach (get_data('consumers') as $consumer) :?>
+				<?php if (count(get_data('consumers')) > 0) :?>
+    				<?php foreach (get_data('consumers') as $consumer) :?>
     				    <?= $consumer->getLabel()?><br />
-    		        <?endforeach;?>
+    		        <?php endforeach;?>
     		    <?php else:?>
     		      <div><?= __('No LTI consumers defined')?></div>
     		    <?php endif;?>

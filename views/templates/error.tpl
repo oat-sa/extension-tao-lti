@@ -16,9 +16,9 @@ use oat\tao\helpers\Template;
 		<div id="content">
 			<h1><?= __('Error')?></h1>
 			<p id="warning_msg">
-				<? if (has_data('message')): ?>
+				<?php if (has_data('message')): ?>
 				    <?= get_data('message') ?>
-				<? endif; ?>
+				<?php endif; ?>
 			</p>
             <?php if (has_data('returnUrl')) :?>
             <a href="<?=get_data('returnUrl')?>" class="error_button" <?php if (has_data('consumerLabel')):?>title="<?=__('Return to %s.',get_data('consumerLabel'))?>"<?php endif;?>>
@@ -26,11 +26,11 @@ use oat\tao\helpers\Template;
             </a>
             <?php endif; ?>
 
-            <? if (has_data('returnLink')): ?>
+            <?php if (has_data('returnLink')): ?>
 			<div id="redirect">
 				<a href="<?= get_data('returnLink') ?>" id="go_to_tao_bt" class="error_button">TAO Home</a>
 			</div>
-			<? endif; ?>
+			<?php endif; ?>
 		</div>
     </div>
 </body>
