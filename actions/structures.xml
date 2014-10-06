@@ -9,16 +9,28 @@
 					<tree name="LTI Consumers"
 						className="LTI Consumers"
 						dataUrl="/taoLti/ConsumerAdmin/getOntologyData"
-						editInstanceUrl="/taoLti/ConsumerAdmin/editInstance"
-						addInstanceUrl="/taoLti/ConsumerAdmin/addInstance"
-						deleteUrl="/taoLti/ConsumerAdmin/delete"
+                        selectClass="lticonsumer-index"
+                        selectInstance="lticonsumer-edit"
+                        delete="lticonsumer-delete"
 					/>
 				</trees>
 				<actions>
-					<action name="add Consumer" url="/taoLti/ConsumerAdmin/addInstanceForm" context="class" />
-					<action name="delete" js="removeNode" url="/taoLti/ConsumerAdmin/delete" context="instance" />
-					<action name="export" url="/tao/Export/index"  context="resource" />
-					<action name="import" url="/tao/Import/index"  context="class" />					
+					<action id="lticonsumer-index" name="Index" url="/taoLti/ConsumerAdmin/index" context="class" group="none" />
+					<action id="lticonsumer-edit" name="Properties" url="/taoLti/ConsumerAdmin/editInstance" context="class" group="none">
+                        <icon id="icon-edit"/>
+                    </action>
+					<action id="lticonsumer-new" name="Add Consumer" url="/taoLti/ConsumerAdmin/addInstanceForm" context="class" group="content">
+                        <icon id="icon-add"/>
+                    </action>
+					<action id="lticonsumer-delete" name="Delete" binding="removeNode" url="/taoLti/ConsumerAdmin/delete" context="instance" group="tree">
+                        <icon id="icon-bin"/>
+                    </action>
+					<action id="lticonsumer-export" name="Export" url="/tao/Export/index"  context="resource" group="tree">
+                        <icon id="icon-export"/>
+                    </action>
+					<action id="lticonsumer-import" name="Import" url="/tao/Import/index"  context="class" group="tree">
+                        <icon id="icon-import"/>
+                    </action>
 				</actions>
 			</section>
 		</sections>
