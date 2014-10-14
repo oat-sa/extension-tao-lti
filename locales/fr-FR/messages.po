@@ -1,47 +1,64 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO v2.6-beta2\n"
-"PO-Revision-Date: 2014-05-30T15:55:23\n"
+"Project-Id-Version: TAO v2.7\n"
+"PO-Revision-Date: 2014-10-14T10:43:35\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: fr-FR\n"
+"sourceLanguage: en-US\n"
+"targetLanguage: fr-FR\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Basepath: ../../\n"
+"X-Poedit-KeywordsList: __\n"
+"X-Poedit-SearchPath-0: .\n"
 
-msgid "add Consumer"
-msgstr "ajouter Consommateur"
+msgid "Add Consumer"
+msgstr ""
+
+msgid "Back"
+msgstr ""
 
 msgid "Consumers"
-msgstr "Consommateurs"
+msgstr ""
 
-msgid "delete"
-msgstr "Supprimer"
+msgid "Delete"
+msgstr ""
 
 msgid "Error"
 msgstr ""
 
-msgid "export"
+msgid "Export"
 msgstr ""
 
-msgid "import"
+msgid "Import"
+msgstr ""
+
+msgid "Index"
 msgstr ""
 
 msgid "Launch URL"
-msgstr "Lancer l'URL"
+msgstr ""
 
 msgid "Learning Tools Interoperability"
-msgstr "Learning Tools Interoperability"
+msgstr ""
 
 msgid "link"
-msgstr "Lier"
+msgstr ""
 
 msgid "LTI Consumers"
-msgstr "Consommateurs LTI"
+msgstr ""
 
 msgid "No LTI consumers defined"
-msgstr "Pas de consommateur LTI défini."
+msgstr ""
 
 msgid "Open in a new window"
+msgstr ""
+
+msgid "Properties"
+msgstr ""
+
+msgid "Return to %s.',get_data('consumerLabel"
 msgstr ""
 
 msgid "Server Error"
@@ -49,13 +66,13 @@ msgstr ""
 
 #, tao-public
 msgid "Settings"
-msgstr "Paramètres"
+msgstr ""
 
 msgid "The LTI connection could not be established"
-msgstr "La connexion LTI n'a pu être établie."
+msgstr ""
 
 msgid "The LTI Provider library."
-msgstr "La bibliothèque de fournitures LTI."
+msgstr ""
 
 msgid "The LTI tool could not be opened in the current window. Please click on the button to open it in a new window."
 msgstr ""

@@ -1,29 +1,40 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO v2.6-beta2\n"
-"PO-Revision-Date: 2014-05-30T15:55:23\n"
+"Project-Id-Version: TAO v2.7\n"
+"PO-Revision-Date: 2014-10-14T10:43:35\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: ar-arb\n"
+"sourceLanguage: en-US\n"
+"targetLanguage: ar-arb\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Basepath: ../../\n"
+"X-Poedit-KeywordsList: __\n"
+"X-Poedit-SearchPath-0: .\n"
 
-msgid "add Consumer"
+msgid "Add Consumer"
+msgstr ""
+
+msgid "Back"
 msgstr ""
 
 msgid "Consumers"
 msgstr ""
 
-msgid "delete"
+msgid "Delete"
 msgstr ""
 
 msgid "Error"
 msgstr ""
 
-msgid "export"
+msgid "Export"
 msgstr ""
 
-msgid "import"
+msgid "Import"
+msgstr ""
+
+msgid "Index"
 msgstr ""
 
 msgid "Launch URL"
@@ -42,6 +53,12 @@ msgid "No LTI consumers defined"
 msgstr ""
 
 msgid "Open in a new window"
+msgstr ""
+
+msgid "Properties"
+msgstr ""
+
+msgid "Return to %s.',get_data('consumerLabel"
 msgstr ""
 
 msgid "Server Error"
