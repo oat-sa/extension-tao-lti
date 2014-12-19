@@ -9,6 +9,7 @@
 					<tree name="LTI Consumers"
 						className="LTI Consumers"
 						dataUrl="/taoLti/ConsumerAdmin/getOntologyData"
+                        rootNode="http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiObject"
                         selectClass="lticonsumer-index"
                         selectInstance="lticonsumer-edit"
                         delete="lticonsumer-delete"
