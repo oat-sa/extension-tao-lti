@@ -1,0 +1,91 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: TAO 3.0-RC04\n"
+"PO-Revision-Date: 2015-03-12T14:11:33\n"
+"Last-Translator: TAO Translation Team <translation@tao.lu>\n"
+"MIME-Version: 1.0\n"
+"Language: zh-TW\n"
+"sourceLanguage: en-US\n"
+"targetLanguage: zh-TW\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Basepath: ../../\n"
+"X-Poedit-KeywordsList: __\n"
+"X-Poedit-SearchPath-0: .\n"
+
+msgid "Add Consumer"
+msgstr ""
+
+msgid "Back"
+msgstr ""
+
+msgid "Consumers"
+msgstr ""
+
+msgid "Delete"
+msgstr ""
+
+msgid "Error"
+msgstr ""
+
+msgid "Export"
+msgstr ""
+
+msgid "Import"
+msgstr ""
+
+msgid "Index"
+msgstr ""
+
+msgid "Launch URL"
+msgstr ""
+
+msgid "Learning Tools Interoperability"
+msgstr ""
+
+msgid "link"
+msgstr ""
+
+msgid "LTI Consumers"
+msgstr ""
+
+msgid "No LTI consumers defined"
+msgstr ""
+
+msgid "Open in a new window"
+msgstr ""
+
+msgid "Properties"
+msgstr ""
+
+msgid "Return to %s.',get_data('consumerLabel"
+msgstr ""
+
+msgid "Server Error"
+msgstr ""
+
+#, tao-public
+msgid "Settings"
+msgstr ""
+
+msgid "The LTI connection could not be established"
+msgstr ""
+
+msgid "The LTI Provider library."
+msgstr ""
+
+msgid "The LTI tool could not be opened in the current window. Please click on the button to open it in a new window."
+msgstr ""
+
+msgid "Third party cookies are not supported by your browser"
+msgstr ""
+
+msgid "Unable to restore Session"
+msgstr ""
+
+msgid "user"
+msgstr ""
+
+msgid "You are not authorized to use this system"
+msgstr ""
+
