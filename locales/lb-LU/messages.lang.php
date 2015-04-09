@@ -41,6 +41,7 @@ $GLOBALS['__l10n']["Search"]="Sichen";
 $GLOBALS['__l10n']["select"]="auswielen";
 $GLOBALS['__l10n']["Select a language"]="Sprooch auswielen";
 $GLOBALS['__l10n']["Selection saved successfully"]="Auswiel erfollegraich gespaichert";
+$GLOBALS['__l10n']["Settings"]="Astellungen";
 $GLOBALS['__l10n']["Tests"]="Tester";
 $GLOBALS['__l10n']["The format of this field is not valid."]="Den Format vun desem Datenfeld as nit valid.";
 $GLOBALS['__l10n']["The uploaded file is too large"]="De ropgeluedene Fichier as ze grouss";
@@ -54,5 +55,6 @@ $GLOBALS['__l10n']["Type"]="Typ";
 $GLOBALS['__l10n']["User added"]="User dobeigesaat";
 $GLOBALS['__l10n']["User deleted successfully"]="User erfollegraich geläscht";
 $GLOBALS['__l10n']["User saved"]="User gespaichert";
+$GLOBALS['__l10n']["Users"]="Useren";
 
 ?>

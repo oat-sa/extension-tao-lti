@@ -42,6 +42,7 @@ $GLOBALS['__l10n']["Search"]="Suchen";
 $GLOBALS['__l10n']["select"]="Auswählen";
 $GLOBALS['__l10n']["Select a language"]="Sprache auswählen";
 $GLOBALS['__l10n']["Selection saved successfully"]="Auswahl erfolgreich gespeichert";
+$GLOBALS['__l10n']["Settings"]="Einstellungen";
 $GLOBALS['__l10n']["Tests"]="Tests";
 $GLOBALS['__l10n']["The format of this field is not valid."]="Das Format dieses Feldes ist ungültig";
 $GLOBALS['__l10n']["The uploaded file is too large"]="Die hochgeladene Datei ist zu groß";
@@ -55,5 +56,6 @@ $GLOBALS['__l10n']["Type"]="Typ";
 $GLOBALS['__l10n']["User added"]="Benutzer hinzugefügt";
 $GLOBALS['__l10n']["User deleted successfully"]="Benutzer erfolgreich gelöscht";
 $GLOBALS['__l10n']["User saved"]="Benutzer gespeichert";
+$GLOBALS['__l10n']["Users"]="Benutzer";
 
 ?>
