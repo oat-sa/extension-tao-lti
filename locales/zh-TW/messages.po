@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 3.0-RC04\n"
-"PO-Revision-Date: 2015-03-12T14:11:33\n"
+"Project-Id-Version: TAO 3.0-RC05\n"
+"PO-Revision-Date: 2015-04-08T14:51:22\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: zh-TW\n"
@@ -14,78 +14,78 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 
 msgid "Add Consumer"
-msgstr ""
+msgstr "加入用戶"
 
 msgid "Back"
-msgstr ""
+msgstr "返回"
 
 msgid "Consumers"
-msgstr ""
+msgstr "用戶"
 
 msgid "Delete"
-msgstr ""
+msgstr "刪除"
 
 msgid "Error"
-msgstr ""
+msgstr "錯誤"
 
 msgid "Export"
-msgstr ""
+msgstr "匯出"
 
 msgid "Import"
-msgstr ""
+msgstr "匯入"
 
 msgid "Index"
-msgstr ""
+msgstr "索引"
 
 msgid "Launch URL"
-msgstr ""
+msgstr "啟動URL"
 
 msgid "Learning Tools Interoperability"
-msgstr ""
+msgstr "學習工具的互操作性"
 
 msgid "link"
-msgstr ""
+msgstr "鏈接"
 
 msgid "LTI Consumers"
-msgstr ""
+msgstr "LTI用戶"
 
 msgid "No LTI consumers defined"
-msgstr ""
+msgstr "沒有定義的LTI消費者"
 
 msgid "Open in a new window"
-msgstr ""
+msgstr "在新窗口中打開"
 
 msgid "Properties"
-msgstr ""
+msgstr "屬性"
 
 msgid "Return to %s.',get_data('consumerLabel"
-msgstr ""
+msgstr "返回到%s.',get_data('consumerLabel"
 
 msgid "Server Error"
-msgstr ""
+msgstr "伺服器錯誤"
 
 #, tao-public
 msgid "Settings"
-msgstr ""
+msgstr "設置"
 
 msgid "The LTI connection could not be established"
-msgstr ""
+msgstr "該LTI不能建立連接"
 
 msgid "The LTI Provider library."
-msgstr ""
+msgstr "該LTI供應庫。"
 
 msgid "The LTI tool could not be opened in the current window. Please click on the button to open it in a new window."
-msgstr ""
+msgstr "該LTI工具不能在當前的窗口中打開。請點擊按鈕在新的窗口中打開。"
 
 msgid "Third party cookies are not supported by your browser"
-msgstr ""
+msgstr "你的瀏覽器不支持第三方的網絡跟蹤器"
 
 msgid "Unable to restore Session"
-msgstr ""
+msgstr "無法恢復時域"
 
 msgid "user"
-msgstr ""
+msgstr "用戶"
 
 msgid "You are not authorized to use this system"
-msgstr ""
+msgstr "你沒有被授權使用該系統"
 
