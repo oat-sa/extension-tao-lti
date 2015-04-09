@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TAO 3.0-RC05\n"
-"PO-Revision-Date: 2015-04-08T14:51:22\n"
+"PO-Revision-Date: 2015-04-09T09:22:41\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: zh-TW\n"
@@ -13,6 +13,7 @@ msgstr ""
 "X-Poedit-KeywordsList: __\n"
 "X-Poedit-SearchPath-0: .\n"
 
+#, tao-public
 msgid "Add Consumer"
 msgstr "加入用戶"
 
@@ -22,18 +23,22 @@ msgstr "返回"
 msgid "Consumers"
 msgstr "用戶"
 
+#, tao-public
 msgid "Delete"
 msgstr "刪除"
 
 msgid "Error"
 msgstr "錯誤"
 
+#, tao-public
 msgid "Export"
 msgstr "匯出"
 
+#, tao-public
 msgid "Import"
 msgstr "匯入"
 
+#, tao-public
 msgid "Index"
 msgstr "索引"
 
@@ -46,6 +51,7 @@ msgstr "學習工具的互操作性"
 msgid "link"
 msgstr "鏈接"
 
+#, tao-public
 msgid "LTI Consumers"
 msgstr "LTI用戶"
 
@@ -55,6 +61,7 @@ msgstr "沒有定義的LTI消費者"
 msgid "Open in a new window"
 msgstr "在新窗口中打開"
 
+#, tao-public
 msgid "Properties"
 msgstr "屬性"
 
