@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 3.0-RC04\n"
-"PO-Revision-Date: 2015-03-06T16:04:27\n"
+"Project-Id-Version: TAO 3.0-RC05\n"
+"PO-Revision-Date: 2015-04-09T09:22:41\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: pt-PT\n"
@@ -13,6 +13,7 @@ msgstr ""
 "X-Poedit-KeywordsList: __\n"
 "X-Poedit-SearchPath-0: .\n"
 
+#, tao-public
 msgid "Add Consumer"
 msgstr ""
 
@@ -22,18 +23,22 @@ msgstr ""
 msgid "Consumers"
 msgstr ""
 
+#, tao-public
 msgid "Delete"
 msgstr ""
 
 msgid "Error"
 msgstr ""
 
+#, tao-public
 msgid "Export"
 msgstr ""
 
+#, tao-public
 msgid "Import"
 msgstr ""
 
+#, tao-public
 msgid "Index"
 msgstr ""
 
@@ -46,6 +51,7 @@ msgstr ""
 msgid "link"
 msgstr ""
 
+#, tao-public
 msgid "LTI Consumers"
 msgstr ""
 
@@ -55,6 +61,7 @@ msgstr ""
 msgid "Open in a new window"
 msgstr ""
 
+#, tao-public
 msgid "Properties"
 msgstr ""
 
