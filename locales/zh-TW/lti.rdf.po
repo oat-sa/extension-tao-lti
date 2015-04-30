@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 3.0-RC05\n"
-"PO-Revision-Date: 2015-04-09T09:22:41\n"
+"Project-Id-Version: TAO 3.0.0\n"
+"PO-Revision-Date: 2015-04-30T09:19:11\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: zh-TW\n"
@@ -73,7 +73,7 @@ msgstr "LTI消費者連結　"
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiIncomingLink
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Incoming LTI link"
-msgstr "導入LTI連結"
+msgstr "經來的LTI連結"
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiIncomingLink
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
