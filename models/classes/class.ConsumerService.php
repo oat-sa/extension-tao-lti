@@ -14,39 +14,32 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  * 
- * Copyright (c) 2013 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
- *               
- * 
+ * Copyright (c) 2015 (original work) Open Assessment Technologies SA
  */
 
 /**
- * This controller allows the additon and deletion
- * of LTI Oauth Consumers
+ * Service methods to manage the LTI consumer business objects using the RDF API.
  *
- * @author Joel Bout
- * @package taoLti
- * @license GPLv2 http://www.opensource.org/licenses/gpl-2.0.php
- *         
+ * @access public
+ * @author Joel Bout, <joel.bout@tudor.lu>
+ * @package taoGroups
+ 
  */
-class taoLti_actions_ConsumerAdmin extends tao_actions_SaSModule
+class taoLti_models_classes_ConsumerService
+    extends tao_models_classes_ClassService
 {
+    const CLASS_URI = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIConsumer';
 
     /**
-     * work around for legacy support
+     * return the group top level class
+     *
+     * @access public
+     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @return core_kernel_classes_Class
      */
-    public function __construct()
+    public function getRootClass()
     {
-        parent::__construct();
-        $this->service = $this->getClassService();
+        return new core_kernel_classes_Class(self::CLASS_URI);
     }
 
-    /**
-     * (non-PHPdoc)
-     * 
-     * @see tao_actions_RdfController::getClassService()
-     */
-    public function getClassService()
-    {
-        return taoLti_models_classes_ConsumerService::singleton();
-    }
 }
