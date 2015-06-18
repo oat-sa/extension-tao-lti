@@ -31,7 +31,7 @@ return array(
 	'label' => 'LTI library',
     'description' => 'TAO LTI library and helpers',
     'license' => 'GPL-2.0',
-    'version' => '1.0',
+    'version' => '1.0.1',
 	'author' => 'Open Assessment Technologies SA',
 	'requires' => array(
 	   'tao' => '>=2.7.0'
@@ -49,6 +49,7 @@ return array(
 			dirname(__FILE__). '/models/ontology/ltiroles_membership.rdf'
 		)
 	),
+	'update' => 'taoLti_scripts_update_Updater',
     'managementRole' => 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiManagerRole',
     'acl' => array(
         array('grant', 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiManagerRole', array('ext'=>'taoLti')),
