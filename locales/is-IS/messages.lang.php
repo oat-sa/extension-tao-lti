@@ -1,5 +1,4 @@
 <?php
-$GLOBALS['__l10n']["\"list saved\""]="\"listi vistaður\"";
 $GLOBALS['__l10n']["%d day"]="%d dagur";
 $GLOBALS['__l10n']["%d days"]="%d dagar";
 $GLOBALS['__l10n']["%h hour"]="%h klukkutími";
@@ -175,8 +174,8 @@ $GLOBALS['__l10n']["Save"]="Vista";
 $GLOBALS['__l10n']["Search"]="Leita";
 $GLOBALS['__l10n']["Search sub-classes"]="Leita í undirflokkum";
 $GLOBALS['__l10n']["seconds"]="sekúndur";
-$GLOBALS['__l10n']["Select"]="Velja";
 $GLOBALS['__l10n']["select"]="velja";
+$GLOBALS['__l10n']["Select"]="Velja";
 $GLOBALS['__l10n']["Select a language"]="Veldu tungumál";
 $GLOBALS['__l10n']["Settings"]="Stillingar";
 $GLOBALS['__l10n']["Settings updated"]="Stillingar uppfærðar";
