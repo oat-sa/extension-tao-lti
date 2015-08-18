@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO v3.1-dev\n"
-"PO-Revision-Date: 2015-06-18T15:46:47\n"
+"Project-Id-Version: TAO 3.1.0-sprint03\n"
+"PO-Revision-Date: 2015-08-11T16:21:26\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: zh-CN\n"
@@ -65,8 +65,8 @@ msgstr "在新窗口中打开"
 msgid "Properties"
 msgstr "属性"
 
-msgid "Return to %s.',get_data('consumerLabel"
-msgstr "返回到%s.',get_data('consumerLabel"
+msgid "Return to %s."
+msgstr ""
 
 msgid "Server Error"
 msgstr "伺服器错误"
@@ -94,5 +94,5 @@ msgid "user"
 msgstr "用户"
 
 msgid "You are not authorized to use this system"
-msgstr "你没有被授权使用该系统"
+msgstr "你没有被授权使用这个系统"
 
