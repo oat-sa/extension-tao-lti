@@ -63,12 +63,6 @@ return array(
 		# views directory
 		"DIR_VIEWS"				=> $extpath."views".DIRECTORY_SEPARATOR,
 	
-		# default module name
-		'DEFAULT_MODULE_NAME'	=> 'Browser',
-	
-		#default action name
-		'DEFAULT_ACTION_NAME'	=> 'index',
-	
 		#BASE PATH: the root path in the file system (usually the document root)
 		'BASE_PATH'				=> $extpath ,
 	
