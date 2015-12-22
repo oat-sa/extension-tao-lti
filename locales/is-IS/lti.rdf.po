@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 3.1.0-sprint03\n"
-"PO-Revision-Date: 2015-08-11T16:21:26\n"
+"Project-Id-Version: TAO 3.1.0-sprint04\n"
+"PO-Revision-Date: 2015-12-22T13:39:00\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: is-IS\n"
@@ -13,62 +13,62 @@ msgstr ""
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiObject
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "LTI Object"
-msgstr ""
+msgstr "LTI Hlutur"
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#ServiceLtiConsumer
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "LTI Consumer"
-msgstr ""
+msgstr "LTI Neytandi"
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIUser
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "LTI User"
-msgstr ""
+msgstr "LTI Notandi"
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#UserKey
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "LTI Consumer User Key"
-msgstr ""
+msgstr "LTI Notandalykill Neytanda"
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#UserKey
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Key of LTI User"
-msgstr ""
+msgstr "Lykill LTI Notanda"
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#UserConsumer
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "LTI Consumer of User"
-msgstr ""
+msgstr "LTI Neytandi Notanda"
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#LTITool
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "LTI Tool"
-msgstr ""
+msgstr "LTI Tól"
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#ToolService
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "LTI Tool Service"
-msgstr ""
+msgstr "LTI Tólaþjónusta"
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#ToolService
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Service to implemnt the Tool"
-msgstr ""
+msgstr "Þjónusta til að nota Tólið"
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#LTILink
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "LTI Link"
-msgstr ""
+msgstr "LTI Hlekkur"
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#LTILink
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Link between Tool and Consumer"
-msgstr ""
+msgstr "Hlekkur milli Tóls og Neytanda"
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#LTILinkConsumer
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "LTI link consumer"
-msgstr ""
+msgstr "LTI hlekksneytandi"
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiIncomingLink
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -78,27 +78,28 @@ msgstr ""
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiIncomingLink
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "An external link calling TAO as tool provider"
-msgstr ""
+msgstr "Ytri hlekkur hringir í TAO sem tólaveita"
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#LTILinkId
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "LTI link ID"
-msgstr ""
+msgstr "LTI skilríki hlekks"
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiOutgoingLink
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Outgoing LTI link"
-msgstr ""
+msgstr "LTI hlekkur á útleið"
 
-# http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiOutgoingLink
+# remote?
+#, fuzzy
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "An link in TAO calling a remote tool provider"
-msgstr ""
+msgstr "Hlekkur í TAO hringir í fjarlæga tólaveitu"
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#ResourceLinkLaunchUrl
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Launch URL"
-msgstr ""
+msgstr "Keyra slóð"
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#ResourceLinkLaunchUrl
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
@@ -108,14 +109,14 @@ msgstr ""
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiLaunchUrl
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "LTI Launch Url"
-msgstr ""
+msgstr "LTI Keyra Slóð"
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiLaunchUrl
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "LTI Launch Url"
-msgstr ""
+msgstr "LTI Keyra Slóð"
 
-# http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiConsumerUri
+# uri = veffang?
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "LTI Consumer Uri"
 msgstr ""
@@ -126,7 +127,8 @@ msgid "LTI Consumer Uri"
 msgstr ""
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#ServiceLtiConsumer
+#, fuzzy
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "LTI Consumer service calls an LTI Producer"
-msgstr ""
+msgstr "LTI Neytendaþjónusta hringir í LTI Framleiðanda"
 
