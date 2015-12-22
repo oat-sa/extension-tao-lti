@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 3.1.0-sprint04\n"
-"PO-Revision-Date: 2015-12-22T13:39:00\n"
+"Project-Id-Version: TAO 3.1.0-sprint15\n"
+"PO-Revision-Date: 2015-12-22T13:33:11\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: is-IS\n"
@@ -19,9 +19,6 @@ msgstr "Bæta við Neytanda"
 
 msgid "Back"
 msgstr "Til baka"
-
-msgid "Consumers"
-msgstr "Neytendur"
 
 #, tao-public
 msgid "Delete"
@@ -42,9 +39,6 @@ msgstr "Flytja inn"
 msgid "Index"
 msgstr "Yfirlit"
 
-msgid "Launch URL"
-msgstr "Keyra vefslóð"
-
 msgid "Learning Tools Interoperability"
 msgstr ""
 
@@ -54,9 +48,6 @@ msgstr "hlekkur"
 #, tao-public
 msgid "LTI Consumers"
 msgstr "LTI Neytendur"
-
-msgid "No LTI consumers defined"
-msgstr "Engir LTO neytendur skilgreindir"
 
 msgid "Open in a new window"
 msgstr "Opna í nýjum glugga"

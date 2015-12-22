@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 3.1.0-sprint04\n"
-"PO-Revision-Date: 2015-12-22T13:39:00\n"
+"Project-Id-Version: TAO 3.1.0-sprint15\n"
+"PO-Revision-Date: 2015-12-22T13:33:11\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: lb-LU\n"
@@ -18,9 +18,6 @@ msgid "Add Consumer"
 msgstr ""
 
 msgid "Back"
-msgstr ""
-
-msgid "Consumers"
 msgstr ""
 
 #, tao-public
@@ -42,9 +39,6 @@ msgstr ""
 msgid "Index"
 msgstr ""
 
-msgid "Launch URL"
-msgstr ""
-
 msgid "Learning Tools Interoperability"
 msgstr ""
 
@@ -53,9 +47,6 @@ msgstr ""
 
 #, tao-public
 msgid "LTI Consumers"
-msgstr ""
-
-msgid "No LTI consumers defined"
 msgstr ""
 
 msgid "Open in a new window"
