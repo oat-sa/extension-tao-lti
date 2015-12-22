@@ -34,8 +34,8 @@ class taoLti_scripts_update_Updater extends \common_ext_ExtensionUpdater {
         
         $currentVersion = $initialVersion;
         
-        if ($currentVersion == '1.0') {
-        	$currentVersion = '1.0.1';
+        if ($currentVersion == '1.0' || $currentVersion == '1.0.1') {
+        	$currentVersion = '1.0.2';
         }
         return $currentVersion;
     }

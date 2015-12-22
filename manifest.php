@@ -31,7 +31,7 @@ return array(
 	'label' => 'LTI library',
     'description' => 'TAO LTI library and helpers',
     'license' => 'GPL-2.0',
-    'version' => '1.0.1',
+    'version' => '1.0.2',
 	'author' => 'Open Assessment Technologies SA',
 	'requires' => array(
 	   'tao' => '>=2.7.0'
@@ -62,12 +62,6 @@ return array(
 	
 		# views directory
 		"DIR_VIEWS"				=> $extpath."views".DIRECTORY_SEPARATOR,
-	
-		# default module name
-		'DEFAULT_MODULE_NAME'	=> 'Browser',
-	
-		#default action name
-		'DEFAULT_ACTION_NAME'	=> 'index',
 	
 		#BASE PATH: the root path in the file system (usually the document root)
 		'BASE_PATH'				=> $extpath ,

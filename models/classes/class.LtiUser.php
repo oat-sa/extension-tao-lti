@@ -46,7 +46,7 @@ class taoLti_models_classes_LtiUser
 	 * Cache of the current user's lti roles
 	 * @var array
 	 */
-	private $roles;
+	protected $roles;
 	
 	public function __construct(taoLti_models_classes_LtiLaunchData $ltiLaunchData) {
 	    $this->ltiLaunchData = $ltiLaunchData;
@@ -107,8 +107,12 @@ class taoLti_models_classes_LtiUser
                 $taoRole = taoLti_models_classes_LtiUtils::mapLTIRole2TaoRole($role);
                 if (!is_null($taoRole)) {
                     $roles[] = $taoRole;
+					foreach (core_kernel_users_Service::singleton()->getIncludedRoles(new core_kernel_classes_Resource($taoRole)) as $includedRole) {
+						$roles[] = $includedRole->getUri();
+					}
                 }
             }
+			$roles = array_unique($roles);
         } else {
             return array(INSTANCE_ROLE_LTI_BASE);
         }
