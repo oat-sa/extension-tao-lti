@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TAO 3.1.0-sprint15\n"
-"PO-Revision-Date: 2015-12-23T13:18:55\n"
+"PO-Revision-Date: 2016-02-19T14:22:59\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: it-IT\n"
@@ -18,7 +18,7 @@ msgstr "LTI Learner"
 # http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#Learner
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "The LTI Context Learner Role"
-msgstr ""
+msgstr "The LTI Context Learner Role"
 
 # http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#Instructor
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -28,7 +28,7 @@ msgstr "LTI Instructor"
 # http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#Instructor
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "The LTI Context Instructor Role"
-msgstr ""
+msgstr "The LTI Context Instructor Role"
 
 # http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#Administrator
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -38,7 +38,7 @@ msgstr "LTI Administrator"
 # http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#Administrator
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "The LTI Context Administrator Role"
-msgstr ""
+msgstr "The LTI Context Administrator Role"
 
 # http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#Learner
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
