@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TAO 3.1.0-sprint15\n"
-"PO-Revision-Date: 2015-12-23T13:18:55\n"
+"PO-Revision-Date: 2016-02-19T14:22:59\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: it-IT\n"
@@ -15,75 +15,75 @@ msgstr ""
 
 #, tao-public
 msgid "Add Consumer"
-msgstr ""
+msgstr "Aggiungi consumatore"
 
 msgid "Back"
-msgstr ""
+msgstr "Indietro"
 
 #, tao-public
 msgid "Delete"
-msgstr ""
+msgstr "Elimina"
 
 msgid "Error"
-msgstr ""
+msgstr "Errore"
 
 #, tao-public
 msgid "Export"
-msgstr ""
+msgstr "Esporta"
 
 #, tao-public
 msgid "Import"
-msgstr ""
+msgstr "Importa"
 
 #, tao-public
 msgid "Index"
-msgstr ""
+msgstr "Indice"
 
 msgid "Learning Tools Interoperability"
-msgstr ""
+msgstr "Strumenti di apprendimento "
 
 msgid "link"
-msgstr ""
+msgstr "link"
 
 #, tao-public
 msgid "LTI Consumers"
-msgstr ""
+msgstr "Cliente LTI "
 
 msgid "Open in a new window"
-msgstr ""
+msgstr "Apri in nuova finestra"
 
 #, tao-public
 msgid "Properties"
-msgstr ""
+msgstr "Proprietà"
 
 msgid "Return to %s."
-msgstr ""
+msgstr "Torna a "
 
 msgid "Server Error"
-msgstr ""
+msgstr "Errore del server"
 
 #, tao-public
 msgid "Settings"
-msgstr ""
+msgstr "Impostazioni"
 
 msgid "The LTI connection could not be established"
-msgstr ""
+msgstr "La connessione a LTI non può essere stabilita"
 
 msgid "The LTI Provider library."
-msgstr ""
+msgstr "Raccolta di Provider LTI"
 
 msgid "The LTI tool could not be opened in the current window. Please click on the button to open it in a new window."
-msgstr ""
+msgstr "Lo strumento LTI non può essere aperto nella finestra corrente. Si prega di premere il bottone per visualizzarlo in una nuova finestra"
 
 msgid "Third party cookies are not supported by your browser"
-msgstr ""
+msgstr "I cookies da terze parti non sono supportati dal tuo browser"
 
 msgid "Unable to restore Session"
-msgstr ""
+msgstr "Impossibile ripristinare la sessione"
 
 msgid "user"
-msgstr ""
+msgstr "utente"
 
 msgid "You are not authorized to use this system"
-msgstr ""
+msgstr "Non sei autorizzato ad usare questo sistema"
 
