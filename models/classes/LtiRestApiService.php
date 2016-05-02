@@ -20,8 +20,6 @@
 
 namespace oat\taoLti\models\classes;
 
-use oat\oatbox\service\ServiceManager;
-
 class LtiRestApiService extends \tao_models_classes_Service
 {
     protected function getRootClass()
@@ -34,18 +32,35 @@ class LtiRestApiService extends \tao_models_classes_Service
         // Unused
     }
 
+    /**
+     * Get common user uri associated to Lti user id
+     *
+     * @param $id
+     * @return array
+     * @throws \common_Exception
+     * @throws \common_exception_NoContent
+     */
     public function get($id)
     {
         $class = new \core_kernel_classes_Class(CLASS_LTI_USER);
         $instances = $class->searchInstances(array(
-            PROPERTY_USER_LTIKEY		=> $id,
-            PROPERTY_USER_LTICONSUMER	=> $this->getLtiConsumerResource($ltiContext)
+            PROPERTY_USER_LTIKEY => $id,
         ), array(
             'like'	=> false
         ));
+
         if (count($instances) > 1) {
-            throw new taoLti_models_classes_LtiException('Multiple user accounts found for user key \''.$ltiContext->getUserID().'\'');
+            throw new \common_Exception('Multiple user accounts found for user key: ' . $id);
         }
-        return count($instances) == 1 ? current($instances) : null;
+
+        /** @var \core_kernel_classes_Resource $ltiUser */
+        $ltiUser = count($instances) == 1 ? current($instances) : null;
+        if (!$ltiUser) {
+            return null;
+        }
+
+        return array (
+            'userUri' => $ltiUser->getUri()
+        );
     }
 }

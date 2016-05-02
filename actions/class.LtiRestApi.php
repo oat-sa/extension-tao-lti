@@ -35,7 +35,7 @@ class taoLti_actions_LtiRestApi extends \tao_actions_CommonRestModule
     }
 
     /**
-     * Entry point of API, only single get is available with a valid id
+     * Entry point of API, only get($id) is available
      * @throws \oat\taoLti\models\classes\taoLti_models_classes_LtiException
      */
     public function index()
@@ -46,22 +46,21 @@ class taoLti_actions_LtiRestApi extends \tao_actions_CommonRestModule
             }
 
             $parameters = $this->getParameters();
-            $id = $parameters[self::LTI_USER_ID];
-
-            if (!is_int($id)) {
-                throw new \common_exception_InvalidArgumentType(LtiRestApi, 'get', '', 'id', $id);
+            $id = (int) $parameters[self::LTI_USER_ID];
+            if ($id==0) {
+                throw new \common_exception_InvalidArgumentType('LtiRestApi', 'get', '', 'id', $id);
             }
 
-           // $data = $this->service->get($id);
-
-            if (empty($data)) {
-                common_Logger::e('Empty delivery execution');
-                throw new common_exception_NoContent('No data to output.');
-            } else {
-                echo $this->returnSuccess($data);
+            $data = $this->service->get($id);
+            if (!$data) {
+                common_Logger::i('Id ' . $id . ' is not found.');
+                throw new common_exception_NoContent('No id found for the given id.');
             }
+
+            $this->returnSuccess($data);
         } catch (Exception $e) {
-            echo $this->returnFailure($e);
+            common_Logger::w($e->getMessage());
+            $this->returnFailure($e);
         }
     }
 
@@ -88,4 +87,15 @@ class taoLti_actions_LtiRestApi extends \tao_actions_CommonRestModule
         );
     }
 
+    /**
+     * Return success response
+     * Override of CommonRestModule::returnSuccesss
+     * @param array $data
+     * @throws common_exception_NotImplemented
+     */
+    protected function returnSuccess($data = array())
+    {
+        echo $this->encode($data);
+        exit(0);
+    }
 }
