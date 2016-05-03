@@ -33,9 +33,6 @@ class taoLti_scripts_update_Updater extends \common_ext_ExtensionUpdater
      */
     public function update($initialVersion)
     {    
-        if ($this->isBetween('0', '1.2')){
-            $this->setVersion('1.2');
-        }
-        return null;
+        $this->skip('0', '1.3.0');
     }
 }
