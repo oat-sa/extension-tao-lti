@@ -27,7 +27,7 @@ class taoLti_actions_RestService extends \tao_actions_CommonRestModule
     const LTI_CONSUMER_KEY = 'lti_consumer_key';
 
     /**
-     * taoResultServer_actions_QtiRestResults constructor.
+     * taoLti_actions_RestService constructor.
      * Pass model service to handle http call business
      */
     public function __construct()
@@ -71,7 +71,7 @@ class taoLti_actions_RestService extends \tao_actions_CommonRestModule
     }
 
     /**
-     * Optionnaly a specific rest controller may declare
+     * Optionally a specific rest controller may declare
      * aliases for parameters used for the rest communication
      */
     protected function getParametersAliases()

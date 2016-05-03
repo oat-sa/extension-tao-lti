@@ -35,8 +35,8 @@ class LtiRestApiService extends \tao_models_classes_Service
     /**
      * Get common user uri associated to Lti user id
      *
-     * @param $id Identifier of LTI user
-     * @param $key Oauth LTI consumer key
+     * @param $id string Identifier of LTI user
+     * @param $key string Oauth LTI consumer key
      * @return array|null
      * @throws \common_Exception
      * @throws \tao_models_classes_oauth_Exception
