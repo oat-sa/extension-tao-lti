@@ -18,12 +18,11 @@
  *               
  * 
  */
-
 use oat\taoLti\actions\LtiModule;
 
 /**
  * An abstract tool controller to be extended by the concrete tools
- * 
+ *
  * @package taoLti
  */
 abstract class taoLti_actions_ToolModule extends LtiModule
@@ -32,17 +31,18 @@ abstract class taoLti_actions_ToolModule extends LtiModule
     /**
      * Entrypoint of every tool
      */
-    public function launch() {
-
-
-		try {
-		    taoLti_models_classes_LtiService::singleton()->startLtiSession(common_http_Request::currentRequest());
+    public function launch()
+    {
+        try {
+            taoLti_models_classes_LtiService::singleton()->startLtiSession(common_http_Request::currentRequest());
             // check if cookie has been set
-		    if (tao_models_classes_accessControl_AclProxy::hasAccess('verifyCookie', 'CookieUtils', 'taoLti')) {
-		      $this->redirect(_url('verifyCookie', 'CookieUtils', 'taoLti', array('session' => session_id(),'redirect' => _url('run'))));
-		    } else {
-		        $this->returnError(__('You are not authorized to use this system'));
-		    }
+            if (tao_models_classes_accessControl_AclProxy::hasAccess('verifyCookie', 'CookieUtils', 'taoLti')) {
+                $this->redirect(_url('verifyCookie', 'CookieUtils', 'taoLti', array(
+                    'session' => session_id(),
+                    'redirect' => _url('run', null, null, $_GET))));
+            } else {
+                $this->returnError(__('You are not authorized to use this system'));
+            }
         } catch (common_user_auth_AuthFailedException $e) {
             $this->returnError(__('The LTI connection could not be established'), false);
         } catch (taoLti_models_classes_LtiException $e) {
@@ -50,33 +50,32 @@ abstract class taoLti_actions_ToolModule extends LtiModule
             // launch_presentation_return_url url param. So we have to retrieve this parameter before trying to start
             // the session
             $params = common_http_Request::currentRequest()->getParams();
-            if(isset($params[taoLti_models_classes_LtiLaunchData::TOOL_CONSUMER_INSTANCE_NAME])) {
+            if (isset($params[taoLti_models_classes_LtiLaunchData::TOOL_CONSUMER_INSTANCE_NAME])) {
                 $this->setData('consumerLabel', $params[taoLti_models_classes_LtiLaunchData::TOOL_CONSUMER_INSTANCE_NAME]);
-            } elseif(isset($params[taoLti_models_classes_LtiLaunchData::TOOL_CONSUMER_INSTANCE_DESCRIPTION])) {
+            } elseif (isset($params[taoLti_models_classes_LtiLaunchData::TOOL_CONSUMER_INSTANCE_DESCRIPTION])) {
                 $this->setData('consumerLabel', $params[taoLti_models_classes_LtiLaunchData::TOOL_CONSUMER_INSTANCE_DESCRIPTION]);
             }
-
-            if(isset($params[taoLti_models_classes_LtiLaunchData::LAUNCH_PRESENTATION_RETURN_URL])) {
+            
+            if (isset($params[taoLti_models_classes_LtiLaunchData::LAUNCH_PRESENTATION_RETURN_URL])) {
                 $this->setData('returnUrl', $params[taoLti_models_classes_LtiLaunchData::LAUNCH_PRESENTATION_RETURN_URL]);
             }
-
+            
             $this->returnError(__('The LTI connection could not be established'), false);
         } catch (tao_models_classes_oauth_Exception $e) {
-			$this->returnError(__('The LTI connection could not be established'), false);
-		}
-	}
+            $this->returnError(__('The LTI connection could not be established'), false);
+        }
+    }
 
+    /**
+     * run() contains the actual tool's controller
+     */
+    abstract public function run();
 
-	/**
-	 * run() contains the actual tool's controller
-	 */
-	abstract public function run();
-	
-	/**
-	 * Returns the lti tool of this controller
-	 * 
-	 * @return taoLti_models_classes_LtiTool
-	 */
-	abstract protected function getTool();
-	
+    /**
+    * Returns the lti tool of this controller
+    *
+    * @return taoLti_models_classes_LtiTool
+    */
+    abstract protected function getTool();
+
 }
