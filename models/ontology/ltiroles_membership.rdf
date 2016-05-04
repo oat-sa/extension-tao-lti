@@ -26,7 +26,15 @@
   	<generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiBaseRole"/>
   	<generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
   </rdf:Description>
-  <rdf:Description rdf:about="http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#Administrator">
+  <rdf:Description rdf:about="http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#ContentDeveloper">
+  	<rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+  	<rdfs:label xml:lang="en-US"><![CDATA[LTI Content Developer]]></rdfs:label>
+  	<rdfs:comment xml:lang="en-US"><![CDATA[The LTI Context Content Developer Role]]></rdfs:comment>
+  	<taolti:RoleURN><![CDATA[urn:lti:role:ims/lis/ContentDeveloper]]></taolti:RoleURN>
+  	<generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiBaseRole"/>
+  	<generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
+  </rdf:Description>
+   <rdf:Description rdf:about="http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#Administrator">
   	<rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
   	<rdfs:label xml:lang="en-US"><![CDATA[LTI Administrator]]></rdfs:label>
   	<rdfs:comment xml:lang="en-US"><![CDATA[The LTI Context Administrator Role]]></rdfs:comment>
