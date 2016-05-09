@@ -32,8 +32,17 @@ class taoLti_actions_RestService extends \tao_actions_CommonRestModule
      */
     public function __construct()
     {
+        if (strtolower($this->getRequestMethod())!=='get') {
+           throw new \common_exception_NoImplementation();
+        }
+
         parent::__construct();
         $this->service = LtiRestApiService::singleton();
+    }
+
+    public function get($uri = null)
+    {
+        throw new \common_exception_NoImplementation();
     }
 
     /**
@@ -42,10 +51,6 @@ class taoLti_actions_RestService extends \tao_actions_CommonRestModule
     public function getUserId()
     {
         try {
-            if (strtolower($this->getRequestMethod())!=='get') {
-                throw new \common_exception_NoImplementation();
-            }
-
             $parameters = $this->getParameters();
             if (!isset($parameters[self::LTI_USER_ID])) {
                 throw new \common_exception_MissingParameter(self::LTI_USER_ID, __FUNCTION__);

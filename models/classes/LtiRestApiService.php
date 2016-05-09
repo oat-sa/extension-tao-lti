@@ -24,12 +24,12 @@ class LtiRestApiService extends \tao_models_classes_Service
 {
     protected function getRootClass()
     {
-        // Unused
+        throw new \common_exception_NoImplementation();
     }
 
     protected function getClassService()
     {
-        // Unused
+        throw new \common_exception_NoImplementation();
     }
 
     /**
