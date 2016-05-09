@@ -46,8 +46,12 @@ class LtiRestApiService extends \tao_models_classes_Service
         $class = new \core_kernel_classes_Class(CLASS_LTI_USER);
 
         $dataStore = new \tao_models_classes_oauth_DataStore();
-        /** @var \core_kernel_classes_Resource $consumerResource */
-        $consumerResource = $dataStore->findOauthConsumerResource($key);
+        try {
+            /** @var \core_kernel_classes_Resource $consumerResource */
+            $consumerResource = $dataStore->findOauthConsumerResource($key);
+        } catch (\tao_models_classes_oauth_Exception $e) {
+            throw new \common_exception_NotFound($e->getMessage());
+        }
 
         $instances = $class->searchInstances(array(
             PROPERTY_USER_LTIKEY => $id,

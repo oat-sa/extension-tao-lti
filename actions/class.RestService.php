@@ -60,7 +60,7 @@ class taoLti_actions_RestService extends \tao_actions_CommonRestModule
             $data = $this->service->getUserId($id, $key);
             if (!$data) {
                 \common_Logger::i('Id ' . $id . ' is not found.');
-                throw new \common_exception_NoContent('No id found for the given id.');
+                throw new \common_exception_NotFound('No id found for the given id.');
             }
 
             $this->returnSuccess($data);
