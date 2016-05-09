@@ -1,4 +1,5 @@
 <?php
+use oat\tao\scripts\update\OntologyUpdater;
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -32,7 +33,14 @@ class taoLti_scripts_update_Updater extends \common_ext_ExtensionUpdater
      * @return string $versionUpdatedTo
      */
     public function update($initialVersion)
-    {    
-        $this->skip('0', '1.3.0');
+    {
+        $this->skip('0', '1.2');
+        
+        if ($this->isVersion('1.2')) {
+            OntologyUpdater::syncModels();
+            $this->setVersion('1.3.0');
+        }
+
+        $this->skip('1.3.0', '1.4.0');
     }
 }
