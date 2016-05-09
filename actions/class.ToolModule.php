@@ -71,12 +71,4 @@ abstract class taoLti_actions_ToolModule extends LtiModule
 	 * run() contains the actual tool's controller
 	 */
 	abstract public function run();
-	
-	/**
-	 * Returns the lti tool of this controller
-	 * 
-	 * @return taoLti_models_classes_LtiTool
-	 */
-	abstract protected function getTool();
-	
 }
