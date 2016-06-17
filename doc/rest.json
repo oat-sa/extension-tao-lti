@@ -6,6 +6,7 @@
         "description": "#### The taoLti REST API\nCurrently this API only allows LTI user lookup. See http://www.imsglobal.org/activity/learning-tools-interoperability for more informations about the LTI standard\n"
     },
     "schemes": [
+        "https",
         "http"
     ],
     "produces": [
@@ -28,6 +29,30 @@
                 "responses": {
                     "200": {
                         "description": "Request was correctly handled, there is an associated user uri.",
+                        "schema": {
+                            "type": "object",
+                            "required": [
+                                "success",
+                                "version"
+                            ],
+                            "properties": {
+                                "success": {
+                                    "type": "boolean"
+                                },
+                                "data": {
+                                    "description": "the actual payload",
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "version": {
+                                    "type": "string"
+                                }
+                            }
+                        },
                         "examples": {
                             "application/json": {
                                 "success": true,
@@ -88,6 +113,11 @@
                         "type": "string",
                         "required": true
                     }
+                ],
+                "security": [
+                    {
+                        "basic_auth": []
+                    }
                 ]
             }
         }
@@ -95,5 +125,10 @@
     "externalDocs": {
         "description": "taoLti on Github",
         "url": "https://github.com/oat-sa/extension-tao-lti"
+    },
+    "securityDefinitions": {
+        "basic_auth": {
+            "type": "basic"
+        }
     }
 }
