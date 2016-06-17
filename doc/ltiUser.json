@@ -2,7 +2,7 @@
     "swagger": "2.0",
     "info": {
         "version": "1.0.0",
-        "title": "Lti User API",
+        "title": "Lti REST API",
         "description": "#### A REST api to convert the LTI consumer user id to the Tao user uri.\nAvailable since Tao 3.1.\n"
     },
     "schemes": [
@@ -12,9 +12,18 @@
         "application/json"
     ],
     "basePath": "/",
+    "tags": [
+        {
+            "name": "user",
+            "description": "Operations about users"
+        }
+    ],
     "paths": {
         "/taoLti/RestService/getUserId": {
             "get": {
+                "tags": [
+                    "user"
+                ],
                 "responses": {
                     "200": {
                         "description": "Request was correctly handled, there is an associated user uri.",
