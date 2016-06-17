@@ -30,28 +30,7 @@
                     "200": {
                         "description": "Request was correctly handled, there is an associated user uri.",
                         "schema": {
-                            "type": "object",
-                            "required": [
-                                "success",
-                                "version"
-                            ],
-                            "properties": {
-                                "success": {
-                                    "type": "boolean"
-                                },
-                                "data": {
-                                    "description": "the actual payload",
-                                    "type": "object",
-                                    "properties": {
-                                        "id": {
-                                            "type": "string"
-                                        }
-                                    }
-                                },
-                                "version": {
-                                    "type": "string"
-                                }
-                            }
+                            "$ref": "#/definitions/response"
                         },
                         "examples": {
                             "application/json": {
@@ -129,6 +108,39 @@
     "securityDefinitions": {
         "basic_auth": {
             "type": "basic"
+        }
+    },
+    "definitions": {
+        "response": {
+            "type": "object",
+            "required": [
+                "success",
+                "version",
+                "data"
+            ],
+            "properties": {
+                "success": {
+                    "type": "boolean"
+                },
+                "data": {
+                    "$ref": "#/definitions/payload"
+                },
+                "version": {
+                    "type": "string"
+                }
+            }
+        },
+        "payload": {
+            "description": "the actual payload",
+            "type": "object",
+            "required": [
+                "id"
+            ],
+            "properties": {
+                "id": {
+                    "type": "string"
+                }
+            }
         }
     }
 }
