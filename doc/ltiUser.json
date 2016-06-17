@@ -1,0 +1,89 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "Lti User API",
+        "description": "#### A REST api to convert the LTI consumer user id to the Tao user uri.\nAvailable since Tao 3.1.\n"
+    },
+    "schemes": [
+        "http"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "basePath": "/",
+    "paths": {
+        "/taoLti/RestService/getUserId": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Request was correctly handled, there is an associated user uri.",
+                        "examples": {
+                            "application/json": {
+                                "success": true,
+                                "data": {
+                                    "id": "http://tao.local/mytao.rdf#xxxxxxxxxxxxx"
+                                },
+                                "version": "3.1.0"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request Error on request sent to API, occurs in case of missing parameter(s)",
+                        "examples": {
+                            "application/json": {
+                                "success": false,
+                                "errorCode": 0,
+                                "errorMsg": "At least one mandatory parameter was required but found missing in your request",
+                                "version": "3.1.0"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized Supplied credentials are not valid"
+                    },
+                    "404": {
+                        "description": "Request was correctly handled, but there are no result for the given consumer key or there are no result for the given user id",
+                        "examples": {
+                            "consumer not found": {
+                                "success": false,
+                                "errorCode": 0,
+                                "errorMsg": "No Credentials for consumer key xxxxx",
+                                "version": "3.1.0"
+                            },
+                            "user not found": {
+                                "success": false,
+                                "errorCode": 0,
+                                "errorMsg": "No data found for the given id",
+                                "version": "3.1.0"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal error (should not occur)"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "query",
+                        "description": "LTI user id",
+                        "type": "string",
+                        "required": true
+                    },
+                    {
+                        "name": "oauth_consumer_key",
+                        "in": "query",
+                        "description": "LTI consumer key",
+                        "type": "string",
+                        "required": true
+                    }
+                ]
+            }
+        }
+    },
+    "externalDocs": {
+        "description": "taoLti on Github",
+        "url": "https://github.com/oat-sa/extension-tao-lti"
+    }
+}
