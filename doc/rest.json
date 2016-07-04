@@ -1,0 +1,146 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "Lti REST API",
+        "description": "#### The taoLti REST API\nCurrently this API only allows LTI user lookup. See http://www.imsglobal.org/activity/learning-tools-interoperability for more informations about the LTI standard\n"
+    },
+    "schemes": [
+        "https",
+        "http"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "basePath": "/",
+    "tags": [
+        {
+            "name": "user",
+            "description": "Operations about users"
+        }
+    ],
+    "paths": {
+        "/taoLti/RestService/getUserId": {
+            "get": {
+                "description": "Allows the caller to lookup the TAO user identifier (in the form of a URI) for a specified LTI consumer user id. As multiple tool consumer could use the same user id, the tool consumer key is required as well.\n\nAvailable since Tao 3.1.\n",
+                "tags": [
+                    "user"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Request was correctly handled, there is an associated user uri.",
+                        "schema": {
+                            "$ref": "#/definitions/response"
+                        },
+                        "examples": {
+                            "application/json": {
+                                "success": true,
+                                "data": {
+                                    "id": "http://tao.local/mytao.rdf#xxxxxxxxxxxxx"
+                                },
+                                "version": "3.1.0"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request Error on request sent to API, occurs in case of missing parameter(s)",
+                        "examples": {
+                            "application/json": {
+                                "success": false,
+                                "errorCode": 0,
+                                "errorMsg": "At least one mandatory parameter was required but found missing in your request",
+                                "version": "3.1.0"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized Supplied credentials are not valid"
+                    },
+                    "404": {
+                        "description": "Request was correctly handled, but there are no result for the given consumer key or there are no result for the given user id",
+                        "examples": {
+                            "consumer not found": {
+                                "success": false,
+                                "errorCode": 0,
+                                "errorMsg": "No Credentials for consumer key xxxxx",
+                                "version": "3.1.0"
+                            },
+                            "user not found": {
+                                "success": false,
+                                "errorCode": 0,
+                                "errorMsg": "No data found for the given id",
+                                "version": "3.1.0"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal error (should not occur)"
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "query",
+                        "description": "LTI user id",
+                        "type": "string",
+                        "required": true
+                    },
+                    {
+                        "name": "oauth_consumer_key",
+                        "in": "query",
+                        "description": "LTI consumer key",
+                        "type": "string",
+                        "required": true
+                    }
+                ],
+                "security": [
+                    {
+                        "basic_auth": []
+                    }
+                ]
+            }
+        }
+    },
+    "externalDocs": {
+        "description": "taoLti on Github",
+        "url": "https://github.com/oat-sa/extension-tao-lti"
+    },
+    "securityDefinitions": {
+        "basic_auth": {
+            "type": "basic"
+        }
+    },
+    "definitions": {
+        "response": {
+            "type": "object",
+            "required": [
+                "success",
+                "version",
+                "data"
+            ],
+            "properties": {
+                "success": {
+                    "type": "boolean"
+                },
+                "data": {
+                    "$ref": "#/definitions/payload"
+                },
+                "version": {
+                    "type": "string"
+                }
+            }
+        },
+        "payload": {
+            "description": "the actual payload",
+            "type": "object",
+            "required": [
+                "id"
+            ],
+            "properties": {
+                "id": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
