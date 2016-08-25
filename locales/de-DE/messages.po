@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 3.1.0-sprint15\n"
-"PO-Revision-Date: 2015-12-23T13:18:55\n"
+"Project-Id-Version: TAO 3.1.0-sprint33\n"
+"PO-Revision-Date: 2016-08-25T14:36:27\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: de-DE\n"
@@ -15,75 +15,75 @@ msgstr ""
 
 #, tao-public
 msgid "Add Consumer"
-msgstr ""
+msgstr "Abnehmer hinzufügen"
 
 msgid "Back"
-msgstr ""
+msgstr "Zurück"
 
 #, tao-public
 msgid "Delete"
-msgstr ""
+msgstr "Entfernen"
 
 msgid "Error"
-msgstr ""
+msgstr "Fehler"
 
 #, tao-public
 msgid "Export"
-msgstr ""
+msgstr "Exportieren"
 
 #, tao-public
 msgid "Import"
-msgstr ""
+msgstr "Importieren"
 
 #, tao-public
 msgid "Index"
-msgstr ""
+msgstr "Index"
 
 msgid "Learning Tools Interoperability"
-msgstr ""
+msgstr "Lernmittel-Interoperabilität (LTI)"
 
 msgid "link"
-msgstr ""
+msgstr "Link"
 
 #, tao-public
 msgid "LTI Consumers"
-msgstr ""
+msgstr "LTI Abnehmer"
 
 msgid "Open in a new window"
-msgstr ""
+msgstr "In neuem Fenster öffnen"
 
 #, tao-public
 msgid "Properties"
-msgstr ""
+msgstr "Eigenschaften"
 
 msgid "Return to %s."
-msgstr ""
+msgstr "Zurück zu %s."
 
 msgid "Server Error"
-msgstr ""
+msgstr "Server Fehler"
 
 #, tao-public
 msgid "Settings"
-msgstr ""
+msgstr "Einstellungen"
 
 msgid "The LTI connection could not be established"
-msgstr ""
+msgstr "Die LTI Verbindung konnte nicht hergestellt werden"
 
 msgid "The LTI Provider library."
-msgstr ""
+msgstr "Die LTI Anbieter Bibliothek"
 
 msgid "The LTI tool could not be opened in the current window. Please click on the button to open it in a new window."
-msgstr ""
+msgstr "Das LTI Tool konnte nicht im aktuellen Fenster geöffnet werden. Bitte klicken Sie auf die Schaltfläche, um es in einem neuen Fenster zu öffnen."
 
 msgid "Third party cookies are not supported by your browser"
-msgstr ""
+msgstr "Cookies von Drittanbietern werden durch diesen Browser nicht unterstützt."
 
 msgid "Unable to restore Session"
-msgstr ""
+msgstr "Session konnte nicht wiederhergestellt werden."
 
 msgid "user"
-msgstr ""
+msgstr "Benutzer"
 
 msgid "You are not authorized to use this system"
-msgstr ""
+msgstr "Sie sind nicht berechtigt dieses System zu nutzen."
 
