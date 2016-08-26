@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 3.1.0-sprint15\n"
-"PO-Revision-Date: 2015-12-23T13:18:55\n"
+"Project-Id-Version: TAO 3.1.0-sprint33\n"
+"PO-Revision-Date: 2016-08-25T14:33:30\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: ja-JP\n"
@@ -13,25 +13,25 @@ msgstr ""
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "LTI Roles"
-msgstr ""
+msgstr "LTI権限"
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#RoleURN
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "URN"
-msgstr ""
+msgstr "URN"
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#RoleURN
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "LTI Uniform Resource Name(deprecated)"
-msgstr ""
+msgstr "LTI 共通リソース名（非推奨）"
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiBaseRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "LTI Base Role"
-msgstr ""
+msgstr "LTI　基本権限"
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiBaseRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "The LTI Base Role"
-msgstr ""
+msgstr "LTI　基本権限"
 

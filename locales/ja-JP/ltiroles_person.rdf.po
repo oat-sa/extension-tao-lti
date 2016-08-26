@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 3.1.0-sprint15\n"
-"PO-Revision-Date: 2015-12-23T13:18:55\n"
+"Project-Id-Version: TAO 3.1.0-sprint33\n"
+"PO-Revision-Date: 2016-08-25T14:33:30\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: ja-JP\n"
@@ -13,40 +13,40 @@ msgstr ""
 # http://www.imsglobal.org/imspurl/lis/v1/vocab/person#Learner
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "LTI Learner"
-msgstr ""
+msgstr "LTI　ラーナー"
 
 # http://www.imsglobal.org/imspurl/lis/v1/vocab/person#Learner
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "The LTI Institution Learner Role"
-msgstr ""
+msgstr "LTI　ラーナー権限"
 
 # http://www.imsglobal.org/imspurl/lis/v1/vocab/person#Instructor
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "LTI Instructor"
-msgstr ""
+msgstr "LTI　インストラクタ"
 
 # http://www.imsglobal.org/imspurl/lis/v1/vocab/person#Instructor
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "The LTI Institution Instructor Role"
-msgstr ""
+msgstr "LTI　インストラクタ権限"
 
 # http://www.imsglobal.org/imspurl/lis/v1/vocab/person#Student
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "LTI Institution Student"
-msgstr ""
+msgstr "LTI　学生"
 
 # http://www.imsglobal.org/imspurl/lis/v1/vocab/person#Student
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "The LTI Student Role"
-msgstr ""
+msgstr "LTI　学生権限"
 
 # http://www.imsglobal.org/imspurl/lis/v1/vocab/person#Administrator
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "LTI Administrator"
-msgstr ""
+msgstr "LTI　アドミニストレータ"
 
 # http://www.imsglobal.org/imspurl/lis/v1/vocab/person#Administrator
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "The LTI Administrator Role"
-msgstr ""
+msgstr "LTI　アドミニストレータ権限"
 
