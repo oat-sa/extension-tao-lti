@@ -44,6 +44,7 @@ abstract class taoLti_actions_ToolModule extends LtiModule
                 $this->returnError(__('You are not authorized to use this system'));
             }
         } catch (common_user_auth_AuthFailedException $e) {
+            common_Logger::i($e->getMessage());
             $this->returnError(__('The LTI connection could not be established'), false);
         } catch (taoLti_models_classes_LtiException $e) {
             // In regard of the IMS LTI standard, we have to show a back button that refer to the
@@ -59,9 +60,11 @@ abstract class taoLti_actions_ToolModule extends LtiModule
             if (isset($params[taoLti_models_classes_LtiLaunchData::LAUNCH_PRESENTATION_RETURN_URL])) {
                 $this->setData('returnUrl', $params[taoLti_models_classes_LtiLaunchData::LAUNCH_PRESENTATION_RETURN_URL]);
             }
-            
+
+            common_Logger::i($e->getMessage());
             $this->returnError(__('The LTI connection could not be established'), false);
         } catch (tao_models_classes_oauth_Exception $e) {
+            common_Logger::i($e->getMessage());
             $this->returnError(__('The LTI connection could not be established'), false);
         }
     }
