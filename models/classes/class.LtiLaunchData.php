@@ -37,6 +37,7 @@ class taoLti_models_classes_LtiLaunchData
     
     const TOOL_CONSUMER_INSTANCE_NAME           = 'tool_consumer_instance_name';
     const TOOL_CONSUMER_INSTANCE_DESCRIPTION    = 'tool_consumer_instance_description';
+    const CUSTOM_LTI_SECURE               = 'custom_secure';
 
     /**
      * LTI variables
@@ -100,6 +101,7 @@ class taoLti_models_classes_LtiLaunchData
     private function __construct($ltiVariables, $customParameters) {
         $this->variables    = $ltiVariables;
         $this->customParams = $customParameters;
+        $this->validate();
     }
     
     public function hasVariable($key) {
@@ -193,5 +195,23 @@ class taoLti_models_classes_LtiLaunchData
      */
     public function getReturnUrl() {
         return $this->getVariable(self::LAUNCH_PRESENTATION_RETURN_URL);
+    }
+
+    /**
+     * Validate and prepare launch variables
+     * @throws \taoLti_models_classes_LtiException
+     */
+    protected function validate()
+    {
+        if ($this->hasVariable(self::CUSTOM_LTI_SECURE)) {
+            $val = $this->getVariable(self::CUSTOM_LTI_SECURE);
+            if (strcasecmp($val, 'true') === 0) {
+                $this->variables[self::CUSTOM_LTI_SECURE] = true;
+            } elseif(strcasecmp($val, 'false') === 0) {
+                $this->variables[self::CUSTOM_LTI_SECURE] = false;
+            } else {
+                throw new \taoLti_models_classes_LtiException(__('Wrong value of "secure" variable.'));
+            }
+        }
     }
 }
