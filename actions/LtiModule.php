@@ -22,8 +22,7 @@
 namespace oat\taoLti\actions;
 
 use \tao_actions_CommonModule;
-use \tao_helpers_Request;
-use \common_exception_IsAjaxAction;
+use oat\taoLti\actions\traits\LtiModuleTrait;
 
 /**
  * An abstract lti controller
@@ -32,43 +31,21 @@ use \common_exception_IsAjaxAction;
  */
 abstract class LtiModule extends tao_actions_CommonModule
 {
+    use LtiModuleTrait {
+        returnError as returnLtiError;
+    }
 
-	/**
-	 * Returns an error page
-	 * 
-	 * Ignore the parameter returnLink as LTI session always
-	 * require a way for the consumer to return to his platform
-	 * 
-	 * (non-PHPdoc)
-	 * @see tao_actions_CommonModule::returnError()
-	 */
-	protected function returnError($description, $returnLink = false) {
-        if (tao_helpers_Request::isAjax()) {
-            throw new common_exception_IsAjaxAction(__CLASS__.'::'.__FUNCTION__); 
-        } else {
-            try {
-                $launchData = \taoLti_models_classes_LtiService::singleton()->getLtiSession()->getLaunchData();
-                $returnUrl = $launchData->getCustomParameter(\taoLti_models_classes_LtiLaunchData::LAUNCH_PRESENTATION_RETURN_URL);
-                
-                // In regard of the IMS LTI standard, we have to show a back button that refer to the
-                // launch_presentation_return_url url param. So we have to retrieve this parameter before trying to start
-                // the session
-                $consumerLabel = $launchData->getToolConsumerName();
-                if (!is_null($consumerLabel)) {
-                    $this->setData('consumerLabel', $consumerLabel);
-                }
-                
-                if($launchData->hasVariable(\taoLti_models_classes_LtiLaunchData::LAUNCH_PRESENTATION_RETURN_URL)) {
-                    $this->setData('returnUrl', $launchData->getReturnUrl());
-                }
-            } catch (\taoLti_models_classes_LtiException $exception) {
-                // no Lti Session started
-            }
-            if (!empty($description)) {
-                $this->setData('message', $description);
-            }
-            $this->setView('error.tpl', 'taoLti');
-        }
-	}
-	
+    /**
+     * Returns an error page
+     *
+     * Ignore the parameter returnLink as LTI session always
+     * require a way for the consumer to return to his platform
+     *
+     * @param string $description error to show
+     * @param boolean $returnLink
+     */
+    protected function returnError($description, $returnLink = true) {
+        $this->returnLtiError($description, $returnLink);
+    }
+
 }
