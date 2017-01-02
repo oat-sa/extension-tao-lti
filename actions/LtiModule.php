@@ -48,7 +48,6 @@ abstract class LtiModule extends tao_actions_CommonModule
         } else {
             try {
                 $launchData = \taoLti_models_classes_LtiService::singleton()->getLtiSession()->getLaunchData();
-                $returnUrl = $launchData->getCustomParameter(\taoLti_models_classes_LtiLaunchData::LAUNCH_PRESENTATION_RETURN_URL);
                 
                 // In regard of the IMS LTI standard, we have to show a back button that refer to the
                 // launch_presentation_return_url url param. So we have to retrieve this parameter before trying to start
