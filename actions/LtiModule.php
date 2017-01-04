@@ -47,5 +47,4 @@ abstract class LtiModule extends tao_actions_CommonModule
     protected function returnError($description, $returnLink = true) {
         $this->returnLtiError($description, $returnLink);
     }
-
 }
