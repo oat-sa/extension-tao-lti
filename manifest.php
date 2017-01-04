@@ -18,6 +18,7 @@
  *               
  * 
  */
+use oat\tao\model\user\TaoRoles;
 
 /**
  * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
@@ -31,7 +32,7 @@ return array(
 	'label' => 'LTI library',
     'description' => 'TAO LTI library and helpers',
     'license' => 'GPL-2.0',
-    'version' => '1.6.1',
+    'version' => '1.6.2',
 	'author' => 'Open Assessment Technologies SA',
 	'requires' => array(
 	   'tao' => '>=5.4.0'
@@ -53,7 +54,7 @@ return array(
     'managementRole' => 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiManagerRole',
     'acl' => array(
         array('grant', 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiManagerRole', array('ext'=>'taoLti')),
-        array('grant', 'http://www.tao.lu/Ontologies/generis.rdf#AnonymousRole',array('ext'=>'taoLti','mod' => 'CookieUtils')),
+        array('grant', TaoRoles::ANONYMOUS, taoLti_actions_CookieUtils::class),
         array('grant', 'http://www.tao.lu/Ontologies/TAO.rdf#BaseUserRole', array('ext'=>'taoLti','mod' => 'LtiConsumer', 'act' => 'call'))
     ),
 	'constants' => array(
