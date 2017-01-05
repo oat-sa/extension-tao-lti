@@ -80,6 +80,12 @@ class taoLti_models_classes_LtiUser
 	    	case PROPERTY_USER_ROLES :
 	    	    $returnValue = $this->roles;
 	    	    break;
+            case PROPERTY_USER_FIRSTNAME :
+                $returnValue = [$this->getLaunchData()->getUserGivenName()];
+                break;
+            case PROPERTY_USER_LASTNAME :
+                $returnValue = [$this->getLaunchData()->getUserFamilyName()];
+                break;
 	    	default:
 	    	    common_Logger::d('Unkown property '.$property.' requested from '.__CLASS__);
 	    	    $returnValue = array();

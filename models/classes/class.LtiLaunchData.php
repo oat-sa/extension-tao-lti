@@ -24,6 +24,8 @@ class taoLti_models_classes_LtiLaunchData
     const OAUTH_CONSUMER_KEY               = 'oauth_consumer_key';
     const RESOURCE_LINK_ID                 = 'resource_link_id';
     const RESOURCE_LINK_TITLE              = 'resource_link_title';
+    const CONTEXT_ID                       = 'context_id';
+    const CONTEXT_LABEL                    = 'context_label';
     
     const USER_ID                          = 'user_id';
     const ROLES                            = 'roles';
