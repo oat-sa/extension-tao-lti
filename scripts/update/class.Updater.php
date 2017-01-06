@@ -42,5 +42,12 @@ class taoLti_scripts_update_Updater extends \common_ext_ExtensionUpdater
         }
 
         $this->skip('1.3.0', '1.5.2');
+        
+        // add teacher assistant role
+        if ($this->isVersion('1.5.2')) {
+            OntologyUpdater::syncModels();
+            $this->setVersion('1.6.0');
+        }
+        $this->skip('1.6.0', '1.7.1');
     }
 }
