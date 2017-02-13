@@ -31,9 +31,7 @@ use oat\taoLti\actions\traits\LtiModuleTrait;
  */
 abstract class LtiModule extends tao_actions_CommonModule
 {
-    use LtiModuleTrait {
-        returnError as returnLtiError;
-    }
+    use LtiModuleTrait;
 
     /**
      * Returns an error page
@@ -41,10 +39,12 @@ abstract class LtiModule extends tao_actions_CommonModule
      * Ignore the parameter returnLink as LTI session always
      * require a way for the consumer to return to his platform
      *
-     * @param string $description error to show
+     * @param string $error error to handle
      * @param boolean $returnLink
      */
-    protected function returnError($description, $returnLink = true) {
-        $this->returnLtiError($description, $returnLink);
+    protected function returnError($error, $returnLink = true)
+    {
+        $error = new \taoLti_models_classes_LtiException($error);
+        $this->returnLtiError($error, $returnLink);
     }
 }

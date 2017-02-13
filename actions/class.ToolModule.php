@@ -18,6 +18,7 @@
  *               
  * 
  */
+
 use oat\taoLti\actions\LtiModule;
 
 /**
@@ -46,7 +47,7 @@ abstract class taoLti_actions_ToolModule extends LtiModule
         } catch (common_user_auth_AuthFailedException $e) {
             common_Logger::i($e->getMessage());
             $this->returnError(__('The LTI connection could not be established'), false);
-        } catch (taoLti_models_classes_LtiException $e) {
+        } catch (\taoLti_models_classes_LtiException $e) {
             // In regard of the IMS LTI standard, we have to show a back button that refer to the
             // launch_presentation_return_url url param. So we have to retrieve this parameter before trying to start
             // the session
@@ -62,7 +63,7 @@ abstract class taoLti_actions_ToolModule extends LtiModule
             }
 
             common_Logger::i($e->getMessage());
-            $this->returnError(__('The LTI connection could not be established'), false);
+            $this->returnLtiError($e, false);
         } catch (tao_models_classes_oauth_Exception $e) {
             common_Logger::i($e->getMessage());
             $this->returnError(__('The LTI connection could not be established'), false);
