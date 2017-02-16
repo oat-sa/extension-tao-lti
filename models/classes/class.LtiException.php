@@ -40,7 +40,7 @@ class taoLti_models_classes_LtiException extends common_Exception
     {
         if ($this->ltiMessage === null) {
             $message = __('Error') . '(' .$this->getCode() . '): ' .$this->getMessage();
-            $log = __('Error') . '(' .$this->getCode() . ')' . $this->__toString();
+            $log = __('Error') . '(' .$this->getCode() . '): ' . $this->__toString();
             $this->ltiMessage = new LtiErrorMessage($message, $log);
         }
         return $this->ltiMessage;
