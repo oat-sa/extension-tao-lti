@@ -39,8 +39,8 @@ class taoLti_models_classes_LtiException extends common_Exception
     public function getLtiMessage()
     {
         if ($this->ltiMessage === null) {
-            $message = __('Error') . '(' .$this->getCode() . '): ' .$this->getMessage();
-            $log = __('Error') . '(' .$this->getCode() . '): ' . $this->__toString();
+            $message =__('Error (%s): ', $this->getCode()) . $this->getMessage();
+            $log = 'Error(' .$this->getCode() . '): ' . $this->__toString();
             $this->ltiMessage = new LtiErrorMessage($message, $log);
         }
         return $this->ltiMessage;
