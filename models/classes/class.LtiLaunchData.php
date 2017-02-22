@@ -26,7 +26,8 @@ class taoLti_models_classes_LtiLaunchData
     const RESOURCE_LINK_TITLE              = 'resource_link_title';
     const CONTEXT_ID                       = 'context_id';
     const CONTEXT_LABEL                    = 'context_label';
-    
+    const CUSTOM_TAG = 'custom_tag';
+
     const USER_ID                          = 'user_id';
     const ROLES                            = 'roles';
     const LIS_PERSON_NAME_GIVEN            = 'lis_person_name_given';
