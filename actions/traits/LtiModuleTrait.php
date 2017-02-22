@@ -22,6 +22,7 @@ namespace oat\taoLti\actions\traits;
 
 use \tao_helpers_Request;
 use \common_exception_IsAjaxAction;
+use \oat\tao\model\routing\FlowController;
 
 trait LtiModuleTrait
 {
@@ -31,19 +32,19 @@ trait LtiModuleTrait
      * Ignore the parameter returnLink as LTI session always
      * require a way for the consumer to return to his platform
      *
-     * @param string $description error to show
+     * @param \taoLti_models_classes_LtiException $error error to show
      * @param boolean $returnLink
      * @see tao_actions_CommonModule::returnError()
      * @throws \common_exception_IsAjaxAction
      */
-    protected function returnError($description, $returnLink = true) {
+    protected function returnLtiError(\taoLti_models_classes_LtiException $error, $returnLink = true)
+    {
         if (tao_helpers_Request::isAjax()) {
-            throw new common_exception_IsAjaxAction(__CLASS__.'::'.__FUNCTION__);
+            throw new common_exception_IsAjaxAction(__CLASS__ . '::' . __FUNCTION__);
         } else {
-            try {
-                $launchData = \taoLti_models_classes_LtiService::singleton()->getLtiSession()->getLaunchData();
-                $returnUrl = $launchData->getCustomParameter(\taoLti_models_classes_LtiLaunchData::LAUNCH_PRESENTATION_RETURN_URL);
-
+            $session = \common_session_SessionManager::getSession();
+            if ($session instanceof \taoLti_models_classes_TaoLtiSession) {
+                $launchData = $session->getLaunchData();
                 // In regard of the IMS LTI standard, we have to show a back button that refer to the
                 // launch_presentation_return_url url param. So we have to retrieve this parameter before trying to start
                 // the session
@@ -52,16 +53,26 @@ trait LtiModuleTrait
                     $this->setData('consumerLabel', $consumerLabel);
                 }
 
-                if($launchData->hasVariable(\taoLti_models_classes_LtiLaunchData::LAUNCH_PRESENTATION_RETURN_URL)) {
-                    $this->setData('returnUrl', $launchData->getReturnUrl());
+                if ($launchData->hasVariable(\taoLti_models_classes_LtiLaunchData::LAUNCH_PRESENTATION_RETURN_URL)) {
+                    $flowController = new FlowController();
+                    $flowController->redirect($this->getLtiReturnUrl($launchData, $error));
                 }
-            } catch (\taoLti_models_classes_LtiException $exception) {
-                // no Lti Session started
             }
-            if (!empty($description)) {
-                $this->setData('message', $description);
-            }
+
+            $this->setData('message', $error->getMessage());
             $this->setView('error.tpl', 'taoLti');
         }
+    }
+
+    /**
+     * @param \taoLti_models_classes_LtiLaunchData $launchData
+     * @param \taoLti_models_classes_LtiException $error
+     * @return string
+     */
+    protected function getLtiReturnUrl(\taoLti_models_classes_LtiLaunchData $launchData, \taoLti_models_classes_LtiException $error)
+    {
+        $baseUrl = $launchData->getReturnUrl();
+        $url = $baseUrl . (parse_url($baseUrl, PHP_URL_QUERY) ? '&' : '?') . http_build_query($error->getLtiMessage()->getUrlParams());
+        return $url;
     }
 }
