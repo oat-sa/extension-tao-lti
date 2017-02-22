@@ -29,12 +29,12 @@ class taoLti_models_classes_LtiException extends common_Exception
     }
 
     /**
-     * @var LtiMessage
+     * @var LtiErrorMessage
      */
     protected $ltiMessage;
 
     /**
-     * @return LtiMessage
+     * @return LtiErrorMessage
      */
     public function getLtiMessage()
     {

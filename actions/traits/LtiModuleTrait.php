@@ -59,9 +59,7 @@ trait LtiModuleTrait
                 }
             }
 
-            if (!empty($description)) {
-                $this->setData('message', $description);
-            }
+            $this->setData('message', $error->getMessage());
             $this->setView('error.tpl', 'taoLti');
         }
     }
