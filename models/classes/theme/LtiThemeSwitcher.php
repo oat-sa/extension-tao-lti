@@ -62,9 +62,11 @@ class LtiThemeSwitcher extends ThemeService implements LtiHeadless {
             $launchData = $currentSession->getLaunchData();
             if ($launchData->hasVariable(self::LTI_PRESENTATION_TARGET) && $launchData->getVariable(self::LTI_PRESENTATION_TARGET) == 'frame') {
                 return true;
+            } else {
+                return false;
             }
         }
         
-        return false;
+        return true;
     }
 }
