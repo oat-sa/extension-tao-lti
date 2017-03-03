@@ -24,9 +24,12 @@ use oat\tao\model\theme\ThemeService;
  * 
  * @author Joel Bout
  */
-class LtiThemeSwitcher extends ThemeService {
+class LtiThemeSwitcher extends ThemeService implements LtiHeadless {
 
+    const OPTION_HEADLESS_PAGE = 'headless_page';
+    
     const LTI_VARIABLE = 'custom_theme';
+    const LTI_PRESENTATION_TARGET = 'launch_presentation_document_target';
     
     public function getTheme()
     {
@@ -41,5 +44,26 @@ class LtiThemeSwitcher extends ThemeService {
         } else {
             return parent::getTheme();
         }
+    }
+
+
+    /**
+     * Tells if the page has to be headless: without header and footer.
+     * @return bool|mixed
+     */
+    public function isHeadless()
+    {
+        if ($this->hasOption(self::OPTION_HEADLESS_PAGE)) {
+            return $this->getOption(self::OPTION_HEADLESS_PAGE);
+        }
+        
+        $currentSession = \common_session_SessionManager::getSession();
+        if ($currentSession instanceof \taoLti_models_classes_TaoLtiSession) {
+            $launchData = $currentSession->getLaunchData();
+            $presentationTarget = $launchData->hasVariable(self::LTI_PRESENTATION_TARGET) ? $launchData->getVariable(self::LTI_PRESENTATION_TARGET) : '';
+            return $presentationTarget == 'frame' || $presentationTarget == 'iframe';
+        }
+        
+        return true;
     }
 }
