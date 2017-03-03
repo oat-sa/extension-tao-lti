@@ -60,11 +60,8 @@ class LtiThemeSwitcher extends ThemeService implements LtiHeadless {
         $currentSession = \common_session_SessionManager::getSession();
         if ($currentSession instanceof \taoLti_models_classes_TaoLtiSession) {
             $launchData = $currentSession->getLaunchData();
-            if ($launchData->hasVariable(self::LTI_PRESENTATION_TARGET) && $launchData->getVariable(self::LTI_PRESENTATION_TARGET) == 'frame') {
-                return true;
-            } else {
-                return false;
-            }
+            $presentationTarget = $launchData->hasVariable(self::LTI_PRESENTATION_TARGET) ? $launchData->getVariable(self::LTI_PRESENTATION_TARGET) : '';
+            return $presentationTarget == 'frame' || $presentationTarget == 'iframe';
         }
         
         return true;
