@@ -129,6 +129,15 @@ class taoLti_models_classes_LtiLaunchData
         return $this->customParams;
     }
 
+    /**
+     * Get all lti variables provided during launch.
+     *
+     * @return array
+     */
+    public function getVariables() {
+        return $this->variables;
+    }
+
     // simpler access
     
     public function getOauthKey() {
