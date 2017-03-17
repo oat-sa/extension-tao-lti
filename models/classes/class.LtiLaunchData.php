@@ -118,7 +118,25 @@ class taoLti_models_classes_LtiLaunchData
     
     public function getCustomParameter($key) {
         return isset($this->customParams[$key]) ? $this->customParams[$key] : null; 
-    }    
+    }
+
+    /**
+     * Get all custom parameters provided during launch.
+     *
+     * @return array
+     */
+    public function getCustomParameters() {
+        return $this->customParams;
+    }
+
+    /**
+     * Get all lti variables provided during launch.
+     *
+     * @return array
+     */
+    public function getVariables() {
+        return $this->variables;
+    }
 
     // simpler access
     
