@@ -62,7 +62,7 @@ abstract class taoLti_actions_ToolModule extends LtiModule
                 $this->setData('returnUrl', $params[taoLti_models_classes_LtiLaunchData::LAUNCH_PRESENTATION_RETURN_URL]);
             }
 
-            common_Logger::i($e->getMessage());
+            common_Logger::e($e->__toString());
             $this->returnLtiError($e, false);
         } catch (tao_models_classes_oauth_Exception $e) {
             common_Logger::i($e->getMessage());
