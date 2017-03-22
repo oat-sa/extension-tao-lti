@@ -21,7 +21,6 @@
 namespace oat\taoLti\models\classes;
 
 use oat\tao\model\mvc\error\ExceptionInterpretor;
-use oat\tao\model\mvc\error\RedirectResponse;
 
 /**
  * Class ExceptionInterpreter
@@ -36,15 +35,25 @@ class ExceptionInterpreter extends ExceptionInterpretor
     protected $exception;
 
     /**
+     * set exception to interpet
+     * @param \Exception $exception
+     * @return ExceptionInterpretor
+     */
+    public function setException(\Exception $exception){
+        parent::setException($exception);
+        \common_Logger::e($exception->__toString());
+        return $this;
+    }
+
+    /**
      * return an instance of ResponseInterface
      * @return \oat\tao\model\mvc\error\class
      */
     public function getResponse()
     {
-        $response = new RedirectResponse;
+        $response = new LtiReturnResponse;
         $response->setServiceLocator($this->getServiceLocator());
         $response->setException($this->exception);
-        $response->setHttpCode(200);
         return $response;
     }
     

@@ -57,7 +57,7 @@ class taoLti_scripts_update_Updater extends \common_ext_ExtensionUpdater
             $interpreters = $service->getOption(ExceptionInterpreterService::OPTION_INTERPRETERS);
             $interpreters[\taoLti_models_classes_LtiException::class] = ExceptionInterpreter::class;
             $service->setOption(ExceptionInterpreterService::OPTION_INTERPRETERS, $interpreters);
-            $this->getServiceManager()->register($service);
+            $this->getServiceManager()->register(ExceptionInterpreterService::SERVICE_ID, $service);
             $this->setVersion('1.13.0');
         }
     }
