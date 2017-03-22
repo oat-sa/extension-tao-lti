@@ -39,6 +39,9 @@ trait LtiModuleTrait
      */
     protected function returnLtiError(\taoLti_models_classes_LtiException $error, $returnLink = true)
     {
+        // full trace of the error
+        \common_Logger::e($error->__toString());
+
         if (tao_helpers_Request::isAjax()) {
             throw new common_exception_IsAjaxAction(__CLASS__ . '::' . __FUNCTION__);
         } else {

@@ -62,7 +62,7 @@ class taoLti_models_classes_LtiException extends common_Exception
 
     public function __toString()
     {
-        return ' [key ' . $this->getKey() . ']' . parent::__toString();
+        return '[key ' . $this->getKey() . '] ' . parent::__toString();
     }
 
 }
