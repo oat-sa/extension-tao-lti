@@ -50,15 +50,15 @@ class taoLti_scripts_update_Updater extends \common_ext_ExtensionUpdater
             OntologyUpdater::syncModels();
             $this->setVersion('1.6.0');
         }
-        $this->skip('1.6.0', '1.11.0');
+        $this->skip('1.6.0', '1.12.0');
 
-        if ($this->isVersion('1.11.0')) {
+        if ($this->isVersion('1.12.0')) {
             $service = $this->getServiceManager()->get(ExceptionInterpreterService::SERVICE_ID);
             $interpreters = $service->getOption(ExceptionInterpreterService::OPTION_INTERPRETERS);
             $interpreters[\taoLti_models_classes_LtiException::class] = ExceptionInterpreter::class;
             $service->setOption(ExceptionInterpreterService::OPTION_INTERPRETERS, $interpreters);
             $this->getServiceManager()->register($service);
-            $this->setVersion('1.12.0');
+            $this->setVersion('1.13.0');
         }
     }
 }
