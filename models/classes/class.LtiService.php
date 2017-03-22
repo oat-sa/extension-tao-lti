@@ -19,6 +19,8 @@
  * 
  */
 
+use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
+
 /**
  * Basic service to handle everything LTI
  * 
@@ -48,24 +50,30 @@ class taoLti_models_classes_LtiService extends tao_models_classes_Service
 	
 	/**
 	 * Returns the current LTI session
+     * @throws \taoLti_models_classes_LtiException
 	 * @return taoLti_models_classes_TaoLtiSession 
 	 */
 	public function getLtiSession() {
 	    $session = common_session_SessionManager::getSession();
 	    if (!$session instanceof taoLti_models_classes_TaoLtiSession) {
-	        throw new taoLti_models_classes_LtiException(__FUNCTION__.' called on a non LTI session');
+	        throw new taoLti_models_classes_LtiException(__FUNCTION__.' called on a non LTI session', LtiErrorMessage::ERROR_SYSTEM_ERROR);
 	    }
 	    return $session;
 	}
-	
+
+    /**
+     * @param $key
+     * @return mixed
+     * @throws taoLti_models_classes_LtiException
+     */
 	public function getCredential($key) {
 		$class = new core_kernel_classes_Class(CLASS_LTI_CONSUMER);
 		$instances = $class->searchInstances(array(PROPERTY_OAUTH_KEY => $key), array('like' => false));
 		if (count($instances) == 0) {
-			throw new taoLti_models_classes_LtiException('No Credentials for consumer key '.$key);
+			throw new taoLti_models_classes_LtiException('No Credentials for consumer key '.$key, LtiErrorMessage::ERROR_UNAUTHORIZED);
 		}
 		if (count($instances) > 1) {
-			throw new taoLti_models_classes_LtiException('Multiple Credentials for consumer key '.$key);
+			throw new taoLti_models_classes_LtiException('Multiple Credentials for consumer key '.$key, LtiErrorMessage::ERROR_INVALID_PARAMETER);
 		}
 		return current($instances);
 	}
@@ -88,11 +96,11 @@ class taoLti_models_classes_LtiService extends tao_models_classes_Service
 	 * Returns the existing tao User that corresponds to
 	 * the LTI request or spawns it
 	 * 
-	 * @param taoLti_models_classes_LtiLaunchData $ltiContext
+	 * @param taoLti_models_classes_LtiLaunchData $launchData
 	 * @throws taoLti_models_classes_LtiException
 	 * @return core_kernel_classes_Resource
 	 */
-	public function findOrSpwanUser(taoLti_models_classes_LtiLaunchData $launchData) {
+	public function findOrSpawnUser(taoLti_models_classes_LtiLaunchData $launchData) {
 	    $taoUser = $this->findUser($launchData);
 	    if (is_null($taoUser)) {
 	        $taoUser = $this->spawnUser($launchData);
@@ -116,7 +124,10 @@ class taoLti_models_classes_LtiService extends tao_models_classes_Service
 			'like'	=> false
 		));
 		if (count($instances) > 1) {
-			throw new taoLti_models_classes_LtiException('Multiple user accounts found for user key \''.$ltiContext->getUserID().'\'');
+			throw new taoLti_models_classes_LtiException(
+			    'Multiple user accounts found for user key \''.$ltiContext->getUserID().'\'',
+                LtiErrorMessage::ERROR_SYSTEM_ERROR
+            );
 		}
 		return count($instances) == 1 ? current($instances) : null;
 	}

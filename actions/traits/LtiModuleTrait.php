@@ -42,21 +42,19 @@ trait LtiModuleTrait
         if (tao_helpers_Request::isAjax()) {
             throw new common_exception_IsAjaxAction(__CLASS__ . '::' . __FUNCTION__);
         } else {
-            $session = \common_session_SessionManager::getSession();
-            if ($session instanceof \taoLti_models_classes_TaoLtiSession) {
-                $launchData = $session->getLaunchData();
-                // In regard of the IMS LTI standard, we have to show a back button that refer to the
-                // launch_presentation_return_url url param. So we have to retrieve this parameter before trying to start
-                // the session
-                $consumerLabel = $launchData->getToolConsumerName();
-                if (!is_null($consumerLabel)) {
-                    $this->setData('consumerLabel', $consumerLabel);
-                }
+            $launchData = \taoLti_models_classes_LtiLaunchData::fromRequest(\common_http_Request::currentRequest());
 
-                if ($launchData->hasVariable(\taoLti_models_classes_LtiLaunchData::LAUNCH_PRESENTATION_RETURN_URL)) {
-                    $flowController = new FlowController();
-                    $flowController->redirect($this->getLtiReturnUrl($launchData, $error));
-                }
+            if ($launchData->hasVariable(\taoLti_models_classes_LtiLaunchData::LAUNCH_PRESENTATION_RETURN_URL)) {
+                $flowController = new FlowController();
+                $flowController->redirect($this->getLtiReturnUrl($launchData, $error));
+            }
+
+            // In regard of the IMS LTI standard, we have to show a back button that refer to the
+            // launch_presentation_return_url url param. So we have to retrieve this parameter before trying to start
+            // the session
+            $consumerLabel = $launchData->getToolConsumerName();
+            if (!is_null($consumerLabel)) {
+                $this->setData('consumerLabel', $consumerLabel);
             }
 
             $this->setData('message', $error->getMessage());

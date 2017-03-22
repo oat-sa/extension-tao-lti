@@ -19,13 +19,14 @@
  * 
  */
 
+use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
+
 /**
- * Authentication adapter interface to be implemented by authentication methodes
+ * Authentication adapter interface to be implemented by authentication methods
  *
  * @access public
  * @author Joel Bout, <joel@taotesting.com>
  * @package taoLti
- 
  */
 class taoLti_models_classes_LtiAuthAdapter
 	implements common_user_auth_Adapter
@@ -57,7 +58,7 @@ class taoLti_models_classes_LtiAuthAdapter
         	$ltiLaunchData = taoLti_models_classes_LtiLaunchData::fromRequest($this->request);
         	return new taoLti_models_classes_LtiUser($ltiLaunchData);
         } catch (common_http_InvalidSignatureException $e) {
-            throw new taoLti_models_classes_LtiException('Invalid LTI signature');
+            throw new taoLti_models_classes_LtiException('Invalid LTI signature', LtiErrorMessage::ERROR_UNAUTHORIZED);
         }
     }
 }
