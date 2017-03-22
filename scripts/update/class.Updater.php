@@ -20,6 +20,8 @@ use oat\tao\scripts\update\OntologyUpdater;
  *
  */
 
+use oat\tao\model\mvc\error\ExceptionInterpreterService;
+use oat\taoLti\models\classes\ExceptionInterpreter;
 /**
  * 
  * @author Joel Bout <joel@taotesting.com>
@@ -29,7 +31,7 @@ class taoLti_scripts_update_Updater extends \common_ext_ExtensionUpdater
 
     /**
      * 
-     * @param string $currentVersion
+     * @param string $initialVersion
      * @return string $versionUpdatedTo
      */
     public function update($initialVersion)
@@ -49,5 +51,14 @@ class taoLti_scripts_update_Updater extends \common_ext_ExtensionUpdater
             $this->setVersion('1.6.0');
         }
         $this->skip('1.6.0', '1.11.0');
+
+        if ($this->isVersion('1.11.0')) {
+            $service = $this->getServiceManager()->get(ExceptionInterpreterService::SERVICE_ID);
+            $interpreters = $service->getOption(ExceptionInterpreterService::OPTION_INTERPRETERS);
+            $interpreters[\taoLti_models_classes_LtiException::class] = ExceptionInterpreter::class;
+            $service->setOption(ExceptionInterpreterService::OPTION_INTERPRETERS, $interpreters);
+            $this->getServiceManager()->register($service);
+            $this->setVersion('1.12.0');
+        }
     }
 }
