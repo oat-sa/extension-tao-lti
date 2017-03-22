@@ -42,11 +42,17 @@ abstract class taoLti_actions_ToolModule extends LtiModule
                     'session' => session_id(),
                     'redirect' => _url('run', null, null, $_GET))));
             } else {
-                $this->returnError(__('You are not authorized to use this system'));
+                throw new taoLti_models_classes_LtiException(
+                    __('You are not authorized to use this system'),
+                    \oat\taoLti\models\classes\LtiMessages\LtiErrorMessage::ERROR_UNAUTHORIZED
+                );
             }
         } catch (common_user_auth_AuthFailedException $e) {
             common_Logger::i($e->getMessage());
-            $this->returnError(__('The LTI connection could not be established'), false);
+            throw new taoLti_models_classes_LtiException(
+                __('The LTI connection could not be established'),
+                \oat\taoLti\models\classes\LtiMessages\LtiErrorMessage::ERROR_UNAUTHORIZED
+            );
         } catch (\taoLti_models_classes_LtiException $e) {
             // In regard of the IMS LTI standard, we have to show a back button that refer to the
             // launch_presentation_return_url url param. So we have to retrieve this parameter before trying to start
@@ -66,7 +72,10 @@ abstract class taoLti_actions_ToolModule extends LtiModule
             $this->returnLtiError($e, false);
         } catch (tao_models_classes_oauth_Exception $e) {
             common_Logger::i($e->getMessage());
-            $this->returnError(__('The LTI connection could not be established'), false);
+            throw new taoLti_models_classes_LtiException(
+                __('The LTI connection could not be established'),
+                \oat\taoLti\models\classes\LtiMessages\LtiErrorMessage::ERROR_UNAUTHORIZED
+            );
         }
     }
 
