@@ -20,6 +20,7 @@
 namespace oat\taoLti\models\classes;
 
 use oat\tao\model\mvc\error\ResponseAbstract;
+use oat\tao\helpers\Template;
 
 /**
  * Class LtiReturnResponse
@@ -42,11 +43,23 @@ class LtiReturnResponse extends ResponseAbstract
     {
         /** @var \taoLti_models_classes_TaoLtiSession $session */
         $session = \common_session_SessionManager::getSession();
-        $launchData = $session->getLaunchData();
-        $params = $this->exception->getLtiMessage()->getUrlParams();
-        $baseUrl = $launchData->getReturnUrl();
-        $url = $baseUrl . (parse_url($baseUrl, PHP_URL_QUERY) ? '&' : '?') . http_build_query($params);
-        header(\HTTPToolkit::locationHeader($url));
+        if ($session instanceof \taoLti_models_classes_TaoLtiSession) {
+            $launchData = $session->getLaunchData();
+            $baseUrl = $launchData->getReturnUrl();
+        } else {
+            $request = \common_http_Request::currentRequest();
+            $params = $request->getParams();
+            isset($params[\taoLti_models_classes_LtiLaunchData::LAUNCH_PRESENTATION_RETURN_URL]) ?
+                $baseUrl = $params[\taoLti_models_classes_LtiLaunchData::LAUNCH_PRESENTATION_RETURN_URL] : null;
+        }
+
+        if ($baseUrl !== null) {
+            $params = $this->exception->getLtiMessage()->getUrlParams();
+            $url = $baseUrl . (parse_url($baseUrl, PHP_URL_QUERY) ? '&' : '?') . http_build_query($params);
+            header(\HTTPToolkit::locationHeader($url));
+        } else {
+            require Template::getTemplate('error/error500.tpl', 'tao');
+        }
         return;
     }
     
