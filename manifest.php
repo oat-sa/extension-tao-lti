@@ -18,8 +18,9 @@
  *               
  * 
  */
-use oat\tao\model\user\TaoRoles;
 
+use oat\tao\model\user\TaoRoles;
+use oat\taoLti\scripts\install\InstallServices;
 /**
  * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
  * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
@@ -32,10 +33,10 @@ return array(
 	'label' => 'LTI library',
     'description' => 'TAO LTI library and helpers',
     'license' => 'GPL-2.0',
-    'version' => '1.12.0',
+    'version' => '1.13.0',
 	'author' => 'Open Assessment Technologies SA',
 	'requires' => array(
-	   'tao' => '>=7.45.5'
+	   'tao' => '>=7.89.0'
 	),
 	'models' => array(
 	 	'http://www.tao.lu/Ontologies/TAOLTI.rdf',
@@ -48,7 +49,10 @@ return array(
 			dirname(__FILE__). '/models/ontology/roledefinition.rdf',
 			dirname(__FILE__). '/models/ontology/ltiroles_person.rdf',
 			dirname(__FILE__). '/models/ontology/ltiroles_membership.rdf'
-		)
+		),
+        'php' => [
+            InstallServices::class
+        ]
 	),
 	'update' => 'taoLti_scripts_update_Updater',
     'managementRole' => 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiManagerRole',
