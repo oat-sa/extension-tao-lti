@@ -41,8 +41,9 @@ abstract class LtiModule extends tao_actions_CommonModule
      *
      * @param string $error error to handle
      * @param boolean $returnLink
+     * @param int $httpStatus
      */
-    protected function returnError($error, $returnLink = true)
+    protected function returnError($error, $returnLink = true, $httpStatus = null)
     {
         $error = new \taoLti_models_classes_LtiException($error);
         $this->returnLtiError($error, $returnLink);
