@@ -19,6 +19,8 @@
  * 
  */
 
+use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
+
 class taoLti_models_classes_LtiLaunchData
 {
     const OAUTH_CONSUMER_KEY               = 'oauth_consumer_key';
@@ -112,7 +114,7 @@ class taoLti_models_classes_LtiLaunchData
         if (isset($this->variables[$key])) {
             return $this->variables[$key];
         } else {
-            throw new taoLti_models_classes_LtiException('Undefined LTI variable '.$key);
+            throw new taoLti_models_classes_LtiException('Undefined LTI variable '.$key, LtiErrorMessage::ERROR_MISSING_PARAMETER);
         }
     }
     
