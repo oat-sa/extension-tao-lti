@@ -20,6 +20,7 @@
  */
 
 use oat\taoLti\actions\LtiModule;
+use oat\taoLti\models\classes\CookieVerifyService;
 
 /**
  * An abstract tool controller to be extended by the concrete tools
@@ -37,15 +38,20 @@ abstract class taoLti_actions_ToolModule extends LtiModule
         try {
             taoLti_models_classes_LtiService::singleton()->startLtiSession(common_http_Request::currentRequest());
             // check if cookie has been set
-            if (tao_models_classes_accessControl_AclProxy::hasAccess('verifyCookie', 'CookieUtils', 'taoLti')) {
-                $this->redirect(_url('verifyCookie', 'CookieUtils', 'taoLti', array(
-                    'session' => session_id(),
-                    'redirect' => _url('run', null, null, $_GET))));
+            $cookieService = $this->getServiceManager()->get(CookieVerifyService::SERVICE_ID);
+            if ($cookieService->getOption(CookieVerifyService::OPTION_VERIFY_COOKIE) === true) {
+                if (tao_models_classes_accessControl_AclProxy::hasAccess('verifyCookie', 'CookieUtils', 'taoLti')) {
+                    $this->redirect(_url('verifyCookie', 'CookieUtils', 'taoLti', [
+                        'session'  => session_id(),
+                        'redirect' => _url('run', null, null, $_GET)]));
+                } else {
+                    throw new taoLti_models_classes_LtiException(
+                        __('You are not authorized to use this system'),
+                        \oat\taoLti\models\classes\LtiMessages\LtiErrorMessage::ERROR_UNAUTHORIZED
+                    );
+                }
             } else {
-                throw new taoLti_models_classes_LtiException(
-                    __('You are not authorized to use this system'),
-                    \oat\taoLti\models\classes\LtiMessages\LtiErrorMessage::ERROR_UNAUTHORIZED
-                );
+                $this->redirect(_url('run', null, null, $_GET));
             }
         } catch (common_user_auth_AuthFailedException $e) {
             common_Logger::i($e->getMessage());

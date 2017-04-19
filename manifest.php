@@ -21,6 +21,8 @@
 
 use oat\tao\model\user\TaoRoles;
 use oat\taoLti\scripts\install\InstallServices;
+use oat\taoLti\scripts\install\RegisterCookieVerifyService;
+
 /**
  * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
  * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
@@ -33,7 +35,7 @@ return array(
 	'label' => 'LTI library',
     'description' => 'TAO LTI library and helpers',
     'license' => 'GPL-2.0',
-    'version' => '2.0.0',
+    'version' => '2.0.1',
 	'author' => 'Open Assessment Technologies SA',
 	'requires' => array(
 	   'tao' => '>=8.0.1'
@@ -51,7 +53,8 @@ return array(
 			dirname(__FILE__). '/models/ontology/ltiroles_membership.rdf'
 		),
         'php' => [
-            InstallServices::class
+            InstallServices::class,
+            RegisterCookieVerifyService::class
         ]
 	),
 	'update' => 'taoLti_scripts_update_Updater',
