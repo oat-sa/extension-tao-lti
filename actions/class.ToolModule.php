@@ -1,22 +1,22 @@
 <?php
-/**  
+/**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; under version 2
  * of the License (non-upgradable).
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- * 
+ *
  * Copyright (c) 2013 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
- *               
- * 
+ *
+ *
  */
 
 use oat\taoLti\actions\LtiModule;
@@ -29,7 +29,6 @@ use oat\taoLti\models\classes\CookieVerifyService;
  */
 abstract class taoLti_actions_ToolModule extends LtiModule
 {
-
     /**
      * Entrypoint of every tool
      */
@@ -37,9 +36,7 @@ abstract class taoLti_actions_ToolModule extends LtiModule
     {
         try {
             taoLti_models_classes_LtiService::singleton()->startLtiSession(common_http_Request::currentRequest());
-            // check if cookie has been set
-            $cookieService = $this->getServiceManager()->get(CookieVerifyService::SERVICE_ID);
-            if ($cookieService->getOption(CookieVerifyService::OPTION_VERIFY_COOKIE) === true) {
+            if ($this->isVerifyCookieRequired()) {
                 if (tao_models_classes_accessControl_AclProxy::hasAccess('verifyCookie', 'CookieUtils', 'taoLti')) {
                     $this->redirect(_url('verifyCookie', 'CookieUtils', 'taoLti', [
                         'session'  => session_id(),
@@ -69,7 +66,7 @@ abstract class taoLti_actions_ToolModule extends LtiModule
             } elseif (isset($params[taoLti_models_classes_LtiLaunchData::TOOL_CONSUMER_INSTANCE_DESCRIPTION])) {
                 $this->setData('consumerLabel', $params[taoLti_models_classes_LtiLaunchData::TOOL_CONSUMER_INSTANCE_DESCRIPTION]);
             }
-            
+
             if (isset($params[taoLti_models_classes_LtiLaunchData::LAUNCH_PRESENTATION_RETURN_URL])) {
                 $this->setData('returnUrl', $params[taoLti_models_classes_LtiLaunchData::LAUNCH_PRESENTATION_RETURN_URL]);
             }
@@ -83,6 +80,17 @@ abstract class taoLti_actions_ToolModule extends LtiModule
                 \oat\taoLti\models\classes\LtiMessages\LtiErrorMessage::ERROR_UNAUTHORIZED
             );
         }
+    }
+
+    /**
+     * Is verification of cookie required?
+     *
+     * @return bool
+     */
+    public function isVerifyCookieRequired()
+    {
+        $cookieService = $this->getServiceManager()->get(CookieVerifyService::SERVICE_ID);
+        return $cookieService->getOption(CookieVerifyService::OPTION_VERIFY_COOKIE) === true;
     }
 
     /**

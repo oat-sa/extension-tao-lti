@@ -70,7 +70,7 @@ class taoLti_scripts_update_Updater extends \common_ext_ExtensionUpdater
             $service->setServiceManager($this->getServiceManager());
             $this->getServiceManager()->register(CookieVerifyService::SERVICE_ID, $service);
 
-            $this->setVersion('2.0.1');
+            $this->setVersion('2.1.0');
         }
     }
 }
