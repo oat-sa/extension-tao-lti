@@ -33,10 +33,10 @@ return array(
 	'label' => 'LTI library',
     'description' => 'TAO LTI library and helpers',
     'license' => 'GPL-2.0',
-    'version' => '2.0.0',
+    'version' => '3.0.0',
 	'author' => 'Open Assessment Technologies SA',
 	'requires' => array(
-	   'tao' => '>=8.0.1'
+	   'tao' => '>=9.0.0'
 	),
 	'models' => array(
 	 	'http://www.tao.lu/Ontologies/TAOLTI.rdf',
@@ -73,8 +73,5 @@ return array(
 	
 		#BASE URL (usually the domain root)
 		'BASE_URL'				=> ROOT_URL . 'taoLti/',
-	
-		#BASE WWW the web resources path
-		'BASE_WWW'				=> ROOT_URL . 'taoLti/views/',
 	)
 );

@@ -60,6 +60,6 @@ class taoLti_scripts_update_Updater extends \common_ext_ExtensionUpdater
             $this->getServiceManager()->register(ExceptionInterpreterService::SERVICE_ID, $service);
             $this->setVersion('1.13.0');
         }
-        $this->skip('1.13.0', '2.0.0');
+        $this->skip('1.13.0', '3.0.0');
     }
 }
