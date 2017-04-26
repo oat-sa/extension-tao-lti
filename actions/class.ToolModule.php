@@ -50,7 +50,7 @@ abstract class taoLti_actions_ToolModule extends LtiModule
                     );
                 }
             } else {
-                $this->redirect(_url('run', null, null, $_GET));
+                $this->forward('run', null, null, $_GET);
             }
         } catch (common_user_auth_AuthFailedException $e) {
             common_Logger::i($e->getMessage());
