@@ -37,7 +37,7 @@ class taoLti_actions_CookieUtils extends tao_actions_CommonModule
 	    $url = $this->getRequestParameter('redirect');
 	    $session = $this->getRequestParameter('session');
 	    if (session_id() == $session) {
-	        $this->redirect($url);
+	        $this->forwardUrl($url);
 	    } else {
 	        $this->setData('session', $session);
 	        $this->setData('redirect', $url);
@@ -68,6 +68,6 @@ class taoLti_actions_CookieUtils extends tao_actions_CommonModule
 	    } else {
 	        common_Logger::w('Restore session called with correct session id \''.session_id().'\'');
 	    }
-	    $this->redirect($url);
+	    $this->forwardUrl($url);
 	}
 }
