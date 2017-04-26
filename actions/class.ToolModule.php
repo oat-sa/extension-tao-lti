@@ -36,7 +36,9 @@ abstract class taoLti_actions_ToolModule extends LtiModule
     {
         try {
             taoLti_models_classes_LtiService::singleton()->startLtiSession(common_http_Request::currentRequest());
-            if ($this->isVerifyCookieRequired()) {
+            /** @var CookieVerifyService $cookieService */
+            $cookieService = $this->getServiceManager()->get(CookieVerifyService::SERVICE_ID);
+            if ($cookieService->isVerifyCookieRequired()) {
                 if (tao_models_classes_accessControl_AclProxy::hasAccess('verifyCookie', 'CookieUtils', 'taoLti')) {
                     $this->redirect(_url('verifyCookie', 'CookieUtils', 'taoLti', [
                         'session'  => session_id(),
@@ -80,17 +82,6 @@ abstract class taoLti_actions_ToolModule extends LtiModule
                 \oat\taoLti\models\classes\LtiMessages\LtiErrorMessage::ERROR_UNAUTHORIZED
             );
         }
-    }
-
-    /**
-     * Is verification of cookie required?
-     *
-     * @return bool
-     */
-    public function isVerifyCookieRequired()
-    {
-        $cookieService = $this->getServiceManager()->get(CookieVerifyService::SERVICE_ID);
-        return $cookieService->getOption(CookieVerifyService::OPTION_VERIFY_COOKIE) === true;
     }
 
     /**

@@ -9,4 +9,14 @@ class CookieVerifyService extends ConfigurableService
     const SERVICE_ID = 'taoLti/cookieVerify';
 
     const OPTION_VERIFY_COOKIE = 'verify_cookie';
+
+    /**
+     * Is verification of cookie required?
+     *
+     * @return bool
+     */
+    public function isVerifyCookieRequired()
+    {
+        return $this->getOption(self::OPTION_VERIFY_COOKIE) === true;
+    }
 }
