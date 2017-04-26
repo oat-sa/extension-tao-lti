@@ -53,8 +53,7 @@ return array(
 			dirname(__FILE__). '/models/ontology/ltiroles_membership.rdf'
 		),
         'php' => [
-            InstallServices::class,
-            RegisterCookieVerifyService::class
+            InstallServices::class
         ]
 	),
 	'update' => 'taoLti_scripts_update_Updater',
