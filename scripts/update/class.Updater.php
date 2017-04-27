@@ -21,6 +21,7 @@ use oat\tao\scripts\update\OntologyUpdater;
  */
 
 use oat\tao\model\mvc\error\ExceptionInterpreterService;
+use oat\taoLti\models\classes\CookieVerifyService;
 use oat\taoLti\models\classes\ExceptionInterpreter;
 /**
  * 
@@ -60,6 +61,18 @@ class taoLti_scripts_update_Updater extends \common_ext_ExtensionUpdater
             $this->getServiceManager()->register(ExceptionInterpreterService::SERVICE_ID, $service);
             $this->setVersion('1.13.0');
         }
-        $this->skip('1.13.0', '3.0.0');
+
+        $this->skip('1.13.0', '2.0.0');
+
+        if ($this->isVersion('2.0.0')) {
+            $service = new CookieVerifyService([
+                CookieVerifyService::OPTION_VERIFY_COOKIE => true
+            ]);
+            $service->setServiceManager($this->getServiceManager());
+            $this->getServiceManager()->register(CookieVerifyService::SERVICE_ID, $service);
+
+            $this->setVersion('2.1.0');
+        }
+        $this->skip('2.1.0', '3.0.0');
     }
 }
