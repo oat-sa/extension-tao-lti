@@ -20,6 +20,7 @@
  */
 
 use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
+use oat\taoLti\models\classes\LtiVariableMissingException;
 
 class taoLti_models_classes_LtiLaunchData
 {
@@ -114,7 +115,7 @@ class taoLti_models_classes_LtiLaunchData
         if (isset($this->variables[$key])) {
             return $this->variables[$key];
         } else {
-            throw new taoLti_models_classes_LtiException('Undefined LTI variable '.$key, LtiErrorMessage::ERROR_MISSING_PARAMETER);
+            throw new LtiVariableMissingException($key);
         }
     }
     
