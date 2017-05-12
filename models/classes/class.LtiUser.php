@@ -1,4 +1,5 @@
 <?php
+use oat\taoLti\models\classes\LtiVariableMissingException;
 /**  
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -81,10 +82,18 @@ class taoLti_models_classes_LtiUser
 	    	    $returnValue = $this->roles;
 	    	    break;
             case PROPERTY_USER_FIRSTNAME :
-                $returnValue = [$this->getLaunchData()->getUserGivenName()];
+                try {
+                    $returnValue = [$this->getLaunchData()->getUserGivenName()];
+                } catch (LtiVariableMissingException $e) {
+                    $returnValue = '';
+                }
                 break;
             case PROPERTY_USER_LASTNAME :
-                $returnValue = [$this->getLaunchData()->getUserFamilyName()];
+                try {
+                    $returnValue = [$this->getLaunchData()->getUserFamilyName()];
+                } catch (LtiVariableMissingException $e) {
+                    $returnValue = '';
+                }
                 break;
 	    	default:
 	    	    common_Logger::d('Unkown property '.$property.' requested from '.__CLASS__);
