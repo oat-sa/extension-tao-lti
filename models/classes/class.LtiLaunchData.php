@@ -19,7 +19,6 @@
  * 
  */
 
-use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
 use oat\taoLti\models\classes\LtiVariableMissingException;
 
 class taoLti_models_classes_LtiLaunchData
