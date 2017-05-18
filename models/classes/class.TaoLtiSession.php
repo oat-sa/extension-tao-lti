@@ -110,7 +110,7 @@ class taoLti_models_classes_TaoLtiSession extends common_session_DefaultSession
     /**
      * Returns the interface language.
      *
-     * Precedence: Lti passed language > Common language determination
+     * Priority: Launcher passed language > Parent language determination
      *
      * @return string
      */
