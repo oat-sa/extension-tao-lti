@@ -106,4 +106,28 @@ class taoLti_models_classes_TaoLtiSession extends common_session_DefaultSession
 		}
 		return $this->ltiLink;
 	}
+
+    /**
+     * Returns the interface language.
+     *
+     * Precedence: Lti passed language > Common language determination
+     *
+     * @return string
+     */
+    public function getInterfaceLanguage()
+    {
+        $launchLanguage = (string)$this->getLaunchData()->getLaunchLanguage();
+        if (!empty($launchLanguage)) {
+            $languageService = tao_models_classes_LanguageService::singleton();
+            $usage = new core_kernel_classes_Resource(INSTANCE_LANGUAGE_USAGE_GUI);
+            if ($languageService->isLanguageAvailable($launchLanguage, $usage)) {
+                \common_Logger::i('Language is available: ' . $launchLanguage);
+                return $launchLanguage;
+            }
+            \common_Logger::d('[Fallback] Language is unavailable: ' . $launchLanguage);
+        }
+
+        return parent::getInterfaceLanguage();
+    }
+
 }
