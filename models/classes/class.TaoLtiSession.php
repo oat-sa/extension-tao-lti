@@ -121,7 +121,6 @@ class taoLti_models_classes_TaoLtiSession extends common_session_DefaultSession
             $languageService = tao_models_classes_LanguageService::singleton();
             $usage = new core_kernel_classes_Resource(INSTANCE_LANGUAGE_USAGE_GUI);
             if ($languageService->isLanguageAvailable($launchLanguage, $usage)) {
-                \common_Logger::i('Language is available: ' . $launchLanguage);
                 return $launchLanguage;
             }
             \common_Logger::d('[Fallback] Language is unavailable: ' . $launchLanguage);
