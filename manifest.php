@@ -38,7 +38,7 @@ return array(
     'version' => '3.1.1',
 	'author' => 'Open Assessment Technologies SA',
 	'requires' => array(
-	   'tao' => '>=10.5.2'
+	   'tao' => '>=10.8.0'
 	),
 	'models' => array(
 	 	'http://www.tao.lu/Ontologies/TAOLTI.rdf',
