@@ -20,6 +20,8 @@
  * 
  */
 
+use oat\taoLti\models\classes\AbstractLtiService;
+use oat\oatbox\service\ServiceManager;
 /**
  * The TAO layer ontop of the LtiSession
  *
@@ -81,7 +83,7 @@ class taoLti_models_classes_TaoLtiSession extends common_session_DefaultSession
     {
         if (is_null($this->ltiLink)) {
             $class = new core_kernel_classes_Class(CLASS_LTI_INCOMINGLINK);
-            $consumer = taoLti_models_classes_LtiService::singleton()->getLtiConsumerResource($this->getLaunchData());
+            $consumer = $this->getServiceManager()->get(AbstractLtiService::SERVICE_ID)->getLtiConsumerResource($this->getLaunchData());
             // search for existing resource
             $instances = $class->searchInstances(array(
                 PROPERTY_LTI_LINK_ID => $this->getLaunchData()->getResourceLinkID(),
@@ -127,6 +129,11 @@ class taoLti_models_classes_TaoLtiSession extends common_session_DefaultSession
         }
 
         return parent::getInterfaceLanguage();
+    }
+
+    	protected function getServiceManager()
+    {
+        return ServiceManager::getServiceManager();
     }
 
 }

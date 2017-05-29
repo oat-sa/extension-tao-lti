@@ -21,6 +21,7 @@
 
 use oat\taoLti\actions\LtiModule;
 use oat\taoLti\models\classes\CookieVerifyService;
+use oat\taoLti\models\classes\AbstractLtiService;
 
 /**
  * An abstract tool controller to be extended by the concrete tools
@@ -35,7 +36,7 @@ abstract class taoLti_actions_ToolModule extends LtiModule
     public function launch()
     {
         try {
-            taoLti_models_classes_LtiService::singleton()->startLtiSession(common_http_Request::currentRequest());
+            $this->getServiceManager()->get(AbstractLtiService::SERVICE_ID)->startLtiSession(common_http_Request::currentRequest());
             /** @var CookieVerifyService $cookieService */
             $cookieService = $this->getServiceManager()->get(CookieVerifyService::SERVICE_ID);
             if ($cookieService->isVerifyCookieRequired()) {
