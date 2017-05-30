@@ -216,4 +216,8 @@ class taoLti_models_classes_LtiLaunchData
     public function getReturnUrl() {
         return $this->getVariable(self::LAUNCH_PRESENTATION_RETURN_URL);
     }
+
+    public function hasReturnUrl(){
+        return $this->hasVariable(self::LAUNCH_PRESENTATION_RETURN_URL);
+    }
 }
