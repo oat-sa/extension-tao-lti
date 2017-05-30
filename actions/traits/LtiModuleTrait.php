@@ -47,7 +47,7 @@ trait LtiModuleTrait
         } else {
             $launchData = \taoLti_models_classes_LtiLaunchData::fromRequest(\common_http_Request::currentRequest());
 
-            if ($launchData->hasVariable(\taoLti_models_classes_LtiLaunchData::LAUNCH_PRESENTATION_RETURN_URL)) {
+            if ($launchData->hasReturnUrl()) {
                 $flowController = new FlowController();
                 $flowController->redirect($this->getLtiReturnUrl($launchData, $error));
             }
@@ -70,7 +70,7 @@ trait LtiModuleTrait
      * @param \taoLti_models_classes_LtiException $error
      * @return string
      */
-    protected function getLtiReturnUrl(\taoLti_models_classes_LtiLaunchData $launchData, \taoLti_models_classes_LtiException $error)
+    private function getLtiReturnUrl(\taoLti_models_classes_LtiLaunchData $launchData, \taoLti_models_classes_LtiException $error)
     {
         $baseUrl = $launchData->getReturnUrl();
         $url = $baseUrl . (parse_url($baseUrl, PHP_URL_QUERY) ? '&' : '?') . http_build_query($error->getLtiMessage()->getUrlParams());
