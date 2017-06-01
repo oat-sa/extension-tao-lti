@@ -25,6 +25,7 @@ use oat\taoLti\models\classes\AbstractLtiService;
  * Basic service to handle everything LTI
  * 
  * @author Joel Bout, <joel@taotesting.com>
+ * @deprecated use AbstractLtiService
  */
 class taoLti_models_classes_LtiService extends tao_models_classes_Service 
 {
