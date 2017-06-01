@@ -96,14 +96,10 @@ abstract class AbstractLtiService extends ConfigurableService
      * @return \core_kernel_classes_Resource
      */
     public function findOrSpawnUser(\taoLti_models_classes_LtiLaunchData $launchData) {
-        $start = microtime(true);
         $taoUser = $this->findUser($launchData);
         if (is_null($taoUser)) {
             $taoUser = $this->spawnUser($launchData);
         }
-        $end = microtime(true);
-        $total = $end - $start;
-        file_put_contents('/var/www/package-tao/time.csv','total,'.$total.PHP_EOL, FILE_APPEND);
         return $taoUser;
     }
 
