@@ -41,16 +41,20 @@ class LtiReturnResponse extends ResponseAbstract
 
     public function send()
     {
+        $baseUrl = null;
         /** @var \taoLti_models_classes_TaoLtiSession $session */
         $session = \common_session_SessionManager::getSession();
         if ($session instanceof \taoLti_models_classes_TaoLtiSession) {
             $launchData = $session->getLaunchData();
-            $baseUrl = $launchData->getReturnUrl();
+            if($launchData->hasReturnUrl()){
+                $baseUrl = $launchData->getReturnUrl();
+            }
         } else {
             $request = \common_http_Request::currentRequest();
             $params = $request->getParams();
-            isset($params[\taoLti_models_classes_LtiLaunchData::LAUNCH_PRESENTATION_RETURN_URL]) ?
-                $baseUrl = $params[\taoLti_models_classes_LtiLaunchData::LAUNCH_PRESENTATION_RETURN_URL] : null;
+            if(isset($params[\taoLti_models_classes_LtiLaunchData::LAUNCH_PRESENTATION_RETURN_URL])){
+                $baseUrl = $params[\taoLti_models_classes_LtiLaunchData::LAUNCH_PRESENTATION_RETURN_URL];
+            }
         }
 
         if ($baseUrl !== null) {
