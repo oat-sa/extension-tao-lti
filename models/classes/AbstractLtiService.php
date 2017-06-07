@@ -25,9 +25,6 @@ use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
 
 abstract class AbstractLtiService extends ConfigurableService
 {
-    const LIS_CONTEXT_ROLE_NAMESPACE = 'urn:lti:role:ims/lis/';
-
-    const LTICONTEXT_SESSION_KEY	= 'LTICONTEXT';
 
     const SERVICE_ID = 'taoLti/LtiService';
     /**
@@ -46,7 +43,7 @@ abstract class AbstractLtiService extends ConfigurableService
     /**
      * Returns the current LTI session
      * @throws \taoLti_models_classes_LtiException
-     * @return taoLti_models_classes_TaoLtiSession
+     * @return \taoLti_models_classes_TaoLtiSession
      */
     public function getLtiSession() {
         $session = \common_session_SessionManager::getSession();
