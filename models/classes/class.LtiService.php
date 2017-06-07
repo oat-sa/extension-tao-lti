@@ -29,15 +29,11 @@ use oat\taoLti\models\classes\AbstractLtiService;
  */
 class taoLti_models_classes_LtiService extends tao_models_classes_Service 
 {
-	const LIS_CONTEXT_ROLE_NAMESPACE = 'urn:lti:role:ims/lis/';
-
-	const LTICONTEXT_SESSION_KEY	= 'LTICONTEXT';
 
     /** @var AbstractLtiService $ltiService */
 	private $ltiService = null;
 
 	protected function __construct() {
-        $this->ltiService = $this->getServiceLocator()->get(AbstractLtiService::SERVICE_ID);
         parent::__construct();
 	}
 	
@@ -48,16 +44,16 @@ class taoLti_models_classes_LtiService extends tao_models_classes_Service
 	 * @throws common_user_auth_AuthFailedException
 	 */
 	public function startLtiSession(common_http_Request $request) {
-	    $this->ltiService->startLtiSession($request);
+	    $this->getLtiService()->startLtiSession($request);
 	}
 	
 	/**
 	 * Returns the current LTI session
      * @throws \taoLti_models_classes_LtiException
-	 * @return taoLti_models_classes_TaoLtiSession 
+	 * @return \taoLti_models_classes_TaoLtiSession
 	 */
 	public function getLtiSession() {
-	    return $this->ltiService->getLtiSession();
+	    return $this->getLtiService()->getLtiSession();
 	}
 
     /**
@@ -66,7 +62,7 @@ class taoLti_models_classes_LtiService extends tao_models_classes_Service
      * @throws taoLti_models_classes_LtiException
      */
 	public function getCredential($key) {
-		return $this->ltiService->getCredential($key);
+		return $this->getLtiService()->getCredential($key);
 	}
 	
 	/**
@@ -79,7 +75,7 @@ class taoLti_models_classes_LtiService extends tao_models_classes_Service
 	 */
 	public function getLtiConsumerResource($launchData)
 	{
-        return $this->ltiService->getLtiConsumerResource($launchData);
+        return $this->getLtiService()->getLtiConsumerResource($launchData);
 	}
 		
 	/**
@@ -91,7 +87,7 @@ class taoLti_models_classes_LtiService extends tao_models_classes_Service
 	 * @return core_kernel_classes_Resource
 	 */
 	public function findOrSpawnUser(taoLti_models_classes_LtiLaunchData $launchData) {
-        return $this->ltiService->findOrSpawnUser($launchData);
+        return $this->getLtiService()->findOrSpawnUser($launchData);
 	}
 	
 	/**
@@ -102,7 +98,7 @@ class taoLti_models_classes_LtiService extends tao_models_classes_Service
 	 * @return core_kernel_classes_Resource
 	 */
 	public function findUser(taoLti_models_classes_LtiLaunchData $ltiContext) {
-        return $this->ltiService->findUser($ltiContext);
+        return $this->getLtiService()->findUser($ltiContext);
 	}
 	
 	/**
@@ -112,6 +108,20 @@ class taoLti_models_classes_LtiService extends tao_models_classes_Service
 	 * @return core_kernel_classes_Resource
 	 */
 	public function spawnUser(taoLti_models_classes_LtiLaunchData $ltiContext) {
-		return $this->ltiService->spawnUser($ltiContext);
+		return $this->getLtiService()->spawnUser($ltiContext);
 	}
+
+    /**
+     * Get the lti service to call correct method
+     * keep backward compatibility
+     * @return AbstractLtiService
+     */
+	private function getLtiService()
+    {
+        if(is_null($this->ltiService)){
+            $this->ltiService = $this->getServiceLocator()->get(AbstractLtiService::SERVICE_ID);
+        }
+
+        return $this->ltiService;
+    }
 }
