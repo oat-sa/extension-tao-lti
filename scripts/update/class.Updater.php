@@ -22,6 +22,7 @@ use oat\tao\scripts\update\OntologyUpdater;
 
 use oat\tao\model\mvc\error\ExceptionInterpreterService;
 use oat\taoLti\models\classes\CookieVerifyService;
+use oat\taoLti\models\classes\OntologyLtiService;
 use oat\taoLti\models\classes\ExceptionInterpreter;
 /**
  * 
@@ -74,5 +75,13 @@ class taoLti_scripts_update_Updater extends \common_ext_ExtensionUpdater
             $this->setVersion('2.1.0');
         }
         $this->skip('2.1.0', '3.2.1');
+
+        if ($this->isVersion('3.2.1')) {
+            $service = new OntologyLtiService();
+            $this->getServiceManager()->propagate($service);
+            $this->getServiceManager()->register(OntologyLtiService::SERVICE_ID, $service);
+
+            $this->setVersion('3.3.0');
+        }
     }
 }

@@ -19,20 +19,22 @@
  * 
  */
 
-use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
+use oat\taoLti\models\classes\AbstractLtiService;
 
 /**
  * Basic service to handle everything LTI
  * 
  * @author Joel Bout, <joel@taotesting.com>
+ * @deprecated use AbstractLtiService
  */
 class taoLti_models_classes_LtiService extends tao_models_classes_Service 
 {
-	const LIS_CONTEXT_ROLE_NAMESPACE = 'urn:lti:role:ims/lis/';
 
-	const LTICONTEXT_SESSION_KEY	= 'LTICONTEXT';
-	
+    /** @var AbstractLtiService $ltiService */
+	private $ltiService = null;
+
 	protected function __construct() {
+        parent::__construct();
 	}
 	
 	/**
@@ -42,23 +44,16 @@ class taoLti_models_classes_LtiService extends tao_models_classes_Service
 	 * @throws common_user_auth_AuthFailedException
 	 */
 	public function startLtiSession(common_http_Request $request) {
-        $adapter = new taoLti_models_classes_LtiAuthAdapter($request);
-        $user = $adapter->authenticate();
-        $session = new taoLti_models_classes_TaoLtiSession($user);
-        common_session_SessionManager::startSession($session);
+	    $this->getLtiService()->startLtiSession($request);
 	}
 	
 	/**
 	 * Returns the current LTI session
      * @throws \taoLti_models_classes_LtiException
-	 * @return taoLti_models_classes_TaoLtiSession 
+	 * @return \taoLti_models_classes_TaoLtiSession
 	 */
 	public function getLtiSession() {
-	    $session = common_session_SessionManager::getSession();
-	    if (!$session instanceof taoLti_models_classes_TaoLtiSession) {
-	        throw new taoLti_models_classes_LtiException(__FUNCTION__.' called on a non LTI session', LtiErrorMessage::ERROR_SYSTEM_ERROR);
-	    }
-	    return $session;
+	    return $this->getLtiService()->getLtiSession();
 	}
 
     /**
@@ -67,15 +62,7 @@ class taoLti_models_classes_LtiService extends tao_models_classes_Service
      * @throws taoLti_models_classes_LtiException
      */
 	public function getCredential($key) {
-		$class = new core_kernel_classes_Class(CLASS_LTI_CONSUMER);
-		$instances = $class->searchInstances(array(PROPERTY_OAUTH_KEY => $key), array('like' => false));
-		if (count($instances) == 0) {
-			throw new taoLti_models_classes_LtiException('No Credentials for consumer key '.$key, LtiErrorMessage::ERROR_UNAUTHORIZED);
-		}
-		if (count($instances) > 1) {
-			throw new taoLti_models_classes_LtiException('Multiple Credentials for consumer key '.$key, LtiErrorMessage::ERROR_INVALID_PARAMETER);
-		}
-		return current($instances);
+		return $this->getLtiService()->getCredential($key);
 	}
 	
 	/**
@@ -88,8 +75,7 @@ class taoLti_models_classes_LtiService extends tao_models_classes_Service
 	 */
 	public function getLtiConsumerResource($launchData)
 	{
-        $dataStore = new tao_models_classes_oauth_DataStore();
-        return $dataStore->findOauthConsumerResource($launchData->getOauthKey());
+        return $this->getLtiService()->getLtiConsumerResource($launchData);
 	}
 		
 	/**
@@ -101,11 +87,7 @@ class taoLti_models_classes_LtiService extends tao_models_classes_Service
 	 * @return core_kernel_classes_Resource
 	 */
 	public function findOrSpawnUser(taoLti_models_classes_LtiLaunchData $launchData) {
-	    $taoUser = $this->findUser($launchData);
-	    if (is_null($taoUser)) {
-	        $taoUser = $this->spawnUser($launchData);
-	    }
-	    return $taoUser;
+        return $this->getLtiService()->findOrSpawnUser($launchData);
 	}
 	
 	/**
@@ -116,20 +98,7 @@ class taoLti_models_classes_LtiService extends tao_models_classes_Service
 	 * @return core_kernel_classes_Resource
 	 */
 	public function findUser(taoLti_models_classes_LtiLaunchData $ltiContext) {
-		$class = new core_kernel_classes_Class(CLASS_LTI_USER);
-		$instances = $class->searchInstances(array(
-			PROPERTY_USER_LTIKEY		=> $ltiContext->getUserID(),
-			PROPERTY_USER_LTICONSUMER	=> $this->getLtiConsumerResource($ltiContext)
-		), array(
-			'like'	=> false
-		));
-		if (count($instances) > 1) {
-			throw new taoLti_models_classes_LtiException(
-			    'Multiple user accounts found for user key \''.$ltiContext->getUserID().'\'',
-                LtiErrorMessage::ERROR_SYSTEM_ERROR
-            );
-		}
-		return count($instances) == 1 ? current($instances) : null;
+        return $this->getLtiService()->findUser($ltiContext);
 	}
 	
 	/**
@@ -139,35 +108,20 @@ class taoLti_models_classes_LtiService extends tao_models_classes_Service
 	 * @return core_kernel_classes_Resource
 	 */
 	public function spawnUser(taoLti_models_classes_LtiLaunchData $ltiContext) {
-		$class = new core_kernel_classes_Class(CLASS_LTI_USER);
-		//$lang = tao_models_classes_LanguageService::singleton()->getLanguageByCode(DEFAULT_LANG);
-                
-		$props = array(
-			PROPERTY_USER_LTIKEY		=> $ltiContext->getUserID(),
-			PROPERTY_USER_LTICONSUMER	=> $this->getLtiConsumerResource($ltiContext),
-		    /*
-			PROPERTY_USER_UILG			=> $lang,
-			PROPERTY_USER_DEFLG			=> $lang,
-			*/
-			
-		);
-                
-        if ($ltiContext->hasVariable(taoLti_models_classes_LtiLaunchData::LIS_PERSON_NAME_FULL)) {
-			$props[RDFS_LABEL] = $ltiContext->getUserFullName();
-		}
-                
-		if ($ltiContext->hasVariable(taoLti_models_classes_LtiLaunchData::LIS_PERSON_NAME_GIVEN)) {
-			$props[PROPERTY_USER_FIRSTNAME] = $ltiContext->getUserGivenName();
-		}
-		if ($ltiContext->hasVariable(taoLti_models_classes_LtiLaunchData::LIS_PERSON_NAME_FAMILY)) {
-			$props[PROPERTY_USER_LASTNAME] = $ltiContext->getUserFamilyName();
-		}
-		if ($ltiContext->hasVariable(taoLti_models_classes_LtiLaunchData::LIS_PERSON_CONTACT_EMAIL_PRIMARY)) {
-			$props[PROPERTY_USER_MAIL] = $ltiContext->getUserEmail();
-		}
-		$user = $class->createInstanceWithProperties($props);
-		common_Logger::i('added User '.$user->getLabel());
-
-		return $user;
+		return $this->getLtiService()->spawnUser($ltiContext);
 	}
+
+    /**
+     * Get the lti service to call correct method
+     * keep backward compatibility
+     * @return AbstractLtiService
+     */
+	private function getLtiService()
+    {
+        if(is_null($this->ltiService)){
+            $this->ltiService = $this->getServiceLocator()->get(AbstractLtiService::SERVICE_ID);
+        }
+
+        return $this->ltiService;
+    }
 }

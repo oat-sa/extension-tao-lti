@@ -1,5 +1,7 @@
 <?php
 use oat\taoLti\models\classes\LtiVariableMissingException;
+use oat\taoLti\models\classes\AbstractLtiService;
+use oat\oatbox\service\ServiceManager;
 /**  
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -51,7 +53,7 @@ class taoLti_models_classes_LtiUser
 	
 	public function __construct(taoLti_models_classes_LtiLaunchData $ltiLaunchData) {
 	    $this->ltiLaunchData = $ltiLaunchData;
-	    $this->userUri = taoLti_models_classes_LtiService::singleton()->findOrSpawnUser($ltiLaunchData)->getUri();
+	    $this->userUri = $this->getServiceManager()->get(AbstractLtiService::SERVICE_ID)->findOrSpawnUser($ltiLaunchData)->getUri();
 	    $this->roles = $this->determinTaoRoles();
 	}
 	
@@ -133,5 +135,10 @@ class taoLti_models_classes_LtiUser
         }
 	    return $roles;
 	}
+
+	protected function getServiceManager()
+    {
+        return ServiceManager::getServiceManager();
+    }
 	
 }
