@@ -218,6 +218,12 @@ class taoLti_models_classes_LtiLaunchData
     }
 
     public function hasReturnUrl(){
-        return $this->hasVariable(self::LAUNCH_PRESENTATION_RETURN_URL);
+        if($this->hasVariable(self::LAUNCH_PRESENTATION_RETURN_URL)){
+            if(filter_var($this->getReturnUrl(), FILTER_VALIDATE_URL)){
+                return true;
+            }
+            common_Logger::w("Please provide a valid url. " . $this->getReturnUrl() . " is not valid");
+        }
+        return false;
     }
 }
