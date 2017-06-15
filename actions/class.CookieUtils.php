@@ -32,10 +32,10 @@ class taoLti_actions_CookieUtils extends tao_actions_CommonModule
      */
     public function verifyCookie() {
         $sessionId = session_id();
+        $sessionName = session_name();
         $url = $this->getRequestParameter('redirect');
 
-        // Check if any values in cookie array match session???
-        if (in_array($sessionId, $_COOKIE)) {
+        if ($sessionId ===  $this->getCookie($sessionName)) {
             $this->forwardUrl($url);
         } else {
             $this->setData('redirect', $url);
@@ -52,13 +52,18 @@ class taoLti_actions_CookieUtils extends tao_actions_CommonModule
         $sessionId = session_id();
         $url = $this->getRequestParameter('redirect');
 
+        // Close current session
         session_unset();
         session_destroy();
+
+        // Restore session
         session_id($sessionId);
         session_start();
-        session_regenerate_id(true);
-        common_Logger::d('regenerated session to id \''.session_id().'\'');
 
+        // Regenerate new session id
+        session_regenerate_id(true);
+
+        common_Logger::d('regenerated session to id \''.session_id().'\'');
         $this->forwardUrl($url);
     }
 }
