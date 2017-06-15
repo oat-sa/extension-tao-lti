@@ -63,7 +63,7 @@ class taoLti_actions_CookieUtils extends tao_actions_CommonModule
         // Regenerate new session id
         session_regenerate_id(true);
 
-        common_Logger::d('regenerated session to id \'' . $sessionId . '\'');
+        common_Logger::d('regenerated session with new session id');
         $this->forwardUrl($url);
     }
 }
