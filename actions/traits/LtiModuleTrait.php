@@ -20,6 +20,7 @@
 
 namespace oat\taoLti\actions\traits;
 
+use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
 use \tao_helpers_Request;
 use \common_exception_IsAjaxAction;
 use \oat\tao\model\routing\FlowController;
@@ -47,7 +48,7 @@ trait LtiModuleTrait
         } else {
             $launchData = \taoLti_models_classes_LtiLaunchData::fromRequest(\common_http_Request::currentRequest());
 
-            if ($launchData->hasReturnUrl()) {
+            if ($launchData->hasReturnUrl() && $error->getCode() != LtiErrorMessage::ERROR_UNAUTHORIZED) {
                 $flowController = new FlowController();
                 $flowController->redirect($this->getLtiReturnUrl($launchData, $error));
             }
