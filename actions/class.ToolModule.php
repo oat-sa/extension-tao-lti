@@ -70,7 +70,13 @@ abstract class taoLti_actions_ToolModule extends LtiModule
             }
 
             if (isset($params[taoLti_models_classes_LtiLaunchData::LAUNCH_PRESENTATION_RETURN_URL])) {
-                $this->setData('returnUrl', $params[taoLti_models_classes_LtiLaunchData::LAUNCH_PRESENTATION_RETURN_URL]);
+                $returnUrl = $params[taoLti_models_classes_LtiLaunchData::LAUNCH_PRESENTATION_RETURN_URL];
+                $serverName = $_SERVER['SERVER_NAME'];
+                $pieces = parse_url($returnUrl);
+                $domain = isset($pieces['host']) ? $pieces['host'] : '';
+                if ($serverName == $domain) {
+                    $this->setData('returnUrl', $returnUrl);
+                }
             }
 
             common_Logger::i($e->getMessage());
