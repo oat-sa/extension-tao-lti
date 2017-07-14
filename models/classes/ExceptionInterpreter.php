@@ -20,6 +20,8 @@
 
 namespace oat\taoLti\models\classes;
 
+use oat\oatbox\filesystem\FileSystem;
+use oat\oatbox\filesystem\FileSystemService;
 use oat\tao\model\mvc\error\ExceptionInterpretor;
 
 /**
@@ -29,6 +31,8 @@ use oat\tao\model\mvc\error\ExceptionInterpretor;
  */
 class ExceptionInterpreter extends ExceptionInterpretor
 {
+    const FILESYSTEM_ID_TO_LOG = 'log';
+
     /**
      * @var \taoLti_models_classes_LtiException
      */
@@ -41,7 +45,6 @@ class ExceptionInterpreter extends ExceptionInterpretor
      */
     public function setException(\Exception $exception){
         parent::setException($exception);
-        \common_Logger::e($exception->__toString());
         return $this;
     }
 
@@ -51,10 +54,22 @@ class ExceptionInterpreter extends ExceptionInterpretor
      */
     public function getResponse()
     {
+        $this->log((string) $this->exception);
+
         $response = new LtiReturnResponse;
         $response->setServiceLocator($this->getServiceLocator());
         $response->setException($this->exception);
         return $response;
+    }
+
+    private function log($msg)
+    {
+        /** @var FileSystem $fs */
+        $fs = $this->getServiceLocator()
+            ->get(FileSystemService::SERVICE_ID)
+            ->getFileSystem(self::FILESYSTEM_ID_TO_LOG);
+
+        $fs->put('lti_'. $this->exception->getKey() .'.log', $msg);
     }
     
 }
