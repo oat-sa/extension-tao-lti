@@ -62,21 +62,16 @@ abstract class taoLti_actions_ToolModule extends LtiModule
             // In regard of the IMS LTI standard, we have to show a back button that refer to the
             // launch_presentation_return_url url param. So we have to retrieve this parameter before trying to start
             // the session
-            $params = common_http_Request::currentRequest()->getParams();
-            if (isset($params[taoLti_models_classes_LtiLaunchData::TOOL_CONSUMER_INSTANCE_NAME])) {
-                $this->setData('consumerLabel', $params[taoLti_models_classes_LtiLaunchData::TOOL_CONSUMER_INSTANCE_NAME]);
-            } elseif (isset($params[taoLti_models_classes_LtiLaunchData::TOOL_CONSUMER_INSTANCE_DESCRIPTION])) {
-                $this->setData('consumerLabel', $params[taoLti_models_classes_LtiLaunchData::TOOL_CONSUMER_INSTANCE_DESCRIPTION]);
+            $launchData = \taoLti_models_classes_LtiLaunchData::fromRequest(common_http_Request::currentRequest());
+
+            if ($launchData->hasVariable(taoLti_models_classes_LtiLaunchData::TOOL_CONSUMER_INSTANCE_NAME)) {
+                $this->setData('consumerLabel', $launchData->getVariable(taoLti_models_classes_LtiLaunchData::TOOL_CONSUMER_INSTANCE_NAME));
+            } elseif ($launchData->hasVariable(taoLti_models_classes_LtiLaunchData::TOOL_CONSUMER_INSTANCE_DESCRIPTION)) {
+                $this->setData('consumerLabel', $launchData->getVariable(taoLti_models_classes_LtiLaunchData::TOOL_CONSUMER_INSTANCE_DESCRIPTION));
             }
 
-            if (isset($params[taoLti_models_classes_LtiLaunchData::LAUNCH_PRESENTATION_RETURN_URL])) {
-                $returnUrl = $params[taoLti_models_classes_LtiLaunchData::LAUNCH_PRESENTATION_RETURN_URL];
-                $serverName = $_SERVER['SERVER_NAME'];
-                $pieces = parse_url($returnUrl);
-                $domain = isset($pieces['host']) ? $pieces['host'] : '';
-                if ($serverName == $domain) {
-                    $this->setData('returnUrl', $returnUrl);
-                }
+            if ($launchData->hasReturnUrl()) {
+                $this->setData('returnUrl', $launchData->getReturnUrl());
             }
 
             common_Logger::i($e->getMessage());
