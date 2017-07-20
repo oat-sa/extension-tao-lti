@@ -219,7 +219,10 @@ class taoLti_models_classes_LtiLaunchData
 
     public function hasReturnUrl(){
         if($this->hasVariable(self::LAUNCH_PRESENTATION_RETURN_URL)){
-            if(filter_var($this->getReturnUrl(), FILTER_VALIDATE_URL)){
+            $serverName = $_SERVER['SERVER_NAME'];
+            $pieces = parse_url($this->getReturnUrl());
+            $domain = isset($pieces['host']) ? $pieces['host'] : '';
+            if ($serverName == $domain && filter_var($this->getReturnUrl(), FILTER_VALIDATE_URL)) {
                 return true;
             }
             common_Logger::w("Please provide a valid url. " . $this->getReturnUrl() . " is not valid");
