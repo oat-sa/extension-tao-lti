@@ -1,5 +1,4 @@
 <?php
-use oat\taoLti\models\classes\LtiVariableMissingException;
 /**  
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,6 +18,7 @@ use oat\taoLti\models\classes\LtiVariableMissingException;
  *               
  * 
  */
+use oat\taoLti\models\classes\LtiVariableMissingException;
 
 /**
  * Authentication adapter interface to be implemented by authentication methodes
@@ -29,58 +29,70 @@ use oat\taoLti\models\classes\LtiVariableMissingException;
  
  */
 class taoLti_models_classes_LtiUser
-	extends common_user_User
+    extends common_user_User
 {
     /**
      * Data with which this session was launched
      * @var taoLti_models_classes_LtiLaunchData
      */
-	private $ltiLaunchData;
+    private $ltiLaunchData;
 
-	/**
-	 * Local represenation of user
-	 * @var core_kernel_classes_Resource
-	 */
-	private $userUri;
-	
-	/**
-	 * Cache of the current user's lti roles
-	 * @var array
-	 */
-	protected $roles;
-	
-	public function __construct(taoLti_models_classes_LtiLaunchData $ltiLaunchData) {
-	    $this->ltiLaunchData = $ltiLaunchData;
-	    $this->userUri = taoLti_models_classes_LtiService::singleton()->findOrSpawnUser($ltiLaunchData)->getUri();
-	    $this->roles = $this->determinTaoRoles();
-	}
-	
-	/**
-	 * 
-	 * @return taoLti_models_classes_LtiLaunchData
-	 */
-	public function getLaunchData() {
-	    return $this->ltiLaunchData;
-	}
-	
-	/**
-	 * (non-PHPdoc)
-	 * @see common_user_User::getIdentifier()
-	 */
+    /**
+     * Local represenation of user
+     * @var core_kernel_classes_Resource
+     */
+    private $userUri;
+
+    /**
+     * Cache of the current user's lti roles
+     * @var array
+     */
+    protected $roles;
+
+    /**
+     * Currently used UI languages.
+     *
+     * @var array
+     */
+    protected $uiLanguage;
+
+    public function __construct(taoLti_models_classes_LtiLaunchData $ltiLaunchData) {
+        $this->ltiLaunchData = $ltiLaunchData;
+        $this->userUri = taoLti_models_classes_LtiService::singleton()->findOrSpawnUser($ltiLaunchData)->getUri();
+        $this->roles = $this->determinTaoRoles();
+    }
+
+    /**
+     * @return taoLti_models_classes_LtiLaunchData
+     */
+    public function getLaunchData() {
+        return $this->ltiLaunchData;
+    }
+
+    /**
+     * (non-PHPdoc)
+     * @see common_user_User::getIdentifier()
+     */
     public function getIdentifier() {
         return $this->userUri;
     }
-    
-	public function getPropertyValues($property) {
-	    $returnValue = null;
-	    switch ($property) {
-	    	case PROPERTY_USER_DEFLG :
-	    	case PROPERTY_USER_UILG :
-	    	    $returnValue = array($this->getLanguage());
-	    	    break;
-	    	case PROPERTY_USER_ROLES :
-	    	    $returnValue = $this->roles;
-	    	    break;
+
+    /**
+     * (non-PHPdoc)
+     * @see common_user_User::getPropertyValues()
+     */
+    public function getPropertyValues($property) {
+        $returnValue = null;
+        switch ($property) {
+            case PROPERTY_USER_DEFLG :
+                $returnValue = array(DEFAULT_LANG);
+                break;
+            case PROPERTY_USER_UILG :
+                $returnValue = array($this->getUiLanguage());
+                break;
+            case PROPERTY_USER_ROLES :
+                $returnValue = $this->roles;
+                break;
             case PROPERTY_USER_FIRSTNAME :
                 try {
                     $returnValue = [$this->getLaunchData()->getUserGivenName()];
@@ -95,43 +107,54 @@ class taoLti_models_classes_LtiUser
                     $returnValue = '';
                 }
                 break;
-	    	default:
-	    	    common_Logger::d('Unkown property '.$property.' requested from '.__CLASS__);
-	    	    $returnValue = array();
-	    }
-	    return $returnValue;
-	}
-	
-	public function refresh() {
-        // nothing to do	    
-	}
-	
-	private function getLanguage() {
-	    $returnValue = DEFAULT_LANG;
-	    if ($this->getLaunchData()->hasLaunchLanguage()) {
-	        // maping not implemented yet
-            $returnValue = taoLti_models_classes_LtiUtils::mapCode2InterfaceLanguage($this->getLaunchData()->getLaunchLanguage());
-	    }
-	    return $returnValue;
-	}
-	
-	private function determinTaoRoles() {
+            default:
+                common_Logger::d('Unkown property '.$property.' requested from '.__CLASS__);
+                $returnValue = array();
+        }
+        return $returnValue;
+    }
+
+    /**
+     * (non-PHPdoc)
+     * @see common_user_User::refresh()
+     */
+    public function refresh() {
+        // nothing to do
+    }
+
+    /**
+     * Returns the validated launch interface language.
+     *
+     * @return string
+     */
+    private function getUiLanguage() {
+        if (is_null($this->uiLanguage)) {
+            if ($this->getLaunchData()->hasLaunchLanguage()) {
+                $launchLanguage = $this->getLaunchData()->getLaunchLanguage();
+                $this->uiLanguage = taoLti_models_classes_LtiUtils::mapCode2InterfaceLanguage($launchLanguage);
+            } else {
+                $this->uiLanguage = DEFAULT_LANG;
+            }
+        }
+        return $this->uiLanguage;
+    }
+
+    private function determinTaoRoles() {
         $roles = array();
         if ($this->getLaunchData()->hasVariable(taoLti_models_classes_LtiLaunchData::ROLES)) {
             foreach ($this->getLaunchData()->getUserRoles() as $role) {
                 $taoRole = taoLti_models_classes_LtiUtils::mapLTIRole2TaoRole($role);
                 if (!is_null($taoRole)) {
                     $roles[] = $taoRole;
-					foreach (core_kernel_users_Service::singleton()->getIncludedRoles(new core_kernel_classes_Resource($taoRole)) as $includedRole) {
-						$roles[] = $includedRole->getUri();
-					}
+                    foreach (core_kernel_users_Service::singleton()->getIncludedRoles(new core_kernel_classes_Resource($taoRole)) as $includedRole) {
+                        $roles[] = $includedRole->getUri();
+                    }
                 }
             }
-			$roles = array_unique($roles);
+            $roles = array_unique($roles);
         } else {
             return array(INSTANCE_ROLE_LTI_BASE);
         }
-	    return $roles;
-	}
-	
+        return $roles;
+    }
 }
