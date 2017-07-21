@@ -132,8 +132,9 @@ class taoLti_models_classes_LtiUser
             if ($this->getLaunchData()->hasLaunchLanguage()) {
                 $launchLanguage = $this->getLaunchData()->getLaunchLanguage();
                 $this->uiLanguage = taoLti_models_classes_LtiUtils::mapCode2InterfaceLanguage($launchLanguage);
+            } else {
+                $this->uiLanguage = DEFAULT_LANG;
             }
-            $this->uiLanguage = DEFAULT_LANG;
         }
         return $this->uiLanguage;
     }
