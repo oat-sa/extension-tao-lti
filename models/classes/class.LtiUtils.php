@@ -95,11 +95,20 @@ class taoLti_models_classes_LtiUtils
      * not yet implemented, will always use default
      * 
      * @param string $code
+     *
      * @return string
      */
     public static function mapCode2InterfaceLanguage($code)
     {
-        $returnValue = DEFAULT_LANG;
-        return $returnValue;
+        if (!empty($code)) {
+            $languageService = tao_models_classes_LanguageService::singleton();
+            $usage = new core_kernel_classes_Resource(INSTANCE_LANGUAGE_USAGE_GUI);
+            if ($languageService->isLanguageAvailable($code, $usage)) {
+                return $code;
+            }
+            \common_Logger::d('[Fallback] The provided launch language is unavailable: ' . $code);
+        }
+
+        return DEFAULT_LANG;
     }
 }
