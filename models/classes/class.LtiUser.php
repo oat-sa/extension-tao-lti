@@ -48,6 +48,13 @@ class taoLti_models_classes_LtiUser
 	 * @var array
 	 */
 	protected $roles;
+
+    /**
+     * Cache of the currently used UI languages.
+     *
+     * @var array
+     */
+	protected $uiLanguages;
 	
 	public function __construct(taoLti_models_classes_LtiLaunchData $ltiLaunchData) {
 	    $this->ltiLaunchData = $ltiLaunchData;
@@ -105,14 +112,23 @@ class taoLti_models_classes_LtiUser
 	public function refresh() {
         // nothing to do	    
 	}
-	
+
+    /**
+     * Returns the validated launch language.
+     *
+     * @return string
+     */
 	private function getLanguage() {
-	    $returnValue = DEFAULT_LANG;
 	    if ($this->getLaunchData()->hasLaunchLanguage()) {
-	        // maping not implemented yet
-            $returnValue = taoLti_models_classes_LtiUtils::mapCode2InterfaceLanguage($this->getLaunchData()->getLaunchLanguage());
+	        $launchLanguage = $this->getLaunchData()->getLaunchLanguage();
+	        if (empty($this->uiLanguages[$launchLanguage])) {
+                $this->uiLanguages[$launchLanguage] = taoLti_models_classes_LtiUtils::mapCode2InterfaceLanguage($launchLanguage);
+            }
+
+            return $this->uiLanguages[$launchLanguage];
 	    }
-	    return $returnValue;
+
+	    return DEFAULT_LANG;
 	}
 	
 	private function determinTaoRoles() {
