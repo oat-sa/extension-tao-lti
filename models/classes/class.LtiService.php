@@ -43,9 +43,9 @@ class taoLti_models_classes_LtiService extends tao_models_classes_Service
 	 */
 	public function startLtiSession(common_http_Request $request) {
         $adapter = new taoLti_models_classes_LtiAuthAdapter($request);
+        $this->getServiceLocator()->propagate($adapter);
         $user = $adapter->authenticate();
         $session = new taoLti_models_classes_TaoLtiSession($user);
-        $this->getServiceLocator()->propagate($session);
         common_session_SessionManager::startSession($session);
 	}
 	
