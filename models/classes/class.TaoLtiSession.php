@@ -20,6 +20,8 @@
  * 
  */
 
+use oat\taoLti\models\classes\user\LtiUser;
+
 /**
  * The TAO layer ontop of the LtiSession
  *
@@ -36,7 +38,7 @@ class taoLti_models_classes_TaoLtiSession extends common_session_DefaultSession
      */
     private $ltiLink = null;
 
-    public function __construct(taoLti_models_classes_LtiUser $user)
+    public function __construct(LtiUser $user)
     {
         parent::__construct($user);
     }
