@@ -1,39 +1,37 @@
 <?php
-/**  
+/**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; under version 2
  * of the License (non-upgradable).
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- * 
- * Copyright (c) 2013 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
- *               
- * 
+ *
+ * Copyright (c) 2017 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
+ *
+ *
  */
 
 namespace oat\taoLti\models\classes\user;
 
-use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
-
 
 /**
- * Authentication adapter interface to be implemented by authentication methodes
+ * Key value implementation of the lti user service
  *
  * @access public
- * @author Joel Bout, <joel@taotesting.com>
+ * @author Antoine Robin, <antoine@taotesting.com>
  * @package taoLti
- 
  */
 class KvLtiUserService extends LtiUserService
 {
+
 
     const OPTION_PERSISTENCE = 'persistence';
 
@@ -62,9 +60,11 @@ class KvLtiUserService extends LtiUserService
     /**
      * @inheritdoc
      */
-    public function findUser($userId, $ltiConsumer) {
-        $data = $this->getPersistence()->get(self::LTI_USER . $userId . $ltiConsumer->getUri());
-        if($data === false){
+    public function findUser(\taoLti_models_classes_LtiLaunchData $ltiContext)
+    {
+        $ltiConsumer = \taoLti_models_classes_LtiService::singleton()->getLtiConsumerResource($ltiContext);
+        $data = $this->getPersistence()->get(self::LTI_USER . $ltiContext->getUserID() . $ltiConsumer->getUri());
+        if ($data === false) {
             return null;
         }
 
@@ -74,12 +74,23 @@ class KvLtiUserService extends LtiUserService
     }
 
     /**
-     * Creates a new LTI User with the absolute minimum of required informations
-     *
-     * @param \taoLti_models_classes_LtiLaunchData $ltiContext
-     * @return LtiUser
+     * @inheritdoc
      */
-    public function spawnUser(\taoLti_models_classes_LtiLaunchData $ltiContext) {
+    public function getUserIdentifier($userId, $consumer)
+    {
+        $data = $this->getPersistence()->get(self::LTI_USER . $userId . $consumer);
+        if ($data === false) {
+            return null;
+        }
+        return $userId;
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    public function spawnUser(\taoLti_models_classes_LtiLaunchData $ltiContext)
+    {
 
         $firstname = '';
         $lastname = '';

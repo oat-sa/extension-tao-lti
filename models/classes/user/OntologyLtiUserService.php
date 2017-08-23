@@ -1,22 +1,22 @@
 <?php
-/**  
+/**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; under version 2
  * of the License (non-upgradable).
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- * 
- * Copyright (c) 2013 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
- *               
- * 
+ *
+ * Copyright (c) 2017 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
+ *
+ *
  */
 
 namespace oat\taoLti\models\classes\user;
@@ -25,12 +25,11 @@ use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
 
 
 /**
- * Authentication adapter interface to be implemented by authentication methodes
+ * Ontology implementation of the lti user service
  *
  * @access public
- * @author Joel Bout, <joel@taotesting.com>
+ * @author Antoine Robin, <antoine@taotesting.com>
  * @package taoLti
- 
  */
 class OntologyLtiUserService extends LtiUserService
 {
@@ -41,6 +40,8 @@ class OntologyLtiUserService extends LtiUserService
 
     const CLASS_LTI_USER = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIConsumer';
 
+    const PROPERTY_USER_LAUNCHDATA = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LaunchData';
+
     /**
      * Searches if this user was already created in TAO
      *
@@ -48,22 +49,23 @@ class OntologyLtiUserService extends LtiUserService
      * @throws \taoLti_models_classes_LtiException
      * @return LtiUser
      */
-    public function findUser($userId, $ltiConsumer, $launchdata = null) {
+    public function findUser(\taoLti_models_classes_LtiLaunchData $ltiContext)
+    {
         $class = new \core_kernel_classes_Class(self::CLASS_LTI_USER);
         $instances = $class->searchInstances(array(
-            self::PROPERTY_USER_LTIKEY		=> $userId,
-            self::PROPERTY_USER_LTICONSUMER	=> $ltiConsumer
+            self::PROPERTY_USER_LTIKEY => $ltiContext->getUserID(),
+            self::PROPERTY_USER_LTICONSUMER => \taoLti_models_classes_LtiService::singleton()->getLtiConsumerResource($ltiContext)
         ), array(
-            'like'	=> false
+            'like' => false
         ));
         if (count($instances) > 1) {
             throw new \taoLti_models_classes_LtiException(
-                'Multiple user accounts found for user key \''.$userId.'\'',
+                'Multiple user accounts found for user key \'' . $ltiContext->getUserID() . '\'',
                 LtiErrorMessage::ERROR_SYSTEM_ERROR
             );
         }
         /** @var \core_kernel_classes_Resource $instance */
-        if(count($instances) == 1){
+        if (count($instances) == 1) {
             $instance = current($instances);
             $properties = $instance->getPropertiesValues(
                 [
@@ -71,14 +73,42 @@ class OntologyLtiUserService extends LtiUserService
                     PROPERTY_USER_FIRSTNAME,
                     PROPERTY_USER_LASTNAME,
                     PROPERTY_USER_MAIL,
-                    PROPERTY_USER_ROLES
+                    PROPERTY_USER_ROLES,
+                    self::PROPERTY_USER_LAUNCHDATA
                 ]
             );
 
 
-            $roles = $this->getRoles($properties[PROPERTY_USER_ROLES]);
-            return new LtiUser($launchdata, $instance->getUri(), $roles, (string)$properties[PROPERTY_USER_UILG][0], (string)$properties[PROPERTY_USER_FIRSTNAME][0], (string)$properties[PROPERTY_USER_LASTNAME][0], (string)$properties[PROPERTY_USER_MAIL][0]);
+            return new LtiUser($ltiContext, $instance->getUri(), $properties[PROPERTY_USER_ROLES], (string)current($properties[PROPERTY_USER_UILG]), (string)current($properties[PROPERTY_USER_FIRSTNAME]), (string)current($properties[PROPERTY_USER_LASTNAME]), (string)current($properties[PROPERTY_USER_MAIL]));
 
+        } else {
+            return null;
+        }
+
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getUserIdentifier($userId, $ltiConsumer)
+    {
+        $class = new \core_kernel_classes_Class(self::CLASS_LTI_USER);
+        $instances = $class->searchInstances(array(
+            self::PROPERTY_USER_LTIKEY => $userId,
+            self::PROPERTY_USER_LTICONSUMER => $ltiConsumer
+        ), array(
+            'like' => false
+        ));
+        if (count($instances) > 1) {
+            throw new \taoLti_models_classes_LtiException(
+                'Multiple user accounts found for user key \'' . $userId . '\'',
+                LtiErrorMessage::ERROR_SYSTEM_ERROR
+            );
+        }
+        /** @var \core_kernel_classes_Resource $instance */
+        if (count($instances) == 1) {
+            $instance = current($instances);
+            return $instance->getUri();
         } else {
             return null;
         }
@@ -91,18 +121,14 @@ class OntologyLtiUserService extends LtiUserService
      * @param \taoLti_models_classes_LtiLaunchData $ltiContext
      * @return LtiUser
      */
-    public function spawnUser(\taoLti_models_classes_LtiLaunchData $ltiContext) {
+    public function spawnUser(\taoLti_models_classes_LtiLaunchData $ltiContext)
+    {
         $class = new \core_kernel_classes_Class(self::CLASS_LTI_USER);
         //$lang = tao_models_classes_LanguageService::singleton()->getLanguageByCode(DEFAULT_LANG);
 
         $props = array(
-            self::PROPERTY_USER_LTIKEY		=> $ltiContext->getUserID(),
-            self::PROPERTY_USER_LTICONSUMER	=> \taoLti_models_classes_LtiService::singleton()->getLtiConsumerResource($ltiContext),
-            /*
-            PROPERTY_USER_UILG			=> $lang,
-            PROPERTY_USER_DEFLG			=> $lang,
-            */
-
+            self::PROPERTY_USER_LTIKEY => $ltiContext->getUserID(),
+            self::PROPERTY_USER_LTICONSUMER => \taoLti_models_classes_LtiService::singleton()->getLtiConsumerResource($ltiContext),
         );
 
         $firstname = '';
@@ -140,10 +166,10 @@ class OntologyLtiUserService extends LtiUserService
         $props[PROPERTY_USER_ROLES] = $roles;
 
         $user = $class->createInstanceWithProperties($props);
-        \common_Logger::i('added User '.$user->getLabel());
+        \common_Logger::i('added User ' . $user->getLabel());
 
 
-        $ltiUser = new LtiUser($ltiContext, $user->getUri(), $roles, $uiLanguage, $firstname, $lastname, $email, $label) ;
+        $ltiUser = new LtiUser($ltiContext, $user->getUri(), $roles, $uiLanguage, $firstname, $lastname, $email, $label);
 
         return $ltiUser;
     }

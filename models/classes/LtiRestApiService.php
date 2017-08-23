@@ -55,14 +55,14 @@ class LtiRestApiService extends \tao_models_classes_Service
 
         /** @var LtiUserService $service */
         $service = $this->getServiceLocator()->get(LtiUserService::SERVICE_ID);
-        $ltiUser = $service->findUser($id, $consumerResource);
+        $userIdentifier = $service->getUserIdentifier($id, $consumerResource);
 
-        if (is_null($ltiUser)) {
+        if (is_null($userIdentifier)) {
             return null;
         }
 
         return array (
-            'id' => $ltiUser->getIdentifier()
+            'id' => $userIdentifier
         );
     }
 }

@@ -1,22 +1,22 @@
 <?php
-/**  
+/**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; under version 2
  * of the License (non-upgradable).
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- * 
- * Copyright (c) 2013 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
- *               
- * 
+ *
+ * Copyright (c) 2017 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
+ *
+ *
  */
 
 namespace oat\taoLti\models\classes\user;
@@ -25,12 +25,11 @@ use oat\oatbox\service\ConfigurableService;
 
 
 /**
- * Authentication adapter interface to be implemented by authentication methodes
+ * Lti user service, allow us to find or spawn a lti user based on launch data
  *
  * @access public
- * @author Joel Bout, <joel@taotesting.com>
+ * @author Antoine Antoine, <joel@taotesting.com>
  * @package taoLti
- 
  */
 abstract class LtiUserService extends ConfigurableService
 {
@@ -44,8 +43,9 @@ abstract class LtiUserService extends ConfigurableService
      * @throws \taoLti_models_classes_LtiException
      * @return LtiUser
      */
-    public function findOrSpawnUser(\taoLti_models_classes_LtiLaunchData $launchData) {
-        $taoUser = $this->findUser($launchData->getUserID(), \taoLti_models_classes_LtiService::singleton()->getLtiConsumerResource($launchData), $launchData);
+    public function findOrSpawnUser(\taoLti_models_classes_LtiLaunchData $launchData)
+    {
+        $taoUser = $this->findUser($launchData);
         if (is_null($taoUser)) {
             $taoUser = $this->spawnUser($launchData);
         }
@@ -55,12 +55,20 @@ abstract class LtiUserService extends ConfigurableService
     /**
      * Searches if this user was already created in TAO
      *
-     * @param string $userId
-     * @param \core_kernel_classes_Resource $ltiConsumer
+     * @param \taoLti_models_classes_LtiLaunchData $ltiContext
      * @throws \taoLti_models_classes_LtiException
      * @return LtiUser
      */
-    abstract public function findUser($userId, $ltiConsumer);
+    abstract public function findUser(\taoLti_models_classes_LtiLaunchData $ltiContext);
+
+
+    /**
+     * Find the tao user identifier related to a lti user id and a consumer
+     * @param string $userId
+     * @param \core_kernel_classes_Resource $consumer
+     * @return mixed
+     */
+    abstract public function getUserIdentifier($userId, $consumer);
 
     /**
      * Creates a new LTI User with the absolute minimum of required informations
@@ -71,7 +79,13 @@ abstract class LtiUserService extends ConfigurableService
     abstract public function spawnUser(\taoLti_models_classes_LtiLaunchData $ltiContext);
 
 
-    protected function determineTaoRoles(\taoLti_models_classes_LtiLaunchData $ltiLaunchData) {
+    /**
+     * Getting tao roles associated to lti roles
+     * @param \taoLti_models_classes_LtiLaunchData $ltiLaunchData
+     * @return array
+     */
+    protected function determineTaoRoles(\taoLti_models_classes_LtiLaunchData $ltiLaunchData)
+    {
         $roles = array();
         if ($ltiLaunchData->hasVariable(\taoLti_models_classes_LtiLaunchData::ROLES)) {
             foreach ($ltiLaunchData->getUserRoles() as $role) {
@@ -86,16 +100,6 @@ abstract class LtiUserService extends ConfigurableService
             $roles = array_unique($roles);
         } else {
             return array(INSTANCE_ROLE_LTI_BASE);
-        }
-        return $roles;
-    }
-
-
-    protected function getRoles($taoRoles) {
-        $roles = array();
-        foreach ($taoRoles as $role){
-            $roles[] = $role->getUri();
-
         }
         return $roles;
     }

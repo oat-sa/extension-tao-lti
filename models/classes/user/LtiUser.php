@@ -1,25 +1,26 @@
 <?php
-/**  
+/**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; under version 2
  * of the License (non-upgradable).
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- * 
+ *
  * Copyright (c) 2013 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
- *               
- * 
+ *
+ *
  */
 
 namespace oat\taoLti\models\classes\user;
+
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorAwareTrait;
 
@@ -30,7 +31,6 @@ use Zend\ServiceManager\ServiceLocatorAwareTrait;
  * @access public
  * @author Joel Bout, <joel@taotesting.com>
  * @package taoLti
- 
  */
 class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface
 {
@@ -71,7 +71,8 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface
      */
     protected $uiLanguage;
 
-    public function __construct($launchData, $userUri, $roles, $language = DEFAULT_LANG, $firstname = '', $lastname = '', $email = '', $label = '') {
+    public function __construct($launchData, $userUri, $roles, $language = DEFAULT_LANG, $firstname = '', $lastname = '', $email = '', $label = '')
+    {
         $this->ltiLaunchData = $launchData;
         $this->userUri = $userUri;
         $this->roles = $roles;
@@ -85,7 +86,8 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface
      * (non-PHPdoc)
      * @see common_user_User::getIdentifier()
      */
-    public function getIdentifier() {
+    public function getIdentifier()
+    {
         return $this->userUri;
     }
 
@@ -99,7 +101,8 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface
      * (non-PHPdoc)
      * @see common_user_User::getPropertyValues()
      */
-    public function getPropertyValues($property) {
+    public function getPropertyValues($property)
+    {
         $returnValue = null;
         switch ($property) {
             case PROPERTY_USER_DEFLG :
@@ -112,13 +115,13 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface
                 $returnValue = $this->roles;
                 break;
             case PROPERTY_USER_FIRSTNAME :
-                    $returnValue = [$this->firstname];
+                $returnValue = [$this->firstname];
                 break;
             case PROPERTY_USER_LASTNAME :
-                    $returnValue = [$this->lastname];
+                $returnValue = [$this->lastname];
                 break;
             default:
-                \common_Logger::d('Unkown property '.$property.' requested from '.__CLASS__);
+                \common_Logger::d('Unkown property ' . $property . ' requested from ' . __CLASS__);
                 $returnValue = array();
         }
         return $returnValue;
@@ -129,7 +132,8 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface
      * (non-PHPdoc)
      * @see common_user_User::refresh()
      */
-    public function refresh() {
+    public function refresh()
+    {
         // nothing to do
     }
 
@@ -140,9 +144,9 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface
      */
     public static function unserialize($data)
     {
-        $user = $data !== false ? json_decode($data,true) : array();
+        $user = $data !== false ? json_decode($data, true) : array();
 
-        if(isset($user['launchData']) && isset($user['userUri']) && isset($user['roles']) && isset($user['language']) && isset($user['firstname']) && isset($user['lastname']) && isset($user['email']) && isset($user['label'])){
+        if (isset($user['launchData']) && isset($user['userUri']) && isset($user['roles']) && isset($user['language']) && isset($user['firstname']) && isset($user['lastname']) && isset($user['email']) && isset($user['label'])) {
             return new self($user['launchData'], $user['userUri'], $user['roles'], $user['language'], $user['firstname'], $user['lastname'], $user['email'], $user['label']);
         }
 
