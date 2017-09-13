@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -14,27 +15,17 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2016 (original work) Open Assessment Technologies SA
+ * Copyright (c) 2013 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
+ *
  *
  */
 
 namespace oat\taoLti\models\classes;
 
-use oat\oatbox\service\ConfigurableService;
-/**
- * Interface containing the Lti Role URIs
- */
-interface LtiRoles
+interface LtiLink
 {
-    const CONTEXT_LEARNER = 'http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#Learner';
-
-    const CONTEXT_INSTRUCTOR = 'http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#Instructor';
-
-    const CONTEXT_TEACHING_ASSISTANT = 'http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#TeachingAssistant';
-
-    const CLASS_ID = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole';
-
-    const PROPERTY_URN = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#RoleURN';
-
-    const INSTANCE_ROLE_LTI_BASE = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiBaseRole';
+    const CLASS_INCOMING = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiIncomingLink';
+    const PROPERTY_ID = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTILinkId';
+    const PROPERTY_CONSUMER = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTILinkConsumer';
+    const PROPERTY_LAUNCH_URL = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#ResourceLinkLaunchUrl';
 }

@@ -18,6 +18,7 @@
  * 
  */
 
+use oat\taoLti\models\classes\LtiRoles;
 /**
  * 
  * @author joel.bout, <joel@taotesting.com>
@@ -55,9 +56,9 @@ class taoLti_models_classes_LtiUtils
             $urn = 'urn:' . strtolower($nid) . ':' . $nss;
             
             // search for fitting role
-            $class = new core_kernel_classes_Class(CLASS_LTI_ROLES);
+            $class = new core_kernel_classes_Class(LtiRoles::CLASS_ID);
             $cand = $class->searchInstances(array(
-                PROPERTY_LTI_ROLES_URN => $urn
+                LtiRoles::PROPERTY_URN => $urn
             ));
             if (count($cand) > 1) {
                 throw new common_exception_Error('Multiple instances share the URN ' . $urn);

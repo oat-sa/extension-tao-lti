@@ -20,6 +20,10 @@
  */
 
 //define specific constants to the taoLti extension:
+
+/**
+ * @deprecated
+ */
 $todefine = array(
 
 	'CLASS_LTI_CONSUMER'			=> 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIConsumer',

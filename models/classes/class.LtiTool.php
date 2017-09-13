@@ -28,6 +28,7 @@
  */
 abstract class taoLti_models_classes_LtiTool extends tao_models_classes_Service
 {
+    const PROPERTY_SERVICE = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#ToolService';
 	/**
 	 * Builds a launch url for this tool
 	 * 
@@ -37,7 +38,7 @@ abstract class taoLti_models_classes_LtiTool extends tao_models_classes_Service
 	public abstract function getLaunchUrl($parameters = array());
 
 	public static function getToolService(core_kernel_classes_Resource $tool) {
-		$services = $tool->getPropertyValues(new core_kernel_classes_Property(PROPERTY_LTITOOL_SERVICE));
+		$services = $tool->getPropertyValues(new core_kernel_classes_Property(self::PROPERTY_SERVICE));
 		if (count($services) > 0) {
 			if (count($services) > 1) {
 				throw new common_exception_Error('Conflicting services for tool '.$tool->getLabel());

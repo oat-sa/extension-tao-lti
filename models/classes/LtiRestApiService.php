@@ -20,6 +20,8 @@
 
 namespace oat\taoLti\models\classes;
 
+use taoLti_models_classes_LtiUser;
+
 class LtiRestApiService extends \tao_models_classes_Service
 {
     protected function getRootClass()
@@ -43,7 +45,7 @@ class LtiRestApiService extends \tao_models_classes_Service
      */
     public function getUserId($id, $key)
     {
-        $class = new \core_kernel_classes_Class(CLASS_LTI_USER);
+        $class = new \core_kernel_classes_Class(taoLti_models_classes_LtiUser::CLASS_USER);
 
         $dataStore = new \tao_models_classes_oauth_DataStore();
         try {
@@ -54,8 +56,8 @@ class LtiRestApiService extends \tao_models_classes_Service
         }
 
         $instances = $class->searchInstances(array(
-            PROPERTY_USER_LTIKEY => $id,
-            PROPERTY_USER_LTICONSUMER => $consumerResource
+            taoLti_models_classes_LtiUser::PROPERTY_KEY => $id,
+            taoLti_models_classes_LtiUser::PROPERTY_CONSUMER  => $consumerResource
         ), array(
             'like'	=> false
         ));

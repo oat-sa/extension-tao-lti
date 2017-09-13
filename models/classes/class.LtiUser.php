@@ -18,6 +18,7 @@
  *               
  * 
  */
+use oat\taoLti\models\classes\LtiRoles;
 use oat\taoLti\models\classes\LtiVariableMissingException;
 
 /**
@@ -31,6 +32,10 @@ use oat\taoLti\models\classes\LtiVariableMissingException;
 class taoLti_models_classes_LtiUser
     extends common_user_User
 {
+    const CLASS_USER = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIUser';
+    const PROPERTY_KEY = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#UserKey';
+    const PROPERTY_CONSUMER = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#UserConsumer';
+
     /**
      * Data with which this session was launched
      * @var taoLti_models_classes_LtiLaunchData
@@ -153,7 +158,7 @@ class taoLti_models_classes_LtiUser
             }
             $roles = array_unique($roles);
         } else {
-            return array(INSTANCE_ROLE_LTI_BASE);
+            return array(LtiRoles::INSTANCE_ROLE_LTI_BASE);
         }
         return $roles;
     }

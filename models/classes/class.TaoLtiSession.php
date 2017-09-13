@@ -20,6 +20,7 @@
  * 
  */
 
+use oat\taoLti\models\classes\LtiLink;
 /**
  * The TAO layer ontop of the LtiSession
  *
@@ -80,12 +81,12 @@ class taoLti_models_classes_TaoLtiSession extends common_session_DefaultSession
     public function getLtiLinkResource()
     {
         if (is_null($this->ltiLink)) {
-            $class = new core_kernel_classes_Class(CLASS_LTI_INCOMINGLINK);
+            $class = new core_kernel_classes_Class(LtiLink::CLASS_INCOMING);
             $consumer = taoLti_models_classes_LtiService::singleton()->getLtiConsumerResource($this->getLaunchData());
             // search for existing resource
             $instances = $class->searchInstances(array(
-                PROPERTY_LTI_LINK_ID => $this->getLaunchData()->getResourceLinkID(),
-                PROPERTY_LTI_LINK_CONSUMER => $consumer
+                LtiLink::PROPERTY_ID => $this->getLaunchData()->getResourceLinkID(),
+                LtiLink::PROPERTY_CONSUMER => $consumer
             ), array(
                 'like' => false,
                 'recursive' => false
@@ -99,8 +100,8 @@ class taoLti_models_classes_TaoLtiSession extends common_session_DefaultSession
             } else {
                 // spawn new link
                 $this->ltiLink = $class->createInstanceWithProperties(array(
-					PROPERTY_LTI_LINK_ID		=> $this->getLaunchData()->getResourceLinkID(),
-					PROPERTY_LTI_LINK_CONSUMER	=> $consumer,
+                    LtiLink::PROPERTY_ID		=> $this->getLaunchData()->getResourceLinkID(),
+                    LtiLink::PROPERTY_CONSUMER 	=> $consumer,
 				));
 			}
 		}
