@@ -100,11 +100,11 @@ class taoLti_models_classes_TaoLtiSession extends common_session_DefaultSession
             } else {
                 // spawn new link
                 $this->ltiLink = $class->createInstanceWithProperties(array(
-                    LtiLink::PROPERTY_ID		=> $this->getLaunchData()->getResourceLinkID(),
-                    LtiLink::PROPERTY_CONSUMER 	=> $consumer,
-				));
-			}
-		}
+                    LtiLink::PROPERTY_ID => $this->getLaunchData()->getResourceLinkID(),
+                    LtiLink::PROPERTY_CONSUMER => $consumer,
+                ));
+            }
+        }
 		return $this->ltiLink;
 	}
 }
