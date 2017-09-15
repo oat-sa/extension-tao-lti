@@ -19,6 +19,7 @@
  * 
  */
 
+use oat\tao\model\TaoOntology;
 use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
 
 /**
@@ -68,7 +69,7 @@ class taoLti_models_classes_LtiService extends tao_models_classes_Service
      */
 	public function getCredential($key) {
 		$class = new core_kernel_classes_Class(CLASS_LTI_CONSUMER);
-		$instances = $class->searchInstances(array(PROPERTY_OAUTH_KEY => $key), array('like' => false));
+		$instances = $class->searchInstances(array(TaoOntology::PROPERTY_OAUTH_KEY => $key), array('like' => false));
 		if (count($instances) == 0) {
 			throw new taoLti_models_classes_LtiException('No Credentials for consumer key '.$key, LtiErrorMessage::ERROR_UNAUTHORIZED);
 		}

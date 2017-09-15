@@ -18,6 +18,8 @@
  * 
  */
 
+use oat\tao\model\TaoOntology;
+
 /**
  * 
  * @author joel.bout, <joel@taotesting.com>
@@ -102,7 +104,7 @@ class taoLti_models_classes_LtiUtils
     {
         if (!empty($code)) {
             $languageService = tao_models_classes_LanguageService::singleton();
-            $usage = new core_kernel_classes_Resource(INSTANCE_LANGUAGE_USAGE_GUI);
+            $usage = new core_kernel_classes_Resource(TaoOntology::INSTANCE_LANGUAGE_USAGE_GUI);
             if ($languageService->isLanguageAvailable($code, $usage)) {
                 return $code;
             }
