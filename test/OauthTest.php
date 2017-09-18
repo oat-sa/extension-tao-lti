@@ -36,7 +36,7 @@ class OauthTestCase extends TaoPhpUnitTestRunner {
 	 */
 	public function setUp() {
 		TaoPhpUnitTestRunner::initTest();
-		$oauthClass = new core_kernel_classes_Class(TaoOntology::CLASS_OAUTH_CONSUMER);
+		$oauthClass = new core_kernel_classes_Class(TaoOntology::CLASS_URI_OAUTH_CONSUMER);
 		$resource = $oauthClass->createInstanceWithProperties(array(
 			TaoOntology::PROPERTY_OAUTH_KEY			    => 'test_key',
 			TaoOntology::PROPERTY_OAUTH_SECRET             => md5(rand()),
