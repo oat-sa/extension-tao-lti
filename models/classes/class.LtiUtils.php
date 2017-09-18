@@ -56,7 +56,7 @@ class taoLti_models_classes_LtiUtils
             $urn = 'urn:' . strtolower($nid) . ':' . $nss;
             
             // search for fitting role
-            $class = new core_kernel_classes_Class(LtiRoles::CLASS_ID);
+            $class = new core_kernel_classes_Class(LtiRoles::CLASS_URI);
             $cand = $class->searchInstances(array(
                 LtiRoles::PROPERTY_URN => $urn
             ));

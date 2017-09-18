@@ -81,7 +81,7 @@ class taoLti_models_classes_TaoLtiSession extends common_session_DefaultSession
     public function getLtiLinkResource()
     {
         if (is_null($this->ltiLink)) {
-            $class = new core_kernel_classes_Class(LtiLink::CLASS_INCOMING);
+            $class = new core_kernel_classes_Class(LtiLink::CLASS_INCOMING_URI);
             $consumer = taoLti_models_classes_LtiService::singleton()->getLtiConsumerResource($this->getLaunchData());
             // search for existing resource
             $instances = $class->searchInstances(array(

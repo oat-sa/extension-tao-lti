@@ -32,7 +32,7 @@ use oat\taoLti\models\classes\LtiVariableMissingException;
 class taoLti_models_classes_LtiUser
     extends common_user_User
 {
-    const CLASS_USER = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIUser';
+    const CLASS_URI = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIUser';
     const PROPERTY_KEY = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#UserKey';
     const PROPERTY_CONSUMER = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#UserConsumer';
 
@@ -158,7 +158,7 @@ class taoLti_models_classes_LtiUser
             }
             $roles = array_unique($roles);
         } else {
-            return array(LtiRoles::INSTANCE_ROLE_LTI_BASE);
+            return array(LtiRoles::PROPERTY_INSTANCE_ROLE_LTI_BASE);
         }
         return $roles;
     }

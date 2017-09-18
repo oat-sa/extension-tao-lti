@@ -24,7 +24,7 @@ namespace oat\taoLti\models\classes;
 
 interface LtiLink
 {
-    const CLASS_INCOMING = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiIncomingLink';
+    const CLASS_INCOMING_URI = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiIncomingLink';
     const PROPERTY_ID = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTILinkId';
     const PROPERTY_CONSUMER = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTILinkConsumer';
     const PROPERTY_LAUNCH_URL = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#ResourceLinkLaunchUrl';

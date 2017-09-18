@@ -116,7 +116,7 @@ class taoLti_models_classes_LtiService extends tao_models_classes_Service
 	 * @return core_kernel_classes_Resource
 	 */
 	public function findUser(taoLti_models_classes_LtiLaunchData $ltiContext) {
-		$class = new core_kernel_classes_Class(taoLti_models_classes_LtiUser::CLASS_USER);
+		$class = new core_kernel_classes_Class(taoLti_models_classes_LtiUser::CLASS_URI);
 		$instances = $class->searchInstances(array(
             taoLti_models_classes_LtiUser::PROPERTY_KEY => $ltiContext->getUserID(),
             taoLti_models_classes_LtiUser::PROPERTY_CONSUMER => $this->getLtiConsumerResource($ltiContext)
@@ -139,7 +139,7 @@ class taoLti_models_classes_LtiService extends tao_models_classes_Service
 	 * @return core_kernel_classes_Resource
 	 */
 	public function spawnUser(taoLti_models_classes_LtiLaunchData $ltiContext) {
-		$class = new core_kernel_classes_Class(taoLti_models_classes_LtiUser::CLASS_USER);
+		$class = new core_kernel_classes_Class(taoLti_models_classes_LtiUser::CLASS_URI);
 		//$lang = tao_models_classes_LanguageService::singleton()->getLanguageByCode(DEFAULT_LANG);
                 
 		$props = array(

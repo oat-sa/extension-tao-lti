@@ -45,7 +45,7 @@ class LtiRestApiService extends \tao_models_classes_Service
      */
     public function getUserId($id, $key)
     {
-        $class = new \core_kernel_classes_Class(taoLti_models_classes_LtiUser::CLASS_USER);
+        $class = new \core_kernel_classes_Class(taoLti_models_classes_LtiUser::CLASS_URI);
 
         $dataStore = new \tao_models_classes_oauth_DataStore();
         try {
