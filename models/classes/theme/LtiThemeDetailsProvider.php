@@ -14,53 +14,48 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2015 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
+ * Copyright (c) 2017 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
  *
  */
+
 namespace oat\taoLti\models\classes\theme;
 
-use oat\tao\model\theme\ThemeService;
-/**
- * 
- * @author Joel Bout
- *
- * @deprecated Set the LtiThemeIdProvider (ThemeIdProviderInterface) to the ThemeService as option and use getTheme method!
- */
-class LtiThemeSwitcher extends ThemeService implements LtiHeadless {
+use oat\tao\model\theme\ThemeDetailsProviderInterface;
 
-    const OPTION_HEADLESS_PAGE = 'headless_page';
-    
-    const LTI_VARIABLE = 'custom_theme';
-    const LTI_PRESENTATION_TARGET = 'launch_presentation_document_target';
-    
-    public function getTheme()
+class LtiThemeDetailsProvider implements ThemeDetailsProviderInterface
+{
+    const LTI_CUSTOM_THEME_VARIABLE = 'custom_theme';
+    const LTI_PRESENTATION_TARGET   = 'launch_presentation_document_target';
+
+    /**
+     * @inheritdoc
+     */
+    public function getThemeId()
     {
         $currentSession = \common_session_SessionManager::getSession();
         if ($currentSession instanceof \taoLti_models_classes_TaoLtiSession) {
             $launchData = $currentSession->getLaunchData();
-            if ($launchData->hasVariable(self::LTI_VARIABLE) && $this->hasTheme($launchData->getVariable(self::LTI_VARIABLE))) {
-                return $this->getThemeById($launchData->getVariable(self::LTI_VARIABLE));
+            if ($launchData->hasVariable(static::LTI_CUSTOM_THEME_VARIABLE)) {
+                return $launchData->getVariable(static::LTI_CUSTOM_THEME_VARIABLE);
             }
         }
 
-        return parent::getTheme();
+        return '';
     }
-
 
     /**
      * Tells if the page has to be headless: without header and footer.
+     *
      * @return bool|mixed
      */
     public function isHeadless()
     {
-        if ($this->hasOption(self::OPTION_HEADLESS_PAGE)) {
-            return $this->getOption(self::OPTION_HEADLESS_PAGE);
-        }
-        
         $currentSession = \common_session_SessionManager::getSession();
         if ($currentSession instanceof \taoLti_models_classes_TaoLtiSession) {
             $launchData = $currentSession->getLaunchData();
-            $presentationTarget = $launchData->hasVariable(self::LTI_PRESENTATION_TARGET) ? $launchData->getVariable(self::LTI_PRESENTATION_TARGET) : '';
+            $presentationTarget = $launchData->hasVariable(static::LTI_PRESENTATION_TARGET)
+                ? $launchData->getVariable(self::LTI_PRESENTATION_TARGET)
+                : '';
             return $presentationTarget == 'frame' || $presentationTarget == 'iframe';
         }
         
