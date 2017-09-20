@@ -20,10 +20,14 @@
 
 namespace oat\taoLti\models\classes\theme;
 
+use oat\oatbox\PhpSerializable;
+use oat\oatbox\PhpSerializeStateless;
 use oat\tao\model\theme\ThemeDetailsProviderInterface;
 
-class LtiThemeDetailsProvider implements ThemeDetailsProviderInterface
+class LtiThemeDetailsProvider implements ThemeDetailsProviderInterface, PhpSerializable
 {
+    use PhpSerializeStateless;
+
     const LTI_CUSTOM_THEME_VARIABLE = 'custom_theme';
     const LTI_PRESENTATION_TARGET   = 'launch_presentation_document_target';
 
