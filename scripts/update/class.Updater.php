@@ -74,6 +74,6 @@ class taoLti_scripts_update_Updater extends \common_ext_ExtensionUpdater
             $this->setVersion('2.1.0');
         }
 
-        $this->skip('2.1.0', '3.2.4');
+        $this->skip('2.1.0', '3.3.1');
     }
 }
