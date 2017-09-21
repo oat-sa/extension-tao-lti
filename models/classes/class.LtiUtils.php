@@ -59,7 +59,7 @@ class taoLti_models_classes_LtiUtils
             // search for fitting role
             $class = new core_kernel_classes_Class(LtiRoles::CLASS_URI);
             $cand = $class->searchInstances(array(
-                LtiRoles::URN => $urn
+                LtiRoles::PROPERTY_URN => $urn
             ));
             if (count($cand) > 1) {
                 throw new common_exception_Error('Multiple instances share the URN ' . $urn);
