@@ -32,7 +32,7 @@ interface LtiRoles
 
     const CLASS_URI = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole';
 
-    const PROPERTY_URN = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#RoleURN';
+    const URN = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#RoleURN';
 
     const PROPERTY_INSTANCE_ROLE_LTI_BASE = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiBaseRole';
 }

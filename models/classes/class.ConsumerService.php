@@ -30,12 +30,6 @@ class taoLti_models_classes_ConsumerService
 {
     const CLASS_URI = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIConsumer';
 
-    const PROPERTY_INSTANCE_CONSUMER_SERVICE = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#ServiceLtiConsumer';
-
-    const PROPERTY_INSTANCE_FORMAL_PARAM_CONSUMER = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiConsumerUri';
-
-    const PROPERTY_INSTANCE_FORMAL_PARAM_LAUNCH_URL = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiLaunchUrl';
-
     /**
      * return the group top level class
      *
