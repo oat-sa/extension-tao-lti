@@ -54,7 +54,7 @@ class OntologyLtiUserService extends LtiUserService
         $class = new \core_kernel_classes_Class(self::CLASS_LTI_USER);
         $instances = $class->searchInstances(array(
             self::PROPERTY_USER_LTIKEY => $ltiContext->getUserID(),
-            self::PROPERTY_USER_LTICONSUMER => \taoLti_models_classes_LtiService::singleton()->getLtiConsumerResource($ltiContext)
+            self::PROPERTY_USER_LTICONSUMER => $ltiContext->getLtiConsumer()
         ), array(
             'like' => false
         ));
@@ -128,7 +128,7 @@ class OntologyLtiUserService extends LtiUserService
 
         $props = array(
             self::PROPERTY_USER_LTIKEY => $ltiContext->getUserID(),
-            self::PROPERTY_USER_LTICONSUMER => \taoLti_models_classes_LtiService::singleton()->getLtiConsumerResource($ltiContext),
+            self::PROPERTY_USER_LTICONSUMER => $ltiContext->getLtiConsumer(),
         );
 
         $firstname = '';

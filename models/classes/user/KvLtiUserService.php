@@ -62,7 +62,7 @@ class KvLtiUserService extends LtiUserService
      */
     public function findUser(\taoLti_models_classes_LtiLaunchData $ltiContext)
     {
-        $ltiConsumer = \taoLti_models_classes_LtiService::singleton()->getLtiConsumerResource($ltiContext);
+        $ltiConsumer = $ltiContext->getLtiConsumer();
         $data = $this->getPersistence()->get(self::LTI_USER . $ltiContext->getUserID() . $ltiConsumer->getUri());
         if ($data === false) {
             return null;
@@ -124,7 +124,7 @@ class KvLtiUserService extends LtiUserService
         $userId = $ltiContext->getUserID();
 
         $ltiUser = new LtiUser($ltiContext, $userId, $roles, $uiLanguage, $firstname, $lastname, $email, $label);
-        $ltiConsumer = \taoLti_models_classes_LtiService::singleton()->getLtiConsumerResource($ltiContext);
+        $ltiConsumer = $ltiContext->getLtiConsumer();
         $this->getPersistence()->set(self::LTI_USER . $userId . $ltiConsumer->getUri(), json_encode($ltiUser));
 
         return $ltiUser;
