@@ -77,14 +77,15 @@ class taoLti_scripts_update_Updater extends \common_ext_ExtensionUpdater
             $this->setVersion('2.1.0');
         }
 
-        $this->skip('2.1.0', '3.2.4');
+        $this->skip('2.1.0', '3.3.1');
 
-        if ($this->isVersion('3.2.4')) {
+        if ($this->isVersion('3.3.1')) {
             $service = new OntologyLtiUserService();
             $service->setServiceManager($this->getServiceManager());
             $this->getServiceManager()->register(LtiUserService::SERVICE_ID, $service);
 
-            $this->setVersion('3.3.0');
+            $this->setVersion('3.4.0');
         }
+
     }
 }
