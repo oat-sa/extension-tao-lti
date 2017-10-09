@@ -84,13 +84,14 @@ class taoLti_models_classes_LtiService extends tao_models_classes_Service
 	 *
 	 * @access public
 	 * @author Joel Bout, <joel@taotesting.com>
-	 * @return core_kernel_classes_Resource resource of LtiConsumer
+	 * @param taoLti_models_classes_LtiLaunchData $launchData
+     * @return core_kernel_classes_Resource resource of LtiConsumer
 	 * @throws tao_models_classes_oauth_Exception thrown if no Consumer found for key
+     * @deprecated use taoLti_models_classes_LtiLaunchData::getLtiConsumer instead
 	 */
 	public function getLtiConsumerResource($launchData)
 	{
-        $dataStore = new tao_models_classes_oauth_DataStore();
-        return $dataStore->findOauthConsumerResource($launchData->getOauthKey());
+	    return $launchData->getLtiConsumer();
 	}
 		
 	/**
@@ -120,7 +121,7 @@ class taoLti_models_classes_LtiService extends tao_models_classes_Service
 		$class = new core_kernel_classes_Class(CLASS_LTI_USER);
 		$instances = $class->searchInstances(array(
 			PROPERTY_USER_LTIKEY		=> $ltiContext->getUserID(),
-			PROPERTY_USER_LTICONSUMER	=> $this->getLtiConsumerResource($ltiContext)
+			PROPERTY_USER_LTICONSUMER	=> $ltiContext->getLtiConsumer()
 		), array(
 			'like'	=> false
 		));
@@ -145,7 +146,7 @@ class taoLti_models_classes_LtiService extends tao_models_classes_Service
                 
 		$props = array(
 			PROPERTY_USER_LTIKEY		=> $ltiContext->getUserID(),
-			PROPERTY_USER_LTICONSUMER	=> $this->getLtiConsumerResource($ltiContext),
+			PROPERTY_USER_LTICONSUMER	=> $ltiContext->getLtiConsumer(),
 		    /*
 			PROPERTY_USER_UILG			=> $lang,
 			PROPERTY_USER_DEFLG			=> $lang,
