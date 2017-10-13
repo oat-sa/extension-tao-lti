@@ -68,7 +68,7 @@ class KvLtiUserService extends LtiUserService
             return null;
         }
 
-        $ltiUser = LtiUser::unSerialize($data);
+        $ltiUser = LtiUser::unserialize($data);
 
         return $ltiUser;
     }
