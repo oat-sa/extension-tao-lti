@@ -28,6 +28,8 @@ interface LtiRoles
 {
     const CONTEXT_INSTRUCTOR = 'http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#Instructor';
 
+    const INSTANCE_CONTEXT_LEARNER = 'http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#Learner';
+
     const CONTEXT_TEACHING_ASSISTANT = 'http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#TeachingAssistant';
 
     const CLASS_URI = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole';
