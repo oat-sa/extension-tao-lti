@@ -55,6 +55,11 @@ class taoLti_models_classes_LtiLaunchData
      * @var array
      */
     private $customParams;
+
+    /**
+     * @var core_kernel_classes_Resource
+     */
+    private $ltiConsumer;
     
     
     /**
@@ -205,6 +210,20 @@ class taoLti_models_classes_LtiLaunchData
             : $this->hasVariable(self::TOOL_CONSUMER_INSTANCE_DESCRIPTION)
                 ? $this->getVariable(self::TOOL_CONSUMER_INSTANCE_DESCRIPTION)
                 : null;
+    }
+
+    /**
+     * @return core_kernel_classes_Resource
+     * @throws tao_models_classes_oauth_Exception
+     */
+    public function getLtiConsumer()
+    {
+        if(is_null($this->ltiConsumer)){
+            $dataStore = new tao_models_classes_oauth_DataStore();
+            $this->ltiConsumer = $dataStore->findOauthConsumerResource($this->getOauthKey());
+        }
+
+        return $this->ltiConsumer;
     }
     
     /**

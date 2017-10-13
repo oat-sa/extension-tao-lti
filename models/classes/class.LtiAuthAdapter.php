@@ -20,6 +20,7 @@
  */
 
 use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
+use oat\taoLti\models\classes\user\LtiUserService;
 
 /**
  * Authentication adapter interface to be implemented by authentication methods
@@ -29,8 +30,11 @@ use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
  * @package taoLti
  */
 class taoLti_models_classes_LtiAuthAdapter
-	implements common_user_auth_Adapter
+	implements common_user_auth_Adapter, \Zend\ServiceManager\ServiceLocatorAwareInterface
 {
+
+    use \Zend\ServiceManager\ServiceLocatorAwareTrait;
+
     /**
      * 
      * @var common_http_Request
@@ -56,7 +60,9 @@ class taoLti_models_classes_LtiAuthAdapter
         try {
             $service->validate($this->request);
         	$ltiLaunchData = taoLti_models_classes_LtiLaunchData::fromRequest($this->request);
-        	return new taoLti_models_classes_LtiUser($ltiLaunchData);
+        	/** @var LtiUserService $userService */
+        	$userService = $this->getServiceLocator()->get(LtiUserService::SERVICE_ID);
+        	return $userService->findOrSpawnUser($ltiLaunchData);
         } catch (common_http_InvalidSignatureException $e) {
             throw new taoLti_models_classes_LtiException('Invalid LTI signature', LtiErrorMessage::ERROR_UNAUTHORIZED);
         }
