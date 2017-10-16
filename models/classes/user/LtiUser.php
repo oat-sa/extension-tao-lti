@@ -75,12 +75,20 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface
     {
         $this->ltiLaunchData = $launchData;
         $this->userUri = $userUri;
-        $this->roles = $roles;
+        $this->roles = $this->setRoles($roles);
         $this->language = $language;
         $this->firstname = $firstname;
         $this->lastname = $lastname;
         $this->email = $email;
     }
+
+    private function setRoles($roles)
+    {
+        return array_map(function($value){
+            return ($value instanceof \core_kernel_classes_Resource) ? $value->getUri() : $value;
+        }, $roles);
+    }
+
 
     /**
      * (non-PHPdoc)
