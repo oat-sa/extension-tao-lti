@@ -38,7 +38,7 @@ class OntologyLtiUserService extends LtiUserService
 
     const PROPERTY_USER_LTIKEY = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#UserKey';
 
-    const CLASS_LTI_USER = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIConsumer';
+    const CLASS_LTI_USER = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIUser';
 
     const PROPERTY_USER_LAUNCHDATA = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LaunchData';
 
@@ -78,9 +78,16 @@ class OntologyLtiUserService extends LtiUserService
                 ]
             );
 
+            $roles = $this->determineTaoRoles($ltiContext);
 
-            return new LtiUser($ltiContext, $instance->getUri(), $properties[PROPERTY_USER_ROLES], (string)current($properties[PROPERTY_USER_UILG]), (string)current($properties[PROPERTY_USER_FIRSTNAME]), (string)current($properties[PROPERTY_USER_LASTNAME]), (string)current($properties[PROPERTY_USER_MAIL]));
+            $ltiUser = new LtiUser($ltiContext, $instance->getUri(), $properties[PROPERTY_USER_ROLES], (string)current($properties[PROPERTY_USER_UILG]), (string)current($properties[PROPERTY_USER_FIRSTNAME]), (string)current($properties[PROPERTY_USER_LASTNAME]), (string)current($properties[PROPERTY_USER_MAIL]));
 
+            if($roles !== array(INSTANCE_ROLE_LTI_BASE)){
+                $ltiUser->setRoles($roles);
+                $instance->editPropertyValues(new \core_kernel_classes_Property(PROPERTY_USER_ROLES), $roles);
+            }
+
+            return $ltiUser;
         } else {
             return null;
         }
