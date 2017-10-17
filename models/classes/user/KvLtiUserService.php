@@ -70,6 +70,13 @@ class KvLtiUserService extends LtiUserService
 
         $ltiUser = LtiUser::unserialize($data);
 
+        $roles = $this->determineTaoRoles($ltiContext);
+        if($roles !== array(INSTANCE_ROLE_LTI_BASE)){
+            $ltiUser->setRoles($roles);
+            $this->getPersistence()->set(self::LTI_USER . $ltiContext->getUserID() . $ltiConsumer->getUri(), json_encode($ltiUser));
+        }
+
+
         return $ltiUser;
     }
 
