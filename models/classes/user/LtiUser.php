@@ -32,7 +32,7 @@ use Zend\ServiceManager\ServiceLocatorAwareTrait;
  * @author Joel Bout, <joel@taotesting.com>
  * @package taoLti
  */
-class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface
+class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface, \JsonSerializable
 {
     use ServiceLocatorAwareTrait;
 
@@ -75,18 +75,21 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface
     {
         $this->ltiLaunchData = $launchData;
         $this->userUri = $userUri;
-        $this->roles = $this->setRoles($roles);
+        $this->setRoles($roles);
         $this->language = $language;
         $this->firstname = $firstname;
         $this->lastname = $lastname;
         $this->email = $email;
+        $this->label = $label;
     }
 
-    private function setRoles($roles)
+    public function setRoles($roles)
     {
-        return array_map(function($value){
+        $newRoles = array_map(function($value){
             return ($value instanceof \core_kernel_classes_Resource) ? $value->getUri() : $value;
         }, $roles);
+
+        $this->roles = $newRoles;
     }
 
 
@@ -155,7 +158,7 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface
         $user = $data !== false ? json_decode($data, true) : array();
 
         if (isset($user['launchData']) && isset($user['userUri']) && isset($user['roles']) && isset($user['language']) && isset($user['firstname']) && isset($user['lastname']) && isset($user['email']) && isset($user['label'])) {
-            return new self($user['launchData'], $user['userUri'], $user['roles'], $user['language'], $user['firstname'], $user['lastname'], $user['email'], $user['label']);
+            return new self(unserialize($user['launchData']), $user['userUri'], $user['roles'], $user['language'], $user['firstname'], $user['lastname'], $user['email'], $user['label']);
         }
 
         return null;
@@ -165,7 +168,7 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface
     public function jsonSerialize()
     {
         return [
-            'launchData' => $this->ltiLaunchData,
+            'launchData' => serialize($this->ltiLaunchData),
             'userUri' => $this->userUri,
             'roles' => $this->roles,
             'language' => $this->language,
