@@ -79,8 +79,11 @@ class OntologyLtiUserService extends LtiUserService
             );
 
             $roles = $this->determineTaoRoles($ltiContext);
-
-            $ltiUser = new LtiUser($ltiContext, $instance->getUri(), $properties[PROPERTY_USER_ROLES], (string)current($properties[PROPERTY_USER_UILG]), (string)current($properties[PROPERTY_USER_FIRSTNAME]), (string)current($properties[PROPERTY_USER_LASTNAME]), (string)current($properties[PROPERTY_USER_MAIL]));
+            $lang = current($properties[PROPERTY_USER_UILG]);
+            if ($lang instanceof \core_kernel_classes_Resource) {
+                $lang = $lang->getOnePropertyValue(new \core_kernel_classes_Property(RDF_VALUE))->literal;
+            }
+            $ltiUser = new LtiUser($ltiContext, $instance->getUri(), $properties[PROPERTY_USER_ROLES], $lang, (string)current($properties[PROPERTY_USER_FIRSTNAME]), (string)current($properties[PROPERTY_USER_LASTNAME]), (string)current($properties[PROPERTY_USER_MAIL]));
 
             if($roles !== array(INSTANCE_ROLE_LTI_BASE)){
                 $ltiUser->setRoles($roles);
