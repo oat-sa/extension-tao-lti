@@ -79,8 +79,14 @@ class OntologyLtiUserService extends LtiUserService
             );
 
             $roles = $this->determineTaoRoles($ltiContext);
-
-            $ltiUser = new LtiUser($ltiContext, $instance->getUri(), $properties[PROPERTY_USER_ROLES], (string)current($properties[PROPERTY_USER_UILG]), (string)current($properties[PROPERTY_USER_FIRSTNAME]), (string)current($properties[PROPERTY_USER_LASTNAME]), (string)current($properties[PROPERTY_USER_MAIL]));
+            $lang = current($properties[PROPERTY_USER_UILG]);
+            
+            // In case of the language is a Language Resource in Ontology, get its code.
+            if ($lang instanceof \core_kernel_classes_Resource) {
+                $lang = \tao_models_classes_LanguageService::getCode($lang);
+            }
+            
+            $ltiUser = new LtiUser($ltiContext, $instance->getUri(), $properties[PROPERTY_USER_ROLES], $lang, (string)current($properties[PROPERTY_USER_FIRSTNAME]), (string)current($properties[PROPERTY_USER_LASTNAME]), (string)current($properties[PROPERTY_USER_MAIL]));
 
             if($roles !== array(INSTANCE_ROLE_LTI_BASE)){
                 $ltiUser->setRoles($roles);
@@ -131,7 +137,6 @@ class OntologyLtiUserService extends LtiUserService
     public function spawnUser(\taoLti_models_classes_LtiLaunchData $ltiContext)
     {
         $class = new \core_kernel_classes_Class(self::CLASS_LTI_USER);
-        //$lang = tao_models_classes_LanguageService::singleton()->getLanguageByCode(DEFAULT_LANG);
 
         $props = array(
             self::PROPERTY_USER_LTIKEY => $ltiContext->getUserID(),
@@ -149,7 +154,8 @@ class OntologyLtiUserService extends LtiUserService
             $uiLanguage = DEFAULT_LANG;
         }
 
-        $props[PROPERTY_USER_UILG] = $uiLanguage;
+        $languageResource = \tao_models_classes_LanguageService::singleton()->getLanguageByCode($uiLanguage);
+        $props[PROPERTY_USER_UILG] = $languageResource->getUri();
 
         if ($ltiContext->hasVariable(\taoLti_models_classes_LtiLaunchData::LIS_PERSON_NAME_FULL)) {
             $label = $ltiContext->getUserFullName();
