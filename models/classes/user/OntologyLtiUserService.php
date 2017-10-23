@@ -84,6 +84,8 @@ class OntologyLtiUserService extends LtiUserService
             // In case of the language is a Language Resource in Ontology, get its code.
             if ($lang instanceof \core_kernel_classes_Resource) {
                 $lang = \tao_models_classes_LanguageService::getCode($lang);
+            } elseif (empty($lang)) {
+                $lang = DEFAULT_LANG;
             }
             
             $ltiUser = new LtiUser($ltiContext, $instance->getUri(), $properties[PROPERTY_USER_ROLES], $lang, (string)current($properties[PROPERTY_USER_FIRSTNAME]), (string)current($properties[PROPERTY_USER_LASTNAME]), (string)current($properties[PROPERTY_USER_MAIL]));
