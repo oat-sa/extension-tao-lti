@@ -95,6 +95,7 @@ class OntologyLtiUserService extends LtiUserService
                 $instance->editPropertyValues(new \core_kernel_classes_Property(PROPERTY_USER_ROLES), $roles);
             }
 
+            \common_Logger::t("LTI User '" . $ltiUser->getIdentifier() . "' found.");
             return $ltiUser;
         } else {
             return null;
