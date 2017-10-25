@@ -20,6 +20,7 @@
  * 
  */
 
+use oat\taoLti\models\classes\user\LtiUser;
 use oat\taoLti\models\classes\LtiLink;
 /**
  * The TAO layer ontop of the LtiSession
@@ -37,7 +38,7 @@ class taoLti_models_classes_TaoLtiSession extends common_session_DefaultSession
      */
     private $ltiLink = null;
 
-    public function __construct(taoLti_models_classes_LtiUser $user)
+    public function __construct(LtiUser $user)
     {
         parent::__construct($user);
     }
@@ -82,7 +83,7 @@ class taoLti_models_classes_TaoLtiSession extends common_session_DefaultSession
     {
         if (is_null($this->ltiLink)) {
             $class = new core_kernel_classes_Class(LtiLink::CLASS_INCOMING_URI);
-            $consumer = taoLti_models_classes_LtiService::singleton()->getLtiConsumerResource($this->getLaunchData());
+            $consumer = $this->getLaunchData()->getLtiConsumer();
             // search for existing resource
             $instances = $class->searchInstances(array(
                 LtiLink::PROPERTY_ID => $this->getLaunchData()->getResourceLinkID(),

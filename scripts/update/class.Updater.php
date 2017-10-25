@@ -1,5 +1,5 @@
 <?php
-use oat\tao\scripts\update\OntologyUpdater;
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -20,9 +20,12 @@ use oat\tao\scripts\update\OntologyUpdater;
  *
  */
 
+use oat\tao\scripts\update\OntologyUpdater;
 use oat\tao\model\mvc\error\ExceptionInterpreterService;
 use oat\taoLti\models\classes\CookieVerifyService;
 use oat\taoLti\models\classes\ExceptionInterpreter;
+use oat\taoLti\models\classes\user\OntologyLtiUserService;
+use oat\taoLti\models\classes\user\LtiUserService;
 /**
  * 
  * @author Joel Bout <joel@taotesting.com>
@@ -73,6 +76,17 @@ class taoLti_scripts_update_Updater extends \common_ext_ExtensionUpdater
 
             $this->setVersion('2.1.0');
         }
-        $this->skip('2.1.0', '3.3.2');
+
+        $this->skip('2.1.0', '3.3.1');
+
+        if ($this->isVersion('3.3.1')) {
+            $service = new OntologyLtiUserService();
+            $service->setServiceManager($this->getServiceManager());
+            $this->getServiceManager()->register(LtiUserService::SERVICE_ID, $service);
+
+            $this->setVersion('3.4.0');
+        }
+        $this->skip('3.4.0', '3.4.4');
+
     }
 }
