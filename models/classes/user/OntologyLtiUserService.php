@@ -66,6 +66,8 @@ class OntologyLtiUserService extends LtiUserService
             if (is_null($taoUser)) {
                 $taoUser = $this->spawnUser($launchData);
             }
+            
+            return $taoUser;
         } else {
             // Transaction safe approach.
             $platform = $dataModel->getPersistence()->getPlatform();            
