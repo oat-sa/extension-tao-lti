@@ -59,7 +59,7 @@ class OntologyLtiUserService extends LtiUserService
         $transactionSafe = $this->getOption(self::OPTION_TRANSACTION_SAFE);
         
         if (!$dataModel instanceof \core_kernel_persistence_smoothsql_SmoothModel || !$transactionSafe) {
-            // Non-transaction safe approach.
+            // Non-transaction safe approach (default).
             $taoUser = $this->findUser($launchData);
             if (is_null($taoUser)) {
                 $taoUser = $this->spawnUser($launchData);
