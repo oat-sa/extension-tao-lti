@@ -43,6 +43,8 @@ class OntologyLtiUserService extends LtiUserService
     const PROPERTY_USER_LAUNCHDATA = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LaunchData';
     
     const OPTION_TRANSACTION_SAFE = 'transaction-safe';
+    
+    const OPTION_TRANSACTION_SAFE_RETRY = 'transaction-safe-retry';
 
     /**
      * Returns the existing tao User that corresponds to
@@ -66,25 +68,37 @@ class OntologyLtiUserService extends LtiUserService
             }
         } else {
             // Transaction safe approach.
-            $platform = $dataModel->getPersistence()->getPlatform();
-            $platform->beginTransaction();
+            $platform = $dataModel->getPersistence()->getPlatform();            
+            $retry = 0;
+            $maxRetry = $this->getRetryOption();
             
-            // As the following instructions produce a Critical Section, we need SERIALIZABLE SQL Isolation Level.
-            $platform->setTransactionIsolation(\common_persistence_sql_Platform::TRANSACTION_SERIALIZABLE);
-            
-            try {
-                $taoUser = $this->findUser($launchData);
-                if (is_null($taoUser)) {
-                    $taoUser = $this->spawnUser($launchData);
+            while ($retry <= $maxRetry) {
+                // As the following instructions produce a Critical Section, we need SERIALIZABLE SQL Isolation Level.
+                $platform->beginTransaction(\common_persistence_sql_Platform::TRANSACTION_SERIALIZABLE);
+                
+                try {
+                    $taoUser = $this->findUser($launchData);
+                    
+                    if (is_null($taoUser)) {
+                        $taoUser = $this->spawnUser($launchData);
+                    }
+                    
+                    $platform->commit();
+                    
+                    return $taoUser;
+                } catch (\common_persistence_sql_SerializationException $e) {
+                    // Serialization failures may occur. Useful reading below:
+                    // - https://www.postgresql.org/docs/9.5/static/transaction-iso.html
+                    // - https://dev.mysql.com/doc/refman/5.7/en/innodb-deadlocks.html
+                    \common_Logger::d('SQL Serialization Failure occured in ' . __CLASS__ . '::' . __LINE__ . ' while finding or spawing LTI Ontology user. Retried ' . $retry . ' times.');
+                    $retry++;
+                } catch (\Exception $e) {
+                    \common_Logger::i(get_class($e));
+                    $platform->rollback();
+                    throw new \taoLti_models_classes_LtiException('LTI Ontology user could not be created. Process had to be rolled back.', 0, $e);
                 }
-                $platform->commit();
-            } catch (\Exception $e) {
-                $platform->rollback();
             }
         }
-        
-        
-        return $taoUser;
     }
 
     /**
@@ -234,5 +248,12 @@ class OntologyLtiUserService extends LtiUserService
 
         return $ltiUser;
     }
-
+    
+    public function getRetryOption()
+    {
+        $retryOption = $this->getOption(self::OPTION_TRANSACTION_SAFE_RETRY);
+        
+        // Arbitrary default is 1.
+        return ($retryOption) ? $retryOption : 1;
+    }
 }
