@@ -248,7 +248,7 @@ class OntologyLtiUserService extends LtiUserService
         return $ltiUser;
     }
     
-    public function getRetryOption()
+    private function getRetryOption()
     {
         $retryOption = $this->getOption(self::OPTION_TRANSACTION_SAFE_RETRY);
         
