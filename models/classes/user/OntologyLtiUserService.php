@@ -68,6 +68,8 @@ class OntologyLtiUserService extends LtiUserService
             // Transaction safe approach.
             $platform = $dataModel->getPersistence()->getPlatform();
             $platform->beginTransaction();
+            
+            // As the following instructions produce a Critical Section, we need SERIALIZABLE SQL Isolation Level.
             $platform->setTransactionIsolation(\common_persistence_sql_Platform::TRANSACTION_SERIALIZABLE);
             
             try {
