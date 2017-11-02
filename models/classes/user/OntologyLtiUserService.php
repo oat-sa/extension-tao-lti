@@ -22,7 +22,7 @@
 namespace oat\taoLti\models\classes\user;
 
 use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
-
+use oat\generis\model\data\ModelManager;
 
 /**
  * Ontology implementation of the lti user service
@@ -41,6 +41,49 @@ class OntologyLtiUserService extends LtiUserService
     const CLASS_LTI_USER = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIUser';
 
     const PROPERTY_USER_LAUNCHDATA = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LaunchData';
+    
+    const OPTION_TRANSACTION_SAFE = 'transaction-safe';
+
+    /**
+     * Returns the existing tao User that corresponds to
+     * the LTI request or spawns it. Overriden to implement
+     * transaction safe implementation for Ontology Storage.
+     *
+     * @param \taoLti_models_classes_LtiLaunchData $launchData
+     * @throws \taoLti_models_classes_LtiException
+     * @return LtiUser
+     */
+    public function findOrSpawnUser(\taoLti_models_classes_LtiLaunchData $launchData)
+    {
+        $dataModel = ModelManager::getModel();
+        $transactionSafe = $this->getOption(self::OPTION_TRANSACTION_SAFE);
+        
+        if (!$dataModel instanceof \core_kernel_persistence_smoothsql_SmoothModel || !$transactionSafe) {
+            // Non-transaction safe approach.
+            $taoUser = $this->findUser($launchData);
+            if (is_null($taoUser)) {
+                $taoUser = $this->spawnUser($launchData);
+            }
+        } else {
+            // Transaction safe approach.
+            $platform = $dataModel->getPersistence()->getPlatform();
+            $platform->beginTransaction();
+            $platform->setTransactionIsolation(\common_persistence_sql_Platform::TRANSACTION_SERIALIZABLE);
+            
+            try {
+                $taoUser = $this->findUser($launchData);
+                if (is_null($taoUser)) {
+                    $taoUser = $this->spawnUser($launchData);
+                }
+                $platform->commit();
+            } catch (\Exception $e) {
+                $platform->rollback();
+            }
+        }
+        
+        
+        return $taoUser;
+    }
 
     /**
      * Searches if this user was already created in TAO
