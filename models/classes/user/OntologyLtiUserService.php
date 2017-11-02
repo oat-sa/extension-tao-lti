@@ -93,7 +93,6 @@ class OntologyLtiUserService extends LtiUserService
                     \common_Logger::d('SQL Serialization Failure occured in ' . __CLASS__ . '::' . __LINE__ . ' while finding or spawing LTI Ontology user. Retried ' . $retry . ' times.');
                     $retry++;
                 } catch (\Exception $e) {
-                    \common_Logger::i(get_class($e));
                     $platform->rollback();
                     throw new \taoLti_models_classes_LtiException('LTI Ontology user could not be created. Process had to be rolled back.', 0, $e);
                 }
