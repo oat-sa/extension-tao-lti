@@ -73,10 +73,12 @@ class OntologyLtiUserService extends LtiUserService
             $platform = $dataModel->getPersistence()->getPlatform();            
             $retry = 0;
             $maxRetry = $this->getRetryOption();
+            $previousIsolationLevel = $platform->getTransactionIsolation();
             
             while ($retry <= $maxRetry) {
                 // As the following instructions produce a Critical Section, we need SERIALIZABLE SQL Isolation Level.
-                $platform->beginTransaction(\common_persistence_sql_Platform::TRANSACTION_SERIALIZABLE);
+                $platform->setTransactionIsolation(\common_persistence_sql_Platform::TRANSACTION_SERIALIZABLE);
+                $platform->beginTransaction();
                 
                 try {
                     $taoUser = $this->findUser($launchData);
@@ -92,11 +94,19 @@ class OntologyLtiUserService extends LtiUserService
                     // Serialization failures may occur. Useful reading below:
                     // - https://www.postgresql.org/docs/9.5/static/transaction-iso.html
                     // - https://dev.mysql.com/doc/refman/5.7/en/innodb-deadlocks.html
-                    \common_Logger::d('SQL Serialization Failure occured in ' . __CLASS__ . '::' . __LINE__ . ' while finding or spawing LTI Ontology user. Retried ' . $retry . ' times.');
+                    
+                    // Will be a WARNING for Sprint-64 only. After this point, will go to DEBUG level.
+                    \common_Logger::w('SQL Serialization Failure occured in ' . __CLASS__ . '::' . __LINE__ . ' while finding or spawing LTI Ontology user. Retried ' . $retry . ' times.');
                     $retry++;
                 } catch (\Exception $e) {
-                    $platform->rollback();
+                    if ($platform->isTransactionActive()) {
+                        $platform->rollback();
+                    }
+                    
                     throw new \taoLti_models_classes_LtiException('LTI Ontology user could not be created. Process had to be rolled back.', 0, $e);
+                } finally {
+                    // Reset isolation level to previous one!
+                    $platform->setTransactionIsolation($previousIsolationLevel);
                 }
             }
         }
