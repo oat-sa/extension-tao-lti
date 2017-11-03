@@ -86,7 +86,15 @@ class taoLti_scripts_update_Updater extends \common_ext_ExtensionUpdater
 
             $this->setVersion('3.4.0');
         }
-        $this->skip('3.4.0', '3.5.0');
-
+        
+        if ($this->isVersion('3.4.0')) {
+            $userService = $this->getServiceManager()->get(LtiUserService::SERVICE_ID);
+            if ($userService instanceof OntologyLtiUserService) {
+                $userService->setOption(OntologyLtiUserService::OPTION_TRANSACTION_SAFE, false);
+                $userService->setOption(OPTION_TRANSACTION_SAFE_RETRY, 1);
+            }
+            
+            $this->setVersion('3.5.0');
+        }
     }
 }
