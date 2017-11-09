@@ -22,7 +22,7 @@
 namespace oat\taoLti\models\classes\user;
 
 use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
-
+use oat\generis\model\data\ModelManager;
 
 /**
  * Ontology implementation of the lti user service
@@ -41,6 +41,76 @@ class OntologyLtiUserService extends LtiUserService
     const CLASS_LTI_USER = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIUser';
 
     const PROPERTY_USER_LAUNCHDATA = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LaunchData';
+    
+    const OPTION_TRANSACTION_SAFE = 'transaction-safe';
+    
+    const OPTION_TRANSACTION_SAFE_RETRY = 'transaction-safe-retry';
+
+    /**
+     * Returns the existing tao User that corresponds to
+     * the LTI request or spawns it. Overriden to implement
+     * transaction safe implementation for Ontology Storage.
+     *
+     * @param \taoLti_models_classes_LtiLaunchData $launchData
+     * @throws \taoLti_models_classes_LtiException
+     * @return LtiUser
+     */
+    public function findOrSpawnUser(\taoLti_models_classes_LtiLaunchData $launchData)
+    {
+        $dataModel = ModelManager::getModel();
+        $transactionSafe = $this->getOption(self::OPTION_TRANSACTION_SAFE);
+        
+        if (!$dataModel instanceof \core_kernel_persistence_smoothsql_SmoothModel || !$transactionSafe) {
+            // Non-transaction safe approach (default).
+            $taoUser = $this->findUser($launchData);
+            if (is_null($taoUser)) {
+                $taoUser = $this->spawnUser($launchData);
+            }
+            
+            return $taoUser;
+        } else {
+            // Transaction safe approach.
+            $platform = $dataModel->getPersistence()->getPlatform();            
+            $retry = 0;
+            $maxRetry = $this->getRetryOption();
+            $previousIsolationLevel = $platform->getTransactionIsolation();
+            
+            while ($retry <= $maxRetry) {
+                // As the following instructions produce a Critical Section, we need SERIALIZABLE SQL Isolation Level.
+                $platform->setTransactionIsolation(\common_persistence_sql_Platform::TRANSACTION_SERIALIZABLE);
+                $platform->beginTransaction();
+                
+                try {
+                    $taoUser = $this->findUser($launchData);
+                    
+                    if (is_null($taoUser)) {
+                        $taoUser = $this->spawnUser($launchData);
+                    }
+                    
+                    $platform->commit();
+                    
+                    return $taoUser;
+                } catch (\common_persistence_sql_SerializationException $e) {
+                    // Serialization failures may occur. Useful reading below:
+                    // - https://www.postgresql.org/docs/9.5/static/transaction-iso.html
+                    // - https://dev.mysql.com/doc/refman/5.7/en/innodb-deadlocks.html
+                    
+                    // Will be a WARNING for Sprint-64 only. After this point, will go to DEBUG level.
+                    \common_Logger::w('SQL Serialization Failure occured in ' . __CLASS__ . '::' . __LINE__ . ' while finding or spawing LTI Ontology user. Retried ' . $retry . ' times.');
+                    $retry++;
+                } catch (\Exception $e) {
+                    if ($platform->isTransactionActive()) {
+                        $platform->rollback();
+                    }
+                    
+                    throw new \taoLti_models_classes_LtiException('LTI Ontology user could not be created. Process had to be rolled back.', 0, $e);
+                } finally {
+                    // Reset isolation level to previous one!
+                    $platform->setTransactionIsolation($previousIsolationLevel);
+                }
+            }
+        }
+    }
 
     /**
      * Searches if this user was already created in TAO
@@ -189,5 +259,12 @@ class OntologyLtiUserService extends LtiUserService
 
         return $ltiUser;
     }
-
+    
+    private function getRetryOption()
+    {
+        $retryOption = $this->getOption(self::OPTION_TRANSACTION_SAFE_RETRY);
+        
+        // Arbitrary default is 1.
+        return ($retryOption) ? $retryOption : 1;
+    }
 }
