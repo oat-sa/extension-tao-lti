@@ -149,19 +149,30 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
     }
 
     /**
-     * @param $data string json representing a lti user
-     * @throws \taoLti_models_classes_LtiException
+     * @param $dataArray
+     * @param \taoLti_models_classes_LtiLaunchData $ltiContext
+     *
      * @return LtiUser
+     * @throws \Exception
      */
-    public static function unserialize($data)
+    public static function createFromArrayWithLtiContext($dataArray, \taoLti_models_classes_LtiLaunchData $ltiContext)
     {
-        $user = $data !== false ? json_decode($data, true) : array();
-
-        if (isset($user['launchData']) && isset($user['userUri']) && isset($user['roles']) && isset($user['language']) && isset($user['firstname']) && isset($user['lastname']) && isset($user['email']) && isset($user['label'])) {
-            return new self(unserialize($user['launchData']), $user['userUri'], $user['roles'], $user['language'], $user['firstname'], $user['lastname'], $user['email'], $user['label']);
+        if (isset($dataArray['userUri'])
+            && isset($dataArray['roles'])
+        ) {
+            return new self(
+                $ltiContext,
+                $dataArray['userUri'],
+                $dataArray['roles'],
+                $dataArray['language'],
+                $dataArray['firstname'] ?? '' ,
+                $dataArray['lastname'] ?? '',
+                $dataArray['email'] ?? '',
+                $dataArray['label'] ?? ''
+            );
         }
 
-        return null;
+        throw new \Exception('Insufficient data provided to create LtiUser');
     }
 
 

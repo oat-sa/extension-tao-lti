@@ -68,7 +68,7 @@ class KvLtiUserService extends LtiUserService
             return null;
         }
 
-        $ltiUser = LtiUser::unserialize($data);
+        $ltiUser = LtiUser::createFromArrayWithLtiContext($this->unserialize($data), $ltiContext);
 
         $roles = $this->determineTaoRoles($ltiContext);
         if($roles !== array(INSTANCE_ROLE_LTI_BASE)){
@@ -135,5 +135,15 @@ class KvLtiUserService extends LtiUserService
         $this->getPersistence()->set(self::LTI_USER . $userId . $ltiConsumer->getUri(), json_encode($ltiUser));
 
         return $ltiUser;
+    }
+
+    /**
+     * @param $data string json representing a lti user
+     *
+     * @return array
+     */
+    protected function unserialize($data)
+    {
+        return $data !== false ? json_decode($data, true) : array();
     }
 }
