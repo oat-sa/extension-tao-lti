@@ -118,6 +118,7 @@ class OntologyLtiUserService extends LtiUserService
      * @param \taoLti_models_classes_LtiLaunchData $ltiContext
      * @throws \taoLti_models_classes_LtiException
      * @return LtiUser
+     * @throws \Exception
      */
     public function findUser(\taoLti_models_classes_LtiLaunchData $ltiContext)
     {
@@ -157,8 +158,18 @@ class OntologyLtiUserService extends LtiUserService
             } elseif (empty($lang)) {
                 $lang = DEFAULT_LANG;
             }
-            
-            $ltiUser = new LtiUser($ltiContext, $instance->getUri(), $properties[PROPERTY_USER_ROLES], $lang, (string)current($properties[PROPERTY_USER_FIRSTNAME]), (string)current($properties[PROPERTY_USER_LASTNAME]), (string)current($properties[PROPERTY_USER_MAIL]));
+
+            $ltiUser = LtiUser::createFromArrayWithLtiContext(
+                [
+                    'userUri' => $instance->getUri(),
+                    'roles' => $properties[PROPERTY_USER_ROLES],
+                    'language' => $lang,
+                    'firstname' => (string)current($properties[PROPERTY_USER_FIRSTNAME]),
+                    'lastname' => (string)current($properties[PROPERTY_USER_LASTNAME]),
+                    'email' => (string)current($properties[PROPERTY_USER_MAIL]),
+                ],
+                $ltiContext
+            );
 
             if($roles !== array(INSTANCE_ROLE_LTI_BASE)){
                 $ltiUser->setRoles($roles);
