@@ -37,4 +37,6 @@ interface LtiRoles
     const PROPERTY_URN = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#RoleURN';
 
     const INSTANCE_ROLE_LTI_BASE = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiBaseRole';
+
+    const CONTEXT_ADMINISTRATOR = 'http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#Administrator';
 }
