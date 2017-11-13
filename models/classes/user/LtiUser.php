@@ -165,10 +165,10 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
                 $dataArray['userUri'],
                 $dataArray['roles'],
                 $dataArray['language'],
-                (!is_null($dataArray['firstname'])) ? $dataArray['firstname'] : '' ,
-                (!is_null($dataArray['lastname'])) ? $dataArray['lastname'] : '',
-                (!is_null($dataArray['email'])) ? $dataArray['email'] : '',
-                (!is_null($dataArray['label'])) ? $dataArray['label'] : ''
+                (isset($dataArray['firstname'])) ? $dataArray['firstname'] : '' ,
+                (isset($dataArray['lastname'])) ? $dataArray['lastname'] : '',
+                (isset($dataArray['email'])) ? $dataArray['email'] : '',
+                (isset($dataArray['label'])) ? $dataArray['label'] : ''
             );
         }
 
