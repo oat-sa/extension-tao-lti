@@ -112,77 +112,46 @@ class OntologyLtiUserService extends LtiUserService
         }
     }
 
-    /**
-     * Searches if this user was already created in TAO
-     *
-     * @param \taoLti_models_classes_LtiLaunchData $ltiContext
-     * @throws \taoLti_models_classes_LtiException
-     * @return LtiUser
-     * @throws \Exception
-     */
-    public function findUser(\taoLti_models_classes_LtiLaunchData $ltiContext)
+    protected function updateUser(LtiUser $user, \taoLti_models_classes_LtiLaunchData $ltiContext)
     {
-        $class = new \core_kernel_classes_Class(self::CLASS_LTI_USER);
-        $instances = $class->searchInstances(array(
-            self::PROPERTY_USER_LTIKEY => $ltiContext->getUserID(),
-            self::PROPERTY_USER_LTICONSUMER => $ltiContext->getLtiConsumer()
-        ), array(
-            'like' => false
-        ));
-        if (count($instances) > 1) {
-            throw new \taoLti_models_classes_LtiException(
-                'Multiple user accounts found for user key \'' . $ltiContext->getUserID() . '\'',
-                LtiErrorMessage::ERROR_SYSTEM_ERROR
-            );
-        }
-        /** @var \core_kernel_classes_Resource $instance */
-        if (count($instances) == 1) {
-            $instance = current($instances);
-            $properties = $instance->getPropertiesValues(
-                [
-                    PROPERTY_USER_UILG,
-                    PROPERTY_USER_FIRSTNAME,
-                    PROPERTY_USER_LASTNAME,
-                    PROPERTY_USER_MAIL,
-                    PROPERTY_USER_ROLES,
-                    self::PROPERTY_USER_LAUNCHDATA
-                ]
-            );
 
-            $roles = $this->determineTaoRoles($ltiContext);
-            $lang = current($properties[PROPERTY_USER_UILG]);
-            
-            // In case of the language is a Language Resource in Ontology, get its code.
-            if ($lang instanceof \core_kernel_classes_Resource) {
-                $lang = \tao_models_classes_LanguageService::singleton()->getCode($lang);
-            } elseif (empty($lang)) {
-                $lang = DEFAULT_LANG;
+        $userResource = new \core_kernel_classes_Resource($user->getIdentifier());
+
+        if($userResource->exists()){
+
+            $properties = $userResource->getPropertiesValues([
+                PROPERTY_USER_UILG,
+                PROPERTY_USER_FIRSTNAME,
+                PROPERTY_USER_LASTNAME,
+                PROPERTY_USER_MAIL,
+                PROPERTY_USER_ROLE,
+            ]);
+
+            foreach ($properties as $key => $values){
+                if($values != $user->getPropertyValues($key)){
+                    $userResource->editPropertyValues(new \core_kernel_classes_Property($key), $user->getPropertyValues($key));
+                }
             }
-
-            $ltiUser = LtiUser::createFromArrayWithLtiContext(
-                [
-                    'userUri' => $instance->getUri(),
-                    'roles' => $properties[PROPERTY_USER_ROLES],
-                    'language' => $lang,
-                    'firstname' => (string)current($properties[PROPERTY_USER_FIRSTNAME]),
-                    'lastname' => (string)current($properties[PROPERTY_USER_LASTNAME]),
-                    'email' => (string)current($properties[PROPERTY_USER_MAIL]),
-                ],
-                $ltiContext
-            );
-
-            if($roles !== array(INSTANCE_ROLE_LTI_BASE)){
-                $ltiUser->setRoles($roles);
-                $instance->editPropertyValues(new \core_kernel_classes_Property(PROPERTY_USER_ROLES), $roles);
-            }
-
-            \common_Logger::t("LTI User '" . $ltiUser->getIdentifier() . "' found.");
-            return $ltiUser;
         } else {
-            return null;
+            $class = new \core_kernel_classes_Class(self::CLASS_LTI_USER);
+
+            $props = array(
+                self::PROPERTY_USER_LTIKEY => $ltiContext->getUserID(),
+                self::PROPERTY_USER_LTICONSUMER => $ltiContext->getLtiConsumer(),
+                PROPERTY_USER_UILG => $user->getPropertyValues(PROPERTY_USER_UILG),
+                RDFS_LABEL => $user->getPropertyValues(RDFS_LABEL),
+                PROPERTY_USER_FIRSTNAME => $user->getPropertyValues(PROPERTY_USER_FIRSTNAME),
+                PROPERTY_USER_LASTNAME => $user->getPropertyValues(PROPERTY_USER_LASTNAME),
+                PROPERTY_USER_MAIL => $user->getPropertyValues(PROPERTY_USER_MAIL),
+                PROPERTY_USER_ROLES => $user->getPropertyValues(PROPERTY_USER_ROLES),
+            );
+
+            $user = $class->createInstanceWithProperties($props);
+            \common_Logger::i('added User ' . $user->getLabel());
         }
 
     }
+
 
     /**
      * @inheritdoc
@@ -212,64 +181,6 @@ class OntologyLtiUserService extends LtiUserService
 
     }
 
-    /**
-     * Creates a new LTI User with the absolute minimum of required informations
-     *
-     * @param \taoLti_models_classes_LtiLaunchData $ltiContext
-     * @return LtiUser
-     */
-    public function spawnUser(\taoLti_models_classes_LtiLaunchData $ltiContext)
-    {
-        $class = new \core_kernel_classes_Class(self::CLASS_LTI_USER);
-
-        $props = array(
-            self::PROPERTY_USER_LTIKEY => $ltiContext->getUserID(),
-            self::PROPERTY_USER_LTICONSUMER => $ltiContext->getLtiConsumer(),
-        );
-
-        $firstname = '';
-        $lastname = '';
-        $email = '';
-        $label = '';
-        if ($ltiContext->hasLaunchLanguage()) {
-            $launchLanguage = $ltiContext->getLaunchLanguage();
-            $uiLanguage = \taoLti_models_classes_LtiUtils::mapCode2InterfaceLanguage($launchLanguage);
-        } else {
-            $uiLanguage = DEFAULT_LANG;
-        }
-
-        $languageResource = \tao_models_classes_LanguageService::singleton()->getLanguageByCode($uiLanguage);
-        $props[PROPERTY_USER_UILG] = $languageResource->getUri();
-
-        if ($ltiContext->hasVariable(\taoLti_models_classes_LtiLaunchData::LIS_PERSON_NAME_FULL)) {
-            $label = $ltiContext->getUserFullName();
-            $props[RDFS_LABEL] = $label;
-        }
-
-        if ($ltiContext->hasVariable(\taoLti_models_classes_LtiLaunchData::LIS_PERSON_NAME_GIVEN)) {
-            $firstname = $ltiContext->getUserGivenName();
-            $props[PROPERTY_USER_FIRSTNAME] = $firstname;
-        }
-        if ($ltiContext->hasVariable(\taoLti_models_classes_LtiLaunchData::LIS_PERSON_NAME_FAMILY)) {
-            $lastname = $ltiContext->getUserFamilyName();
-            $props[PROPERTY_USER_LASTNAME] = $lastname;
-        }
-        if ($ltiContext->hasVariable(\taoLti_models_classes_LtiLaunchData::LIS_PERSON_CONTACT_EMAIL_PRIMARY)) {
-            $email = $ltiContext->getUserEmail();;
-            $props[PROPERTY_USER_MAIL] = $email;
-        }
-
-        $roles = $this->determineTaoRoles($ltiContext);
-        $props[PROPERTY_USER_ROLES] = $roles;
-
-        $user = $class->createInstanceWithProperties($props);
-        \common_Logger::i('added User ' . $user->getLabel());
-
-
-        $ltiUser = new LtiUser($ltiContext, $user->getUri(), $roles, $uiLanguage, $firstname, $lastname, $email, $label);
-
-        return $ltiUser;
-    }
     
     private function getRetryOption()
     {

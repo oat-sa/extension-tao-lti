@@ -56,28 +56,9 @@ class KvLtiUserService extends LtiUserService
         return $this->persistence;
     }
 
-
-    /**
-     * @inheritdoc
-     */
-    public function findUser(\taoLti_models_classes_LtiLaunchData $ltiContext)
+    protected function updateUser(LtiUser $user, \taoLti_models_classes_LtiLaunchData $ltiContext)
     {
-        $ltiConsumer = $ltiContext->getLtiConsumer();
-        $data = $this->getPersistence()->get(self::LTI_USER . $ltiContext->getUserID() . $ltiConsumer->getUri());
-        if ($data === false) {
-            return null;
-        }
-
-        $ltiUser = LtiUser::createFromArrayWithLtiContext($this->unserialize($data), $ltiContext);
-
-        $roles = $this->determineTaoRoles($ltiContext);
-        if($roles !== array(INSTANCE_ROLE_LTI_BASE)){
-            $ltiUser->setRoles($roles);
-            $this->getPersistence()->set(self::LTI_USER . $ltiContext->getUserID() . $ltiConsumer->getUri(), json_encode($ltiUser));
-        }
-
-
-        return $ltiUser;
+        $this->getPersistence()->set(self::LTI_USER . $ltiContext->getUserID() . $ltiContext->getLtiConsumer()->getUri(), json_encode($user));
     }
 
     /**
@@ -90,60 +71,5 @@ class KvLtiUserService extends LtiUserService
             return null;
         }
         return $userId;
-    }
-
-
-    /**
-     * @inheritdoc
-     */
-    public function spawnUser(\taoLti_models_classes_LtiLaunchData $ltiContext)
-    {
-
-        $firstname = '';
-        $lastname = '';
-        $email = '';
-        $label = '';
-
-        if ($ltiContext->hasLaunchLanguage()) {
-            $launchLanguage = $ltiContext->getLaunchLanguage();
-            $uiLanguage = \taoLti_models_classes_LtiUtils::mapCode2InterfaceLanguage($launchLanguage);
-        } else {
-            $uiLanguage = DEFAULT_LANG;
-        }
-
-
-        if ($ltiContext->hasVariable(\taoLti_models_classes_LtiLaunchData::LIS_PERSON_NAME_FULL)) {
-            $label = $ltiContext->getUserFullName();
-        }
-
-        if ($ltiContext->hasVariable(\taoLti_models_classes_LtiLaunchData::LIS_PERSON_NAME_GIVEN)) {
-            $firstname = $ltiContext->getUserGivenName();
-        }
-        if ($ltiContext->hasVariable(\taoLti_models_classes_LtiLaunchData::LIS_PERSON_NAME_FAMILY)) {
-            $lastname = $ltiContext->getUserFamilyName();
-        }
-        if ($ltiContext->hasVariable(\taoLti_models_classes_LtiLaunchData::LIS_PERSON_CONTACT_EMAIL_PRIMARY)) {
-            $email = $ltiContext->getUserEmail();;
-        }
-
-        $roles = $this->determineTaoRoles($ltiContext);
-
-        $userId = $ltiContext->getUserID();
-
-        $ltiUser = new LtiUser($ltiContext, $userId, $roles, $uiLanguage, $firstname, $lastname, $email, $label);
-        $ltiConsumer = $ltiContext->getLtiConsumer();
-        $this->getPersistence()->set(self::LTI_USER . $userId . $ltiConsumer->getUri(), json_encode($ltiUser));
-
-        return $ltiUser;
-    }
-
-    /**
-     * @param $data string json representing a lti user
-     *
-     * @return array
-     */
-    protected function unserialize($data)
-    {
-        return $data !== false ? json_decode($data, true) : array();
     }
 }
