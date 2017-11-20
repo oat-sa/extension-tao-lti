@@ -124,7 +124,7 @@ class OntologyLtiUserService extends LtiUserService
                 PROPERTY_USER_FIRSTNAME,
                 PROPERTY_USER_LASTNAME,
                 PROPERTY_USER_MAIL,
-                PROPERTY_USER_ROLE,
+                PROPERTY_USER_ROLES,
             ]);
 
             foreach ($properties as $key => $values){
