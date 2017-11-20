@@ -71,11 +71,39 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
      */
     protected $uiLanguage;
 
-    public function __construct($launchData, $userUri, $roles, $language = DEFAULT_LANG, $firstname = '', $lastname = '', $email = '', $label = '')
+    public function __construct($launchData, $userUri)
     {
         $this->ltiLaunchData = $launchData;
         $this->userUri = $userUri;
-        $this->setRoles($roles);
+        $this->setRoles($this->determineTaoRoles($launchData));
+
+
+        $firstname = '';
+        $lastname = '';
+        $email = '';
+        $label = '';
+
+        if ($launchData->hasLaunchLanguage()) {
+            $launchLanguage = $launchData->getLaunchLanguage();
+            $language = \taoLti_models_classes_LtiUtils::mapCode2InterfaceLanguage($launchLanguage);
+        } else {
+            $language = DEFAULT_LANG;
+        }
+
+        if ($launchData->hasVariable(\taoLti_models_classes_LtiLaunchData::LIS_PERSON_NAME_FULL)) {
+            $label = $launchData->getUserFullName();
+        }
+
+        if ($launchData->hasVariable(\taoLti_models_classes_LtiLaunchData::LIS_PERSON_NAME_GIVEN)) {
+            $firstname = $launchData->getUserGivenName();
+        }
+        if ($launchData->hasVariable(\taoLti_models_classes_LtiLaunchData::LIS_PERSON_NAME_FAMILY)) {
+            $lastname = $launchData->getUserFamilyName();
+        }
+        if ($launchData->hasVariable(\taoLti_models_classes_LtiLaunchData::LIS_PERSON_CONTACT_EMAIL_PRIMARY)) {
+            $email = $launchData->getUserEmail();;
+        }
+
         $this->language = $language;
         $this->firstname = $firstname;
         $this->lastname = $lastname;
@@ -131,6 +159,9 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
             case PROPERTY_USER_LASTNAME :
                 $returnValue = [$this->lastname];
                 break;
+            case RDFS_LABEL :
+                $returnValue = [$this->label];
+                break;
             default:
                 \common_Logger::d('Unkown property ' . $property . ' requested from ' . __CLASS__);
                 $returnValue = array();
@@ -148,38 +179,10 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
         // nothing to do
     }
 
-    /**
-     * @param $dataArray
-     * @param \taoLti_models_classes_LtiLaunchData $ltiContext
-     *
-     * @return LtiUser
-     * @throws \Exception
-     */
-    public static function createFromArrayWithLtiContext($dataArray, \taoLti_models_classes_LtiLaunchData $ltiContext)
-    {
-        if (isset($dataArray['userUri'])
-            && isset($dataArray['roles'])
-        ) {
-            return new self(
-                $ltiContext,
-                $dataArray['userUri'],
-                $dataArray['roles'],
-                $dataArray['language'],
-                (isset($dataArray['firstname'])) ? $dataArray['firstname'] : '' ,
-                (isset($dataArray['lastname'])) ? $dataArray['lastname'] : '',
-                (isset($dataArray['email'])) ? $dataArray['email'] : '',
-                (isset($dataArray['label'])) ? $dataArray['label'] : ''
-            );
-        }
-
-        throw new \Exception('Insufficient data provided to create LtiUser');
-    }
-
 
     public function jsonSerialize()
     {
         return [
-            'launchData' => serialize($this->ltiLaunchData),
             'userUri' => $this->userUri,
             'roles' => $this->roles,
             'language' => $this->language,
@@ -188,6 +191,31 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
             'email' => $this->email,
             'label' => $this->label,
         ];
+    }
+
+    /**
+     * Getting tao roles associated to lti roles
+     * @param \taoLti_models_classes_LtiLaunchData $ltiLaunchData
+     * @return array
+     */
+    protected function determineTaoRoles(\taoLti_models_classes_LtiLaunchData $ltiLaunchData)
+    {
+        $roles = array();
+        if ($ltiLaunchData->hasVariable(\taoLti_models_classes_LtiLaunchData::ROLES)) {
+            foreach ($ltiLaunchData->getUserRoles() as $role) {
+                $taoRole = \taoLti_models_classes_LtiUtils::mapLTIRole2TaoRole($role);
+                if (!is_null($taoRole)) {
+                    $roles[] = $taoRole;
+                    foreach (\core_kernel_users_Service::singleton()->getIncludedRoles(new \core_kernel_classes_Resource($taoRole)) as $includedRole) {
+                        $roles[] = $includedRole->getUri();
+                    }
+                }
+            }
+            $roles = array_unique($roles);
+        } else {
+            return array(INSTANCE_ROLE_LTI_BASE);
+        }
+        return $roles;
     }
 
 }
