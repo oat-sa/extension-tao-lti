@@ -90,6 +90,8 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
             $language = DEFAULT_LANG;
         }
 
+        $languageResource = \tao_models_classes_LanguageService::singleton()->getLanguageByCode($language);
+
         if ($launchData->hasVariable(\taoLti_models_classes_LtiLaunchData::LIS_PERSON_NAME_FULL)) {
             $label = $launchData->getUserFullName();
         }
@@ -104,7 +106,7 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
             $email = $launchData->getUserEmail();;
         }
 
-        $this->language = $language;
+        $this->language = $languageResource;
         $this->firstname = $firstname;
         $this->lastname = $lastname;
         $this->email = $email;
@@ -148,7 +150,13 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
                 $returnValue = array(DEFAULT_LANG);
                 break;
             case PROPERTY_USER_UILG :
-                $returnValue = array($this->language);
+                if($this->language instanceof \core_kernel_classes_Resource){
+                    $code = \tao_models_classes_LanguageService::singleton()->getCode($this->language);
+                    $returnValue = array($code);
+                } else{
+                    $returnValue = array($this->language);
+                }
+                \common_Logger::w(var_export($returnValue,true));
                 break;
             case PROPERTY_USER_ROLES :
                 $returnValue = $this->roles;
@@ -185,7 +193,7 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
         return [
             'userUri' => $this->userUri,
             'roles' => $this->roles,
-            'language' => $this->language,
+            'language' => $this->language->getUri(),
             'firstname' => $this->firstname,
             'lastname' => $this->lastname,
             'email' => $this->email,
