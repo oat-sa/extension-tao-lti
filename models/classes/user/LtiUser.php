@@ -156,7 +156,6 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
                 } else{
                     $returnValue = array($this->language);
                 }
-                \common_Logger::w(var_export($returnValue,true));
                 break;
             case PROPERTY_USER_ROLES :
                 $returnValue = $this->roles;
