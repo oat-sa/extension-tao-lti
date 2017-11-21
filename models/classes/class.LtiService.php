@@ -46,6 +46,7 @@ class taoLti_models_classes_LtiService extends tao_models_classes_Service
         $this->getServiceLocator()->propagate($adapter);
         $user = $adapter->authenticate();
         $session = new taoLti_models_classes_TaoLtiSession($user);
+        $this->getServiceLocator()->propagate($session);
         common_session_SessionManager::startSession($session);
 	}
 	
