@@ -59,8 +59,29 @@ abstract class LtiUserService extends ConfigurableService
      * @throws \taoLti_models_classes_LtiException
      * @return LtiUser
      */
-    abstract public function findUser(\taoLti_models_classes_LtiLaunchData $ltiContext);
+    public function findUser(\taoLti_models_classes_LtiLaunchData $ltiContext)
+    {
+        $ltiConsumer = $ltiContext->getLtiConsumer();
+        $userId = $this->getUserIdentifier($ltiContext->getUserID(), $ltiConsumer->getUri());
+        if (is_null($userId)) {
+            return null;
+        }
 
+        $ltiUser = new LtiUser($ltiContext, $userId);
+
+        \common_Logger::t("LTI User '" . $ltiUser->getIdentifier() . "' found.");
+
+        $this->updateUser($ltiUser, $ltiContext);
+
+        return $ltiUser;
+    }
+
+    /**
+     * @param LtiUser $user
+     * @param \taoLti_models_classes_LtiLaunchData $ltiContext
+     * @return mixed
+     */
+    abstract protected function updateUser(LtiUser $user, \taoLti_models_classes_LtiLaunchData $ltiContext);
 
     /**
      * Find the tao user identifier related to a lti user id and a consumer
@@ -76,31 +97,14 @@ abstract class LtiUserService extends ConfigurableService
      * @param \taoLti_models_classes_LtiLaunchData $ltiContext
      * @return LtiUser
      */
-    abstract public function spawnUser(\taoLti_models_classes_LtiLaunchData $ltiContext);
-
-
-    /**
-     * Getting tao roles associated to lti roles
-     * @param \taoLti_models_classes_LtiLaunchData $ltiLaunchData
-     * @return array
-     */
-    protected function determineTaoRoles(\taoLti_models_classes_LtiLaunchData $ltiLaunchData)
+    public function spawnUser(\taoLti_models_classes_LtiLaunchData $ltiContext)
     {
-        $roles = array();
-        if ($ltiLaunchData->hasVariable(\taoLti_models_classes_LtiLaunchData::ROLES)) {
-            foreach ($ltiLaunchData->getUserRoles() as $role) {
-                $taoRole = \taoLti_models_classes_LtiUtils::mapLTIRole2TaoRole($role);
-                if (!is_null($taoRole)) {
-                    $roles[] = $taoRole;
-                    foreach (\core_kernel_users_Service::singleton()->getIncludedRoles(new \core_kernel_classes_Resource($taoRole)) as $includedRole) {
-                        $roles[] = $includedRole->getUri();
-                    }
-                }
-            }
-            $roles = array_unique($roles);
-        } else {
-            return array(INSTANCE_ROLE_LTI_BASE);
-        }
-        return $roles;
+        $userId = $ltiContext->getUserID();
+
+        $ltiUser = new LtiUser($ltiContext, $userId);
+
+        $this->updateUser($ltiUser, $ltiContext);
+
+        return $ltiUser;
     }
 }
