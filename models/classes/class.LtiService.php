@@ -46,6 +46,7 @@ class taoLti_models_classes_LtiService extends tao_models_classes_Service
         $this->getServiceLocator()->propagate($adapter);
         $user = $adapter->authenticate();
         $session = new taoLti_models_classes_TaoLtiSession($user);
+        $this->getServiceLocator()->propagate($session);
         common_session_SessionManager::startSession($session);
 	}
 	
@@ -93,83 +94,5 @@ class taoLti_models_classes_LtiService extends tao_models_classes_Service
 	{
 	    return $launchData->getLtiConsumer();
 	}
-		
-	/**
-	 * Returns the existing tao User that corresponds to
-	 * the LTI request or spawns it
-	 * 
-	 * @param taoLti_models_classes_LtiLaunchData $launchData
-	 * @throws taoLti_models_classes_LtiException
-	 * @return core_kernel_classes_Resource
-	 */
-	public function findOrSpawnUser(taoLti_models_classes_LtiLaunchData $launchData) {
-	    $taoUser = $this->findUser($launchData);
-	    if (is_null($taoUser)) {
-	        $taoUser = $this->spawnUser($launchData);
-	    }
-	    return $taoUser;
-	}
-	
-	/**
-	 * Searches if this user was already created in TAO
-	 * 
-	 * @param taoLti_models_classes_LtiLaunchData $ltiContext
-	 * @throws taoLti_models_classes_LtiException
-	 * @return core_kernel_classes_Resource
-	 */
-	public function findUser(taoLti_models_classes_LtiLaunchData $ltiContext) {
-		$class = new core_kernel_classes_Class(CLASS_LTI_USER);
-		$instances = $class->searchInstances(array(
-			PROPERTY_USER_LTIKEY		=> $ltiContext->getUserID(),
-			PROPERTY_USER_LTICONSUMER	=> $ltiContext->getLtiConsumer()
-		), array(
-			'like'	=> false
-		));
-		if (count($instances) > 1) {
-			throw new taoLti_models_classes_LtiException(
-			    'Multiple user accounts found for user key \''.$ltiContext->getUserID().'\'',
-                LtiErrorMessage::ERROR_SYSTEM_ERROR
-            );
-		}
-		return count($instances) == 1 ? current($instances) : null;
-	}
-	
-	/**
-	 * Creates a new LTI User with the absolute minimum of required informations
-	 * 
-	 * @param taoLti_models_classes_LtiLaunchData $ltiContext
-	 * @return core_kernel_classes_Resource
-	 */
-	public function spawnUser(taoLti_models_classes_LtiLaunchData $ltiContext) {
-		$class = new core_kernel_classes_Class(CLASS_LTI_USER);
-		//$lang = tao_models_classes_LanguageService::singleton()->getLanguageByCode(DEFAULT_LANG);
-                
-		$props = array(
-			PROPERTY_USER_LTIKEY		=> $ltiContext->getUserID(),
-			PROPERTY_USER_LTICONSUMER	=> $ltiContext->getLtiConsumer(),
-		    /*
-			PROPERTY_USER_UILG			=> $lang,
-			PROPERTY_USER_DEFLG			=> $lang,
-			*/
-			
-		);
-                
-        if ($ltiContext->hasVariable(taoLti_models_classes_LtiLaunchData::LIS_PERSON_NAME_FULL)) {
-			$props[RDFS_LABEL] = $ltiContext->getUserFullName();
-		}
-                
-		if ($ltiContext->hasVariable(taoLti_models_classes_LtiLaunchData::LIS_PERSON_NAME_GIVEN)) {
-			$props[PROPERTY_USER_FIRSTNAME] = $ltiContext->getUserGivenName();
-		}
-		if ($ltiContext->hasVariable(taoLti_models_classes_LtiLaunchData::LIS_PERSON_NAME_FAMILY)) {
-			$props[PROPERTY_USER_LASTNAME] = $ltiContext->getUserFamilyName();
-		}
-		if ($ltiContext->hasVariable(taoLti_models_classes_LtiLaunchData::LIS_PERSON_CONTACT_EMAIL_PRIMARY)) {
-			$props[PROPERTY_USER_MAIL] = $ltiContext->getUserEmail();
-		}
-		$user = $class->createInstanceWithProperties($props);
-		common_Logger::i('added User '.$user->getLabel());
 
-		return $user;
-	}
 }
