@@ -54,6 +54,8 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
      */
     protected $roles;
 
+    protected $primaryRoles;
+
     private $language;
 
     private $firstname;
@@ -75,7 +77,10 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
     {
         $this->ltiLaunchData = $launchData;
         $this->userUri = $userUri;
-        $this->setRoles($this->determineTaoRoles($launchData));
+        $taoRoles = $this->determineTaoRoles($launchData);
+        $this->setPrimaryRoles($taoRoles);
+        $includedRoles = $this->determineTaoIncludedRoles($taoRoles);
+        $this->setRoles($includedRoles);
 
 
         $firstname = '';
@@ -118,6 +123,15 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
         }, $roles);
 
         $this->roles = $newRoles;
+    }
+
+    public function setPrimaryRoles($roles)
+    {
+        $newRoles = array_map(function($value){
+            return ($value instanceof \core_kernel_classes_Resource) ? $value->getUri() : $value;
+        }, $roles);
+
+        $this->primaryRoles = $newRoles;
     }
 
 
@@ -184,7 +198,7 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
     {
         return [
             'userUri' => $this->userUri,
-            'roles' => $this->roles,
+            'roles' => $this->primaryRoles,
             'language' => $this->language,
             'firstname' => $this->firstname,
             'lastname' => $this->lastname,
@@ -193,10 +207,13 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
         ];
     }
 
+
     /**
-     * Getting tao roles associated to lti roles
+     * Calculate your primary tao roles from the launchdata
      * @param \taoLti_models_classes_LtiLaunchData $ltiLaunchData
      * @return array
+     * @throws \common_Exception
+     * @throws \common_exception_Error
      */
     protected function determineTaoRoles(\taoLti_models_classes_LtiLaunchData $ltiLaunchData)
     {
@@ -206,15 +223,34 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
                 $taoRole = \taoLti_models_classes_LtiUtils::mapLTIRole2TaoRole($role);
                 if (!is_null($taoRole)) {
                     $roles[] = $taoRole;
-                    foreach (\core_kernel_users_Service::singleton()->getIncludedRoles(new \core_kernel_classes_Resource($taoRole)) as $includedRole) {
-                        $roles[] = $includedRole->getUri();
-                    }
                 }
             }
             $roles = array_unique($roles);
         } else {
             return array(INSTANCE_ROLE_LTI_BASE);
         }
+        return $roles;
+    }
+
+
+    /**
+     * Calculate all the user roles based on primary roles
+     * @param array $taoRoles
+     * @return array
+     * @throws \core_kernel_users_CacheException
+     * @throws \core_kernel_users_Exception
+     */
+    protected function determineTaoIncludedRoles($taoRoles = array(INSTANCE_ROLE_LTI_BASE))
+    {
+        $roles = array();
+        foreach ($taoRoles as $taoRole) {
+            $roles[] = $taoRole;
+            foreach (\core_kernel_users_Service::singleton()->getIncludedRoles(new \core_kernel_classes_Resource($taoRole)) as $includedRole) {
+                $roles[] = $includedRole->getUri();
+            }
+        }
+        $roles = array_unique($roles);
+
         return $roles;
     }
 
