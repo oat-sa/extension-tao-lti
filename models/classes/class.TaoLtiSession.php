@@ -21,6 +21,7 @@
  */
 
 use oat\taoLti\models\classes\user\LtiUser;
+use oat\taoLti\models\classes\ResourceLink\LinkService;
 use oat\taoLti\models\classes\LtiLink;
 /**
  * The TAO layer ontop of the LtiSession
@@ -82,30 +83,11 @@ class taoLti_models_classes_TaoLtiSession extends common_session_DefaultSession
     public function getLtiLinkResource()
     {
         if (is_null($this->ltiLink)) {
-            $class = new core_kernel_classes_Class(LtiLink::CLASS_INCOMING_URI);
+            $service = $this->getServiceLocator()->get(LinkService::SERVICE_ID);
             $consumer = $this->getLaunchData()->getLtiConsumer();
-            // search for existing resource
-            $instances = $class->searchInstances(array(
-                LtiLink::PROPERTY_ID => $this->getLaunchData()->getResourceLinkID(),
-                LtiLink::PROPERTY_CONSUMER => $consumer
-            ), array(
-                'like' => false,
-                'recursive' => false
-            ));
-            if (count($instances) > 1) {
-                throw new common_exception_Error('Multiple resources for link ' . $this->getLaunchData()->getResourceLinkID());
-            }
-            if (count($instances) == 1) {
-                // use existing link
-                $this->ltiLink = current($instances);
-            } else {
-                // spawn new link
-                $this->ltiLink = $class->createInstanceWithProperties(array(
-                    LtiLink::PROPERTY_ID => $this->getLaunchData()->getResourceLinkID(),
-                    LtiLink::PROPERTY_CONSUMER => $consumer,
-                ));
-            }
-        }
+            $linkId = $service->getLinkId($consumer->getUri(), $this->getLaunchData()->getResourceLinkID());
+            $this->ltiLink = new core_kernel_classes_Resource($linkId);
+		}
 		return $this->ltiLink;
 	}
 }
