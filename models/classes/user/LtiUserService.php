@@ -107,4 +107,7 @@ abstract class LtiUserService extends ConfigurableService
 
         return $ltiUser;
     }
+
+
+    abstract public function getUserFromId($userId);
 }
