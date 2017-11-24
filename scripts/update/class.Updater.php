@@ -105,9 +105,11 @@ class taoLti_scripts_update_Updater extends \common_ext_ExtensionUpdater
 
         if ($this->isVersion('3.6.0')) {
             if (!$this->getServiceManager()->has(LinkService::SERVICE_ID)) {
-               $this->getServiceManager()->register(LinkService::SERVICE_ID, new OntologyLink());
+                $this->getServiceManager()->register(LinkService::SERVICE_ID, new OntologyLink());
             }
             $this->setVersion('3.7.0');
         }
+        
+        $this->skip('3.7.0', '3.8.0');
     }
 }
