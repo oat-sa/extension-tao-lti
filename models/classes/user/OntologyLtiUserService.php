@@ -40,7 +40,7 @@ class OntologyLtiUserService extends LtiUserService
 
     const CLASS_LTI_USER = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIUser';
 
-    const PROPERTY_USER_LAUNCHDATA = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LaunchData';
+    const PROPERTY_USER_DATA = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#Data';
     
     const OPTION_TRANSACTION_SAFE = 'transaction-safe';
     
@@ -125,12 +125,16 @@ class OntologyLtiUserService extends LtiUserService
                 PROPERTY_USER_LASTNAME,
                 PROPERTY_USER_MAIL,
                 PROPERTY_USER_ROLES,
+                self::PROPERTY_USER_DATA
             ]);
 
             foreach ($properties as $key => $values){
-                if($values != $user->getPropertyValues($key)){
+                if($key === self::PROPERTY_USER_DATA){
+                    $userResource->editPropertyValues(new \core_kernel_classes_Property($key), json_encode($user));
+                } elseif ($values != $user->getPropertyValues($key)){
                     $userResource->editPropertyValues(new \core_kernel_classes_Property($key), $user->getPropertyValues($key));
                 }
+
             }
         } else {
             $class = new \core_kernel_classes_Class(self::CLASS_LTI_USER);
@@ -146,7 +150,9 @@ class OntologyLtiUserService extends LtiUserService
                 PROPERTY_USER_ROLES => $user->getPropertyValues(PROPERTY_USER_ROLES),
             );
 
-            $user = $class->createInstanceWithProperties($props);
+            $userResource = $class->createInstanceWithProperties($props);
+            $user->setIdentifier($userResource->getUri());
+
             \common_Logger::i('added User ' . $user->getLabel());
         }
 
@@ -188,5 +194,14 @@ class OntologyLtiUserService extends LtiUserService
         
         // Arbitrary default is 1.
         return ($retryOption) ? $retryOption : 1;
+    }
+
+    public function getUserFromId($userId)
+    {
+        $user = new \core_kernel_classes_Resource($userId);
+        if($user->exists()){
+            return json_decode($user->getOnePropertyValue(new \core_kernel_classes_Property(self::PROPERTY_USER_DATA)),true);
+        }
+        return null;
     }
 }

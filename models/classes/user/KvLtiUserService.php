@@ -58,6 +58,7 @@ class KvLtiUserService extends LtiUserService
 
     protected function updateUser(LtiUser $user, \taoLti_models_classes_LtiLaunchData $ltiContext)
     {
+        $user->setIdentifier(self::LTI_USER . $ltiContext->getUserID() . $ltiContext->getLtiConsumer()->getUri());
         $this->getPersistence()->set(self::LTI_USER . $ltiContext->getUserID() . $ltiContext->getLtiConsumer()->getUri(), json_encode($user));
     }
 
@@ -70,6 +71,15 @@ class KvLtiUserService extends LtiUserService
         if ($data === false) {
             return null;
         }
-        return $userId;
+        return self::LTI_USER . $userId . $consumer;
     }
+
+    public function getUserFromId($userId)
+    {
+        $data = $this->getPersistence()->get($userId);
+
+        return json_decode($data,true);
+    }
+
+
 }
