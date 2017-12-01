@@ -146,10 +146,10 @@ class OntologyLtiUserService extends LtiUserService
                 PROPERTY_USER_ROLES => $user->getPropertyValues(PROPERTY_USER_ROLES),
             );
 
-            $user = $class->createInstanceWithProperties($props);
-            \common_Logger::i('added User ' . $user->getLabel());
+            $userResource = $class->createInstanceWithProperties($props);
+            \common_Logger::i('added User ' . $userResource->getLabel());
         }
-
+        $user->setIdentifier($userResource->getUri());
     }
 
 

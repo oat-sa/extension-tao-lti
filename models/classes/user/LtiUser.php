@@ -144,6 +144,15 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
         return $this->userUri;
     }
 
+    /**
+     * @param string $userUri
+     * @return string
+     */
+    public function setIdentifier($userUri)
+    {
+        return $this->userUri = $userUri;
+    }
+
 
     public function getLaunchData()
     {
