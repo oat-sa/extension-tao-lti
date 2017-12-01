@@ -112,6 +112,14 @@ class OntologyLtiUserService extends LtiUserService
         }
     }
 
+    /**
+     * @TODO TT-273 split method in separate action (create and update)
+     * @param LtiUser $user
+     * @param \taoLti_models_classes_LtiLaunchData $ltiContext
+     * @return mixed|void
+     * @throws \common_exception_InvalidArgumentType
+     * @throws \tao_models_classes_oauth_Exception
+     */
     protected function updateUser(LtiUser $user, \taoLti_models_classes_LtiLaunchData $ltiContext)
     {
 
@@ -146,10 +154,10 @@ class OntologyLtiUserService extends LtiUserService
                 PROPERTY_USER_ROLES => $user->getPropertyValues(PROPERTY_USER_ROLES),
             );
 
-            $user = $class->createInstanceWithProperties($props);
-            \common_Logger::i('added User ' . $user->getLabel());
+            $userResource = $class->createInstanceWithProperties($props);
+            \common_Logger::i('added User ' . $userResource->getLabel());
         }
-
+        $user->setIdentifier($userResource->getUri());
     }
 
 

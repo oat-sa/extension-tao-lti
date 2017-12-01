@@ -144,6 +144,16 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
         return $this->userUri;
     }
 
+    /**
+     * @param string $userUri
+     * @TODO TT-273 remove the setter of userUri (this was a hotfix of TAO-5690)
+     * @return string
+     */
+    public function setIdentifier($userUri)
+    {
+        return $this->userUri = $userUri;
+    }
+
 
     public function getLaunchData()
     {
