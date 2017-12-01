@@ -112,6 +112,14 @@ class OntologyLtiUserService extends LtiUserService
         }
     }
 
+    /**
+     * @TODO TT-273 split method in separate action (create and update)
+     * @param LtiUser $user
+     * @param \taoLti_models_classes_LtiLaunchData $ltiContext
+     * @return mixed|void
+     * @throws \common_exception_InvalidArgumentType
+     * @throws \tao_models_classes_oauth_Exception
+     */
     protected function updateUser(LtiUser $user, \taoLti_models_classes_LtiLaunchData $ltiContext)
     {
 
