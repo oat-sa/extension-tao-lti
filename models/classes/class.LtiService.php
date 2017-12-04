@@ -60,6 +60,7 @@ class taoLti_models_classes_LtiService extends tao_models_classes_Service
 	    if (!$session instanceof taoLti_models_classes_TaoLtiSession) {
 	        throw new taoLti_models_classes_LtiException(__FUNCTION__.' called on a non LTI session', LtiErrorMessage::ERROR_SYSTEM_ERROR);
 	    }
+        $this->getServiceLocator()->propagate($session);
 	    return $session;
 	}
 
