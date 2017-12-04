@@ -100,6 +100,7 @@ class OntologyLtiUserService extends LtiUserService
                     $retry++;
                 } catch (\Exception $e) {
                     if ($platform->isTransactionActive()) {
+                        \common_Logger::d('Rollbacking LTI Ontology user transaction.');
                         $platform->rollback();
                     }
                     
