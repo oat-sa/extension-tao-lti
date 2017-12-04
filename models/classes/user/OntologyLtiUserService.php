@@ -103,6 +103,9 @@ class OntologyLtiUserService extends LtiUserService
                         $platform->rollback();
                     }
                     
+                    // Log original exception.
+                    \common_Logger::e($e->getMessage());
+                    
                     throw new \taoLti_models_classes_LtiException('LTI Ontology user could not be created. Process had to be rolled back.', 0, $e);
                 } finally {
                     // Reset isolation level to previous one!
