@@ -105,7 +105,7 @@ class OntologyLtiUserService extends LtiUserService
                     }
                     
                     // Log original exception.
-                    \common_Logger::e($e->getMessage());
+                    \common_Logger::e('[' . get_class($e) . '] ' . $e->getMessage());
                     
                     throw new \taoLti_models_classes_LtiException('LTI Ontology user could not be created. Process had to be rolled back.', 0, $e);
                 } finally {
@@ -113,6 +113,8 @@ class OntologyLtiUserService extends LtiUserService
                     $platform->setTransactionIsolation($previousIsolationLevel);
                 }
             }
+            
+            throw new \taoLti_models_classes_LtiException("LTI Ontology user could not be created. Maximum number of creation attempts (${maxRetry}) reached.");
         }
     }
 
