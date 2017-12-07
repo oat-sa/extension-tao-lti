@@ -113,6 +113,8 @@ class OntologyLtiUserService extends LtiUserService
                     $platform->setTransactionIsolation($previousIsolationLevel);
                 }
             }
+            
+            throw new \taoLti_models_classes_LtiException("LTI Ontology user could not be created. Maximum number of creation attempts (${maxRetry}) reached.");
         }
     }
 
