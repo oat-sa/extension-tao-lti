@@ -100,8 +100,12 @@ class OntologyLtiUserService extends LtiUserService
                     $retry++;
                 } catch (\Exception $e) {
                     if ($platform->isTransactionActive()) {
+                        \common_Logger::d('Rollbacking LTI Ontology user transaction.');
                         $platform->rollback();
                     }
+                    
+                    // Log original exception.
+                    \common_Logger::e($e->getMessage());
                     
                     throw new \taoLti_models_classes_LtiException('LTI Ontology user could not be created. Process had to be rolled back.', 0, $e);
                 } finally {
@@ -112,6 +116,14 @@ class OntologyLtiUserService extends LtiUserService
         }
     }
 
+    /**
+     * @TODO TT-273 split method in separate action (create and update)
+     * @param LtiUser $user
+     * @param \taoLti_models_classes_LtiLaunchData $ltiContext
+     * @return mixed|void
+     * @throws \common_exception_InvalidArgumentType
+     * @throws \tao_models_classes_oauth_Exception
+     */
     protected function updateUser(LtiUser $user, \taoLti_models_classes_LtiLaunchData $ltiContext)
     {
 
@@ -151,11 +163,9 @@ class OntologyLtiUserService extends LtiUserService
             );
 
             $userResource = $class->createInstanceWithProperties($props);
-            $user->setIdentifier($userResource->getUri());
-
-            \common_Logger::i('added User ' . $user->getLabel());
+            \common_Logger::i('added User ' . $userResource->getLabel());
         }
-
+        $user->setIdentifier($userResource->getUri());
     }
 
 

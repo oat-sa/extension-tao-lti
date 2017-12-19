@@ -99,6 +99,7 @@ abstract class LtiUserService extends ConfigurableService
      */
     public function spawnUser(\taoLti_models_classes_LtiLaunchData $ltiContext)
     {
+        //@TODO create LtiUser after create and save in db.
         $userId = $ltiContext->getUserID();
 
         $ltiUser = new LtiUser($ltiContext, $userId);
