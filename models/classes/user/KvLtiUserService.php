@@ -65,18 +65,18 @@ class KvLtiUserService extends LtiUserService
     /**
      * @inheritdoc
      */
-    public function getUserIdentifier($userId, $consumer)
+    public function getUserIdentifier($ltiUserId, $consumer)
     {
-        $data = $this->getPersistence()->get(self::LTI_USER . $userId . $consumer);
+        $data = $this->getPersistence()->get(self::LTI_USER . $ltiUserId . $consumer);
         if ($data === false) {
             return null;
         }
-        return self::LTI_USER . $userId . $consumer;
+        return self::LTI_USER . $ltiUserId . $consumer;
     }
 
-    public function getUserFromId($userId)
+    public function getUserFromId($taoUserId)
     {
-        $data = $this->getPersistence()->get($userId);
+        $data = $this->getPersistence()->get($taoUserId);
 
         return json_decode($data,true);
     }

@@ -172,18 +172,18 @@ class OntologyLtiUserService extends LtiUserService
     /**
      * @inheritdoc
      */
-    public function getUserIdentifier($userId, $ltiConsumer)
+    public function getUserIdentifier($ltiUserId, $ltiConsumer)
     {
         $class = new \core_kernel_classes_Class(self::CLASS_LTI_USER);
         $instances = $class->searchInstances(array(
-            self::PROPERTY_USER_LTIKEY => $userId,
+            self::PROPERTY_USER_LTIKEY => $ltiUserId,
             self::PROPERTY_USER_LTICONSUMER => $ltiConsumer
         ), array(
             'like' => false
         ));
         if (count($instances) > 1) {
             throw new \taoLti_models_classes_LtiException(
-                'Multiple user accounts found for user key \'' . $userId . '\'',
+                'Multiple user accounts found for user key \'' . $ltiUserId . '\'',
                 LtiErrorMessage::ERROR_SYSTEM_ERROR
             );
         }
@@ -206,9 +206,9 @@ class OntologyLtiUserService extends LtiUserService
         return ($retryOption) ? $retryOption : 1;
     }
 
-    public function getUserFromId($userId)
+    public function getUserFromId($taoUserId)
     {
-        $user = new \core_kernel_classes_Resource($userId);
+        $user = new \core_kernel_classes_Resource($taoUserId);
         if($user->exists()){
             return json_decode($user->getOnePropertyValue(new \core_kernel_classes_Property(self::PROPERTY_USER_DATA)),true);
         }
