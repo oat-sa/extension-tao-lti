@@ -21,6 +21,8 @@
 
 namespace oat\taoLti\models\classes\user;
 
+use oat\generis\model\GenerisRdf;
+use oat\generis\model\OntologyRdfs;
 use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
 use oat\generis\model\data\ModelManager;
 
@@ -40,8 +42,6 @@ class OntologyLtiUserService extends LtiUserService
 
     const CLASS_LTI_USER = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIUser';
 
-    const PROPERTY_USER_LAUNCHDATA = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LaunchData';
-    
     const OPTION_TRANSACTION_SAFE = 'transaction-safe';
     
     const OPTION_TRANSACTION_SAFE_RETRY = 'transaction-safe-retry';
@@ -140,9 +140,10 @@ class OntologyLtiUserService extends LtiUserService
             ]);
 
             foreach ($properties as $key => $values){
-                if($values != $user->getPropertyValues($key)){
+                if ($values != $user->getPropertyValues($key)){
                     $userResource->editPropertyValues(new \core_kernel_classes_Property($key), $user->getPropertyValues($key));
                 }
+
             }
         } else {
             $class = new \core_kernel_classes_Class(self::CLASS_LTI_USER);
@@ -168,18 +169,18 @@ class OntologyLtiUserService extends LtiUserService
     /**
      * @inheritdoc
      */
-    public function getUserIdentifier($userId, $ltiConsumer)
+    public function getUserIdentifier($ltiUserId, $ltiConsumer)
     {
         $class = new \core_kernel_classes_Class(self::CLASS_LTI_USER);
         $instances = $class->searchInstances(array(
-            self::PROPERTY_USER_LTIKEY => $userId,
+            self::PROPERTY_USER_LTIKEY => $ltiUserId,
             self::PROPERTY_USER_LTICONSUMER => $ltiConsumer
         ), array(
             'like' => false
         ));
         if (count($instances) > 1) {
             throw new \taoLti_models_classes_LtiException(
-                'Multiple user accounts found for user key \'' . $userId . '\'',
+                'Multiple user accounts found for user key \'' . $ltiUserId . '\'',
                 LtiErrorMessage::ERROR_SYSTEM_ERROR
             );
         }
@@ -200,5 +201,37 @@ class OntologyLtiUserService extends LtiUserService
         
         // Arbitrary default is 1.
         return ($retryOption) ? $retryOption : 1;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getUserDataFromId($taoUserId)
+    {
+        $user = new \core_kernel_classes_Resource($taoUserId);
+        if($user->exists()){
+            $properties = $user->getPropertiesValues([
+                GenerisRdf::PROPERTY_USER_UILG,
+                OntologyRdfs::RDFS_LABEL,
+                GenerisRdf::PROPERTY_USER_FIRSTNAME,
+                GenerisRdf::PROPERTY_USER_LASTNAME,
+                GenerisRdf::PROPERTY_USER_MAIL,
+                GenerisRdf::PROPERTY_USER_ROLES
+            ]);
+
+            $userData = [];
+            foreach ($properties as $key => $values){
+                if(count($values) > 1){
+                    foreach ($values as $value){
+                        $userData[$key][] = ($value instanceof \core_kernel_classes_Resource) ? $value->getUri() : (string) $value;
+                    }
+                } else {
+                    $value = current($values);
+                    $userData[$key] = ($value instanceof \core_kernel_classes_Resource) ? $value->getUri() : (string) $value;
+                }
+            }
+            return $userData;
+        }
+        return null;
     }
 }
