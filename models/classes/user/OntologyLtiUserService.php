@@ -218,7 +218,19 @@ class OntologyLtiUserService extends LtiUserService
                 GenerisRdf::PROPERTY_USER_MAIL,
                 GenerisRdf::PROPERTY_USER_ROLES
             ]);
-            return $properties;
+
+            $userData = [];
+            foreach ($properties as $key => $values){
+                if(count($values) > 1){
+                    foreach ($values as $value){
+                        $userData[$key][] = ($value instanceof \core_kernel_classes_Resource) ? $value->getUri() : (string) $value;
+                    }
+                } else {
+                    $value = current($values);
+                    $userData[$key] = ($value instanceof \core_kernel_classes_Resource) ? $value->getUri() : (string) $value;
+                }
+            }
+            return $userData;
         }
         return null;
     }
