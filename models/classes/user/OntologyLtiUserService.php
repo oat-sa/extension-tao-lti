@@ -21,6 +21,8 @@
 
 namespace oat\taoLti\models\classes\user;
 
+use oat\generis\model\GenerisRdf;
+use oat\generis\model\OntologyRdfs;
 use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
 use oat\generis\model\data\ModelManager;
 
@@ -40,8 +42,6 @@ class OntologyLtiUserService extends LtiUserService
 
     const CLASS_LTI_USER = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIUser';
 
-    const PROPERTY_USER_DATA = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#Data';
-    
     const OPTION_TRANSACTION_SAFE = 'transaction-safe';
     
     const OPTION_TRANSACTION_SAFE_RETRY = 'transaction-safe-retry';
@@ -137,13 +137,10 @@ class OntologyLtiUserService extends LtiUserService
                 PROPERTY_USER_LASTNAME,
                 PROPERTY_USER_MAIL,
                 PROPERTY_USER_ROLES,
-                self::PROPERTY_USER_DATA
             ]);
 
             foreach ($properties as $key => $values){
-                if($key === self::PROPERTY_USER_DATA){
-                    $userResource->editPropertyValues(new \core_kernel_classes_Property($key), json_encode($user));
-                } elseif ($values != $user->getPropertyValues($key)){
+                if ($values != $user->getPropertyValues($key)){
                     $userResource->editPropertyValues(new \core_kernel_classes_Property($key), $user->getPropertyValues($key));
                 }
 
@@ -209,11 +206,19 @@ class OntologyLtiUserService extends LtiUserService
     /**
      * @inheritdoc
      */
-    public function getUserFromId($taoUserId)
+    public function getUserDataFromId($taoUserId)
     {
         $user = new \core_kernel_classes_Resource($taoUserId);
         if($user->exists()){
-            return json_decode($user->getOnePropertyValue(new \core_kernel_classes_Property(self::PROPERTY_USER_DATA)),true);
+            $properties = $user->getPropertiesValues([
+                GenerisRdf::PROPERTY_USER_UILG,
+                OntologyRdfs::RDFS_LABEL,
+                GenerisRdf::PROPERTY_USER_FIRSTNAME,
+                GenerisRdf::PROPERTY_USER_LASTNAME,
+                GenerisRdf::PROPERTY_USER_MAIL,
+                GenerisRdf::PROPERTY_USER_ROLES
+            ]);
+            return $properties;
         }
         return null;
     }

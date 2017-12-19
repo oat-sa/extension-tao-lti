@@ -78,7 +78,7 @@ class KvLtiUserService extends LtiUserService
     /**
      * @inheritdoc
      */
-    public function getUserFromId($taoUserId)
+    public function getUserDataFromId($taoUserId)
     {
         $data = $this->getPersistence()->get($taoUserId);
 

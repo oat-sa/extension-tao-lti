@@ -114,14 +114,14 @@ abstract class LtiUserService extends ConfigurableService
      * Get the user information from the tao user identifier
      * @param string $taoUserId
      * @return array structure that represent the user
-     * ['userUri' => 'taoUserId',
-     * 'roles' => ['firstRole', 'secondRole'],
-     * 'language' => 'en-US',
-     * 'firstname' => 'firstname,
-     * 'lastname' => 'lastname',
-     * 'email' => 'test@test.com',
-     * 'label' => 'label'
+     * [
+     * 'http://www.tao.lu/Ontologies/generis.rdf#userRoles' => ['firstRole', 'secondRole'],
+     * 'http://www.tao.lu/Ontologies/generis.rdf#userUILg' => 'en-US',
+     * 'http://www.tao.lu/Ontologies/generis.rdf#userFirstName' => 'firstname,
+     * 'http://www.tao.lu/Ontologies/generis.rdf#userLastName' => 'lastname',
+     * 'http://www.tao.lu/Ontologies/generis.rdf#userMail' => 'test@test.com',
+     * 'http://www.w3.org/2000/01/rdf-schema#label' => 'label'
      * ]
      */
-    abstract public function getUserFromId($taoUserId);
+    abstract public function getUserDataFromId($taoUserId);
 }
