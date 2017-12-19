@@ -206,6 +206,9 @@ class OntologyLtiUserService extends LtiUserService
         return ($retryOption) ? $retryOption : 1;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getUserFromId($taoUserId)
     {
         $user = new \core_kernel_classes_Resource($taoUserId);
