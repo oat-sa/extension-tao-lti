@@ -51,7 +51,7 @@ class OntologyLink extends ConfigurableService implements LinkService
             self::PROPERTY_CONSUMER => $consumerId
         ), array('like' => false,'recursive' => false));
         if (count($instances) > 1) {
-            throw new \common_exception_Error('Multiple resources for link ' . $this->getLaunchData()->getResourceLinkID());
+            throw new \common_exception_Error('Multiple resources for link ' . $resourceLink);
         }
         if (count($instances) == 1) {
             // use existing link
