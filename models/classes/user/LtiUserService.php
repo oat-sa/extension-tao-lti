@@ -62,12 +62,12 @@ abstract class LtiUserService extends ConfigurableService
     public function findUser(\taoLti_models_classes_LtiLaunchData $ltiContext)
     {
         $ltiConsumer = $ltiContext->getLtiConsumer();
-        $userId = $this->getUserIdentifier($ltiContext->getUserID(), $ltiConsumer->getUri());
-        if (is_null($userId)) {
+        $taoUserId = $this->getUserIdentifier($ltiContext->getUserID(), $ltiConsumer->getUri());
+        if (is_null($taoUserId)) {
             return null;
         }
 
-        $ltiUser = new LtiUser($ltiContext, $userId);
+        $ltiUser = new LtiUser($ltiContext, $taoUserId);
 
         \common_Logger::t("LTI User '" . $ltiUser->getIdentifier() . "' found.");
 
@@ -85,11 +85,11 @@ abstract class LtiUserService extends ConfigurableService
 
     /**
      * Find the tao user identifier related to a lti user id and a consumer
-     * @param string $userId
+     * @param string $ltiUserId
      * @param \core_kernel_classes_Resource $consumer
      * @return mixed
      */
-    abstract public function getUserIdentifier($userId, $consumer);
+    abstract public function getUserIdentifier($ltiUserId, $consumer);
 
     /**
      * Creates a new LTI User with the absolute minimum of required informations
@@ -99,6 +99,7 @@ abstract class LtiUserService extends ConfigurableService
      */
     public function spawnUser(\taoLti_models_classes_LtiLaunchData $ltiContext)
     {
+        //@TODO create LtiUser after create and save in db.
         $userId = $ltiContext->getUserID();
 
         $ltiUser = new LtiUser($ltiContext, $userId);
@@ -107,4 +108,20 @@ abstract class LtiUserService extends ConfigurableService
 
         return $ltiUser;
     }
+
+
+    /**
+     * Get the user information from the tao user identifier
+     * @param string $taoUserId
+     * @return array structure that represent the user
+     * [
+     * 'http://www.tao.lu/Ontologies/generis.rdf#userRoles' => ['firstRole', 'secondRole'],
+     * 'http://www.tao.lu/Ontologies/generis.rdf#userUILg' => 'en-US',
+     * 'http://www.tao.lu/Ontologies/generis.rdf#userFirstName' => 'firstname,
+     * 'http://www.tao.lu/Ontologies/generis.rdf#userLastName' => 'lastname',
+     * 'http://www.tao.lu/Ontologies/generis.rdf#userMail' => 'test@test.com',
+     * 'http://www.w3.org/2000/01/rdf-schema#label' => 'label'
+     * ]
+     */
+    abstract public function getUserDataFromId($taoUserId);
 }

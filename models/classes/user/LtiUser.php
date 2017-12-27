@@ -21,6 +21,8 @@
 
 namespace oat\taoLti\models\classes\user;
 
+use oat\generis\model\GenerisRdf;
+use oat\generis\model\OntologyRdfs;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorAwareTrait;
 
@@ -144,6 +146,11 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
         return $this->userUri;
     }
 
+    public function setIdentifier($userId)
+    {
+        $this->userUri = $userId;
+    }
+
 
     public function getLaunchData()
     {
@@ -197,13 +204,12 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
     public function jsonSerialize()
     {
         return [
-            'userUri' => $this->userUri,
-            'roles' => $this->primaryRoles,
-            'language' => $this->language,
-            'firstname' => $this->firstname,
-            'lastname' => $this->lastname,
-            'email' => $this->email,
-            'label' => $this->label,
+            GenerisRdf::PROPERTY_USER_ROLES => $this->primaryRoles,
+            GenerisRdf::PROPERTY_USER_UILG => $this->language,
+            GenerisRdf::PROPERTY_USER_FIRSTNAME => $this->firstname,
+            GenerisRdf::PROPERTY_USER_LASTNAME => $this->lastname,
+            GenerisRdf::PROPERTY_USER_MAIL => $this->email,
+            OntologyRdfs::RDFS_LABEL => $this->label,
         ];
     }
 
