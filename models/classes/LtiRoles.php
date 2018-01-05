@@ -20,17 +20,22 @@
 
 namespace oat\taoLti\models\classes;
 
-use oat\oatbox\service\ConfigurableService;
 /**
  * Interface containing the Lti Role URIs
  */
 interface LtiRoles
 {
+    const CLASS_URI = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole';
+
+    const PROPERTY_URN = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#RoleURN';
+
+    const INSTANCE_LTI_BASE = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiBaseRole';
+
+    const CONTEXT_TEACHING_ASSISTANT = 'http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#TeachingAssistant';
+
     const CONTEXT_LEARNER = 'http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#Learner';
 
     const CONTEXT_INSTRUCTOR = 'http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#Instructor';
-
-    const CONTEXT_TEACHING_ASSISTANT = 'http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#TeachingAssistant';
 
     const CONTEXT_ADMINISTRATOR = 'http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#Administrator';
 }

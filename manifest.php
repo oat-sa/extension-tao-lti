@@ -35,11 +35,11 @@ return array(
 	'label' => 'LTI library',
     'description' => 'TAO LTI library and helpers',
     'license' => 'GPL-2.0',
-    'version' => '4.0.0',
+    'version' => '4.1.0',
 	'author' => 'Open Assessment Technologies SA',
 	'requires' => array(
        'generis' => '>=5.4.0',
-	   'tao' => '>=10.8.0'
+	   'tao' => '>=12.21.0'
 	),
 	'models' => array(
 	 	'http://www.tao.lu/Ontologies/TAOLTI.rdf',

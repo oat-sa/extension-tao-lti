@@ -18,6 +18,7 @@
  *               
  * 
  */
+use oat\tao\model\TaoOntology;
 use oat\tao\test\TaoPhpUnitTestRunner;
 include_once dirname(__FILE__) . '/../includes/raw_start.php';
 
@@ -35,10 +36,10 @@ class OauthTestCase extends TaoPhpUnitTestRunner {
 	 */
 	public function setUp() {
 		TaoPhpUnitTestRunner::initTest();
-		$oauthClass = new core_kernel_classes_Class(CLASS_OAUTH_CONSUMER);
+		$oauthClass = new core_kernel_classes_Class(TaoOntology::CLASS_URI_OAUTH_CONSUMER);
 		$resource = $oauthClass->createInstanceWithProperties(array(
-		    PROPERTY_OAUTH_KEY			    => 'test_key',
-		    PROPERTY_OAUTH_SECRET             => md5(rand()),
+			TaoOntology::PROPERTY_OAUTH_KEY			    => 'test_key',
+			TaoOntology::PROPERTY_OAUTH_SECRET             => md5(rand()),
 		));
 		$this->oauthCustomer = new tao_models_classes_oauth_Credentials($resource);
 	}

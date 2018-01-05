@@ -22,7 +22,7 @@
 
 use oat\taoLti\models\classes\user\LtiUser;
 use oat\taoLti\models\classes\ResourceLink\LinkService;
-
+use oat\taoLti\models\classes\LtiLink;
 /**
  * The TAO layer ontop of the LtiSession
  *
