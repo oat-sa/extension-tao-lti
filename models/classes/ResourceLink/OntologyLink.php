@@ -38,6 +38,7 @@ class OntologyLink extends ConfigurableService implements LinkService
 
     const PROPERTY_CONSUMER = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTILinkConsumer';
 
+    const PROPERTY_LAUNCH_URL = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#ResourceLinkLaunchUrl';
     /**
      * (non-PHPdoc)
      * @see \oat\taoLti\models\classes\ResourceLink\LinkService::getLinkId()

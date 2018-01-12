@@ -28,29 +28,13 @@
  */
 abstract class taoLti_models_classes_LtiTool extends tao_models_classes_Service
 {
-	/**
-	 * Builds a launch url for this tool
-	 * 
-	 * @param array $parameters additional launch parameters
-	 * @return string
-	 */
-	public abstract function getLaunchUrl($parameters = array());
+    const PROPERTY_SERVICE = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#ToolService';
 
-	public static function getToolService(core_kernel_classes_Resource $tool) {
-		$services = $tool->getPropertyValues(new core_kernel_classes_Property(PROPERTY_LTITOOL_SERVICE));
-		if (count($services) > 0) {
-			if (count($services) > 1) {
-				throw new common_exception_Error('Conflicting services for tool '.$tool->getLabel());
-			}
-			$serviceName = (string)current($services);
-			if (class_exists($serviceName) && is_subclass_of($serviceName, __CLASS__)) {
-				return call_user_func(array($serviceName, 'singleton'));
-			} else {
-				throw new common_exception_Error('Tool service '.$serviceName.' not found, or not compatible for tool '.$tool->getLabel());
-			}
-		} else {
-			common_Logger::w('No implementation for '.$tool->getLabel());
-		}
-	}
-	
+    /**
+     * Builds a launch url for this tool
+     *
+     * @param array $parameters additional launch parameters
+     * @return string
+     */
+    public abstract function getLaunchUrl($parameters = array());
 }

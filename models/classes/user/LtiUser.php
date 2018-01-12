@@ -23,6 +23,7 @@ namespace oat\taoLti\models\classes\user;
 
 use oat\generis\model\GenerisRdf;
 use oat\generis\model\OntologyRdfs;
+use oat\taoLti\models\classes\LtiRoles;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorAwareTrait;
 
@@ -233,7 +234,7 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
             }
             $roles = array_unique($roles);
         } else {
-            return array(INSTANCE_ROLE_LTI_BASE);
+            return array(LtiRoles::INSTANCE_LTI_BASE);
         }
         return $roles;
     }
@@ -246,7 +247,7 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
      * @throws \core_kernel_users_CacheException
      * @throws \core_kernel_users_Exception
      */
-    protected function determineTaoIncludedRoles($taoRoles = array(INSTANCE_ROLE_LTI_BASE))
+    protected function determineTaoIncludedRoles($taoRoles = array(LtiRoles::INSTANCE_LTI_BASE))
     {
         $roles = array();
         foreach ($taoRoles as $taoRole) {
