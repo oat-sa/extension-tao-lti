@@ -1,6 +1,7 @@
 <?php
 /**  
  * This program is free software; you can redistribute it and/or
+ * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; under version 2
  * of the License (non-upgradable).
@@ -21,7 +22,7 @@
 
 use oat\tao\model\user\TaoRoles;
 use oat\taoLti\scripts\install\InstallServices;
-use oat\taoLti\scripts\install\RegisterCookieVerifyService;
+use oat\taoLti\scripts\install\Updater;
 
 /**
  * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
@@ -35,7 +36,7 @@ return array(
 	'label' => 'LTI library',
     'description' => 'TAO LTI library and helpers',
     'license' => 'GPL-2.0',
-    'version' => '4.1.1',
+    'version' => '4.2.0',
 	'author' => 'Open Assessment Technologies SA',
 	'requires' => array(
        'generis' => '>=5.4.0',
@@ -57,7 +58,7 @@ return array(
             InstallServices::class
         ]
 	),
-	'update' => 'taoLti_scripts_update_Updater',
+	'update' => Updater::class,
     'managementRole' => 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiManagerRole',
     'acl' => array(
         array('grant', 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiManagerRole', array('ext'=>'taoLti')),

@@ -21,6 +21,7 @@
 
 namespace oat\taoLti\models\classes\user;
 
+use oat\taoLti\models\classes\LtiLaunchData;
 
 /**
  * Key value implementation of the lti user service
@@ -56,10 +57,20 @@ class KvLtiUserService extends LtiUserService
         return $this->persistence;
     }
 
-    protected function updateUser(LtiUser $user, \taoLti_models_classes_LtiLaunchData $ltiContext)
+    /**
+     * @param LtiUser $user
+     * @param LtiLaunchData $ltiContext
+     * @return mixed|void
+     * @throws \common_Exception
+     * @throws \oat\taoLti\models\classes\LtiVariableMissingException
+     */
+    protected function updateUser(LtiUser $user, LtiLaunchData $ltiContext)
     {
         $user->setIdentifier(self::LTI_USER . $ltiContext->getUserID() . $ltiContext->getLtiConsumer()->getUri());
-        $this->getPersistence()->set(self::LTI_USER . $ltiContext->getUserID() . $ltiContext->getLtiConsumer()->getUri(), json_encode($user));
+        $this->getPersistence()->set(
+            self::LTI_USER . $ltiContext->getUserID() . $ltiContext->getLtiConsumer()->getUri(),
+            json_encode($user)
+        );
     }
 
     /**
@@ -71,6 +82,7 @@ class KvLtiUserService extends LtiUserService
         if ($data === false) {
             return null;
         }
+
         return self::LTI_USER . $ltiUserId . $consumer;
     }
 
@@ -84,6 +96,4 @@ class KvLtiUserService extends LtiUserService
 
         return json_decode($data,true);
     }
-
-
 }

@@ -19,6 +19,8 @@
  * 
  */
 
+use oat\taoLti\models\classes\LtiUtils;
+
 /**
  * @author Joel Bout
  * @package taoLti
@@ -28,11 +30,11 @@
  */
 
 class taoLti_actions_LtiConsumer extends tao_actions_ServiceModule {
-	
-	
-	/**
-	 * Launches a oauth tool
-	 */
+    /**
+     * Launches a oauth tool
+     * @throws common_exception_Error
+     * @throws common_exception_MissingParameter
+     */
 	public function call() {
 	    if (!$this->hasRequestParameter('ltiConsumerUri')) {
 	        throw new common_exception_MissingParameter('ltiConsumerUri', get_class($this));
@@ -49,7 +51,7 @@ class taoLti_actions_LtiConsumer extends tao_actions_ServiceModule {
 	    
 	    $roles = array();
 	    foreach ($session->getUserRoles() as $role) {
-	        foreach (taoLti_models_classes_LtiUtils::mapTaoRole2LTIRoles($role) as $ltiRole) {
+	        foreach (LtiUtils::mapTaoRole2LTIRoles($role) as $ltiRole) {
 	            $roles[] = $ltiRole;
 	        }
 	    }

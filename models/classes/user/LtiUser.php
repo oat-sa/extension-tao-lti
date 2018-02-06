@@ -23,7 +23,9 @@ namespace oat\taoLti\models\classes\user;
 
 use oat\generis\model\GenerisRdf;
 use oat\generis\model\OntologyRdfs;
+use oat\taoLti\models\classes\LtiLaunchData;
 use oat\taoLti\models\classes\LtiRoles;
+use oat\taoLti\models\classes\LtiUtils;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorAwareTrait;
 
@@ -41,7 +43,7 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
 
     /**
      * Data with which this session was launched
-     * @var \taoLti_models_classes_LtiLaunchData
+     * @var LtiLaunchData
      */
     private $ltiLaunchData;
 
@@ -76,6 +78,14 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
      */
     protected $uiLanguage;
 
+    /**
+     * @param LtiLaunchData $launchData
+     * @param $userUri
+     * @throws \common_Exception
+     * @throws \common_exception_Error
+     * @throws \core_kernel_users_CacheException
+     * @throws \core_kernel_users_Exception
+     */
     public function __construct($launchData, $userUri)
     {
         $this->ltiLaunchData = $launchData;
@@ -93,22 +103,22 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
 
         if ($launchData->hasLaunchLanguage()) {
             $launchLanguage = $launchData->getLaunchLanguage();
-            $language = \taoLti_models_classes_LtiUtils::mapCode2InterfaceLanguage($launchLanguage);
+            $language = LtiUtils::mapCode2InterfaceLanguage($launchLanguage);
         } else {
             $language = DEFAULT_LANG;
         }
 
-        if ($launchData->hasVariable(\taoLti_models_classes_LtiLaunchData::LIS_PERSON_NAME_FULL)) {
+        if ($launchData->hasVariable(LtiLaunchData::LIS_PERSON_NAME_FULL)) {
             $label = $launchData->getUserFullName();
         }
 
-        if ($launchData->hasVariable(\taoLti_models_classes_LtiLaunchData::LIS_PERSON_NAME_GIVEN)) {
+        if ($launchData->hasVariable(LtiLaunchData::LIS_PERSON_NAME_GIVEN)) {
             $firstname = $launchData->getUserGivenName();
         }
-        if ($launchData->hasVariable(\taoLti_models_classes_LtiLaunchData::LIS_PERSON_NAME_FAMILY)) {
+        if ($launchData->hasVariable(LtiLaunchData::LIS_PERSON_NAME_FAMILY)) {
             $lastname = $launchData->getUserFamilyName();
         }
-        if ($launchData->hasVariable(\taoLti_models_classes_LtiLaunchData::LIS_PERSON_CONTACT_EMAIL_PRIMARY)) {
+        if ($launchData->hasVariable(LtiLaunchData::LIS_PERSON_CONTACT_EMAIL_PRIMARY)) {
             $email = $launchData->getUserEmail();;
         }
 
@@ -214,20 +224,20 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
         ];
     }
 
-
     /**
      * Calculate your primary tao roles from the launchdata
-     * @param \taoLti_models_classes_LtiLaunchData $ltiLaunchData
+     *
+     * @param LtiLaunchData $ltiLaunchData
      * @return array
      * @throws \common_Exception
      * @throws \common_exception_Error
      */
-    protected function determineTaoRoles(\taoLti_models_classes_LtiLaunchData $ltiLaunchData)
+    protected function determineTaoRoles(LtiLaunchData $ltiLaunchData)
     {
         $roles = array();
-        if ($ltiLaunchData->hasVariable(\taoLti_models_classes_LtiLaunchData::ROLES)) {
+        if ($ltiLaunchData->hasVariable(LtiLaunchData::ROLES)) {
             foreach ($ltiLaunchData->getUserRoles() as $role) {
-                $taoRole = \taoLti_models_classes_LtiUtils::mapLTIRole2TaoRole($role);
+                $taoRole = LtiUtils::mapLTIRole2TaoRole($role);
                 if (!is_null($taoRole)) {
                     $roles[] = $taoRole;
                 }
@@ -239,11 +249,12 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
         return $roles;
     }
 
-
     /**
      * Calculate all the user roles based on primary roles
+     *
      * @param array $taoRoles
      * @return array
+     * @throws \common_exception_Error
      * @throws \core_kernel_users_CacheException
      * @throws \core_kernel_users_Exception
      */
@@ -260,5 +271,4 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
 
         return $roles;
     }
-
 }
