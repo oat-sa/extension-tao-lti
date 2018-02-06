@@ -89,7 +89,10 @@ class LtiLaunchData
     {
         $extra = self::getParametersFromUrl($request->getUrl());
 
-        return new self($request->getParams(), $extra);
+        //TODO: after ltiDelivery will be updated next string should be replaced by
+        // return new static($request->getParams(), $extra);
+        // [Sergii Chernenko]
+        return new \taoLti_models_classes_LtiLaunchData($request->getParams(), $extra);
     }
 
     /**
