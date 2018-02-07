@@ -36,7 +36,6 @@ use oat\taoLti\models\classes\user\LtiUser;
  */
 class TaoLtiSession extends common_session_DefaultSession
 {
-
     /**
      * @var core_kernel_classes_Resource
      */
@@ -68,7 +67,6 @@ class TaoLtiSession extends common_session_DefaultSession
             }
             return empty($parts) ? __('user') : implode(' ', $parts);
         }
-
     }
 
     /**

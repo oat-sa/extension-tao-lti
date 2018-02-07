@@ -29,7 +29,17 @@ use oat\taoLti\models\classes\LtiUtils;
  *
  */
 
-class taoLti_actions_LtiConsumer extends tao_actions_ServiceModule {
+namespace oat\taoLti\controller;
+
+use common_exception_Error;
+use common_exception_MissingParameter;
+use common_http_Request;
+use common_session_SessionManager;
+use tao_actions_ServiceModule;
+use tao_models_classes_oauth_Credentials;
+use tao_models_classes_oauth_Service;
+
+class LtiConsumer extends tao_actions_ServiceModule {
     /**
      * Launches a oauth tool
      * @throws common_exception_Error
