@@ -166,22 +166,22 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
     {
         $returnValue = null;
         switch ($property) {
-            case PROPERTY_USER_DEFLG :
+            case GenerisRdf::PROPERTY_USER_DEFLG :
                 $returnValue = array(DEFAULT_LANG);
                 break;
-            case PROPERTY_USER_UILG :
+            case GenerisRdf::PROPERTY_USER_UILG :
                 $returnValue = array($this->language);
                 break;
-            case PROPERTY_USER_ROLES :
+            case  GenerisRdf::PROPERTY_USER_ROLES :
                 $returnValue = $this->roles;
                 break;
-            case PROPERTY_USER_FIRSTNAME :
+            case  GenerisRdf::PROPERTY_USER_FIRSTNAME :
                 $returnValue = [$this->firstname];
                 break;
-            case PROPERTY_USER_LASTNAME :
+            case  GenerisRdf::PROPERTY_USER_LASTNAME :
                 $returnValue = [$this->lastname];
                 break;
-            case RDFS_LABEL :
+            case  OntologyRdfs::RDFS_LABEL :
                 $returnValue = [$this->label];
                 break;
             default:
