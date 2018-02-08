@@ -19,6 +19,11 @@
  * 
  */
 
+namespace oat\taoLti\controller;
+
+use common_Logger;
+use tao_actions_CommonModule;
+
 /**
  * A controller to bypass some restrictions on cookies
  * 
@@ -26,7 +31,7 @@
  * @package taoLti
  
  */
-class taoLti_actions_CookieUtils extends tao_actions_CommonModule
+class CookieUtils extends tao_actions_CommonModule
 {
     /**
      * Verifies whenever or not the cookie was set correctly
@@ -44,12 +49,13 @@ class taoLti_actions_CookieUtils extends tao_actions_CommonModule
 	        $this->setView('cookieError.tpl');
 	    }
 	}
-	
-	/**
-	 * Closses the current session, restores the session provided
-	 * in the parameter session, regenerates a new sessionid and
-	 * redirects the user to the original address
-	 */
+
+    /**
+     * Closses the current session, restores the session provided
+     * in the parameter session, regenerates a new sessionid and
+     * redirects the user to the original address
+     * @throws \common_Exception
+     */
 	public function restoreSession() {
 	    $sessId = $this->getRequestParameter('session');
 	    $url = $this->getRequestParameter('redirect');

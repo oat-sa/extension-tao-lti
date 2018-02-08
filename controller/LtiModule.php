@@ -19,11 +19,11 @@
  * 
  */
 
-namespace oat\taoLti\actions;
+namespace oat\taoLti\controller;
 
 use oat\taoLti\models\classes\LtiException;
 use \tao_actions_CommonModule;
-use oat\taoLti\actions\traits\LtiModuleTrait;
+use oat\taoLti\controller\traits\LtiModuleTrait;
 
 /**
  * An abstract lti controller

@@ -19,7 +19,10 @@
  *
  */
 
+namespace oat\taoLti\controller;
+
 use oat\taoLti\models\classes\ConsumerService;
+use tao_actions_SaSModule;
 
 /**
  * This controller allows the additon and deletion
@@ -30,7 +33,7 @@ use oat\taoLti\models\classes\ConsumerService;
  * @license GPLv2 http://www.opensource.org/licenses/gpl-2.0.php
  *
  */
-class taoLti_actions_ConsumerAdmin extends tao_actions_SaSModule
+class ConsumerAdmin extends tao_actions_SaSModule
 {
     /**
      * work around for legacy support

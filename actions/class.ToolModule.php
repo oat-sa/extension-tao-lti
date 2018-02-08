@@ -19,105 +19,13 @@
  *
  */
 
-use oat\taoLti\actions\LtiModule;
-use oat\taoLti\models\classes\CookieVerifyService;
-use oat\taoLti\models\classes\LtiException;
-use oat\taoLti\models\classes\LtiLaunchData;
-use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
-use oat\taoLti\models\classes\LtiService;
-
 /**
  * An abstract tool controller to be extended by the concrete tools
  *
  * @package taoLti
+ *
+ * @deprecated Use \oat\taoLti\controller\ToolModule instead.
  */
-abstract class taoLti_actions_ToolModule extends LtiModule
+abstract class taoLti_actions_ToolModule extends \oat\taoLti\controller\ToolModule
 {
-    /**
-     * Entrypoint of every tool
-     *
-     * @throws InterruptedActionException
-     * @throws LtiException
-     * @throws ResolverException
-     * @throws \oat\taoLti\models\classes\LtiVariableMissingException
-     * @throws common_Exception
-     * @throws common_exception_Error
-     * @throws common_exception_IsAjaxAction
-     */
-    public function launch()
-    {
-        try {
-            LtiService::singleton()->startLtiSession(common_http_Request::currentRequest());
-            /** @var CookieVerifyService $cookieService */
-            $cookieService = $this->getServiceManager()->get(CookieVerifyService::SERVICE_ID);
-            if ($cookieService->isVerifyCookieRequired()) {
-                if (tao_models_classes_accessControl_AclProxy::hasAccess('verifyCookie', 'CookieUtils', 'taoLti')) {
-                    $this->redirect(
-                        _url(
-                            'verifyCookie',
-                            'CookieUtils',
-                            'taoLti',
-                            [
-                                'session'  => session_id(),
-                                'redirect' => _url('run', null, null, $_GET)
-                            ]
-                        )
-                    );
-                } else {
-                    throw new LtiException(
-                        __('You are not authorized to use this system'),
-                        LtiErrorMessage::ERROR_UNAUTHORIZED
-                    );
-                }
-            } else {
-                $this->forward('run', null, null, $_GET);
-            }
-        } catch (common_user_auth_AuthFailedException $e) {
-            common_Logger::i($e->getMessage());
-            throw new LtiException(
-                __('The LTI connection could not be established'),
-                LtiErrorMessage::ERROR_UNAUTHORIZED
-            );
-        } catch (LtiException $e) {
-            // In regard of the IMS LTI standard, we have to show a back button that refer to the
-            // launch_presentation_return_url url param. So we have to retrieve this parameter before trying to start
-            // the session
-            $params = common_http_Request::currentRequest()->getParams();
-            if (isset($params[LtiLaunchData::TOOL_CONSUMER_INSTANCE_NAME])) {
-                $this->setData(
-                    'consumerLabel',
-                    $params[LtiLaunchData::TOOL_CONSUMER_INSTANCE_NAME]
-                );
-            } elseif (isset($params[LtiLaunchData::TOOL_CONSUMER_INSTANCE_DESCRIPTION])) {
-                $this->setData(
-                    'consumerLabel',
-                    $params[LtiLaunchData::TOOL_CONSUMER_INSTANCE_DESCRIPTION]
-                );
-            }
-
-            if (isset($params[LtiLaunchData::LAUNCH_PRESENTATION_RETURN_URL])) {
-                $returnUrl = $params[LtiLaunchData::LAUNCH_PRESENTATION_RETURN_URL];
-                $serverName = $_SERVER['SERVER_NAME'];
-                $pieces = parse_url($returnUrl);
-                $domain = isset($pieces['host']) ? $pieces['host'] : '';
-                if ($serverName == $domain) {
-                    $this->setData('returnUrl', $returnUrl);
-                }
-            }
-
-            common_Logger::i($e->getMessage());
-            $this->returnLtiError($e, false);
-        } catch (tao_models_classes_oauth_Exception $e) {
-            common_Logger::i($e->getMessage());
-            throw new LtiException(
-                __('The LTI connection could not be established'),
-                LtiErrorMessage::ERROR_UNAUTHORIZED
-            );
-        }
-    }
-
-    /**
-     * run() contains the actual tool's controller
-     */
-    abstract public function run();
 }

@@ -21,6 +21,7 @@
  */
 
 use oat\tao\model\user\TaoRoles;
+use oat\taoLti\controller\CookieUtils;
 use oat\taoLti\scripts\install\InstallServices;
 use oat\taoLti\scripts\install\Updater;
 
@@ -42,18 +43,21 @@ return array(
        'generis' => '>=5.4.0',
 	   'tao' => '>=12.21.0'
 	),
+    'routes' => array(
+        '/taoLti' => 'oat\\taoLti\\controller'
+    ),
 	'models' => array(
 	 	'http://www.tao.lu/Ontologies/TAOLTI.rdf',
 	 	'http://www.imsglobal.org/imspurl/lis/v1/vocab/person',
 	 	'http://www.imsglobal.org/imspurl/lis/v1/vocab/membership'
 	 ),
 	'install' => array(
-		'rdf' => array(
-			dirname(__FILE__). '/models/ontology/lti.rdf',
-			dirname(__FILE__). '/models/ontology/roledefinition.rdf',
-			dirname(__FILE__). '/models/ontology/ltiroles_person.rdf',
-			dirname(__FILE__). '/models/ontology/ltiroles_membership.rdf'
-		),
+        'rdf' => array(
+            $extpath . 'install/ontology/lti.rdf',
+            $extpath . 'install/ontology/roledefinition.rdf',
+            $extpath . 'install/ontology/ltiroles_person.rdf',
+            $extpath . 'install/ontology/ltiroles_membership.rdf'
+        ),
         'php' => [
             InstallServices::class
         ]
@@ -62,12 +66,12 @@ return array(
     'managementRole' => 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiManagerRole',
     'acl' => array(
         array('grant', 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiManagerRole', array('ext'=>'taoLti')),
-        array('grant', TaoRoles::ANONYMOUS, taoLti_actions_CookieUtils::class),
+        array('grant', TaoRoles::ANONYMOUS, CookieUtils::class),
         array('grant', 'http://www.tao.lu/Ontologies/TAO.rdf#BaseUserRole', array('ext'=>'taoLti','mod' => 'LtiConsumer', 'act' => 'call'))
     ),
 	'constants' => array(
-		# actions directory
-		"DIR_ACTIONS"			=> $extpath."actions".DIRECTORY_SEPARATOR,
+		# controller directory
+		"DIR_ACTIONS"			=> $extpath."controller".DIRECTORY_SEPARATOR,
 	
 		# views directory
 		"DIR_VIEWS"				=> $extpath."views".DIRECTORY_SEPARATOR,
@@ -77,5 +81,8 @@ return array(
 	
 		#BASE URL (usually the domain root)
 		'BASE_URL'				=> ROOT_URL . 'taoLti/',
-	)
+	),
+    'extra' => array(
+        'structures' => $extpath . 'controller' . DIRECTORY_SEPARATOR . 'structures.xml',
+    )
 );
