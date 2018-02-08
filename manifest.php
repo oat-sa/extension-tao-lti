@@ -52,12 +52,12 @@ return array(
 	 	'http://www.imsglobal.org/imspurl/lis/v1/vocab/membership'
 	 ),
 	'install' => array(
-		'rdf' => array(
-			dirname(__FILE__). '/install/ontology/lti.rdf',
-			dirname(__FILE__). '/install/ontology/roledefinition.rdf',
-			dirname(__FILE__). '/install/ontology/ltiroles_person.rdf',
-			dirname(__FILE__). '/install/ontology/ltiroles_membership.rdf'
-		),
+        'rdf' => array(
+            $extpath . 'install/ontology/lti.rdf',
+            $extpath . 'install/ontology/roledefinition.rdf',
+            $extpath . 'install/ontology/ltiroles_person.rdf',
+            $extpath . 'install/ontology/ltiroles_membership.rdf'
+        ),
         'php' => [
             InstallServices::class
         ]
@@ -81,5 +81,8 @@ return array(
 	
 		#BASE URL (usually the domain root)
 		'BASE_URL'				=> ROOT_URL . 'taoLti/',
-	)
+	),
+    'extra' => array(
+        'structures' => $extpath . 'controller' . DIRECTORY_SEPARATOR . 'structures.xml',
+    )
 );
