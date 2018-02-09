@@ -132,11 +132,11 @@ class OntologyLtiUserService extends LtiUserService
         if($userResource->exists()){
 
             $properties = $userResource->getPropertiesValues([
-                PROPERTY_USER_UILG,
-                PROPERTY_USER_FIRSTNAME,
-                PROPERTY_USER_LASTNAME,
-                PROPERTY_USER_MAIL,
-                PROPERTY_USER_ROLES,
+                GenerisRdf::PROPERTY_USER_UILG,
+                GenerisRdf::PROPERTY_USER_FIRSTNAME,
+                GenerisRdf::PROPERTY_USER_LASTNAME,
+                GenerisRdf::PROPERTY_USER_MAIL,
+                GenerisRdf::PROPERTY_USER_ROLES,
             ]);
 
             foreach ($properties as $key => $values){
@@ -151,12 +151,12 @@ class OntologyLtiUserService extends LtiUserService
             $props = array(
                 self::PROPERTY_USER_LTIKEY => $ltiContext->getUserID(),
                 self::PROPERTY_USER_LTICONSUMER => $ltiContext->getLtiConsumer(),
-                PROPERTY_USER_UILG => $user->getPropertyValues(PROPERTY_USER_UILG),
-                RDFS_LABEL => $user->getPropertyValues(RDFS_LABEL),
-                PROPERTY_USER_FIRSTNAME => $user->getPropertyValues(PROPERTY_USER_FIRSTNAME),
-                PROPERTY_USER_LASTNAME => $user->getPropertyValues(PROPERTY_USER_LASTNAME),
-                PROPERTY_USER_MAIL => $user->getPropertyValues(PROPERTY_USER_MAIL),
-                PROPERTY_USER_ROLES => $user->getPropertyValues(PROPERTY_USER_ROLES),
+                GenerisRdf::PROPERTY_USER_UILG => $user->getPropertyValues(GenerisRdf::PROPERTY_USER_UILG),
+                OntologyRdfs::RDFS_LABEL => $user->getPropertyValues(OntologyRdfs::RDFS_LABEL),
+                GenerisRdf::PROPERTY_USER_FIRSTNAME => $user->getPropertyValues(GenerisRdf::PROPERTY_USER_FIRSTNAME),
+                GenerisRdf::PROPERTY_USER_LASTNAME => $user->getPropertyValues(GenerisRdf::PROPERTY_USER_LASTNAME),
+                GenerisRdf::PROPERTY_USER_MAIL => $user->getPropertyValues(GenerisRdf::PROPERTY_USER_MAIL),
+                GenerisRdf::PROPERTY_USER_ROLES => $user->getPropertyValues(GenerisRdf::PROPERTY_USER_ROLES),
             );
 
             $userResource = $class->createInstanceWithProperties($props);
