@@ -20,12 +20,12 @@
 
 namespace oat\taoLti\actions\traits;
 
-use oat\search\UsableTrait\LimitableTrait;
+use oat\taoLti\controller\traits\LtiModuleTrait as LtiModuleTraitOld;
 
 /**
  * @deprecated Use \oat\search\UsableTrait\LimitableTrait instead.
  */
 trait LtiModuleTrait
 {
-    use LimitableTrait;
+    use LtiModuleTraitOld;
 }
