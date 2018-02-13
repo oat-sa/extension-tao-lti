@@ -27,6 +27,7 @@ use oat\taoLti\models\classes\LtiException;
 use oat\taoLti\models\classes\LtiLaunchData;
 use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
 use oat\generis\model\data\ModelManager;
+use oat\taoLti\models\classes\LtiVariableMissingException;
 
 /**
  * Ontology implementation of the lti user service
@@ -62,7 +63,7 @@ class OntologyLtiUserService extends LtiUserService
      * @throws \common_exception_InconsistentData
      * @throws \core_kernel_users_CacheException
      * @throws \core_kernel_users_Exception
-     * @throws \oat\taoLti\models\classes\LtiVariableMissingException
+     * @throws LtiVariableMissingException
      */
     public function findOrSpawnUser(LtiLaunchData $launchData)
     {
@@ -132,7 +133,7 @@ class OntologyLtiUserService extends LtiUserService
      * @return mixed|void
      * @throws \common_exception_Error
      * @throws \common_exception_InvalidArgumentType
-     * @throws \oat\taoLti\models\classes\LtiVariableMissingException
+     * @throws LtiVariableMissingException
      */
     protected function updateUser(LtiUser $user, LtiLaunchData $ltiContext)
     {
