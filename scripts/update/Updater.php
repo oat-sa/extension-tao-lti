@@ -19,7 +19,7 @@
  *
  */
 
-namespace oat\taoLti\scripts\install;
+namespace oat\taoLti\scripts\update;
 
 use common_Exception;
 use oat\tao\model\mvc\error\ExceptionInterpreterService;
