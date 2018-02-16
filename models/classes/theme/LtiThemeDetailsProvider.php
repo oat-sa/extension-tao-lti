@@ -23,6 +23,7 @@ namespace oat\taoLti\models\classes\theme;
 use oat\oatbox\PhpSerializable;
 use oat\oatbox\PhpSerializeStateless;
 use oat\tao\model\theme\ThemeDetailsProviderInterface;
+use oat\taoLti\models\classes\TaoLtiSession;
 
 class LtiThemeDetailsProvider implements ThemeDetailsProviderInterface, PhpSerializable
 {
@@ -37,7 +38,7 @@ class LtiThemeDetailsProvider implements ThemeDetailsProviderInterface, PhpSeria
     public function getThemeId()
     {
         $currentSession = \common_session_SessionManager::getSession();
-        if ($currentSession instanceof \taoLti_models_classes_TaoLtiSession) {
+        if ($currentSession instanceof TaoLtiSession) {
             $launchData = $currentSession->getLaunchData();
             if ($launchData->hasVariable(static::LTI_CUSTOM_THEME_VARIABLE)) {
                 return $launchData->getVariable(static::LTI_CUSTOM_THEME_VARIABLE);
@@ -51,18 +52,20 @@ class LtiThemeDetailsProvider implements ThemeDetailsProviderInterface, PhpSeria
      * Tells if the page has to be headless: without header and footer.
      *
      * @return bool|mixed
+     * @throws \common_exception_Error
+     * @throws \oat\taoLti\models\classes\LtiVariableMissingException
      */
     public function isHeadless()
     {
         $currentSession = \common_session_SessionManager::getSession();
-        if ($currentSession instanceof \taoLti_models_classes_TaoLtiSession) {
+        if ($currentSession instanceof TaoLtiSession) {
             $launchData = $currentSession->getLaunchData();
             $presentationTarget = $launchData->hasVariable(static::LTI_PRESENTATION_TARGET)
                 ? $launchData->getVariable(self::LTI_PRESENTATION_TARGET)
                 : '';
             return $presentationTarget == 'frame' || $presentationTarget == 'iframe';
         }
-        
+
         return true;
     }
 }

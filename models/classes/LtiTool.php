@@ -1,51 +1,44 @@
 <?php
-/**  
+/**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; under version 2
  * of the License (non-upgradable).
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- * 
+ *
  * Copyright (c) 2013 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
- *               
- * 
+ *
+ *
  */
 
-namespace oat\taoLti\actions;
+namespace oat\taoLti\models\classes;
 
-use \tao_actions_CommonModule;
-use oat\taoLti\actions\traits\LtiModuleTrait;
+use tao_models_classes_Service;
 
 /**
- * An abstract lti controller
- * 
+ * Abstract service to be implemented by LTI tools
+ *
+ * @author Joel Bout, <joel@taotesting.com>
  * @package taoLti
+ * @package models_classes
  */
-abstract class LtiModule extends tao_actions_CommonModule
+abstract class LtiTool extends tao_models_classes_Service
 {
-    use LtiModuleTrait;
+    const PROPERTY_SERVICE = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#ToolService';
 
     /**
-     * Returns an error page
+     * Builds a launch url for this tool
      *
-     * Ignore the parameter returnLink as LTI session always
-     * require a way for the consumer to return to his platform
-     *
-     * @param string $error error to handle
-     * @param boolean $returnLink
-     * @param int $httpStatus
+     * @param array $parameters additional launch parameters
+     * @return string
      */
-    protected function returnError($error, $returnLink = true, $httpStatus = null)
-    {
-        $error = new \taoLti_models_classes_LtiException($error);
-        $this->returnLtiError($error, $returnLink);
-    }
+    public abstract function getLaunchUrl($parameters = array());
 }

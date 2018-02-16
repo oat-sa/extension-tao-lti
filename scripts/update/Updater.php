@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -20,37 +19,41 @@
  *
  */
 
-use oat\tao\scripts\update\OntologyUpdater;
+namespace oat\taoLti\scripts\update;
+
+use common_Exception;
 use oat\tao\model\mvc\error\ExceptionInterpreterService;
+use oat\tao\scripts\update\OntologyUpdater;
 use oat\taoLti\models\classes\CookieVerifyService;
 use oat\taoLti\models\classes\ExceptionInterpreter;
-use oat\taoLti\models\classes\user\OntologyLtiUserService;
-use oat\taoLti\models\classes\user\LtiUserService;
+use oat\taoLti\models\classes\LtiException;
 use oat\taoLti\models\classes\ResourceLink\LinkService;
 use oat\taoLti\models\classes\ResourceLink\OntologyLink;
+use oat\taoLti\models\classes\user\LtiUserService;
+use oat\taoLti\models\classes\user\OntologyLtiUserService;
+
 /**
- * 
+ *
  * @author Joel Bout <joel@taotesting.com>
  */
-class taoLti_scripts_update_Updater extends \common_ext_ExtensionUpdater
+class Updater extends \common_ext_ExtensionUpdater
 {
-
     /**
-     * 
      * @param string $initialVersion
      * @return string $versionUpdatedTo
+     * @throws common_Exception
      */
     public function update($initialVersion)
     {
         $this->skip('0', '1.2');
-        
+
         if ($this->isVersion('1.2')) {
             OntologyUpdater::syncModels();
             $this->setVersion('1.3.0');
         }
 
         $this->skip('1.3.0', '1.5.2');
-        
+
         // add teacher assistant role
         if ($this->isVersion('1.5.2')) {
             OntologyUpdater::syncModels();
@@ -61,7 +64,7 @@ class taoLti_scripts_update_Updater extends \common_ext_ExtensionUpdater
         if ($this->isVersion('1.12.0')) {
             $service = $this->getServiceManager()->get(ExceptionInterpreterService::SERVICE_ID);
             $interpreters = $service->getOption(ExceptionInterpreterService::OPTION_INTERPRETERS);
-            $interpreters[\taoLti_models_classes_LtiException::class] = ExceptionInterpreter::class;
+            $interpreters[LtiException::class] = ExceptionInterpreter::class;
             $service->setOption(ExceptionInterpreterService::OPTION_INTERPRETERS, $interpreters);
             $this->getServiceManager()->register(ExceptionInterpreterService::SERVICE_ID, $service);
             $this->setVersion('1.13.0');
@@ -97,7 +100,7 @@ class taoLti_scripts_update_Updater extends \common_ext_ExtensionUpdater
                 $userService->setOption(OntologyLtiUserService::OPTION_TRANSACTION_SAFE_RETRY, 1);
             }
             $this->getServiceManager()->register(LtiUserService::SERVICE_ID, $userService);
-            
+
             $this->setVersion('3.5.0');
         }
 
@@ -110,6 +113,6 @@ class taoLti_scripts_update_Updater extends \common_ext_ExtensionUpdater
             $this->setVersion('3.7.0');
         }
 
-        $this->skip('3.7.0', '4.2.0');
+        $this->skip('3.7.0', '5.0.0');
     }
 }

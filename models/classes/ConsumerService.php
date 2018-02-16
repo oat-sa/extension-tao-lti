@@ -14,23 +14,34 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2017 (original work) Open Assessment Technologies SA
- *
+ * Copyright (c) 2015 (original work) Open Assessment Technologies SA
  */
 
 namespace oat\taoLti\models\classes;
 
-use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
+use core_kernel_classes_Class;
+use tao_models_classes_ClassService;
 
-class LtiVariableMissingException extends LtiException
-    implements \common_log_SeverityLevel
+/**
+ * Service methods to manage the LTI consumer business objects using the RDF API.
+ *
+ * @access public
+ * @author Joel Bout, <joel.bout@tudor.lu>
+ * @package taoGroups
+ */
+class ConsumerService extends tao_models_classes_ClassService
 {
-    public function __construct($variableName)
-    {
-        parent::__construct('Undefined LTI variable '.$variableName, LtiErrorMessage::ERROR_MISSING_PARAMETER);
-    }
+    const CLASS_URI = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIConsumer';
 
-    public function getSeverity() {
-        return \common_Logger::DEBUG_LEVEL;
+    /**
+     * return the group top level class
+     *
+     * @access public
+     * @author Joel Bout, <joel.bout@tudor.lu>
+     * @return core_kernel_classes_Class
+     */
+    public function getRootClass()
+    {
+        return new core_kernel_classes_Class(self::CLASS_URI);
     }
 }

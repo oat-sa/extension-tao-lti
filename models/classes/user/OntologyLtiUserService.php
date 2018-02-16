@@ -23,8 +23,11 @@ namespace oat\taoLti\models\classes\user;
 
 use oat\generis\model\GenerisRdf;
 use oat\generis\model\OntologyRdfs;
+use oat\taoLti\models\classes\LtiException;
+use oat\taoLti\models\classes\LtiLaunchData;
 use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
 use oat\generis\model\data\ModelManager;
+use oat\taoLti\models\classes\LtiVariableMissingException;
 
 /**
  * Ontology implementation of the lti user service
@@ -51,11 +54,18 @@ class OntologyLtiUserService extends LtiUserService
      * the LTI request or spawns it. Overriden to implement
      * transaction safe implementation for Ontology Storage.
      *
-     * @param \taoLti_models_classes_LtiLaunchData $launchData
-     * @throws \taoLti_models_classes_LtiException
+     * @param LtiLaunchData $launchData
      * @return LtiUser
+     * @throws LtiException
+     * @throws \Doctrine\DBAL\ConnectionException
+     * @throws \common_Exception
+     * @throws \common_exception_Error
+     * @throws \common_exception_InconsistentData
+     * @throws \core_kernel_users_CacheException
+     * @throws \core_kernel_users_Exception
+     * @throws LtiVariableMissingException
      */
-    public function findOrSpawnUser(\taoLti_models_classes_LtiLaunchData $launchData)
+    public function findOrSpawnUser(LtiLaunchData $launchData)
     {
         $dataModel = ModelManager::getModel();
         $transactionSafe = $this->getOption(self::OPTION_TRANSACTION_SAFE);
@@ -107,7 +117,7 @@ class OntologyLtiUserService extends LtiUserService
                     // Log original exception.
                     \common_Logger::e($e->getMessage());
                     
-                    throw new \taoLti_models_classes_LtiException('LTI Ontology user could not be created. Process had to be rolled back.', 0, $e);
+                    throw new LtiException('LTI Ontology user could not be created. Process had to be rolled back.', 0, $e);
                 } finally {
                     // Reset isolation level to previous one!
                     $platform->setTransactionIsolation($previousIsolationLevel);
@@ -119,14 +129,14 @@ class OntologyLtiUserService extends LtiUserService
     /**
      * @TODO TT-273 split method in separate action (create and update)
      * @param LtiUser $user
-     * @param \taoLti_models_classes_LtiLaunchData $ltiContext
+     * @param LtiLaunchData $ltiContext
      * @return mixed|void
+     * @throws \common_exception_Error
      * @throws \common_exception_InvalidArgumentType
-     * @throws \tao_models_classes_oauth_Exception
+     * @throws LtiVariableMissingException
      */
-    protected function updateUser(LtiUser $user, \taoLti_models_classes_LtiLaunchData $ltiContext)
+    protected function updateUser(LtiUser $user, LtiLaunchData $ltiContext)
     {
-
         $userResource = new \core_kernel_classes_Resource($user->getIdentifier());
 
         if($userResource->exists()){
@@ -179,7 +189,7 @@ class OntologyLtiUserService extends LtiUserService
             'like' => false
         ));
         if (count($instances) > 1) {
-            throw new \taoLti_models_classes_LtiException(
+            throw new LtiException(
                 'Multiple user accounts found for user key \'' . $ltiUserId . '\'',
                 LtiErrorMessage::ERROR_SYSTEM_ERROR
             );
@@ -230,8 +240,10 @@ class OntologyLtiUserService extends LtiUserService
                     $userData[$key] = ($value instanceof \core_kernel_classes_Resource) ? $value->getUri() : (string) $value;
                 }
             }
+
             return $userData;
         }
+
         return null;
     }
 }

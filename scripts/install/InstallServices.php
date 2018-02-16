@@ -18,30 +18,35 @@
  *
  *
  */
+
 namespace oat\taoLti\scripts\install;
 
+use common_report_Report;
 use oat\oatbox\extension\AbstractAction;
 use oat\tao\model\mvc\error\ExceptionInterpreterService;
 use oat\taoLti\models\classes\ExceptionInterpreter;
+use oat\taoLti\models\classes\LtiException;
 
 /**
- * Class InstallServices
  * @package oat\taoLti\scripts\install
  * @author Aleh Hutnikau, <hutnikau@gmail.com>
  */
 class InstallServices extends AbstractAction
 {
-
     /**
      * @param $params
-     * @return Report
+     * @return common_report_Report
+     * @throws \common_Exception
+     * @throws \oat\oatbox\service\exception\InvalidServiceManagerException
      */
     public function __invoke($params)
     {
         $exceptionInterpreterService = $this->getServiceManager()->get(ExceptionInterpreterService::SERVICE_ID);
         $interpreters = $exceptionInterpreterService->getOption(ExceptionInterpreterService::OPTION_INTERPRETERS);
-        $interpreters[\taoLti_models_classes_LtiException::class] = ExceptionInterpreter::class;
+        $interpreters[LtiException::class] = ExceptionInterpreter::class;
         $exceptionInterpreterService->setOption(ExceptionInterpreterService::OPTION_INTERPRETERS, $interpreters);
         $this->getServiceManager()->register(ExceptionInterpreterService::SERVICE_ID, $exceptionInterpreterService);
+
+        return common_report_Report::createSuccess('Successfully installed');
     }
 }
