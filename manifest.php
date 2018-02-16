@@ -23,7 +23,7 @@
 use oat\tao\model\user\TaoRoles;
 use oat\taoLti\controller\CookieUtils;
 use oat\taoLti\scripts\install\InstallServices;
-use oat\taoLti\scripts\install\Updater;
+use oat\taoLti\scripts\update\Updater;
 
 /**
  * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
