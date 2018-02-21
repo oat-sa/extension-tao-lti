@@ -27,6 +27,7 @@ use oat\taoLti\models\classes\LtiException;
 use oat\taoLti\models\classes\LtiLaunchData;
 use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
 use oat\generis\model\data\ModelManager;
+use oat\taoLti\models\classes\LtiVariableMissingException;
 
 /**
  * Ontology implementation of the lti user service
@@ -62,7 +63,7 @@ class OntologyLtiUserService extends LtiUserService
      * @throws \common_exception_InconsistentData
      * @throws \core_kernel_users_CacheException
      * @throws \core_kernel_users_Exception
-     * @throws \oat\taoLti\models\classes\LtiVariableMissingException
+     * @throws LtiVariableMissingException
      */
     public function findOrSpawnUser(LtiLaunchData $launchData)
     {
@@ -132,7 +133,7 @@ class OntologyLtiUserService extends LtiUserService
      * @return mixed|void
      * @throws \common_exception_Error
      * @throws \common_exception_InvalidArgumentType
-     * @throws \oat\taoLti\models\classes\LtiVariableMissingException
+     * @throws LtiVariableMissingException
      */
     protected function updateUser(LtiUser $user, LtiLaunchData $ltiContext)
     {
@@ -141,11 +142,11 @@ class OntologyLtiUserService extends LtiUserService
         if($userResource->exists()){
 
             $properties = $userResource->getPropertiesValues([
-                PROPERTY_USER_UILG,
-                PROPERTY_USER_FIRSTNAME,
-                PROPERTY_USER_LASTNAME,
-                PROPERTY_USER_MAIL,
-                PROPERTY_USER_ROLES,
+                GenerisRdf::PROPERTY_USER_UILG,
+                GenerisRdf::PROPERTY_USER_FIRSTNAME,
+                GenerisRdf::PROPERTY_USER_LASTNAME,
+                GenerisRdf::PROPERTY_USER_MAIL,
+                GenerisRdf::PROPERTY_USER_ROLES,
             ]);
 
             foreach ($properties as $key => $values){
@@ -160,12 +161,12 @@ class OntologyLtiUserService extends LtiUserService
             $props = array(
                 self::PROPERTY_USER_LTIKEY => $ltiContext->getUserID(),
                 self::PROPERTY_USER_LTICONSUMER => $ltiContext->getLtiConsumer(),
-                PROPERTY_USER_UILG => $user->getPropertyValues(PROPERTY_USER_UILG),
-                RDFS_LABEL => $user->getPropertyValues(RDFS_LABEL),
-                PROPERTY_USER_FIRSTNAME => $user->getPropertyValues(PROPERTY_USER_FIRSTNAME),
-                PROPERTY_USER_LASTNAME => $user->getPropertyValues(PROPERTY_USER_LASTNAME),
-                PROPERTY_USER_MAIL => $user->getPropertyValues(PROPERTY_USER_MAIL),
-                PROPERTY_USER_ROLES => $user->getPropertyValues(PROPERTY_USER_ROLES),
+                GenerisRdf::PROPERTY_USER_UILG => $user->getPropertyValues(GenerisRdf::PROPERTY_USER_UILG),
+                OntologyRdfs::RDFS_LABEL => $user->getPropertyValues(OntologyRdfs::RDFS_LABEL),
+                GenerisRdf::PROPERTY_USER_FIRSTNAME => $user->getPropertyValues(GenerisRdf::PROPERTY_USER_FIRSTNAME),
+                GenerisRdf::PROPERTY_USER_LASTNAME => $user->getPropertyValues(GenerisRdf::PROPERTY_USER_LASTNAME),
+                GenerisRdf::PROPERTY_USER_MAIL => $user->getPropertyValues(GenerisRdf::PROPERTY_USER_MAIL),
+                GenerisRdf::PROPERTY_USER_ROLES => $user->getPropertyValues(GenerisRdf::PROPERTY_USER_ROLES),
             );
 
             $userResource = $class->createInstanceWithProperties($props);

@@ -23,7 +23,7 @@
 use oat\tao\model\user\TaoRoles;
 use oat\taoLti\controller\CookieUtils;
 use oat\taoLti\scripts\install\InstallServices;
-use oat\taoLti\scripts\install\Updater;
+use oat\taoLti\scripts\update\Updater;
 
 /**
  * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
@@ -40,8 +40,8 @@ return array(
     'version' => '5.0.0',
 	'author' => 'Open Assessment Technologies SA',
 	'requires' => array(
-       'generis' => '>=5.4.0',
-	   'tao' => '>=12.21.0'
+       'generis' => '>=5.9.0',
+	   'tao' => '>=14.21.0'
 	),
     'routes' => array(
         '/taoLti' => 'oat\\taoLti\\controller'
