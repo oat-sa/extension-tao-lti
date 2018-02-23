@@ -18,21 +18,37 @@
  *
  */
 
+namespace oat\taoLti\models\classes;
+
 use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
 
-class taoLti_models_classes_LtiException extends common_Exception
+class LtiException extends \common_Exception
 {
-
+    /**
+     * @var LtiErrorMessage
+     */
+    protected $ltiMessage;
     /**
      * @var string Unique key to determine error in log
      */
     private $key;
 
-    public function __construct($message = null, $code = 0, Exception $previous = null)
+    /**
+     * @return LtiErrorMessage
+     */
+    public function getLtiMessage()
     {
-        parent::__construct($message, $code, $previous);
+        if ($this->ltiMessage === null) {
+            $message = __('Error (%s): ', $this->getCode()) . $this->getMessage();
+            $log = __('Error(%s): [key %s] %s "%s"', $this->getCode(), $this->getKey(), get_class($this), $this->getMessage());
+            $this->ltiMessage = new LtiErrorMessage($message, $log);
+        }
+        return $this->ltiMessage;
     }
 
+    /**
+     * @return string
+     */
     public function getKey()
     {
         if (!isset($this->key)) {
@@ -43,26 +59,10 @@ class taoLti_models_classes_LtiException extends common_Exception
     }
 
     /**
-     * @var LtiErrorMessage
+     * @return string
      */
-    protected $ltiMessage;
-
-    /**
-     * @return LtiErrorMessage
-     */
-    public function getLtiMessage()
-    {
-        if ($this->ltiMessage === null) {
-            $message =__('Error (%s): ', $this->getCode()) . $this->getMessage();
-            $log = __('Error(%s): [key %s] %s "%s"', $this->getCode(), $this->getKey(), get_class($this), $this->getMessage());
-            $this->ltiMessage = new LtiErrorMessage($message, $log);
-        }
-        return $this->ltiMessage;
-    }
-
     public function __toString()
     {
         return '[key ' . $this->getKey() . '] ' . parent::__toString();
     }
-
 }

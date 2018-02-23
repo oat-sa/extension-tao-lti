@@ -22,7 +22,7 @@
 namespace oat\taoLti\models\classes\user;
 
 use oat\oatbox\service\ConfigurableService;
-
+use oat\taoLti\models\classes\LtiLaunchData;
 
 /**
  * Lti user service, allow us to find or spawn a lti user based on launch data
@@ -39,11 +39,15 @@ abstract class LtiUserService extends ConfigurableService
      * Returns the existing tao User that corresponds to
      * the LTI request or spawns it
      *
-     * @param \taoLti_models_classes_LtiLaunchData $launchData
-     * @throws \taoLti_models_classes_LtiException
+     * @param LtiLaunchData $launchData
      * @return LtiUser
+     * @throws \common_Exception
+     * @throws \common_exception_Error
+     * @throws \core_kernel_users_CacheException
+     * @throws \core_kernel_users_Exception
+     * @throws \oat\taoLti\models\classes\LtiVariableMissingException
      */
-    public function findOrSpawnUser(\taoLti_models_classes_LtiLaunchData $launchData)
+    public function findOrSpawnUser(LtiLaunchData $launchData)
     {
         $taoUser = $this->findUser($launchData);
         if (is_null($taoUser)) {
@@ -55,11 +59,15 @@ abstract class LtiUserService extends ConfigurableService
     /**
      * Searches if this user was already created in TAO
      *
-     * @param \taoLti_models_classes_LtiLaunchData $ltiContext
-     * @throws \taoLti_models_classes_LtiException
+     * @param LtiLaunchData $ltiContext
      * @return LtiUser
+     * @throws \common_Exception
+     * @throws \common_exception_Error
+     * @throws \core_kernel_users_CacheException
+     * @throws \core_kernel_users_Exception
+     * @throws \oat\taoLti\models\classes\LtiVariableMissingException
      */
-    public function findUser(\taoLti_models_classes_LtiLaunchData $ltiContext)
+    public function findUser(LtiLaunchData $ltiContext)
     {
         $ltiConsumer = $ltiContext->getLtiConsumer();
         $taoUserId = $this->getUserIdentifier($ltiContext->getUserID(), $ltiConsumer->getUri());
@@ -78,10 +86,10 @@ abstract class LtiUserService extends ConfigurableService
 
     /**
      * @param LtiUser $user
-     * @param \taoLti_models_classes_LtiLaunchData $ltiContext
+     * @param LtiLaunchData $ltiContext
      * @return mixed
      */
-    abstract protected function updateUser(LtiUser $user, \taoLti_models_classes_LtiLaunchData $ltiContext);
+    abstract protected function updateUser(LtiUser $user, LtiLaunchData $ltiContext);
 
     /**
      * Find the tao user identifier related to a lti user id and a consumer
@@ -94,10 +102,15 @@ abstract class LtiUserService extends ConfigurableService
     /**
      * Creates a new LTI User with the absolute minimum of required informations
      *
-     * @param \taoLti_models_classes_LtiLaunchData $ltiContext
+     * @param LtiLaunchData $ltiContext
      * @return LtiUser
+     * @throws \common_Exception
+     * @throws \common_exception_Error
+     * @throws \core_kernel_users_CacheException
+     * @throws \core_kernel_users_Exception
+     * @throws \oat\taoLti\models\classes\LtiVariableMissingException
      */
-    public function spawnUser(\taoLti_models_classes_LtiLaunchData $ltiContext)
+    public function spawnUser(LtiLaunchData $ltiContext)
     {
         //@TODO create LtiUser after create and save in db.
         $userId = $ltiContext->getUserID();
@@ -108,7 +121,6 @@ abstract class LtiUserService extends ConfigurableService
 
         return $ltiUser;
     }
-
 
     /**
      * Get the user information from the tao user identifier

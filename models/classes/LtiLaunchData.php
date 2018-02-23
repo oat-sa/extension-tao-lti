@@ -1,57 +1,63 @@
 <?php
-/**  
+/**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; under version 2
  * of the License (non-upgradable).
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- * 
+ *
  * Copyright (c) 2013 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
- *               
- * 
+ *
+ *
  */
 
-use oat\taoLti\models\classes\LtiVariableMissingException;
+namespace oat\taoLti\models\classes;
 
-class taoLti_models_classes_LtiLaunchData
+use common_http_Request;
+use common_Logger;
+use core_kernel_classes_Resource;
+use tao_helpers_Request;
+use tao_models_classes_oauth_DataStore;
+
+class LtiLaunchData
 {
-    const OAUTH_CONSUMER_KEY               = 'oauth_consumer_key';
-    const RESOURCE_LINK_ID                 = 'resource_link_id';
-    const RESOURCE_LINK_TITLE              = 'resource_link_title';
-    const CONTEXT_ID                       = 'context_id';
-    const CONTEXT_LABEL                    = 'context_label';
-    
+    const OAUTH_CONSUMER_KEY  = 'oauth_consumer_key';
+    const RESOURCE_LINK_ID    = 'resource_link_id';
+    const RESOURCE_LINK_TITLE = 'resource_link_title';
+    const CONTEXT_ID          = 'context_id';
+    const CONTEXT_LABEL       = 'context_label';
+
     const USER_ID                          = 'user_id';
     const ROLES                            = 'roles';
     const LIS_PERSON_NAME_GIVEN            = 'lis_person_name_given';
     const LIS_PERSON_NAME_FAMILY           = 'lis_person_name_family';
     const LIS_PERSON_NAME_FULL             = 'lis_person_name_full';
     const LIS_PERSON_CONTACT_EMAIL_PRIMARY = 'lis_person_contact_email_primary';
-    
-    const LAUNCH_PRESENTATION_LOCALE       = 'launch_presentation_locale';
-    const LAUNCH_PRESENTATION_RETURN_URL   = 'launch_presentation_return_url';
-    
-    const TOOL_CONSUMER_INSTANCE_NAME           = 'tool_consumer_instance_name';
-    const TOOL_CONSUMER_INSTANCE_DESCRIPTION    = 'tool_consumer_instance_description';
+
+    const LAUNCH_PRESENTATION_LOCALE     = 'launch_presentation_locale';
+    const LAUNCH_PRESENTATION_RETURN_URL = 'launch_presentation_return_url';
+
+    const TOOL_CONSUMER_INSTANCE_NAME        = 'tool_consumer_instance_name';
+    const TOOL_CONSUMER_INSTANCE_DESCRIPTION = 'tool_consumer_instance_description';
 
     /**
      * LTI variables
-     * 
+     *
      * @var array
      */
     private $variables;
-    
+
     /**
      * Custom parameters of the LTI call
-     * 
+     *
      * @var array
      */
     private $customParams;
@@ -60,25 +66,44 @@ class taoLti_models_classes_LtiLaunchData
      * @var core_kernel_classes_Resource
      */
     private $ltiConsumer;
-    
-    
+
     /**
-     * 
-     * @param common_http_Request $request
-     * @return taoLti_models_classes_LtiLaunchData
+     * Spawns an LtiSession
+     *
+     * @param array $ltiVariables
+     * @param array $customParameters
      */
-    public static function fromRequest(common_http_Request $request) {
+    private function __construct($ltiVariables, $customParameters)
+    {
+        $this->variables = $ltiVariables;
+        $this->customParams = $customParameters;
+    }
+
+    /**
+     *
+     * @param common_http_Request $request
+     * @return LtiLaunchData
+     * @throws \ResolverException
+     */
+    public static function fromRequest(common_http_Request $request)
+    {
         $extra = self::getParametersFromUrl($request->getUrl());
+
         return new self($request->getParams(), $extra);
     }
-    
+
+    /**
+     * @param string $url
+     * @return array
+     * @throws \ResolverException
+     */
     private static function getParametersFromUrl($url)
     {
         $returnValue = array();
-        
+
         // get parameters
-        parse_str(parse_url($url,PHP_URL_QUERY), $returnValue);
-    
+        parse_str(parse_url($url, PHP_URL_QUERY), $returnValue);
+
         // encoded in url
         $parts = explode('/', tao_helpers_Request::getRelativeUrl($url), 4);
         if (count($parts) == 4) {
@@ -98,33 +123,17 @@ class taoLti_models_classes_LtiLaunchData
                 }
             }
         }
+
         return $returnValue;
     }
-    
+
     /**
-     * Spawns an LtiSession
-     * 
-     * @param array $ltiVariables
+     * @param string $key
+     * @return mixed|null
      */
-    private function __construct($ltiVariables, $customParameters) {
-        $this->variables    = $ltiVariables;
-        $this->customParams = $customParameters;
-    }
-    
-    public function hasVariable($key) {
-        return isset($this->variables[$key]);
-    }
-    
-    public function getVariable($key) {
-        if (isset($this->variables[$key])) {
-            return $this->variables[$key];
-        } else {
-            throw new LtiVariableMissingException($key);
-        }
-    }
-    
-    public function getCustomParameter($key) {
-        return isset($this->customParams[$key]) ? $this->customParams[$key] : null; 
+    public function getCustomParameter($key)
+    {
+        return isset($this->customParams[$key]) ? $this->customParams[$key] : null;
     }
 
     /**
@@ -132,7 +141,8 @@ class taoLti_models_classes_LtiLaunchData
      *
      * @return array
      */
-    public function getCustomParameters() {
+    public function getCustomParameters()
+    {
         return $this->customParams;
     }
 
@@ -141,71 +151,135 @@ class taoLti_models_classes_LtiLaunchData
      *
      * @return array
      */
-    public function getVariables() {
+    public function getVariables()
+    {
         return $this->variables;
     }
 
-    // simpler access
-    
-    public function getOauthKey() {
-        return $this->getVariable(self::OAUTH_CONSUMER_KEY);
-    }
-    
-    public function getResourceLinkID() {
+    /**
+     * @return mixed
+     * @throws LtiVariableMissingException
+     */
+    public function getResourceLinkID()
+    {
         return $this->getVariable(self::RESOURCE_LINK_ID);
     }
-    
-    public function getResourceLinkTitle() {
+
+    /**
+     * @param $key
+     * @return mixed
+     * @throws LtiVariableMissingException
+     */
+    public function getVariable($key)
+    {
+        if (isset($this->variables[$key])) {
+            return $this->variables[$key];
+        } else {
+            throw new LtiVariableMissingException($key);
+        }
+    }
+
+    // simpler access
+
+    /**
+     * @return mixed|string
+     * @throws LtiVariableMissingException
+     */
+    public function getResourceLinkTitle()
+    {
         if ($this->hasVariable(self::RESOURCE_LINK_TITLE)) {
             return $this->getVariable(self::RESOURCE_LINK_TITLE);
         } else {
             return __('link');
         }
     }
-    
-    public function getUserID() {
+
+    public function hasVariable($key)
+    {
+        return isset($this->variables[$key]);
+    }
+
+    /**
+     * @return mixed
+     * @throws LtiVariableMissingException
+     */
+    public function getUserID()
+    {
         return $this->getVariable(self::USER_ID);
     }
-    
-    public function getUserGivenName() {
+
+    /**
+     * @return mixed
+     * @throws LtiVariableMissingException
+     */
+    public function getUserGivenName()
+    {
         return $this->getVariable(self::LIS_PERSON_NAME_GIVEN);
     }
-    
-    public function getUserFamilyName() {
+
+    /**
+     * @return mixed
+     * @throws LtiVariableMissingException
+     */
+    public function getUserFamilyName()
+    {
         return $this->getVariable(self::LIS_PERSON_NAME_FAMILY);
     }
-    
-    public function getUserFullName() {
+
+    /**
+     * @return mixed
+     * @throws LtiVariableMissingException
+     */
+    public function getUserFullName()
+    {
         if ($this->hasVariable(self::LIS_PERSON_NAME_FULL)) {
             return $this->getVariable(self::LIS_PERSON_NAME_FULL);
         }
     }
-    
-    public function getUserEmail() {
+
+    /**
+     * @return mixed
+     * @throws LtiVariableMissingException
+     */
+    public function getUserEmail()
+    {
         return $this->getVariable(self::LIS_PERSON_CONTACT_EMAIL_PRIMARY);
     }
-    
-    public function getUserRoles() {
-        return explode(',',$this->getVariable(self::ROLES));
+
+    /**
+     * @return array
+     * @throws LtiVariableMissingException
+     */
+    public function getUserRoles()
+    {
+        return explode(',', $this->getVariable(self::ROLES));
     }
-    
-    public function hasLaunchLanguage() {
+
+    public function hasLaunchLanguage()
+    {
         return $this->hasVariable(self::LAUNCH_PRESENTATION_LOCALE);
     }
-        
-    public function getLaunchLanguage() {
+
+    /**
+     * @return mixed
+     * @throws LtiVariableMissingException
+     */
+    public function getLaunchLanguage()
+    {
         return $this->getVariable(self::LAUNCH_PRESENTATION_LOCALE);
     }
-    
+
     /**
      * Tries to return the tool consumer name
-     * 
+     *
      * Returns null if no name found
-     * 
+     *
      * @return string
+     * @throws LtiVariableMissingException
      */
-    public function getToolConsumerName() {
-        return $this->hasVariable(self::TOOL_CONSUMER_INSTANCE_NAME) 
+    public function getToolConsumerName()
+    {
+        return $this->hasVariable(self::TOOL_CONSUMER_INSTANCE_NAME)
             ? $this->getVariable(self::TOOL_CONSUMER_INSTANCE_NAME)
             : $this->hasVariable(self::TOOL_CONSUMER_INSTANCE_DESCRIPTION)
                 ? $this->getVariable(self::TOOL_CONSUMER_INSTANCE_DESCRIPTION)
@@ -214,35 +288,50 @@ class taoLti_models_classes_LtiLaunchData
 
     /**
      * @return core_kernel_classes_Resource
-     * @throws tao_models_classes_oauth_Exception
+     * @throws LtiVariableMissingException
      */
     public function getLtiConsumer()
     {
-        if(is_null($this->ltiConsumer)){
+        if (is_null($this->ltiConsumer)) {
             $dataStore = new tao_models_classes_oauth_DataStore();
             $this->ltiConsumer = $dataStore->findOauthConsumerResource($this->getOauthKey());
         }
 
         return $this->ltiConsumer;
     }
-    
+
     /**
-     * Return the returnUrl to the tool consumer
-     * 
-     * @return string
-     * @throws taoLti_models_classes_LtiException
+     * @return mixed
+     * @throws LtiVariableMissingException
      */
-    public function getReturnUrl() {
-        return $this->getVariable(self::LAUNCH_PRESENTATION_RETURN_URL);
+    public function getOauthKey()
+    {
+        return $this->getVariable(self::OAUTH_CONSUMER_KEY);
     }
 
-    public function hasReturnUrl(){
-        if($this->hasVariable(self::LAUNCH_PRESENTATION_RETURN_URL)){
-            if(filter_var($this->getReturnUrl(), FILTER_VALIDATE_URL)){
+    /**
+     * @return bool
+     * @throws LtiException
+     */
+    public function hasReturnUrl()
+    {
+        if ($this->hasVariable(self::LAUNCH_PRESENTATION_RETURN_URL)) {
+            if (filter_var($this->getReturnUrl(), FILTER_VALIDATE_URL)) {
                 return true;
             }
             common_Logger::w("Please provide a valid url. " . $this->getReturnUrl() . " is not valid");
         }
         return false;
+    }
+
+    /**
+     * Return the returnUrl to the tool consumer
+     *
+     * @return string
+     * @throws LtiException
+     */
+    public function getReturnUrl()
+    {
+        return $this->getVariable(self::LAUNCH_PRESENTATION_RETURN_URL);
     }
 }

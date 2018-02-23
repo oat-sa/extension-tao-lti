@@ -19,10 +19,11 @@
  * 
  */
 
-namespace oat\taoLti\actions;
+namespace oat\taoLti\controller;
 
+use oat\taoLti\models\classes\LtiException;
 use \tao_actions_CommonModule;
-use oat\taoLti\actions\traits\LtiModuleTrait;
+use oat\taoLti\controller\traits\LtiModuleTrait;
 
 /**
  * An abstract lti controller
@@ -42,10 +43,16 @@ abstract class LtiModule extends tao_actions_CommonModule
      * @param string $error error to handle
      * @param boolean $returnLink
      * @param int $httpStatus
+     * @throws LtiException
+     * @throws \InterruptedActionException
+     * @throws \ResolverException
+     * @throws \common_exception_Error
+     * @throws \common_exception_IsAjaxAction
+     * @throws \oat\taoLti\models\classes\LtiVariableMissingException
      */
     protected function returnError($error, $returnLink = true, $httpStatus = null)
     {
-        $error = new \taoLti_models_classes_LtiException($error);
+        $error = new LtiException($error);
         $this->returnLtiError($error, $returnLink);
     }
 }

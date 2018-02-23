@@ -18,8 +18,10 @@
  *
  */
 
-namespace oat\taoLti\actions\traits;
+namespace oat\taoLti\controller\traits;
 
+use oat\taoLti\models\classes\LtiException;
+use oat\taoLti\models\classes\LtiLaunchData;
 use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
 use \tao_helpers_Request;
 use \common_exception_IsAjaxAction;
@@ -33,12 +35,17 @@ trait LtiModuleTrait
      * Ignore the parameter returnLink as LTI session always
      * require a way for the consumer to return to his platform
      *
-     * @param \taoLti_models_classes_LtiException $error error to show
+     * @param LtiException $error error to show
      * @param boolean $returnLink
+     * @throws LtiException
+     * @throws \InterruptedActionException
+     * @throws \ResolverException
+     * @throws \common_exception_Error
+     * @throws \oat\taoLti\models\classes\LtiVariableMissingException
+     * @throws common_exception_IsAjaxAction
      * @see tao_actions_CommonModule::returnError()
-     * @throws \common_exception_IsAjaxAction
      */
-    protected function returnLtiError(\taoLti_models_classes_LtiException $error, $returnLink = true)
+    protected function returnLtiError(LtiException $error, $returnLink = true)
     {
         // full trace of the error
         \common_Logger::e($error->__toString());
@@ -46,7 +53,7 @@ trait LtiModuleTrait
         if (tao_helpers_Request::isAjax()) {
             throw new common_exception_IsAjaxAction(__CLASS__ . '::' . __FUNCTION__);
         } else {
-            $launchData = \taoLti_models_classes_LtiLaunchData::fromRequest(\common_http_Request::currentRequest());
+            $launchData = LtiLaunchData::fromRequest(\common_http_Request::currentRequest());
 
             if ($launchData->hasReturnUrl() && $error->getCode() != LtiErrorMessage::ERROR_UNAUTHORIZED) {
                 $flowController = new FlowController();
@@ -67,11 +74,12 @@ trait LtiModuleTrait
     }
 
     /**
-     * @param \taoLti_models_classes_LtiLaunchData $launchData
-     * @param \taoLti_models_classes_LtiException $error
+     * @param LtiLaunchData $launchData
+     * @param LtiException $error
      * @return string
+     * @throws LtiException
      */
-    private function getLtiReturnUrl(\taoLti_models_classes_LtiLaunchData $launchData, \taoLti_models_classes_LtiException $error)
+    private function getLtiReturnUrl(LtiLaunchData $launchData, LtiException $error)
     {
         $baseUrl = $launchData->getReturnUrl();
         $url = $baseUrl . (parse_url($baseUrl, PHP_URL_QUERY) ? '&' : '?') . http_build_query($error->getLtiMessage()->getUrlParams());

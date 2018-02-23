@@ -19,9 +19,11 @@
  *
  */
 
+namespace oat\taoLti\controller;
+
 use oat\taoLti\models\classes\LtiRestApiService;
 
-class taoLti_actions_RestService extends \tao_actions_CommonRestModule
+class RestService extends \tao_actions_CommonRestModule
 {
     const LTI_USER_ID = 'lti_user_id';
     const LTI_CONSUMER_KEY = 'lti_consumer_key';
@@ -29,6 +31,7 @@ class taoLti_actions_RestService extends \tao_actions_CommonRestModule
     /**
      * taoLti_actions_RestService constructor.
      * Pass model service to handle http call business
+     * @throws \common_exception_NoImplementation
      */
     public function __construct()
     {
@@ -40,6 +43,11 @@ class taoLti_actions_RestService extends \tao_actions_CommonRestModule
         $this->service = LtiRestApiService::singleton();
     }
 
+    /**
+     * @param null $uri
+     * @return mixed|void
+     * @throws \common_exception_NoImplementation
+     */
     public function get($uri = null)
     {
         throw new \common_exception_NoImplementation();
@@ -47,6 +55,7 @@ class taoLti_actions_RestService extends \tao_actions_CommonRestModule
 
     /**
      * End point to get common user uri by lti user id
+     * @throws \common_exception_NotImplemented
      */
     public function getUserId()
     {

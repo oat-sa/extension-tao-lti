@@ -1,6 +1,7 @@
 <?php
 /**  
  * This program is free software; you can redistribute it and/or
+ * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; under version 2
  * of the License (non-upgradable).
@@ -20,8 +21,9 @@
  */
 
 use oat\tao\model\user\TaoRoles;
+use oat\taoLti\controller\CookieUtils;
 use oat\taoLti\scripts\install\InstallServices;
-use oat\taoLti\scripts\install\RegisterCookieVerifyService;
+use oat\taoLti\scripts\update\Updater;
 
 /**
  * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
@@ -35,38 +37,41 @@ return array(
 	'label' => 'LTI library',
     'description' => 'TAO LTI library and helpers',
     'license' => 'GPL-2.0',
-    'version' => '4.2.0',
+    'version' => '6.0.0',
 	'author' => 'Open Assessment Technologies SA',
 	'requires' => array(
        'generis' => '>=5.9.0',
 	   'tao' => '>=14.21.0'
 	),
+    'routes' => array(
+        '/taoLti' => 'oat\\taoLti\\controller'
+    ),
 	'models' => array(
 	 	'http://www.tao.lu/Ontologies/TAOLTI.rdf',
 	 	'http://www.imsglobal.org/imspurl/lis/v1/vocab/person',
 	 	'http://www.imsglobal.org/imspurl/lis/v1/vocab/membership'
 	 ),
 	'install' => array(
-		'rdf' => array(
-			dirname(__FILE__). '/models/ontology/lti.rdf',
-			dirname(__FILE__). '/models/ontology/roledefinition.rdf',
-			dirname(__FILE__). '/models/ontology/ltiroles_person.rdf',
-			dirname(__FILE__). '/models/ontology/ltiroles_membership.rdf'
-		),
+        'rdf' => array(
+            $extpath . 'install/ontology/lti.rdf',
+            $extpath . 'install/ontology/roledefinition.rdf',
+            $extpath . 'install/ontology/ltiroles_person.rdf',
+            $extpath . 'install/ontology/ltiroles_membership.rdf'
+        ),
         'php' => [
             InstallServices::class
         ]
 	),
-	'update' => 'taoLti_scripts_update_Updater',
+	'update' => Updater::class,
     'managementRole' => 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiManagerRole',
     'acl' => array(
         array('grant', 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiManagerRole', array('ext'=>'taoLti')),
-        array('grant', TaoRoles::ANONYMOUS, taoLti_actions_CookieUtils::class),
+        array('grant', TaoRoles::ANONYMOUS, CookieUtils::class),
         array('grant', 'http://www.tao.lu/Ontologies/TAO.rdf#BaseUserRole', array('ext'=>'taoLti','mod' => 'LtiConsumer', 'act' => 'call'))
     ),
 	'constants' => array(
-		# actions directory
-		"DIR_ACTIONS"			=> $extpath."actions".DIRECTORY_SEPARATOR,
+		# controller directory
+		"DIR_ACTIONS"			=> $extpath."controller".DIRECTORY_SEPARATOR,
 	
 		# views directory
 		"DIR_VIEWS"				=> $extpath."views".DIRECTORY_SEPARATOR,
@@ -76,5 +81,8 @@ return array(
 	
 		#BASE URL (usually the domain root)
 		'BASE_URL'				=> ROOT_URL . 'taoLti/',
-	)
+	),
+    'extra' => array(
+        'structures' => $extpath . 'controller' . DIRECTORY_SEPARATOR . 'structures.xml',
+    )
 );
