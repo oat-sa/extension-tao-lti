@@ -40,7 +40,17 @@ class Updater extends \common_ext_ExtensionUpdater
 {
     /**
      * @param string $initialVersion
+     *
      * @return string $versionUpdatedTo
+     *
+     * @throws \common_exception_Error
+     * @throws \common_exception_InconsistentData
+     * @throws \common_exception_InvalidArgumentType
+     * @throws \common_exception_MissingParameter
+     * @throws \common_ext_ExtensionException
+     * @throws \common_ext_InstallationException
+     * @throws \common_ext_ManifestNotFoundException
+     * @throws \oat\generis\model\data\ModelIdNotFoundException
      * @throws common_Exception
      */
     public function update($initialVersion)
@@ -62,22 +72,22 @@ class Updater extends \common_ext_ExtensionUpdater
         $this->skip('1.6.0', '1.12.0');
 
         if ($this->isVersion('1.12.0')) {
-            $service = $this->getServiceManager()->get(ExceptionInterpreterService::SERVICE_ID);
-            $interpreters = $service->getOption(ExceptionInterpreterService::OPTION_INTERPRETERS);
-            $interpreters[LtiException::class] = ExceptionInterpreter::class;
-            $service->setOption(ExceptionInterpreterService::OPTION_INTERPRETERS, $interpreters);
-            $this->getServiceManager()->register(ExceptionInterpreterService::SERVICE_ID, $service);
+            $exceptionInterpreterService = $this->getServiceManager()->get(ExceptionInterpreterService::SERVICE_ID);
+            $interpretersList = $exceptionInterpreterService->getOption(ExceptionInterpreterService::OPTION_INTERPRETERS);
+            $interpretersList['taoLti_models_classes_LtiException'] = ExceptionInterpreter::class;
+            $exceptionInterpreterService->setOption(ExceptionInterpreterService::OPTION_INTERPRETERS, $interpretersList);
+            $this->getServiceManager()->register(ExceptionInterpreterService::SERVICE_ID, $exceptionInterpreterService);
             $this->setVersion('1.13.0');
         }
 
         $this->skip('1.13.0', '2.0.0');
 
         if ($this->isVersion('2.0.0')) {
-            $service = new CookieVerifyService([
+            $exceptionInterpreterService = new CookieVerifyService([
                 CookieVerifyService::OPTION_VERIFY_COOKIE => true
             ]);
-            $service->setServiceManager($this->getServiceManager());
-            $this->getServiceManager()->register(CookieVerifyService::SERVICE_ID, $service);
+            $exceptionInterpreterService->setServiceManager($this->getServiceManager());
+            $this->getServiceManager()->register(CookieVerifyService::SERVICE_ID, $exceptionInterpreterService);
 
             $this->setVersion('2.1.0');
         }
@@ -85,9 +95,9 @@ class Updater extends \common_ext_ExtensionUpdater
         $this->skip('2.1.0', '3.3.1');
 
         if ($this->isVersion('3.3.1')) {
-            $service = new OntologyLtiUserService();
-            $service->setServiceManager($this->getServiceManager());
-            $this->getServiceManager()->register(LtiUserService::SERVICE_ID, $service);
+            $exceptionInterpreterService = new OntologyLtiUserService();
+            $exceptionInterpreterService->setServiceManager($this->getServiceManager());
+            $this->getServiceManager()->register(LtiUserService::SERVICE_ID, $exceptionInterpreterService);
 
             $this->setVersion('3.4.0');
         }
@@ -113,6 +123,25 @@ class Updater extends \common_ext_ExtensionUpdater
             $this->setVersion('3.7.0');
         }
 
-        $this->skip('3.7.0', '5.0.0');
+        $this->skip('3.7.0', '6.0.0');
+
+        if ($this->isVersion('6.0.0')) {
+            /** @var ExceptionInterpreterService $exceptionInterpreterService */
+            $exceptionInterpreterService = $this->getServiceManager()->get(ExceptionInterpreterService::SERVICE_ID);
+            $interpretersList = $exceptionInterpreterService->getOption(
+                ExceptionInterpreterService::OPTION_INTERPRETERS
+            );
+            // unregister old exception.
+            if (array_key_exists('taoLti_models_classes_LtiException', $interpretersList)) {
+                unset($interpretersList[LtiException::class]);
+            }
+            $interpretersList[LtiException::class] = ExceptionInterpreter::class;
+            $exceptionInterpreterService->setOption(
+                ExceptionInterpreterService::OPTION_INTERPRETERS,
+                $interpretersList
+            );
+            $this->getServiceManager()->register(ExceptionInterpreterService::SERVICE_ID, $exceptionInterpreterService);
+            $this->setVersion('6.0.1');
+        }
     }
 }
