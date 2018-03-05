@@ -133,7 +133,7 @@ class Updater extends \common_ext_ExtensionUpdater
             );
             // unregister old exception.
             if (array_key_exists('taoLti_models_classes_LtiException', $interpretersList)) {
-                unset($interpretersList[LtiException::class]);
+                unset($interpretersList['taoLti_models_classes_LtiException']);
             }
             $interpretersList[LtiException::class] = ExceptionInterpreter::class;
             $exceptionInterpreterService->setOption(
