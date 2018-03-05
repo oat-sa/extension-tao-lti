@@ -50,11 +50,7 @@ class LtiService extends tao_models_classes_Service
         $this->getServiceLocator()->propagate($adapter);
         $user = $adapter->authenticate();
 
-        //TODO: after ltiProctoring will be updated next string should be replaced by
-        // $session = new TaoLtiSession($user);
-        // [Sergii Chernenko]
-
-        $session = new \taoLti_models_classes_TaoLtiSession($user);
+        $session = new TaoLtiSession($user);
 
         $this->getServiceLocator()->propagate($session);
         common_session_SessionManager::startSession($session);

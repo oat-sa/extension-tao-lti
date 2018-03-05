@@ -72,22 +72,22 @@ class Updater extends \common_ext_ExtensionUpdater
         $this->skip('1.6.0', '1.12.0');
 
         if ($this->isVersion('1.12.0')) {
-            $exceptionInterpreterService = $this->getServiceManager()->get(ExceptionInterpreterService::SERVICE_ID);
-            $interpretersList = $exceptionInterpreterService->getOption(ExceptionInterpreterService::OPTION_INTERPRETERS);
-            $interpretersList['taoLti_models_classes_LtiException'] = ExceptionInterpreter::class;
-            $exceptionInterpreterService->setOption(ExceptionInterpreterService::OPTION_INTERPRETERS, $interpretersList);
-            $this->getServiceManager()->register(ExceptionInterpreterService::SERVICE_ID, $exceptionInterpreterService);
+            $service = $this->getServiceManager()->get(ExceptionInterpreterService::SERVICE_ID);
+            $interpreters = $service->getOption(ExceptionInterpreterService::OPTION_INTERPRETERS);
+            $interpreters[LtiException::class] = ExceptionInterpreter::class;
+            $service->setOption(ExceptionInterpreterService::OPTION_INTERPRETERS, $interpreters);
+            $this->getServiceManager()->register(ExceptionInterpreterService::SERVICE_ID, $service);
             $this->setVersion('1.13.0');
         }
 
         $this->skip('1.13.0', '2.0.0');
 
         if ($this->isVersion('2.0.0')) {
-            $exceptionInterpreterService = new CookieVerifyService([
+            $service = new CookieVerifyService([
                 CookieVerifyService::OPTION_VERIFY_COOKIE => true
             ]);
-            $exceptionInterpreterService->setServiceManager($this->getServiceManager());
-            $this->getServiceManager()->register(CookieVerifyService::SERVICE_ID, $exceptionInterpreterService);
+            $service->setServiceManager($this->getServiceManager());
+            $this->getServiceManager()->register(CookieVerifyService::SERVICE_ID, $service);
 
             $this->setVersion('2.1.0');
         }
@@ -95,9 +95,9 @@ class Updater extends \common_ext_ExtensionUpdater
         $this->skip('2.1.0', '3.3.1');
 
         if ($this->isVersion('3.3.1')) {
-            $exceptionInterpreterService = new OntologyLtiUserService();
-            $exceptionInterpreterService->setServiceManager($this->getServiceManager());
-            $this->getServiceManager()->register(LtiUserService::SERVICE_ID, $exceptionInterpreterService);
+            $service = new OntologyLtiUserService();
+            $service->setServiceManager($this->getServiceManager());
+            $this->getServiceManager()->register(LtiUserService::SERVICE_ID, $service);
 
             $this->setVersion('3.4.0');
         }
