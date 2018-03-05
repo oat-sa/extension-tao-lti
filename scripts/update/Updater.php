@@ -74,7 +74,7 @@ class Updater extends \common_ext_ExtensionUpdater
         if ($this->isVersion('1.12.0')) {
             $service = $this->getServiceManager()->get(ExceptionInterpreterService::SERVICE_ID);
             $interpreters = $service->getOption(ExceptionInterpreterService::OPTION_INTERPRETERS);
-            $interpreters[LtiException::class] = ExceptionInterpreter::class;
+            $interpreters['taoLti_models_classes_LtiException'] = ExceptionInterpreter::class;
             $service->setOption(ExceptionInterpreterService::OPTION_INTERPRETERS, $interpreters);
             $this->getServiceManager()->register(ExceptionInterpreterService::SERVICE_ID, $service);
             $this->setVersion('1.13.0');
