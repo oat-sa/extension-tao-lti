@@ -143,5 +143,7 @@ class Updater extends \common_ext_ExtensionUpdater
             $this->getServiceManager()->register(ExceptionInterpreterService::SERVICE_ID, $exceptionInterpreterService);
             $this->setVersion('6.0.1');
         }
+
+        $this->skip('6.0.0', '6.1.0');
     }
 }
