@@ -57,9 +57,7 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
      * Cache of the current user's lti roles
      * @var array
      */
-    protected $roles;
-
-    protected $primaryRoles;
+    protected $taoRoles;
 
     private $language;
 
@@ -91,9 +89,7 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
         $this->ltiLaunchData = $launchData;
         $this->userUri = $userUri;
         $taoRoles = $this->determineTaoRoles($launchData);
-        $this->setPrimaryRoles($taoRoles);
-        $includedRoles = $this->determineTaoIncludedRoles($taoRoles);
-        $this->setRoles($includedRoles);
+        $this->setRoles($taoRoles);
 
 
         $firstname = '';
@@ -135,18 +131,8 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
             return ($value instanceof \core_kernel_classes_Resource) ? $value->getUri() : $value;
         }, $roles);
 
-        $this->roles = $newRoles;
+        $this->taoRoles = $newRoles;
     }
-
-    public function setPrimaryRoles($roles)
-    {
-        $newRoles = array_map(function($value){
-            return ($value instanceof \core_kernel_classes_Resource) ? $value->getUri() : $value;
-        }, $roles);
-
-        $this->primaryRoles = $newRoles;
-    }
-
 
     /**
      * (non-PHPdoc)
@@ -183,7 +169,7 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
                 $returnValue = array($this->language);
                 break;
             case  GenerisRdf::PROPERTY_USER_ROLES :
-                $returnValue = $this->roles;
+                $returnValue = $this->taoRoles;
                 break;
             case  GenerisRdf::PROPERTY_USER_FIRSTNAME :
                 $returnValue = [$this->firstname];
@@ -215,7 +201,7 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
     public function jsonSerialize()
     {
         return [
-            GenerisRdf::PROPERTY_USER_ROLES => $this->primaryRoles,
+            GenerisRdf::PROPERTY_USER_ROLES => $this->taoRoles,
             GenerisRdf::PROPERTY_USER_UILG => $this->language,
             GenerisRdf::PROPERTY_USER_FIRSTNAME => $this->firstname,
             GenerisRdf::PROPERTY_USER_LASTNAME => $this->lastname,
@@ -246,29 +232,6 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
         } else {
             return array(LtiRoles::INSTANCE_LTI_BASE);
         }
-        return $roles;
-    }
-
-    /**
-     * Calculate all the user roles based on primary roles
-     *
-     * @param array $taoRoles
-     * @return array
-     * @throws \common_exception_Error
-     * @throws \core_kernel_users_CacheException
-     * @throws \core_kernel_users_Exception
-     */
-    protected function determineTaoIncludedRoles($taoRoles = array(LtiRoles::INSTANCE_LTI_BASE))
-    {
-        $roles = array();
-        foreach ($taoRoles as $taoRole) {
-            $roles[] = $taoRole;
-            foreach (\core_kernel_users_Service::singleton()->getIncludedRoles(new \core_kernel_classes_Resource($taoRole)) as $includedRole) {
-                $roles[] = $includedRole->getUri();
-            }
-        }
-        $roles = array_unique($roles);
-
         return $roles;
     }
 }
