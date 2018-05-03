@@ -75,10 +75,10 @@ class OntologyLtiResourceLinksToKvMigration extends ScriptAction
                     OntologyLink::PROPERTY_CONSUMER,
                 ));
 
-                $linkId = $this->getPropertyValue($properties, OntologyLink::PROPERTY_LINK_ID);
-                $consumer = $this->getPropertyValue($properties, OntologyLink::PROPERTY_CONSUMER);
+                $consumerId = $this->getPropertyValue($properties, OntologyLink::PROPERTY_CONSUMER);
+                $resourceLink = $this->getPropertyValue($properties, OntologyLink::PROPERTY_LINK_ID);
 
-                if ($kvLinkService->getLinkId($linkId, $consumer)) {
+                if ($this->getKeyValuePersistence()->set(KeyValueLink::PREFIX . $consumerId . $resourceLink, $instance->getUri())) {
                     if ($this->getOption('no-delete') !== true) {
                         $instance->delete();
                         $this->logInfo('Link "' . $instance->getUri() .'" deleted from ontology storage.');
@@ -122,14 +122,26 @@ class OntologyLtiResourceLinksToKvMigration extends ScriptAction
      */
     protected function getKeyValuePersistenceName()
     {
+        $this->getKeyValuePersistence();
+        return $this->getOption('kv-persistence');
+    }
+
+    /**
+     * Create the persistence from option and validate as KeyValue persistence
+     *
+     * @return \common_persistence_KeyValuePersistence
+     * @throws \common_Exception
+     */
+    protected function getKeyValuePersistence()
+    {
         $persistenceName = $this->getOption('kv-persistence');
         /** @var \common_persistence_Manager $persistenceManager */
         $persistenceManager = $this->getServiceLocator()->get(\common_persistence_Manager::SERVICE_ID);
         $persistence = $persistenceManager->getPersistenceById($persistenceName);
-        if (!$persistence->getDriver() instanceof \common_persistence_KvDriver) {
+        if (!$persistence instanceof \common_persistence_KeyValuePersistence) {
             throw new \common_Exception('Given persistence is not a key value');
         }
-        return $persistenceName;
+        return $persistence;
     }
 
     /**
