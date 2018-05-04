@@ -29,7 +29,7 @@ use oat\taoLti\models\classes\ResourceLink\LinkService;
 use oat\taoLti\models\classes\ResourceLink\OntologyLink;
 
 /**
- * Class MigrateLinksPersistence
+ * Class OntologyLtiResourceLinksToKvMigration
  *
  * Script to migrate Ontology Lti links from ontology to key value persistence
  * - Must have `--kv-persistence` option as KV persistence destination of migration
