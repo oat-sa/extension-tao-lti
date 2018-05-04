@@ -20,25 +20,28 @@
 
 namespace oat\taoLti\scripts\tools;
 
+use oat\generis\model\GenerisRdf;
 use oat\generis\model\OntologyAwareTrait;
+use oat\generis\model\OntologyRdfs;
 use oat\oatbox\extension\script\ScriptAction;
 use oat\oatbox\log\LoggerAggregator;
 use oat\oatbox\log\VerboseLoggerFactory;
-use oat\taoLti\models\classes\ResourceLink\KeyValueLink;
 use oat\taoLti\models\classes\ResourceLink\LinkService;
-use oat\taoLti\models\classes\ResourceLink\OntologyLink;
+use oat\taoLti\models\classes\user\KvLtiUserService;
+use oat\taoLti\models\classes\user\LtiUserService;
+use oat\taoLti\models\classes\user\OntologyLtiUserService;
 
 /**
- * Class OntologyLtiResourceLinksToKvMigration
+ * Class OntologyLtiUserToKvMigration
  *
- * Script to migrate Ontology Lti links from ontology to key value persistence
+ * Script to migrate Ontology Lti users from ontology to key value persistence
  * - Must have `--kv-persistence` option as KV persistence destination of migration
- * - Overrides the LinkService config with KeyValue implementation if `--no-migrate-service` is not set
+ * - Overrides the LtiUserService config with KeyValue implementation if `--no-migrate-service` is not set
  * - Delete Ontology data after migration if `--no-delete` is not set
  *
- * @package oat\ltiDeliveryProvider\scripts\dbMigrations
+ * @package oat\taoLti\scripts\tools
  */
-class OntologyLtiResourceLinksToKvMigration extends ScriptAction
+class OntologyLtiUserToKvMigration extends ScriptAction
 {
     use OntologyAwareTrait;
 
@@ -51,51 +54,70 @@ class OntologyLtiResourceLinksToKvMigration extends ScriptAction
             $this->setVerbosity();
 
             /** @var LinkService  $ontologyLinkService */
-            $ontologyLinkService = $this->getServiceLocator()->get(LinkService::SERVICE_ID);
+            $ontologyLinkService = $this->getServiceLocator()->get(LtiUserService::SERVICE_ID);
 
-            if (!$ontologyLinkService instanceof OntologyLink) {
-                return new \common_report_Report(\common_report_Report::TYPE_ERROR, ' LtiLinks migration must be done on a Ontology Service e.q. LtiDeliveryExecutionService.');
+            if (!$ontologyLinkService instanceof OntologyLtiUserService) {
+                return new \common_report_Report(\common_report_Report::TYPE_ERROR, ' LtiUserService migration must be done on a Ontology Service e.q. OntologyLtiUserService.');
             }
 
-            $kvLinkService = new KeyValueLink(array(
-                KeyValueLink::OPTION_PERSISTENCE => $this->getKeyValuePersistenceName()
+            $kvService = new KvLtiUserService(array(
+                KvLtiUserService::OPTION_PERSISTENCE => $this->getKeyValuePersistenceName()
             ));
             if ($this->getOption('no-migrate-service') !== true) {
-                $this->registerService(LinkService::SERVICE_ID, $kvLinkService);
-                $this->logNotice('Link service was set to KeyValue implementation.');
+                $this->registerService(LtiUserService::SERVICE_ID, $kvService);
+                $this->logNotice('LtiUser service was set to KeyValue implementation.');
             }
 
-            $class = $this->getClass(OntologyLink::CLASS_LTI_INCOMINGLINK);
+            $class = $this->getClass(OntologyLtiUserService::CLASS_LTI_USER);
             $iterator = new \core_kernel_classes_ResourceIterator($class);
             $i = 0;
             foreach ($iterator as $instance) {
 
                 $properties = $instance->getPropertiesValues(array(
-                    OntologyLink::PROPERTY_LINK_ID,
-                    OntologyLink::PROPERTY_CONSUMER,
+                    OntologyLtiUserService::PROPERTY_USER_LTIKEY,
+                    OntologyLtiUserService::PROPERTY_USER_LTICONSUMER,
+                    GenerisRdf::PROPERTY_USER_UILG,
+                    OntologyRdfs::RDFS_LABEL,
+                    GenerisRdf::PROPERTY_USER_FIRSTNAME,
+                    GenerisRdf::PROPERTY_USER_LASTNAME,
+                    GenerisRdf::PROPERTY_USER_MAIL,
+                    GenerisRdf::PROPERTY_USER_ROLES,
                 ));
 
-                $consumerId = $this->getPropertyValue($properties, OntologyLink::PROPERTY_CONSUMER);
-                $resourceLink = $this->getPropertyValue($properties, OntologyLink::PROPERTY_LINK_ID);
+                $ltiKey = $this->getPropertyValue($properties, OntologyLtiUserService::PROPERTY_USER_LTIKEY);
+                $ltiConsumer = $this->getPropertyValue($properties, OntologyLtiUserService::PROPERTY_USER_LTICONSUMER);
 
-                if ($this->getKeyValuePersistence()->set(KeyValueLink::PREFIX . $consumerId . $resourceLink, $instance->getUri())) {
+                $user = [
+                    OntologyRdfs::RDFS_LABEL => $this->getPropertyValue($properties, OntologyRdfs::RDFS_LABEL),
+                    GenerisRdf::PROPERTY_USER_ROLES => $this->getPropertyValue($properties, GenerisRdf::PROPERTY_USER_ROLES),
+                    GenerisRdf::PROPERTY_USER_UILG =>  $this->getPropertyValue($properties, GenerisRdf::PROPERTY_USER_UILG),
+                    GenerisRdf::PROPERTY_USER_FIRSTNAME => $this->getPropertyValue($properties, GenerisRdf::PROPERTY_USER_FIRSTNAME),
+                    GenerisRdf::PROPERTY_USER_LASTNAME => $this->getPropertyValue($properties, GenerisRdf::PROPERTY_USER_LASTNAME),
+                    GenerisRdf::PROPERTY_USER_MAIL => $this->getPropertyValue($properties, GenerisRdf::PROPERTY_USER_MAIL),
+                ];
+
+                $kvPersistence = $this->getKeyValuePersistence();
+                $kvId = KvLtiUserService::LTI_USER . $ltiKey . $ltiConsumer;
+                if ($kvPersistence->set($kvId, json_encode($user))) {
+                    var_dump('test');
+                    $kvPersistence->set(KvLtiUserService::LTI_USER_LOOKUP . $kvId, $instance->getUri());
                     if ($this->getOption('no-delete') !== true) {
                         $instance->delete();
-                        $this->logInfo('Link "' . $instance->getUri() .'" deleted from ontology storage.');
+                        $this->logInfo('LtiUser "' . $instance->getUri() .'" deleted from ontology storage.');
                     }
-                    $this->logNotice('Link "' . $instance->getUri() .'" successfully migrated.');
+                    $this->logNotice('LtiUser "' . $instance->getUri() .'" successfully migrated.');
                     $i++;
                 } else {
-                    $this->logError('Link "' . $instance->getUri() .'" cannot be migrated.');
+                    $this->logError('LtiUser "' . $instance->getUri() .'" cannot be migrated.');
                 }
             }
-            $this->logNotice('LTI links migrated: ' . $i);
+            $this->logNotice('LtiUsers migrated: ' . $i);
         } catch (\Exception $e) {
-            return \common_report_Report::createFailure('LtiLinks migration has failed with error message : ' . $e->getMessage());
+            return \common_report_Report::createFailure('LtiUsers migration has failed with error message : ' . $e->getMessage());
 
         }
 
-        return \common_report_Report::createSuccess('LtiLinks successfully has been migrated from Ontology to KV value. Count of LtiLinks migrated: ' . $i);
+        return \common_report_Report::createSuccess('LtiUsers successfully has been migrated from Ontology to KV value. Count of LtiUsers migrated: ' . $i);
     }
 
     /**
@@ -150,11 +172,11 @@ class OntologyLtiResourceLinksToKvMigration extends ScriptAction
     protected function setVerbosity()
     {
         if ($this->getOption('verbose') === true) {
-            $verboseLogger = VerboseLoggerFactory::getInstance(['-nc', '-vv']);
-            $this->setLogger(new LoggerAggregator(array(
-                $this->getLogger(),
-                $verboseLogger
-            )));
+//            $verboseLogger = VerboseLoggerFactory::getInstance(['-nc', '-vvv']);
+//            $this->setLogger(new LoggerAggregator(array(
+//                $this->getLogger(),
+//                $verboseLogger
+//            )));
         }
     }
 
@@ -176,13 +198,13 @@ class OntologyLtiResourceLinksToKvMigration extends ScriptAction
                 'prefix' => 'nms',
                 'longPrefix' => 'no-migrate-service',
                 'flag' => true,
-                'description' => 'Don\'t migrate the OntologyLink from ontology to key value.',
+                'description' => 'Don\'t migrate the LtiUserService from ontology to key value.',
             ),
             'no-delete' => array(
                 'prefix' => 'nd',
                 'longPrefix' => 'no-delete',
                 'flag' => true,
-                'description' => 'Don\'t delete ontology LTI links after migration.',
+                'description' => 'Don\'t delete ontology LTI users after migration.',
             ),
             'verbose' => array(
                 'prefix' => 'v',
@@ -200,7 +222,7 @@ class OntologyLtiResourceLinksToKvMigration extends ScriptAction
      */
     protected function provideDescription()
     {
-        return 'Migration script to migrate LTI Links from Ontology to KeyValue persistence.';
+        return 'Migration script to migrate LTI users from Ontology to KeyValue persistence.';
     }
 
     /**
