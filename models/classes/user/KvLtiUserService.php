@@ -32,11 +32,11 @@ use oat\taoLti\models\classes\LtiLaunchData;
  */
 class KvLtiUserService extends LtiUserService
 {
-
-
     const OPTION_PERSISTENCE = 'persistence';
 
     const LTI_USER = 'lti_ku_';
+
+    const LTI_USER_LOOKUP = 'lti_ku_lkp_';
 
     /**
      * @var \common_persistence_KeyValuePersistence
@@ -66,11 +66,22 @@ class KvLtiUserService extends LtiUserService
      */
     protected function updateUser(LtiUser $user, LtiLaunchData $ltiContext)
     {
-        $user->setIdentifier(self::LTI_USER . $ltiContext->getUserID() . $ltiContext->getLtiConsumer()->getUri());
+        $technicalId = self::LTI_USER . $ltiContext->getUserID() . $ltiContext->getLtiConsumer()->getUri();
+
+        if (empty($user->getIdentifier())) {
+            $user->setIdentifier($technicalId);
+        }
+
+        $taoUserId = $user->getIdentifier();
+
         $this->getPersistence()->set(
             self::LTI_USER . $ltiContext->getUserID() . $ltiContext->getLtiConsumer()->getUri(),
             json_encode($user)
         );
+
+        if (!$this->getPersistence()->exists(self::LTI_USER_LOOKUP . $taoUserId)) {
+            $this->getPersistence()->set(self::LTI_USER_LOOKUP . $taoUserId, $technicalId);
+        }
     }
 
     /**
@@ -92,7 +103,17 @@ class KvLtiUserService extends LtiUserService
      */
     public function getUserDataFromId($taoUserId)
     {
-        $data = $this->getPersistence()->get($taoUserId);
+        if (!$this->getPersistence()->exists(self::LTI_USER_LOOKUP . $taoUserId)) {
+            if ($this->getPersistence()->exists($taoUserId)) {
+                $this->getPersistence()->set(self::LTI_USER_LOOKUP . $taoUserId, $taoUserId);
+                $data = $this->getPersistence()->get($taoUserId);
+            } else {
+                return false;
+            }
+        } else {
+            $id = $this->getPersistence()->get(self::LTI_USER_LOOKUP . $taoUserId);
+            $data = $this->getPersistence()->get($id);
+        }
 
         return json_decode($data,true);
     }
