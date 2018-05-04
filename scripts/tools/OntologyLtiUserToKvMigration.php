@@ -99,7 +99,6 @@ class OntologyLtiUserToKvMigration extends ScriptAction
                 $kvPersistence = $this->getKeyValuePersistence();
                 $kvId = KvLtiUserService::LTI_USER . $ltiKey . $ltiConsumer;
                 if ($kvPersistence->set($kvId, json_encode($user))) {
-                    var_dump('test');
                     $kvPersistence->set(KvLtiUserService::LTI_USER_LOOKUP . $kvId, $instance->getUri());
                     if ($this->getOption('no-delete') !== true) {
                         $instance->delete();
