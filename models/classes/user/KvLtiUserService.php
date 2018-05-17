@@ -74,10 +74,7 @@ class KvLtiUserService extends LtiUserService
 
         $taoUserId = $user->getIdentifier();
 
-        $this->getPersistence()->set(
-            self::LTI_USER . $ltiContext->getUserID() . $ltiContext->getLtiConsumer()->getUri(),
-            json_encode($user)
-        );
+        $this->getPersistence()->set($technicalId, json_encode($user));
 
         if (!$this->getPersistence()->exists(self::LTI_USER_LOOKUP . $taoUserId)) {
             $this->getPersistence()->set(self::LTI_USER_LOOKUP . $taoUserId, $technicalId);
