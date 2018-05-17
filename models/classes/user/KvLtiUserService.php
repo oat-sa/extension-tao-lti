@@ -100,16 +100,16 @@ class KvLtiUserService extends LtiUserService
      */
     public function getUserDataFromId($taoUserId)
     {
-        if (!$this->getPersistence()->exists(self::LTI_USER_LOOKUP . $taoUserId)) {
+        if ($this->getPersistence()->exists(self::LTI_USER_LOOKUP . $taoUserId)) {
+            $id = $this->getPersistence()->get(self::LTI_USER_LOOKUP . $taoUserId);
+            $data = $this->getPersistence()->get($id);
+        } else {
             if ($this->getPersistence()->exists($taoUserId)) {
                 $this->getPersistence()->set(self::LTI_USER_LOOKUP . $taoUserId, $taoUserId);
                 $data = $this->getPersistence()->get($taoUserId);
             } else {
                 return false;
             }
-        } else {
-            $id = $this->getPersistence()->get(self::LTI_USER_LOOKUP . $taoUserId);
-            $data = $this->getPersistence()->get($id);
         }
 
         return json_decode($data,true);
