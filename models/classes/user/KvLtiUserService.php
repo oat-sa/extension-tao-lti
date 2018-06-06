@@ -87,6 +87,10 @@ class KvLtiUserService extends LtiUserService
         if ($data === false) {
             return null;
         }
+        $decodedData = json_decode($data, true);
+        if (isset($decodedData[LtiUser::USER_IDENTIFIER])) {
+            return $decodedData[LtiUser::USER_IDENTIFIER];
+        }
 
         return self::LTI_USER . $ltiUserId . $consumer;
     }
@@ -98,12 +102,12 @@ class KvLtiUserService extends LtiUserService
     public function getUserDataFromId($taoUserId)
     {
         $id = $this->getPersistence()->get(self::LTI_USER_LOOKUP . $taoUserId);
-        if (!empty($id)) {
+        if ($id !== false) {
             $data = $this->getPersistence()->get($id);
         } else {
             $data = $this->getPersistence()->get($taoUserId);
-            if (empty($data)) {
-                return false;
+            if ($data === false) {
+                return null;
             }
             $this->getPersistence()->set(self::LTI_USER_LOOKUP . $taoUserId, $taoUserId);
         }
