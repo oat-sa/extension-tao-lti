@@ -32,11 +32,11 @@ use oat\taoLti\models\classes\LtiLaunchData;
  */
 class KvLtiUserService extends LtiUserService
 {
-
-
     const OPTION_PERSISTENCE = 'persistence';
 
     const LTI_USER = 'lti_ku_';
+
+    const LTI_USER_LOOKUP = 'lti_ku_lkp_';
 
     /**
      * @var \common_persistence_KeyValuePersistence
@@ -66,11 +66,16 @@ class KvLtiUserService extends LtiUserService
      */
     protected function updateUser(LtiUser $user, LtiLaunchData $ltiContext)
     {
-        $user->setIdentifier(self::LTI_USER . $ltiContext->getUserID() . $ltiContext->getLtiConsumer()->getUri());
-        $this->getPersistence()->set(
-            self::LTI_USER . $ltiContext->getUserID() . $ltiContext->getLtiConsumer()->getUri(),
-            json_encode($user)
-        );
+        $technicalId = self::LTI_USER . $ltiContext->getUserID() . $ltiContext->getLtiConsumer()->getUri();
+
+        if (empty($user->getIdentifier())) {
+            $user->setIdentifier($technicalId);
+        }
+
+        $taoUserId = $user->getIdentifier();
+
+        $this->getPersistence()->set($technicalId, json_encode($user));
+        $this->getPersistence()->set(self::LTI_USER_LOOKUP . $taoUserId, $technicalId);
     }
 
     /**
@@ -82,6 +87,10 @@ class KvLtiUserService extends LtiUserService
         if ($data === false) {
             return null;
         }
+        $decodedData = json_decode($data, true);
+        if (isset($decodedData[LtiUser::USER_IDENTIFIER])) {
+            return $decodedData[LtiUser::USER_IDENTIFIER];
+        }
 
         return self::LTI_USER . $ltiUserId . $consumer;
     }
@@ -92,7 +101,16 @@ class KvLtiUserService extends LtiUserService
      */
     public function getUserDataFromId($taoUserId)
     {
-        $data = $this->getPersistence()->get($taoUserId);
+        $id = $this->getPersistence()->get(self::LTI_USER_LOOKUP . $taoUserId);
+        if ($id !== false) {
+            $data = $this->getPersistence()->get($id);
+        } else {
+            $data = $this->getPersistence()->get($taoUserId);
+            if ($data === false) {
+                return null;
+            }
+            $this->getPersistence()->set(self::LTI_USER_LOOKUP . $taoUserId, $taoUserId);
+        }
 
         return json_decode($data,true);
     }
