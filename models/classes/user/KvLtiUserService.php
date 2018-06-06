@@ -75,10 +75,7 @@ class KvLtiUserService extends LtiUserService
         $taoUserId = $user->getIdentifier();
 
         $this->getPersistence()->set($technicalId, json_encode($user));
-
-        if (!$this->getPersistence()->exists(self::LTI_USER_LOOKUP . $taoUserId)) {
-            $this->getPersistence()->set(self::LTI_USER_LOOKUP . $taoUserId, $technicalId);
-        }
+        $this->getPersistence()->set(self::LTI_USER_LOOKUP . $taoUserId, $technicalId);
     }
 
     /**
@@ -100,16 +97,15 @@ class KvLtiUserService extends LtiUserService
      */
     public function getUserDataFromId($taoUserId)
     {
-        if ($this->getPersistence()->exists(self::LTI_USER_LOOKUP . $taoUserId)) {
-            $id = $this->getPersistence()->get(self::LTI_USER_LOOKUP . $taoUserId);
+        $id = $this->getPersistence()->get(self::LTI_USER_LOOKUP . $taoUserId);
+        if (!empty($id)) {
             $data = $this->getPersistence()->get($id);
         } else {
-            if ($this->getPersistence()->exists($taoUserId)) {
-                $this->getPersistence()->set(self::LTI_USER_LOOKUP . $taoUserId, $taoUserId);
-                $data = $this->getPersistence()->get($taoUserId);
-            } else {
+            $data = $this->getPersistence()->get($taoUserId);
+            if (empty($data)) {
                 return false;
             }
+            $this->getPersistence()->set(self::LTI_USER_LOOKUP . $taoUserId, $taoUserId);
         }
 
         return json_decode($data,true);
