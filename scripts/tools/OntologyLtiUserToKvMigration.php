@@ -28,6 +28,7 @@ use oat\oatbox\log\LoggerAggregator;
 use oat\oatbox\log\VerboseLoggerFactory;
 use oat\taoLti\models\classes\ResourceLink\LinkService;
 use oat\taoLti\models\classes\user\KvLtiUserService;
+use oat\taoLti\models\classes\user\LtiUser;
 use oat\taoLti\models\classes\user\LtiUserService;
 use oat\taoLti\models\classes\user\OntologyLtiUserService;
 
@@ -88,6 +89,7 @@ class OntologyLtiUserToKvMigration extends ScriptAction
                 $ltiConsumer = $this->getPropertyValue($properties, OntologyLtiUserService::PROPERTY_USER_LTICONSUMER);
 
                 $user = [
+                    LtiUser::USER_IDENTIFIER => $instance->getUri(),
                     OntologyRdfs::RDFS_LABEL => $this->getPropertyValue($properties, OntologyRdfs::RDFS_LABEL),
                     GenerisRdf::PROPERTY_USER_ROLES => $this->getPropertyValue($properties, GenerisRdf::PROPERTY_USER_ROLES),
                     GenerisRdf::PROPERTY_USER_UILG =>  $this->getPropertyValue($properties, GenerisRdf::PROPERTY_USER_UILG),
