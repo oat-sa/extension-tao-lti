@@ -41,6 +41,8 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
 {
     use ServiceLocatorAwareTrait;
 
+    CONST USER_IDENTIFIER = 'identifier';
+
     /**
      * Data with which this session was launched
      * @var LtiLaunchData
@@ -48,7 +50,7 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
     private $ltiLaunchData;
 
     /**
-     * Local represenation of user
+     * Local representation of user
      * @var \core_kernel_classes_Resource
      */
     private $userUri;
@@ -201,6 +203,7 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
     public function jsonSerialize()
     {
         return [
+            self::USER_IDENTIFIER => $this->userUri,
             GenerisRdf::PROPERTY_USER_ROLES => $this->taoRoles,
             GenerisRdf::PROPERTY_USER_UILG => $this->language,
             GenerisRdf::PROPERTY_USER_FIRSTNAME => $this->firstname,
