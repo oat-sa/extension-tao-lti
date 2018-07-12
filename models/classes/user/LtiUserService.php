@@ -35,6 +35,9 @@ abstract class LtiUserService extends ConfigurableService
 {
     const SERVICE_ID = 'taoLti/LtiUserService';
 
+    const PROPERTY_USER_LTICONSUMER = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#UserConsumer';
+
+    const PROPERTY_USER_LTIKEY = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#UserKey';
     /**
      * Returns the existing tao User that corresponds to
      * the LTI request or spawns it

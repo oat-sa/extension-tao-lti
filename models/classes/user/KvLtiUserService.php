@@ -21,6 +21,7 @@
 
 namespace oat\taoLti\models\classes\user;
 
+use oat\generis\model\OntologyRdfs;
 use oat\taoLti\models\classes\LtiLaunchData;
 
 /**
@@ -74,7 +75,13 @@ class KvLtiUserService extends LtiUserService
 
         $taoUserId = $user->getIdentifier();
 
-        $this->getPersistence()->set($technicalId, json_encode($user));
+        $data = $user->jsonSerialize();
+        $data[self::PROPERTY_USER_LTIKEY] = $ltiContext->getUserID();
+        $data[self::PROPERTY_USER_LTICONSUMER] = $ltiContext->getLtiConsumer()->getOnePropertyValue(
+            new \core_kernel_classes_Property(OntologyRdfs::RDFS_LABEL)
+        )->literal;
+
+        $this->getPersistence()->set($technicalId, json_encode($data));
         $this->getPersistence()->set(self::LTI_USER_LOOKUP . $taoUserId, $technicalId);
     }
 
