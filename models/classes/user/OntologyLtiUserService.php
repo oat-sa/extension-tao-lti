@@ -38,11 +38,6 @@ use oat\taoLti\models\classes\LtiVariableMissingException;
  */
 class OntologyLtiUserService extends LtiUserService
 {
-
-    const PROPERTY_USER_LTICONSUMER = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#UserConsumer';
-
-    const PROPERTY_USER_LTIKEY = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#UserKey';
-
     const CLASS_LTI_USER = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIUser';
 
     const OPTION_TRANSACTION_SAFE = 'transaction-safe';
