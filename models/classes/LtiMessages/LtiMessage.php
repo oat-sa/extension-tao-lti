@@ -74,10 +74,13 @@ class LtiMessage
      */
     public function getUrlParams()
     {
-        $params = [
-            'lti_msg' => $this->getMessage(),
-            'lti_log' => $this->getLog(),
-        ];
+        $params = [];
+        if (!empty($this->getMessage())) {
+            $params['lti_msg'] = $this->getMessage();
+        }
+        if (!empty($this->getLog())) {
+            $params['lti_log'] = $this->getLog();
+        }
         return $params;
     }
 }
