@@ -63,10 +63,15 @@ abstract class ToolModule extends LtiModule
             $cookieService = $this->getServiceManager()->get(CookieVerifyService::SERVICE_ID);
             if ($cookieService->isVerifyCookieRequired()) {
                 if (tao_models_classes_accessControl_AclProxy::hasAccess('verifyCookie', 'CookieUtils', 'taoLti')) {
-                    $cookieRedirect = \tao_helpers_Uri::getRootUrl() .
-                        'taoLti/CookieUtils/verifyCookie' .
-                        '?session=' . session_id() .
-                        '&redirect=' . _url('run', null, null, $_GET);
+                    $cookieRedirect = _url(
+                        'verifyCookie',
+                        'CookieUtils',
+                        'taoLti',
+                        [
+                            'session' => session_id(),
+                            'redirect' => urlencode(_url('run', null, null, $_GET)),
+                        ]
+                    );
                     $this->redirect($cookieRedirect);
                 } else {
                     throw new LtiException(
