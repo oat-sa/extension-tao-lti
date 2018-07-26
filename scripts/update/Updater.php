@@ -50,7 +50,6 @@ class Updater extends \common_ext_ExtensionUpdater
      * @throws \common_ext_ExtensionException
      * @throws \common_ext_InstallationException
      * @throws \common_ext_ManifestNotFoundException
-     * @throws \oat\generis\model\data\ModelIdNotFoundException
      * @throws common_Exception
      */
     public function update($initialVersion)
