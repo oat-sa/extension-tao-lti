@@ -25,7 +25,6 @@ use common_exception_Error;
 use common_Logger;
 use core_kernel_classes_Class;
 use core_kernel_classes_Resource;
-use oat\tao\model\TaoOntology;
 use tao_models_classes_LanguageService;
 
 /**

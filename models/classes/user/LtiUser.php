@@ -138,7 +138,7 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
 
     /**
      * (non-PHPdoc)
-     * @see common_user_User::getIdentifier()
+     * @see \common_user_User::getIdentifier()
      */
     public function getIdentifier()
     {
@@ -158,7 +158,7 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
 
     /**
      * (non-PHPdoc)
-     * @see common_user_User::getPropertyValues()
+     * @see \common_user_User::getPropertyValues()
      */
     public function getPropertyValues($property)
     {
@@ -192,7 +192,7 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
 
     /**
      * (non-PHPdoc)
-     * @see common_user_User::refresh()
+     * @see \common_user_User::refresh()
      */
     public function refresh()
     {

@@ -25,9 +25,9 @@ use common_http_InvalidSignatureException;
 use common_http_Request;
 use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
 use oat\taoLti\models\classes\user\LtiUserService;
-use tao_models_classes_oauth_Service;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorAwareTrait;
+use oat\tao\model\oauth\OauthService;
 
 /**
  * Authentication adapter interface to be implemented by authentication methods
@@ -60,7 +60,7 @@ class LtiAuthAdapter
 
     /**
      * (non-PHPdoc)
-     * @see common_user_auth_Adapter::authenticate()
+     * @see \common_user_auth_Adapter::authenticate()
      *
      * @return user\LtiUser
      * @throws LtiException
@@ -73,9 +73,8 @@ class LtiAuthAdapter
      */
     public function authenticate()
     {
-        $service = new tao_models_classes_oauth_Service();
         try {
-            $service->validate($this->request);
+            $this->getServiceLocator()->get(OauthService::SERVICE_ID)->validate($this->request);
             $ltiLaunchData = LtiLaunchData::fromRequest($this->request);
             /** @var LtiUserService $userService */
             $userService = $this->getServiceLocator()->get(LtiUserService::SERVICE_ID);
