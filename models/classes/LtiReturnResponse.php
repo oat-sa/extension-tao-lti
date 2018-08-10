@@ -17,43 +17,46 @@
  * Copyright (c) 2017 (original work) Open Assessment Technologies SA
  *
  */
+
 namespace oat\taoLti\models\classes;
 
-use oat\tao\model\mvc\error\ResponseAbstract;
 use oat\tao\helpers\Template;
+use oat\tao\model\mvc\error\ResponseAbstract;
 
 /**
- * Class LtiReturnResponse
- *
  * Redirect to lti return url
  *
  * @package oat\taoLti\models\classes
  * @author Aleh Hutnikau, <hutnikau@1pt.com>
- * @property \taoLti_models_classes_LtiException $exception
  */
 class LtiReturnResponse extends ResponseAbstract
 {
 
-    public function setHttpCode($code) {
+    public function setHttpCode($code)
+    {
         $this->httpCode = 302;
         return $this;
     }
 
+    /**
+     * @throws LtiException
+     * @throws \common_exception_Error
+     */
     public function send()
     {
         $baseUrl = null;
-        /** @var \taoLti_models_classes_TaoLtiSession $session */
+        /** @var TaoLtiSession $session */
         $session = \common_session_SessionManager::getSession();
-        if ($session instanceof \taoLti_models_classes_TaoLtiSession) {
+        if ($session instanceof TaoLtiSession) {
             $launchData = $session->getLaunchData();
-            if($launchData->hasReturnUrl()){
+            if ($launchData->hasReturnUrl()) {
                 $baseUrl = $launchData->getReturnUrl();
             }
         } else {
             $request = \common_http_Request::currentRequest();
             $params = $request->getParams();
-            if(isset($params[\taoLti_models_classes_LtiLaunchData::LAUNCH_PRESENTATION_RETURN_URL])){
-                $baseUrl = $params[\taoLti_models_classes_LtiLaunchData::LAUNCH_PRESENTATION_RETURN_URL];
+            if (isset($params[LtiLaunchData::LAUNCH_PRESENTATION_RETURN_URL])) {
+                $baseUrl = $params[LtiLaunchData::LAUNCH_PRESENTATION_RETURN_URL];
             }
         }
 
@@ -66,5 +69,4 @@ class LtiReturnResponse extends ResponseAbstract
         }
         return;
     }
-    
 }

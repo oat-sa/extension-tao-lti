@@ -20,6 +20,8 @@
 
 namespace oat\taoLti\models\classes;
 
+use oat\taoLti\models\classes\user\LtiUserService;
+
 class LtiRestApiService extends \tao_models_classes_Service
 {
     protected function getRootClass()
@@ -43,8 +45,6 @@ class LtiRestApiService extends \tao_models_classes_Service
      */
     public function getUserId($id, $key)
     {
-        $class = new \core_kernel_classes_Class(CLASS_LTI_USER);
-
         $dataStore = new \tao_models_classes_oauth_DataStore();
         try {
             /** @var \core_kernel_classes_Resource $consumerResource */
@@ -53,25 +53,16 @@ class LtiRestApiService extends \tao_models_classes_Service
             throw new \common_exception_NotFound($e->getMessage());
         }
 
-        $instances = $class->searchInstances(array(
-            PROPERTY_USER_LTIKEY => $id,
-            PROPERTY_USER_LTICONSUMER => $consumerResource
-        ), array(
-            'like'	=> false
-        ));
+        /** @var LtiUserService $service */
+        $service = $this->getServiceLocator()->get(LtiUserService::SERVICE_ID);
+        $userIdentifier = $service->getUserIdentifier($id, $consumerResource);
 
-        if (count($instances) > 1) {
-            throw new \common_Exception('Multiple user accounts found for user key: ' . $id);
-        }
-
-        /** @var \core_kernel_classes_Resource $ltiUser */
-        $ltiUser = count($instances) == 1 ? current($instances) : null;
-        if (!$ltiUser) {
+        if (is_null($userIdentifier)) {
             return null;
         }
 
         return array (
-            'id' => $ltiUser->getUri()
+            'id' => $userIdentifier
         );
     }
 }

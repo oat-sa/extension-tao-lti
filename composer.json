@@ -40,7 +40,7 @@
     },
     "homepage" : "http://www.taotesting.com",
     "license" : [
-          "GPL-2.0"
+          "GPL-2.0-only"
      ],
     "keywords" : [
           "tao",
@@ -55,7 +55,7 @@
     	"tao-extension-name" : "taoLti"
     },
     "require": {
-        "oat-sa/oatbox-extension-installer": "dev-master"
+        "oat-sa/oatbox-extension-installer": "~1.1||dev-master"
 
     },
     "autoload" : {

@@ -14,23 +14,31 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2017 (original work) Open Assessment Technologies SA
+ * Copyright (c) 2013 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
+ *
  *
  */
 
 namespace oat\taoLti\models\classes;
 
-use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
+use tao_models_classes_Service;
 
-class LtiVariableMissingException extends LtiException
-    implements \common_log_SeverityLevel
+/**
+ * Abstract service to be implemented by LTI tools
+ *
+ * @author Joel Bout, <joel@taotesting.com>
+ * @package taoLti
+ * @package models_classes
+ */
+abstract class LtiTool extends tao_models_classes_Service
 {
-    public function __construct($variableName)
-    {
-        parent::__construct('Undefined LTI variable '.$variableName, LtiErrorMessage::ERROR_MISSING_PARAMETER);
-    }
+    const PROPERTY_SERVICE = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#ToolService';
 
-    public function getSeverity() {
-        return \common_Logger::DEBUG_LEVEL;
-    }
+    /**
+     * Builds a launch url for this tool
+     *
+     * @param array $parameters additional launch parameters
+     * @return string
+     */
+    public abstract function getLaunchUrl($parameters = array());
 }

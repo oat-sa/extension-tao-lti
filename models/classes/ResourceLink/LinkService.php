@@ -14,23 +14,19 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2017 (original work) Open Assessment Technologies SA
+ * Copyright (c) 2017 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
+ *
  *
  */
 
-namespace oat\taoLti\models\classes;
-
-use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
-
-class LtiVariableMissingException extends LtiException
-    implements \common_log_SeverityLevel
+namespace oat\taoLti\models\classes\ResourceLink;
+/**
+ * Service to generate unique ids for consumers resource links
+ * @author joel bout (joel@taotesting.com)
+ */
+interface LinkService
 {
-    public function __construct($variableName)
-    {
-        parent::__construct('Undefined LTI variable '.$variableName, LtiErrorMessage::ERROR_MISSING_PARAMETER);
-    }
+    const SERVICE_ID = 'taoLti/ResourceLink';
 
-    public function getSeverity() {
-        return \common_Logger::DEBUG_LEVEL;
-    }
+    public function getLinkId($consumer, $resourceLink);
 }

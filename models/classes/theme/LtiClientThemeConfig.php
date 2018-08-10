@@ -17,31 +17,33 @@
  * Copyright (c) 2016 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
  *
  */
+
 namespace oat\taoLti\models\classes\theme;
 
-use oat\oatbox\service\ConfigurableService;
-use oat\tao\model\clientConfig\ClientConfig;
-use oat\tao\model\ThemeRegistry;
 use oat\tao\model\clientConfig\sources\ThemeConfig;
+use oat\taoLti\models\classes\TaoLtiSession;
+
 /**
- * 
+ *
  * @author Joel Bout
  */
-class LtiClientThemeConfig extends ThemeConfig {
-
+class LtiClientThemeConfig extends ThemeConfig
+{
     /**
      * (non-PHPdoc)
      * @see \oat\tao\model\clientConfig\ClientConfig::getConfig()
      */
-    public function getConfig() {
+    public function getConfig()
+    {
         $config = parent::getConfig();
         $currentSession = \common_session_SessionManager::getSession();
-        if ($currentSession instanceof \taoLti_models_classes_TaoLtiSession) {
+        if ($currentSession instanceof TaoLtiSession) {
             $launchData = $currentSession->getLaunchData();
             if ($launchData->hasVariable(LtiThemeSwitcher::LTI_VARIABLE)) {
                 $config["activeNamespace"] = $launchData->getVariable(LtiThemeSwitcher::LTI_VARIABLE);
             }
         }
+
         return $config;
     }
 }
