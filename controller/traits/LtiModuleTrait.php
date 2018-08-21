@@ -43,7 +43,7 @@ trait LtiModuleTrait
      * @throws \common_exception_Error
      * @throws \oat\taoLti\models\classes\LtiVariableMissingException
      * @throws common_exception_IsAjaxAction
-     * @see tao_actions_CommonModule::returnError()
+     * @see \tao_actions_CommonModule::returnError()
      */
     protected function returnLtiError(LtiException $error, $returnLink = true)
     {

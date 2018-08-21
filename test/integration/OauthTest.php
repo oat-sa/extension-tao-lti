@@ -20,7 +20,8 @@
  */
 use oat\tao\model\oauth\DataStore as OAuthDataStore;
 use oat\tao\test\TaoPhpUnitTestRunner;
-include_once dirname(__FILE__) . '/../includes/raw_start.php';
+
+include_once dirname(__FILE__) . '/../../includes/raw_start.php';
 
 /**
  * @author Joel Bout, <joel@taotesting.com>
