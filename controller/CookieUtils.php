@@ -40,7 +40,8 @@ class CookieUtils extends tao_actions_CommonModule
      */
 	public function verifyCookie() {
 	    $url = $this->getRequestParameter('redirect');
-	    $session = $this->getRequestParameter('session');
+        $url = rawurldecode($url);
+        $session = $this->getRequestParameter('session');
 	    if (session_id() == $session) {
 	        $this->forwardUrl($url);
 	    } else {
