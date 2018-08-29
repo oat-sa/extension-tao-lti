@@ -210,20 +210,22 @@ class LtiLaunchData
 
     /**
      * @return mixed
-     * @throws LtiVariableMissingException
      */
     public function getUserGivenName()
     {
-        return $this->getVariable(self::LIS_PERSON_NAME_GIVEN);
+        if ($this->hasVariable(self::LIS_PERSON_NAME_GIVEN)) {
+            return $this->getVariable(self::LIS_PERSON_NAME_GIVEN);
+        }
     }
 
     /**
      * @return mixed
-     * @throws LtiVariableMissingException
      */
     public function getUserFamilyName()
     {
-        return $this->getVariable(self::LIS_PERSON_NAME_FAMILY);
+        if ($this->hasVariable(self::LIS_PERSON_NAME_FAMILY)) {
+            return $this->getVariable(self::LIS_PERSON_NAME_FAMILY);
+        }
     }
 
     /**
