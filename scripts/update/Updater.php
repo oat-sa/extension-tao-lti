@@ -22,10 +22,12 @@
 namespace oat\taoLti\scripts\update;
 
 use common_Exception;
+use common_ext_ExtensionsManager;
 use oat\tao\model\mvc\error\ExceptionInterpreterService;
 use oat\tao\scripts\update\OntologyUpdater;
 use oat\taoLti\models\classes\CookieVerifyService;
 use oat\taoLti\models\classes\ExceptionInterpreter;
+use oat\taoLti\models\classes\LtiAuthAdapter;
 use oat\taoLti\models\classes\LtiException;
 use oat\taoLti\models\classes\ResourceLink\LinkService;
 use oat\taoLti\models\classes\ResourceLink\OntologyLink;
@@ -144,5 +146,12 @@ class Updater extends \common_ext_ExtensionUpdater
         }
 
         $this->skip('6.0.0', '6.3.3');
+
+        if ($this->isVersion('6.3.3')) {
+            $extensionManager = $this->getServiceManager()->get(common_ext_ExtensionsManager::SERVICE_ID);
+            $extensionManager->getExtensionById('taoLti')->setConfig('auth', ['adapter' => LtiAuthAdapter::class]);
+            $this->setVersion('6.4.0');
+        }
+
     }
 }

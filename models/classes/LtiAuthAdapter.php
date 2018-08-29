@@ -36,8 +36,7 @@ use oat\tao\model\oauth\OauthService;
  * @author Joel Bout, <joel@taotesting.com>
  * @package taoLti
  */
-class LtiAuthAdapter
-    implements \common_user_auth_Adapter, ServiceLocatorAwareInterface
+class LtiAuthAdapter implements \common_user_auth_Adapter, ServiceLocatorAwareInterface
 {
 
     use ServiceLocatorAwareTrait;
@@ -46,7 +45,7 @@ class LtiAuthAdapter
      *
      * @var common_http_Request
      */
-    private $request;
+    protected $request;
 
     /**
      * Creates an Authentication adapter from an OAuth Request
@@ -75,12 +74,21 @@ class LtiAuthAdapter
     {
         try {
             $this->getServiceLocator()->get(OauthService::SERVICE_ID)->validate($this->request);
-            $ltiLaunchData = LtiLaunchData::fromRequest($this->request);
+            $ltiLaunchData = $this->getLaunchData();
             /** @var LtiUserService $userService */
             $userService = $this->getServiceLocator()->get(LtiUserService::SERVICE_ID);
             return $userService->findOrSpawnUser($ltiLaunchData);
         } catch (common_http_InvalidSignatureException $e) {
             throw new LtiException('Invalid LTI signature', LtiErrorMessage::ERROR_UNAUTHORIZED);
         }
+    }
+
+    /**
+     * @return LtiLaunchData
+     * @throws \ResolverException
+     */
+    protected function getLaunchData()
+    {
+        return LtiLaunchData::fromRequest($this->request);
     }
 }

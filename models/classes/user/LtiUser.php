@@ -83,8 +83,7 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
      * @param $userUri
      * @throws \common_Exception
      * @throws \common_exception_Error
-     * @throws \core_kernel_users_CacheException
-     * @throws \core_kernel_users_Exception
+     * @throws \oat\taoLti\models\classes\LtiVariableMissingException
      */
     public function __construct($launchData, $userUri)
     {
@@ -93,11 +92,7 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
         $taoRoles = $this->determineTaoRoles($launchData);
         $this->setRoles($taoRoles);
 
-
-        $firstname = '';
-        $lastname = '';
         $email = '';
-        $label = '';
 
         if ($launchData->hasLaunchLanguage()) {
             $launchLanguage = $launchData->getLaunchLanguage();
@@ -106,18 +101,12 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
             $language = DEFAULT_LANG;
         }
 
-        if ($launchData->hasVariable(LtiLaunchData::LIS_PERSON_NAME_FULL)) {
-            $label = $launchData->getUserFullName();
-        }
+        $label = $launchData->getUserFullName();
+        $firstname = $launchData->getUserGivenName();
+        $lastname = $launchData->getUserFamilyName();
 
-        if ($launchData->hasVariable(LtiLaunchData::LIS_PERSON_NAME_GIVEN)) {
-            $firstname = $launchData->getUserGivenName();
-        }
-        if ($launchData->hasVariable(LtiLaunchData::LIS_PERSON_NAME_FAMILY)) {
-            $lastname = $launchData->getUserFamilyName();
-        }
         if ($launchData->hasVariable(LtiLaunchData::LIS_PERSON_CONTACT_EMAIL_PRIMARY)) {
-            $email = $launchData->getUserEmail();;
+            $email = $launchData->getUserEmail();
         }
 
         $this->language = $language;
