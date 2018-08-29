@@ -49,6 +49,7 @@ class LtiService extends tao_models_classes_Service
     {
         $extensionManager = $this->getServiceLocator()->get(common_ext_ExtensionsManager::SERVICE_ID);
         $config = $extensionManager ->getExtensionById('taoLti')->getConfig('auth');
+        /** @var \common_user_auth_Adapter $adapter */
         $adapter = new $config['adapter']($request);
         $this->getServiceLocator()->propagate($adapter);
         $user = $adapter->authenticate();
