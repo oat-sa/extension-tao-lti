@@ -89,7 +89,7 @@ class LtiLaunchData
     {
         $extra = self::getParametersFromUrl($request->getUrl());
 
-        return new self($request->getParams(), $extra);
+        return new static($request->getParams(), $extra);
     }
 
     /**
