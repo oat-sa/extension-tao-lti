@@ -213,8 +213,8 @@ class LtiLaunchData
      */
     public function getUserGivenName()
     {
-        if ($this->hasVariable(self::LIS_PERSON_NAME_GIVEN)) {
-            return $this->getVariable(self::LIS_PERSON_NAME_GIVEN);
+        if ($this->hasVariable(static::LIS_PERSON_NAME_GIVEN)) {
+            return $this->getVariable(static::LIS_PERSON_NAME_GIVEN);
         }
     }
 
@@ -223,8 +223,8 @@ class LtiLaunchData
      */
     public function getUserFamilyName()
     {
-        if ($this->hasVariable(self::LIS_PERSON_NAME_FAMILY)) {
-            return $this->getVariable(self::LIS_PERSON_NAME_FAMILY);
+        if ($this->hasVariable(static::LIS_PERSON_NAME_FAMILY)) {
+            return $this->getVariable(static::LIS_PERSON_NAME_FAMILY);
         }
     }
 
