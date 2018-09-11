@@ -99,6 +99,257 @@
                     }
                 ]
             }
+        },
+        "/taoLti/RestService/create": {
+            "put": {
+                "description": "Create a consumer with given parameters",
+                "consumes": ["application/x-www-form-urlencoded"],
+                "tags": [
+                    "consumer"
+                ],
+                "parameters": [
+                    {
+                        "name": "label",
+                        "in": "formData",
+                        "description": "Label for the new consumer",
+                        "required": true,
+                        "type": "string"
+                    },{
+                        "name": "oath-key",
+                        "in": "formData",
+                        "description": "OAuth consumer key",
+                        "required": false,
+                        "type": "string"
+                    },{
+                        "name": "oath-secret",
+                        "in": "formData",
+                        "description": "Oauth consumer secret",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "oath-callback-url",
+                        "in": "formData",
+                        "description": "OAuth consumer callback URL",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "schema": {
+                            "title": "response",
+                            "format": "json",
+                            "type": "object",
+                            "required": [
+                                "success",
+                                "data",
+                                "version"
+                            ],
+                            "properties": {
+                                "success": {
+                                    "type": "boolean",
+                                    "description": "false on failure, true on success"
+                                },
+                                "version": {
+                                    "type": "string",
+                                    "description": "tao version"
+                                },
+                                "data": {
+                                    "$ref": "#/definitions/data"
+                                },
+                                "errorCode": {
+                                    "type": "string",
+                                    "description": "error code. it appear if success value is false"
+                                },
+                                "errorMsg": {
+                                    "type": "string",
+                                    "description": "error description. it appear if success value is false"
+                                }
+                            }
+                        },
+                        "examples": {
+                            "application/json": {
+                                "success": true,
+                                "data": {
+                                    "uri": [
+                                        "http://tao.local/mytao.rdf#xxxxxxxxxxxxx"
+                                    ]
+                                },
+                                "version": "3.1.0"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request if you send invalid parameters. Test uri is mandatory.",
+                        "examples": {
+                            "application/json": {
+                                "success": false,
+                                "errorCode": 0,
+                                "errorMsg": "At least one mandatory parameter was required but found missing in your request",
+                                "version": "3.1.0"
+                            }
+                        },
+                        "schema": {
+                            "$ref": "#/definitions/errorModel"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "examples": {
+                            "application/json": {
+                                "success": false,
+                                "errorCode": 0,
+                                "errorMsg": "You don't have permission to access this resource.",
+                                "version": "3.1.0"
+                            }
+                        },
+                        "schema": {
+                            "$ref": "#/definitions/errorModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal error, if delivery class label is found multiple times.",
+                        "examples": {
+                            "application/json": {
+                                "success": false,
+                                "errorCode": 0,
+                                "errorMsg": "Exception error description",
+                                "version": "3.1.0"
+                            }
+                        },
+                        "schema": {
+                            "$ref": "#/definitions/errorModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/taoLti/RestService": {
+            "delete": {
+                "description": "Delete given consumer by URI",
+                "tags": [
+                    "consumer"
+                ],
+                "parameters": [
+                    {
+                        "name": "uri",
+                        "in": "query",
+                        "description": "A valid URI",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "schema": {
+                            "title": "response",
+                            "format": "json",
+                            "type": "object",
+                            "required": [
+                                "success",
+                                "version"
+                            ],
+                            "properties": {
+                                "success": {
+                                    "type": "boolean",
+                                    "description": "false on failure, true on success"
+                                },
+                                "version": {
+                                    "type": "string",
+                                    "description": "tao version"
+                                },
+                                "errorCode": {
+                                    "type": "string",
+                                    "description": "error code. it appear if success value is false"
+                                },
+                                "errorMsg": {
+                                    "type": "string",
+                                    "description": "error description. it appear if success value is false"
+                                }
+                            }
+                        },
+                        "examples": {
+                            "application/json": {
+                                "success": true,
+                                "version": "3.1.0"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request if you send invalid parameters.",
+                        "examples": {
+                            "application/json": {
+                                "success": false,
+                                "errorCode": 0,
+                                "errorMsg": "At least one mandatory parameter was required but found missing in your request",
+                                "version": "3.1.0"
+                            }
+                        },
+                        "schema": {
+                            "$ref": "#/definitions/errorModel"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "examples": {
+                            "application/json": {
+                                "success": false,
+                                "errorCode": 0,
+                                "errorMsg": "You are unauthorized.",
+                                "version": "3.1.0"
+                            }
+                        },
+                        "schema": {
+                            "$ref": "#/definitions/errorModel"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "examples": {
+                            "application/json": {
+                                "success": false,
+                                "errorCode": 0,
+                                "errorMsg": "You don't have permission to access this resource.",
+                                "version": "3.1.0"
+                            }
+                        },
+                        "schema": {
+                            "$ref": "#/definitions/errorModel"
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "examples": {
+                            "application/json": {
+                                "success": false,
+                                "errorCode": 0,
+                                "errorMsg": "Consumer with given URI has not been found.",
+                                "version": "3.1.0"
+                            }
+                        },
+                        "schema": {
+                            "$ref": "#/definitions/errorModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal error.",
+                        "examples": {
+                            "application/json": {
+                                "success": false,
+                                "errorCode": 0,
+                                "errorMsg": "Exception error description",
+                                "version": "3.1.0"
+                            }
+                        },
+                        "schema": {
+                            "$ref": "#/definitions/errorModel"
+                        }
+                    }
+                }
+            }
         }
     },
     "externalDocs": {
@@ -139,6 +390,47 @@
             "properties": {
                 "id": {
                     "type": "string"
+                }
+            }
+        },
+        "errorModel": {
+            "type": "object",
+            "description": "contain error",
+            "required": [
+                "success",
+                "version",
+                "errorCode",
+                "errorMsg"
+            ],
+            "properties": {
+                "success": {
+                    "type": "boolean",
+                    "description": "false on failure",
+                    "default": false
+                },
+                "version": {
+                    "type": "string",
+                    "description": "tao version"
+                },
+                "errorCode": {
+                    "type": "integer",
+                    "description": "error code"
+                },
+                "errorMsg": {
+                    "type": "string",
+                    "description": "error description"
+                }
+            }
+        },
+        "data": {
+            "type": "object",
+            "description": "Generated delivery URI , it appear if success value is true",
+            "properties": {
+                "delivery": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 }
             }
         }
