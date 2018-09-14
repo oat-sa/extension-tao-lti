@@ -115,20 +115,20 @@
                         "required": true,
                         "type": "string"
                     },{
-                        "name": "oath-key",
+                        "name": "oauth-key",
                         "in": "formData",
                         "description": "OAuth consumer key",
                         "required": false,
                         "type": "string"
                     },{
-                        "name": "oath-secret",
+                        "name": "oauth-secret",
                         "in": "formData",
                         "description": "Oauth consumer secret",
                         "required": false,
                         "type": "string"
                     },
                     {
-                        "name": "oath-callback-url",
+                        "name": "oauth-callback-url",
                         "in": "formData",
                         "description": "OAuth consumer callback URL",
                         "required": false,
