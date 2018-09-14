@@ -20,18 +20,39 @@
 
 namespace oat\taoLti\models\classes;
 
+use oat\generis\model\OntologyRdfs;
 use oat\taoLti\models\classes\user\LtiUserService;
 
-class LtiRestApiService extends \tao_models_classes_Service
+class LtiRestApiService extends \tao_models_classes_CrudService
 {
-    protected function getRootClass()
+    /**
+     * @var \core_kernel_classes_Class
+     */
+    protected $itemClass;
+
+    /**
+     * @var \taoItems_models_classes_ItemsService
+     */
+    protected $itemsServices;
+
+    /**
+     * @throws \common_exception_Error
+     */
+    public function __construct()
     {
-        throw new \common_exception_NoImplementation();
+        parent::__construct();
+        $this->itemClass = new \core_kernel_classes_Class(ConsumerService::CLASS_URI);
+        $this->itemsServices = \taoItems_models_classes_ItemsService::singleton();
+    }
+
+    public function getRootClass()
+    {
+        return $this->itemClass;
     }
 
     protected function getClassService()
     {
-        throw new \common_exception_NoImplementation();
+        return $this->itemsServices;
     }
 
     /**
@@ -64,5 +85,17 @@ class LtiRestApiService extends \tao_models_classes_Service
         return array (
             'id' => $userIdentifier
         );
+    }
+
+    public function createFromArray(array $propertiesValues)
+    {
+        if (!array_key_exists(OntologyRdfs::RDFS_LABEL, $propertiesValues)) {
+            $propertiesValues[OntologyRdfs::RDFS_LABEL] = '';
+        }
+
+        $label = $propertiesValues[OntologyRdfs::RDFS_LABEL];
+
+        $resource = parent::create($label, $this->getRootClass(), $propertiesValues);
+        return $resource;
     }
 }

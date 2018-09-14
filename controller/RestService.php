@@ -21,9 +21,9 @@
 
 namespace oat\taoLti\controller;
 
+use oat\generis\model\OntologyRdfs;
 use oat\taoLti\models\classes\LtiRestApiService;
 use oat\tao\model\oauth\DataStore;
-use oat\taoLti\models\classes\ConsumerService;
 
 class RestService extends \tao_actions_CommonRestModule
 {
@@ -49,76 +49,6 @@ class RestService extends \tao_actions_CommonRestModule
     public function get($uri = null)
     {
         throw new \common_exception_NoImplementation();
-    }
-
-    /**
-     * Creates a consumer
-     *
-     * @throws \common_exception_NotImplemented
-     */
-    public function create()
-    {
-        try {
-            if ($this->getRequestMethod() != \Request::HTTP_PUT) {
-                throw new \common_exception_NotImplemented('Only PUT method is accepted to request this service.');
-            }
-
-            $class = new \core_kernel_classes_Class(ConsumerService::CLASS_URI);
-
-            if (!$this->hasRequestParameter('label')) {
-                throw new \common_exception_MissingParameter('label', $this->getRequestURI());
-            }
-
-            $label = new \core_kernel_classes_Class($this->getRequestParameter('label'));
-            $consumer = $class->createInstance($label);
-            $consumer->setPropertyValue(new \core_kernel_classes_Property('classUri'), ConsumerService::CLASS_URI);
-
-            if ($this->hasRequestParameter('oath-key')) {
-                $consumer->setPropertyValue(new \core_kernel_classes_Property(DataStore::PROPERTY_OAUTH_KEY), $this->getRequestParameter('oath-key'));
-            }
-            if ($this->hasRequestParameter('oath-secret')) {
-                $consumer->setPropertyValue(new \core_kernel_classes_Property(DataStore::PROPERTY_OAUTH_SECRET), $this->getRequestParameter('oath-secret'));
-            }
-            if ($this->hasRequestParameter('oath-callback-url')) {
-                $consumer->setPropertyValue(new \core_kernel_classes_Property(DataStore::PROPERTY_OAUTH_CALLBACK), $this->getRequestParameter('oath-callback-url'));
-            }
-
-            $this->returnSuccess([
-                'data' => $consumer->getUri(),
-            ]);
-        } catch (\Exception $e) {
-            \common_Logger::w($e->getMessage());
-            $this->returnFailure($e);
-        }
-    }
-
-    /**
-     * Deletes given consumer
-     *
-     * @param null $uri
-     * @return mixed|void
-     * @throws \common_exception_NotImplemented
-     */
-    public function delete($uri = null)
-    {
-        try {
-            if (!$uri) {
-                throw new \common_exception_MissingParameter('uri', $this->getRequestURI());
-            }
-
-            $consumer = new \core_kernel_classes_Resource($uri);
-
-            if (!$consumer->exists()) {
-                $this->returnFailure(new \common_exception_NotFound('Consumer has not been found'));
-            }
-
-            $consumer->delete(true);
-
-            $this->returnSuccess();
-        } catch (\Exception $e) {
-            \common_Logger::w($e->getMessage());
-            $this->returnFailure($e);
-        }
     }
 
     /**
@@ -160,7 +90,11 @@ class RestService extends \tao_actions_CommonRestModule
     {
         return array(
             'user_id' => self::LTI_USER_ID,
-            'oauth_consumer_key' => self::LTI_CONSUMER_KEY
+            'oauth_consumer_key' => self::LTI_CONSUMER_KEY,
+            'label' => OntologyRdfs::RDFS_LABEL,
+            'oauth-key' => DataStore::PROPERTY_OAUTH_KEY,
+            'oauth-secret' => DataStore::PROPERTY_OAUTH_SECRET,
+            'oauth-callback-url' => DataStore::PROPERTY_OAUTH_CALLBACK,
         );
     }
 
