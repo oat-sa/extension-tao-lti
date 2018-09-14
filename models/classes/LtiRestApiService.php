@@ -28,12 +28,7 @@ class LtiRestApiService extends \tao_models_classes_CrudService
     /**
      * @var \core_kernel_classes_Class
      */
-    protected $itemClass;
-
-    /**
-     * @var \taoItems_models_classes_ItemsService
-     */
-    protected $itemsServices;
+    protected $consumerClass;
 
     /**
      * @throws \common_exception_Error
@@ -41,18 +36,17 @@ class LtiRestApiService extends \tao_models_classes_CrudService
     public function __construct()
     {
         parent::__construct();
-        $this->itemClass = new \core_kernel_classes_Class(ConsumerService::CLASS_URI);
-        $this->itemsServices = \taoItems_models_classes_ItemsService::singleton();
+        $this->consumerClass = new \core_kernel_classes_Class(ConsumerService::CLASS_URI);
     }
 
     public function getRootClass()
     {
-        return $this->itemClass;
+        return $this->consumerClass;
     }
 
     protected function getClassService()
     {
-        return $this->itemsServices;
+        return ConsumerService::singleton();
     }
 
     /**
