@@ -26,8 +26,10 @@ use common_http_Request;
 use common_session_SessionManager;
 use core_kernel_classes_Class;
 use core_kernel_classes_Resource;
+use oat\oatbox\log\LoggerService;
 use oat\tao\model\TaoOntology;
 use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
+use Psr\Log\LogLevel;
 use tao_models_classes_Service;
 
 class LtiService extends tao_models_classes_Service
@@ -47,17 +49,28 @@ class LtiService extends tao_models_classes_Service
      */
     public function startLtiSession(common_http_Request $request)
     {
-        $extensionManager = $this->getServiceLocator()->get(common_ext_ExtensionsManager::SERVICE_ID);
-        $config = $extensionManager ->getExtensionById('taoLti')->getConfig('auth');
-        /** @var \common_user_auth_Adapter $adapter */
-        $adapter = new $config['adapter']($request);
-        $this->getServiceLocator()->propagate($adapter);
-        $user = $adapter->authenticate();
+        try {
+            $extensionManager = $this->getServiceLocator()->get(common_ext_ExtensionsManager::SERVICE_ID);
+            $config = $extensionManager ->getExtensionById('taoLti')->getConfig('auth');
+            /** @var \common_user_auth_Adapter $adapter */
+            $adapter = new $config['adapter']($request);
+            $this->getServiceLocator()->propagate($adapter);
+            $user = $adapter->authenticate();
 
-        $session = new TaoLtiSession($user);
+            $session = new TaoLtiSession($user);
 
-        $this->getServiceLocator()->propagate($session);
-        common_session_SessionManager::startSession($session);
+            $this->getServiceLocator()->propagate($session);
+            common_session_SessionManager::startSession($session);
+        } catch (LtiInvalidVariableException $e) {
+            $this->getServiceLocator()
+                ->get(LoggerService::SERVICE_ID)
+                ->log(LogLevel::INFO, $e->getMessage());
+
+            throw new LtiException(
+                __('You are not authorized to use this system'),
+                LtiErrorMessage::ERROR_UNAUTHORIZED
+            );
+        }
     }
 
     /**
