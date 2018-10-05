@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 3.1.0-sprint15\n"
-"PO-Revision-Date: 2015-12-23T13:18:55\n"
+"Project-Id-Version: TAO 3.3.0-sprint86\n"
+"PO-Revision-Date: 2018-09-26T12:04:43\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: nl-NL\n"
@@ -15,75 +15,81 @@ msgstr ""
 
 #, tao-public
 msgid "Add Consumer"
-msgstr ""
+msgstr "Voeg eindgebruiker toe"
 
 msgid "Back"
-msgstr ""
+msgstr "Terug"
 
 #, tao-public
 msgid "Delete"
-msgstr ""
+msgstr "Verwijderen"
 
 msgid "Error"
+msgstr "Fout"
+
+msgid "Error (%s): "
+msgstr ""
+
+msgid "Error(%s): [key %s] %s \"%s"
 msgstr ""
 
 #, tao-public
 msgid "Export"
-msgstr ""
+msgstr "Exporteren"
 
 #, tao-public
 msgid "Import"
-msgstr ""
+msgstr "Importeren"
 
 #, tao-public
 msgid "Index"
-msgstr ""
+msgstr "Index"
 
 msgid "Learning Tools Interoperability"
-msgstr ""
+msgstr "Onderlinge uitwisselbaarheid van leermiddelen "
 
 msgid "link"
-msgstr ""
+msgstr "link"
 
 #, tao-public
 msgid "LTI Consumers"
-msgstr ""
+msgstr "LTI eindgebruikers"
 
 msgid "Open in a new window"
-msgstr ""
+msgstr "Openen in een nieuw venster"
 
 #, tao-public
 msgid "Properties"
-msgstr ""
+msgstr "Eigenschappen"
 
 msgid "Return to %s."
-msgstr ""
+msgstr "Keer terug naar %s."
 
 msgid "Server Error"
-msgstr ""
+msgstr "Serverfout"
 
 #, tao-public
 msgid "Settings"
-msgstr ""
+msgstr "Instellingen"
 
 msgid "The LTI connection could not be established"
-msgstr ""
+msgstr "De LTI verbinding kan niet tot stand worden gebracht"
 
 msgid "The LTI Provider library."
-msgstr ""
+msgstr "De LTI leverancier bank."
 
 msgid "The LTI tool could not be opened in the current window. Please click on the button to open it in a new window."
-msgstr ""
+msgstr "Het LTI gereedschap kon niet worden geopend in het huidige venster. Klik a.u.b. op de knop om het te openen in een nieuw venster."
 
 msgid "Third party cookies are not supported by your browser"
-msgstr ""
+msgstr "Derde partij cookies worden niet ondersteund door uw browser"
 
 msgid "Unable to restore Session"
-msgstr ""
+msgstr "Kon de sessie niet herstellen"
 
 msgid "user"
-msgstr ""
+msgstr "gebruiker"
 
 msgid "You are not authorized to use this system"
-msgstr ""
+msgstr "U heeft geen autorisatie om dit systeem te gebruiken"
 
