@@ -92,7 +92,8 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
         $this->userUri = $userUri;
         $taoRoles = $this->determineTaoRoles($launchData);
         if (empty($taoRoles)) {
-            throw new LtiInvalidVariableException(LtiLaunchData::ROLES, $this->ltiLaunchData->getVariable(LtiLaunchData::ROLES));
+            $message = "Invalid LTI role parameter value: " . $this->ltiLaunchData->getVariable(LtiLaunchData::ROLES);
+            throw new LtiInvalidVariableException($message);
         }
 
         $this->setRoles($taoRoles);

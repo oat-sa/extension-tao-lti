@@ -15,11 +15,20 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
  * Copyright (c) 2018 (original work) Open Assessment Technologies SA
- *
  */
 
-namespace oat\taoLti\models\classes;
+namespace oat\taoLti\models\classes\LaunchData\Validator;
 
-class LtiInvalidVariableException extends LtiException
+use oat\oatbox\service\ConfigurableService;
+use oat\taoLti\models\classes\LtiLaunchData;
+
+class LtiValidatorService extends ConfigurableService
 {
+    const SERVICE_ID = 'taoLti/LtiValidatorService';
+
+    const OPTION_LAUNCH_DATA_VALIDATOR = 'launchDataValidator';
+
+    public function validateLaunchData(LtiLaunchData $data) {
+        $this->getOption(self::OPTION_LAUNCH_DATA_VALIDATOR)->validate($data);
+    }
 }
