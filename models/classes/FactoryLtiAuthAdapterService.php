@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -33,6 +32,7 @@ class FactoryLtiAuthAdapterService extends ConfigurableService implements Factor
      */
     public function create(common_http_Request $request)
     {
+        /** @var common_ext_ExtensionsManager $extensionManager */
         $extensionManager = $this->getServiceLocator()->get(common_ext_ExtensionsManager::SERVICE_ID);
         $config = $extensionManager ->getExtensionById('taoLti')->getConfig('auth');
 
