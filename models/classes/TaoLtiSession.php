@@ -25,7 +25,7 @@ use common_exception_Error;
 use common_session_DefaultSession;
 use core_kernel_classes_Resource;
 use oat\taoLti\models\classes\ResourceLink\LinkService;
-use oat\taoLti\models\classes\user\LtiUser;
+use oat\taoLti\models\classes\user\LtiUserInterface;
 
 /**
  * The TAO layer ontop of the LtiSession
@@ -41,7 +41,7 @@ class TaoLtiSession extends common_session_DefaultSession
      */
     private $ltiLink = null;
 
-    public function __construct(LtiUser $user)
+    public function __construct(LtiUserInterface $user)
     {
         parent::__construct($user);
     }

@@ -37,7 +37,7 @@ use Zend\ServiceManager\ServiceLocatorAwareTrait;
  * @author Joel Bout, <joel@taotesting.com>
  * @package taoLti
  */
-class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface, \JsonSerializable
+class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface, \JsonSerializable, LtiUserInterface
 {
     use ServiceLocatorAwareTrait;
 
