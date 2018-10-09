@@ -155,14 +155,14 @@ class Updater extends \common_ext_ExtensionUpdater
             $this->setVersion('6.4.0');
         }
 
-        $this->skip('6.4.0', '6.4.2');
+        $this->skip('6.4.0', '6.5.0');
 
-        if ($this->isVersion('6.4.2')) {
+        if ($this->isVersion('6.5.0')) {
             $factoryAuth = new FactoryLtiAuthAdapterService();
 
             $this->getServiceManager()->register(FactoryLtiAuthAdapterServiceInterface::SERVICE_ID, $factoryAuth);
 
-            $this->setVersion('6.5.0');
+            $this->setVersion('6.6.0');
         }
     }
 }
