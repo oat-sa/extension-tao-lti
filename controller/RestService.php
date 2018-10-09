@@ -21,7 +21,9 @@
 
 namespace oat\taoLti\controller;
 
+use oat\generis\model\OntologyRdfs;
 use oat\taoLti\models\classes\LtiRestApiService;
+use oat\tao\model\oauth\DataStore;
 
 class RestService extends \tao_actions_CommonRestModule
 {
@@ -35,10 +37,6 @@ class RestService extends \tao_actions_CommonRestModule
      */
     public function __construct()
     {
-        if (strtolower($this->getRequestMethod())!=='get') {
-           throw new \common_exception_NoImplementation();
-        }
-
         parent::__construct();
         $this->service = LtiRestApiService::singleton();
     }
@@ -92,7 +90,11 @@ class RestService extends \tao_actions_CommonRestModule
     {
         return array(
             'user_id' => self::LTI_USER_ID,
-            'oauth_consumer_key' => self::LTI_CONSUMER_KEY
+            'oauth_consumer_key' => self::LTI_CONSUMER_KEY,
+            'label' => OntologyRdfs::RDFS_LABEL,
+            'oauth-key' => DataStore::PROPERTY_OAUTH_KEY,
+            'oauth-secret' => DataStore::PROPERTY_OAUTH_SECRET,
+            'oauth-callback-url' => DataStore::PROPERTY_OAUTH_CALLBACK,
         );
     }
 
