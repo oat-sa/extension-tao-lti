@@ -20,6 +20,7 @@
 
 namespace oat\taoLti\models\classes;
 
+use oat\generis\model\OntologyRdf;
 use oat\generis\model\OntologyRdfs;
 use oat\taoLti\models\classes\user\LtiUserService;
 
@@ -37,11 +38,6 @@ class LtiRestApiService extends \tao_models_classes_CrudService
     {
         parent::__construct();
         $this->consumerClass = new \core_kernel_classes_Class(ConsumerService::CLASS_URI);
-    }
-
-    public function getRootClass()
-    {
-        return $this->consumerClass;
     }
 
     protected function getClassService()
@@ -84,10 +80,13 @@ class LtiRestApiService extends \tao_models_classes_CrudService
     public function createFromArray(array $propertiesValues)
     {
         if (!array_key_exists(OntologyRdfs::RDFS_LABEL, $propertiesValues)) {
-            $propertiesValues[OntologyRdfs::RDFS_LABEL] = '';
+            $label = '';
+        } else {
+            $label = $propertiesValues[OntologyRdfs::RDFS_LABEL];
         }
+        unset($propertiesValues[OntologyRdfs::RDFS_LABEL]);
 
-        $label = $propertiesValues[OntologyRdfs::RDFS_LABEL];
+        $propertiesValues['classUri'] = $propertiesValues[OntologyRdf::RDF_TYPE];
 
         $resource = parent::create($label, $this->getRootClass(), $propertiesValues);
         return $resource;
