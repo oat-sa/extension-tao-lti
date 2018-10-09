@@ -26,20 +26,6 @@ use oat\taoLti\models\classes\user\LtiUserService;
 
 class LtiRestApiService extends \tao_models_classes_CrudService
 {
-    /**
-     * @var \core_kernel_classes_Class
-     */
-    protected $consumerClass;
-
-    /**
-     * @throws \common_exception_Error
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        $this->consumerClass = new \core_kernel_classes_Class(ConsumerService::CLASS_URI);
-    }
-
     protected function getClassService()
     {
         return ConsumerService::singleton();
