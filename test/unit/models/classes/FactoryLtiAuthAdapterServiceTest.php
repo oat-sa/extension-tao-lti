@@ -23,9 +23,10 @@ use common_ext_Extension;
 use common_ext_ExtensionsManager;
 use common_http_Request;
 use common_user_auth_Adapter;
+use oat\generis\test\TestCase;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class FactoryLtiAuthAdapterServiceTest extends \PHPUnit_Framework_TestCase
+class FactoryLtiAuthAdapterServiceTest extends TestCase
 {
     public function testCreate()
     {
