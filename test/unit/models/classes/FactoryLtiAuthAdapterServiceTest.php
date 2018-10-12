@@ -49,20 +49,11 @@ class FactoryLtiAuthAdapterServiceTest extends TestCase
 
         $service
             ->method('getServiceLocator')
-            ->willReturn($this->mockServiceLocator());
+            ->willReturn($this->getServiceLocatorMock([
+                common_ext_ExtensionsManager::SERVICE_ID => $this->mockExtensionManager()
+            ]));
 
         return $service;
-    }
-
-    protected function mockServiceLocator()
-    {
-        $serviceLocator = $this->getMockForAbstractClass(ServiceLocatorInterface::class);
-        $serviceLocator->method('get')
-            ->willReturn(
-                $this->mockExtensionManager()
-            );
-
-        return $serviceLocator;
     }
 
     protected function mockExtensionManager()
