@@ -27,6 +27,8 @@ use oat\tao\model\mvc\error\ExceptionInterpreterService;
 use oat\tao\scripts\update\OntologyUpdater;
 use oat\taoLti\models\classes\CookieVerifyService;
 use oat\taoLti\models\classes\ExceptionInterpreter;
+use oat\taoLti\models\classes\FactoryLtiAuthAdapterService;
+use oat\taoLti\models\classes\FactoryLtiAuthAdapterServiceInterface;
 use oat\taoLti\models\classes\LtiAuthAdapter;
 use oat\taoLti\models\classes\LtiException;
 use oat\taoLti\models\classes\ResourceLink\LinkService;
@@ -154,5 +156,13 @@ class Updater extends \common_ext_ExtensionUpdater
         }
 
         $this->skip('6.4.0', '6.5.0');
+
+        if ($this->isVersion('6.5.0')) {
+            $factoryAuth = new FactoryLtiAuthAdapterService();
+
+            $this->getServiceManager()->register(FactoryLtiAuthAdapterServiceInterface::SERVICE_ID, $factoryAuth);
+
+            $this->setVersion('6.6.0');
+        }
     }
 }
