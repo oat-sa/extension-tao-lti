@@ -30,30 +30,15 @@ class FactoryLtiAuthAdapterServiceTest extends TestCase
 {
     public function testCreate()
     {
-        $service = $this->mockService();
+        $service = new FactoryLtiAuthAdapterService();
+        $service->setServiceLocator($this->getServiceLocatorMock([
+            common_ext_ExtensionsManager::SERVICE_ID => $this->mockExtensionManager()
+        ]));
 
         $request = $this->getMockBuilder(common_http_Request::class)->disableOriginalConstructor()->getMock();
 
         $this->assertInstanceOf(common_user_auth_Adapter::class, $service->create($request));
         $this->assertInstanceOf('oat\\taoLti\\models\\classes\\LtiAuthAdapter', $service->create($request));
-    }
-
-    /**
-     * @return FactoryLtiAuthAdapterService
-     */
-    protected function mockService()
-    {
-        $service = $this->getMockBuilder(FactoryLtiAuthAdapterService::class)->disableOriginalConstructor()
-            ->setMethods(['getServiceLocator'])
-            ->getMockForAbstractClass();
-
-        $service
-            ->method('getServiceLocator')
-            ->willReturn($this->getServiceLocatorMock([
-                common_ext_ExtensionsManager::SERVICE_ID => $this->mockExtensionManager()
-            ]));
-
-        return $service;
     }
 
     protected function mockExtensionManager()
