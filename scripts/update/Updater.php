@@ -166,5 +166,13 @@ class Updater extends \common_ext_ExtensionUpdater
 
             $this->setVersion('6.6.0');
         }
+
+        if ($this->isVersion('6.6.0')) {
+            $ltiValidatorService = new LtiValidatorService([
+                LtiValidatorService::OPTION_LAUNCH_DATA_VALIDATOR => new Lti11LaunchDataValidator()
+            ]);
+            $this->getServiceManager()->register(LtiValidatorService::SERVICE_ID, $ltiValidatorService);
+            $this->setVersion('6.7.0');
+        }
     }
 }
