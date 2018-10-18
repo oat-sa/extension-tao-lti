@@ -20,6 +20,7 @@
 namespace oat\taoLti\models\classes\LaunchData\Validator;
 
 
+use oat\oatbox\Configurable;
 use oat\taoLti\models\classes\LtiException;
 use oat\taoLti\models\classes\LtiInvalidLaunchDataException;
 use oat\taoLti\models\classes\LtiVariableMissingException;
@@ -29,7 +30,7 @@ use oat\taoLti\models\classes\LtiLaunchData;
  * Class LaunchDataValidator
  * @package oat\taoLti\models\classes\LaunchData\validator
  */
-class LaunchDataValidator
+class Lti11LaunchDataValidator extends Configurable implements LtiValidatorInterface
 {
     const LTI_VERSION_PATTERN = '/^(LTI-)[0-9]+(p)[0-9]+$/';
     const LTI_VERSION_1_PATTERN = '/^(LTI-1p)[0-9]+$/';

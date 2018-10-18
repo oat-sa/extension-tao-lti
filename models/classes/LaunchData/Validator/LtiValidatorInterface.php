@@ -19,19 +19,18 @@
 
 namespace oat\taoLti\models\classes\LaunchData\Validator;
 
-use oat\oatbox\service\ConfigurableService;
+
+use oat\taoLti\models\classes\LtiException;
 use oat\taoLti\models\classes\LtiLaunchData;
 
-class LtiValidatorService extends ConfigurableService
+interface LtiValidatorInterface
 {
-    const SERVICE_ID = 'taoLti/LtiValidatorService';
-
-    const OPTION_LAUNCH_DATA_VALIDATOR = 'launchDataValidator';
-
-    public function validateLaunchData(LtiLaunchData $data) {
-        $validator = $this->getOption(self::OPTION_LAUNCH_DATA_VALIDATOR);
-        if ($validator instanceof LtiValidatorInterface) {
-            $validator->validate($data);
-        }
-    }
+    /**
+     * Check if provides launch data object is valid.
+     *
+     * @param LtiLaunchData $data
+     * @return boolean
+     * @throws LtiException
+     */
+    public function validate(LtiLaunchData $data);
 }
