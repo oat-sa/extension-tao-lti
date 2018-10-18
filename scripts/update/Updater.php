@@ -27,7 +27,9 @@ use oat\tao\model\mvc\error\ExceptionInterpreterService;
 use oat\tao\scripts\update\OntologyUpdater;
 use oat\taoLti\models\classes\CookieVerifyService;
 use oat\taoLti\models\classes\ExceptionInterpreter;
-use oat\taoLti\models\classes\LaunchData\Validator\LaunchDataValidator;
+use oat\taoLti\models\classes\FactoryLtiAuthAdapterService;
+use oat\taoLti\models\classes\FactoryLtiAuthAdapterServiceInterface;
+use oat\taoLti\models\classes\LaunchData\Validator\Lti11LaunchDataValidator;
 use oat\taoLti\models\classes\LaunchData\Validator\LtiValidatorService;
 use oat\taoLti\models\classes\LtiAuthAdapter;
 use oat\taoLti\models\classes\LtiException;
@@ -155,13 +157,14 @@ class Updater extends \common_ext_ExtensionUpdater
             $this->setVersion('6.4.0');
         }
 
-        $this->skip('6.4.0', '6.4.2');
-        if ($this->isVersion('6.4.2')) {
-            $ltiValidatorService = new LtiValidatorService([
-                LtiValidatorService::OPTION_LAUNCH_DATA_VALIDATOR => new LaunchDataValidator()
-            ]);
-            $this->getServiceManager()->register(LtiValidatorService::SERVICE_ID, $ltiValidatorService);
-            $this->setVersion('6.5.0');
+        $this->skip('6.4.0', '6.5.0');
+
+        if ($this->isVersion('6.5.0')) {
+            $factoryAuth = new FactoryLtiAuthAdapterService();
+
+            $this->getServiceManager()->register(FactoryLtiAuthAdapterServiceInterface::SERVICE_ID, $factoryAuth);
+
+            $this->setVersion('6.6.0');
         }
     }
 }

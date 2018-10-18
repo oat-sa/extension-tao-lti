@@ -21,7 +21,6 @@ namespace oat\taoLti\models\classes;
 
 use common_Exception;
 use common_exception_Error;
-use common_ext_ExtensionsManager;
 use common_http_Request;
 use common_session_SessionManager;
 use core_kernel_classes_Class;
@@ -50,11 +49,10 @@ class LtiService extends tao_models_classes_Service
     public function startLtiSession(common_http_Request $request)
     {
         try {
-            $extensionManager = $this->getServiceLocator()->get(common_ext_ExtensionsManager::SERVICE_ID);
-            $config = $extensionManager ->getExtensionById('taoLti')->getConfig('auth');
-            /** @var \common_user_auth_Adapter $adapter */
-            $adapter = new $config['adapter']($request);
-            $this->getServiceLocator()->propagate($adapter);
+            /** @var FactoryLtiAuthAdapterService $factoryAuth */
+            $factoryAuth = $this->getServiceLocator()->get(FactoryLtiAuthAdapterServiceInterface::SERVICE_ID);
+            $adapter     = $factoryAuth->create($request);
+
             $user = $adapter->authenticate();
 
             $session = new TaoLtiSession($user);
