@@ -48,6 +48,9 @@ class LtiLaunchData
     const TOOL_CONSUMER_INSTANCE_NAME        = 'tool_consumer_instance_name';
     const TOOL_CONSUMER_INSTANCE_DESCRIPTION = 'tool_consumer_instance_description';
 
+    const LTI_VERSION = 'lti_version';
+    const LTI_MESSAGE_TYPE = 'lti_message_type';
+
     /**
      * LTI variables
      *

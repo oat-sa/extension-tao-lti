@@ -20,18 +20,47 @@
 
 namespace oat\taoLti\models\classes;
 
+use Renderer;
+use HTTPToolkit;
+use common_http_Request;
 use oat\tao\helpers\Template;
 use oat\tao\model\mvc\error\ResponseAbstract;
+use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
 
 /**
- * Redirect to lti return url
+ * Send LTI error response.
  *
  * @package oat\taoLti\models\classes
  * @author Aleh Hutnikau, <hutnikau@1pt.com>
  */
 class LtiReturnResponse extends ResponseAbstract
 {
+    /**
+     * @var LtiException
+     */
+    protected $exception;
 
+    protected $requestParams;
+
+    /**
+     * @var LtiLaunchData
+     */
+    protected $launchData;
+
+    /**
+     * @var Renderer
+     */
+    private $renderer;
+
+    public function __construct(Renderer $renderer)
+    {
+        $this->renderer = $renderer;
+    }
+
+    /**
+     * @param int $code
+     * @return ResponseAbstract
+     */
     public function setHttpCode($code)
     {
         $this->httpCode = 302;
@@ -39,12 +68,159 @@ class LtiReturnResponse extends ResponseAbstract
     }
 
     /**
-     * @throws LtiException
-     * @throws \common_exception_Error
+     * Send LTI error response.
      */
     public function send()
     {
-        $baseUrl = null;
+        try {
+            $this->requestParams = common_http_Request::currentRequest()->getParams();
+            $this->launchData = LtiLaunchData::fromRequest(common_http_Request::currentRequest());
+            $baseUrl = null;
+
+            if ($this->requiresRedirect() && !empty($this->getReturnBaseUrl())) {
+                $this->errorRedirectResponse();
+            } else {
+                echo $this->showLtiErrorPage();
+            }
+        } catch (\Exception $e) {
+            $this->renderer->setTemplate(Template::getTemplate('error/error500.tpl', 'tao'));
+            echo $this->renderer->render();
+        }
+    }
+
+    /**
+     * Check if redirect error response is required.
+     *
+     * @return bool
+     */
+    protected function requiresRedirect() {
+        if ($this->exception instanceof LtiInvalidLaunchDataException
+            || $this->exception instanceof LtiVariableMissingException
+        ) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Generate LtiErrorMessage based on exception
+     *
+     * @return LtiErrorMessage
+     */
+    protected function getLtiErrorMessage() {
+        $message = __('Error: ') . $this->exception->getMessage();
+        $log = __('Error: [key %s] "%s"', $this->exception->getKey(), $this->exception->getMessage());
+        return new LtiErrorMessage($message, $log);
+    }
+
+    /**
+     * Show error page
+     *
+     * @return string
+     * 
+     * @throws LtiVariableMissingException
+     * @throws \common_Exception
+     */
+    protected function showLtiErrorPage() {
+        if (isset($this->requestParams[LtiLaunchData::TOOL_CONSUMER_INSTANCE_NAME])) {
+            $this->renderer->setData(
+                'consumerLabel',
+                $this->requestParams[LtiLaunchData::TOOL_CONSUMER_INSTANCE_NAME]
+            );
+        } elseif (isset($this->requestParams[LtiLaunchData::TOOL_CONSUMER_INSTANCE_DESCRIPTION])) {
+            $this->renderer->setData(
+                'consumerLabel',
+                $this->requestParams[LtiLaunchData::TOOL_CONSUMER_INSTANCE_DESCRIPTION]
+            );
+        }
+
+        if (isset($this->requestParams[LtiLaunchData::LAUNCH_PRESENTATION_RETURN_URL])) {
+            $returnUrl = $this->requestParams[LtiLaunchData::LAUNCH_PRESENTATION_RETURN_URL];
+            $serverName = $_SERVER['SERVER_NAME'];
+            $pieces = parse_url($returnUrl);
+            $domain = isset($pieces['host']) ? $pieces['host'] : '';
+            if ($serverName == $domain) {
+                $this->renderer->setData('returnUrl', $returnUrl);
+            }
+        }
+
+        return $this->renderLtiErrorPage($this->exception, false);
+    }
+
+    /**
+     * Render an error page.
+     *
+     * Ignore the parameter returnLink as LTI session always
+     * require a way for the consumer to return to his platform
+     *
+     * @param LtiException $error
+     * @param bool $returnLink
+     *
+     * @return string
+     *
+     * @throws LtiVariableMissingException
+     * @throws \common_Exception
+     */
+    protected function renderLtiErrorPage(LtiException $error, $returnLink = true)
+    {
+        // In regard of the IMS LTI standard, we have to show a back button that refer to the
+        // launch_presentation_return_url url param. So we have to retrieve this parameter before trying to start
+        // te session
+        $consumerLabel = $this->launchData->getToolConsumerName();
+        if (!is_null($consumerLabel)) {
+            $this->renderer->setData('consumerLabel', $consumerLabel);
+        }
+
+        $this->renderer->setData('message', $error->getMessage());
+        $this->renderer->setTemplate(Template::getTemplate('error.tpl', 'taoLti'));
+
+        return $this->renderer->render();
+    }
+
+    /**
+     * Send LTI error redirect response.
+     *
+     * @throws LtiException
+     * @throws \common_exception_Error
+     */
+    private function errorRedirectResponse()
+    {
+        $queryParams = $this->getLtiErrorMessage()->getUrlParams();
+        $url = $this->getRedirectUrl($queryParams);
+
+        $this->ltiRedirect($url);
+    }
+
+    /**
+     * Build LTI return url with query parameters.
+     *
+     * @param array $queryParams
+     * @return string
+     * @throws LtiException
+     * @throws \common_exception_Error
+     */
+    private function getRedirectUrl(array $queryParams) {
+        $baseUrl = $this->getReturnBaseUrl();
+
+        if (!empty($baseUrl)) {
+            return $baseUrl . (parse_url($baseUrl, PHP_URL_QUERY) ? '&' : '?') . http_build_query($queryParams);
+        } else {
+            throw new LtiException('Invalid LTI return url.');
+        }
+    }
+
+    /**
+     * Get lti return url from LTI session or from request data.
+     *
+     * @return string
+     * @throws LtiException
+     * @throws \common_exception_Error
+     */
+    private function getReturnBaseUrl()
+    {
+        $baseUrl = '';
+
         /** @var TaoLtiSession $session */
         $session = \common_session_SessionManager::getSession();
         if ($session instanceof TaoLtiSession) {
@@ -53,20 +229,21 @@ class LtiReturnResponse extends ResponseAbstract
                 $baseUrl = $launchData->getReturnUrl();
             }
         } else {
-            $request = \common_http_Request::currentRequest();
-            $params = $request->getParams();
-            if (isset($params[LtiLaunchData::LAUNCH_PRESENTATION_RETURN_URL])) {
-                $baseUrl = $params[LtiLaunchData::LAUNCH_PRESENTATION_RETURN_URL];
+            if ($this->launchData->hasVariable(LtiLaunchData::LAUNCH_PRESENTATION_RETURN_URL)) {
+                $baseUrl = $this->launchData->getVariable(LtiLaunchData::LAUNCH_PRESENTATION_RETURN_URL);
             }
         }
 
-        if ($baseUrl !== null) {
-            $params = $this->exception->getLtiMessage()->getUrlParams();
-            $url = $baseUrl . (parse_url($baseUrl, PHP_URL_QUERY) ? '&' : '?') . http_build_query($params);
-            header(\HTTPToolkit::locationHeader($url));
-        } else {
-            require Template::getTemplate('error/error500.tpl', 'tao');
-        }
-        return;
+        return $baseUrl;
+    }
+
+    /**
+     * @param $url
+     * @param int $statusCode
+     */
+    private function ltiRedirect($url, $statusCode = 302)
+    {
+        header(HTTPToolkit::statusCodeHeader($statusCode));
+        header(HTTPToolkit::locationHeader($url));
     }
 }
