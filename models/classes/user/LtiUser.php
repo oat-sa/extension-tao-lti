@@ -23,6 +23,7 @@ namespace oat\taoLti\models\classes\user;
 
 use oat\generis\model\GenerisRdf;
 use oat\generis\model\OntologyRdfs;
+use oat\taoLti\models\classes\LtiInvalidVariableException;
 use oat\taoLti\models\classes\LtiLaunchData;
 use oat\taoLti\models\classes\LtiRoles;
 use oat\taoLti\models\classes\LtiUtils;
@@ -37,7 +38,7 @@ use Zend\ServiceManager\ServiceLocatorAwareTrait;
  * @author Joel Bout, <joel@taotesting.com>
  * @package taoLti
  */
-class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface, \JsonSerializable
+class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface, \JsonSerializable, LtiUserInterface
 {
     use ServiceLocatorAwareTrait;
 
@@ -90,6 +91,11 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
         $this->ltiLaunchData = $launchData;
         $this->userUri = $userUri;
         $taoRoles = $this->determineTaoRoles($launchData);
+        if (empty($taoRoles)) {
+            $message = "Invalid LTI role parameter value: " . $this->ltiLaunchData->getVariable(LtiLaunchData::ROLES);
+            throw new LtiInvalidVariableException($message);
+        }
+
         $this->setRoles($taoRoles);
 
         $email = '';

@@ -34,6 +34,11 @@ class LtiException extends \common_Exception
     private $key;
 
     /**
+     * @var LtiLaunchData
+     */
+    protected $launchData = null;
+
+    /**
      * @return LtiErrorMessage
      */
     public function getLtiMessage()
@@ -44,6 +49,14 @@ class LtiException extends \common_Exception
             $this->ltiMessage = new LtiErrorMessage($message, $log);
         }
         return $this->ltiMessage;
+    }
+
+    public function setLaunchData(LtiLaunchData $data) {
+        $this->launchData = $data;
+    }
+
+    public function getLaunchData() {
+        return $this->launchData;
     }
 
     /**

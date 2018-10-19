@@ -52,7 +52,7 @@ class ExceptionInterpreter extends ExceptionInterpretor
      */
     public function getResponse()
     {
-        $response = new LtiReturnResponse;
+        $response = new LtiReturnResponse(new \Renderer());
         $response->setServiceLocator($this->getServiceLocator());
         $response->setException($this->exception);
 
