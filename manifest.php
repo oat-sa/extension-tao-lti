@@ -35,17 +35,17 @@ $taopath = dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'tao'.DIRECTORY_SEPARA
 return array(
 	'name' => 'taoLti',
 	'label' => 'LTI library',
-    'description' => 'TAO LTI library and helpers',
-    'license' => 'GPL-2.0',
-    'version' => '6.7.0',
+  'description' => 'TAO LTI library and helpers',
+  'license' => 'GPL-2.0',
+  'version' => '7.0.0',
 	'author' => 'Open Assessment Technologies SA',
 	'requires' => array(
-       'generis' => '>=5.9.0',
-	   'tao' => '>=14.21.0'
+     'generis' => '>=5.9.0',
+	   'tao' => '>=21.0.0'
 	),
-    'routes' => array(
-        '/taoLti' => 'oat\\taoLti\\controller'
-    ),
+  'routes' => array(
+      '/taoLti' => 'oat\\taoLti\\controller'
+  ),
 	'models' => array(
 	 	'http://www.tao.lu/Ontologies/TAOLTI.rdf',
 	 	'http://www.imsglobal.org/imspurl/lis/v1/vocab/person',

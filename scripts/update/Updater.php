@@ -174,5 +174,7 @@ class Updater extends \common_ext_ExtensionUpdater
             $this->getServiceManager()->register(LtiValidatorService::SERVICE_ID, $ltiValidatorService);
             $this->setVersion('6.7.0');
         }
+
+        $this->skip('6.7.0', '7.0.0');
     }
 }
