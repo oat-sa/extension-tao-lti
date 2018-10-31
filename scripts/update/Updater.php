@@ -35,6 +35,7 @@ use oat\taoLti\models\classes\LtiAuthAdapter;
 use oat\taoLti\models\classes\LtiException;
 use oat\taoLti\models\classes\ResourceLink\LinkService;
 use oat\taoLti\models\classes\ResourceLink\OntologyLink;
+use oat\taoLti\models\classes\user\LtiUserHelper;
 use oat\taoLti\models\classes\user\LtiUserService;
 use oat\taoLti\models\classes\user\OntologyLtiUserService;
 
@@ -176,5 +177,13 @@ class Updater extends \common_ext_ExtensionUpdater
         }
 
         $this->skip('6.7.0', '7.0.0');
+
+        if ($this->isVersion('7.0.0')) {
+            $ltiUserHelper = new LtiUserHelper([
+                LtiUserHelper::OPTION_LTI_USER_SERVICE => LtiUserService::SERVICE_ID
+            ]);
+            $this->getServiceManager()->register(LtiUserHelper::SERVICE_ID, $ltiUserHelper);
+            $this->setVersion('7.1.0');
+        }
     }
 }
