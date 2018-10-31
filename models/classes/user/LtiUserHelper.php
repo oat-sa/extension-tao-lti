@@ -49,7 +49,7 @@ class LtiUserHelper extends ConfigurableService
     }
 
     /**
-     * @return array|object
+     * @return LtiUserService
      * @throws InvalidService
      */
     private function getLtiUserService()
