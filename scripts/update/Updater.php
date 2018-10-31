@@ -176,14 +176,6 @@ class Updater extends \common_ext_ExtensionUpdater
             $this->setVersion('6.7.0');
         }
 
-        $this->skip('6.7.0', '7.0.0');
-
-        if ($this->isVersion('7.0.0')) {
-            $ltiUserHelper = new LtiUserHelper([
-                LtiUserHelper::OPTION_LTI_USER_SERVICE => LtiUserService::SERVICE_ID
-            ]);
-            $this->getServiceManager()->register(LtiUserHelper::SERVICE_ID, $ltiUserHelper);
-            $this->setVersion('7.1.0');
-        }
+        $this->skip('6.7.0', '7.1.0');
     }
 }
