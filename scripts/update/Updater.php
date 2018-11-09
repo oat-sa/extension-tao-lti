@@ -38,6 +38,7 @@ use oat\taoLti\models\classes\ResourceLink\OntologyLink;
 use oat\taoLti\models\classes\user\LtiUserHelper;
 use oat\taoLti\models\classes\user\LtiUserService;
 use oat\taoLti\models\classes\user\OntologyLtiUserService;
+use oat\taoLti\models\classes\user\UserService;
 
 /**
  *
@@ -177,5 +178,13 @@ class Updater extends \common_ext_ExtensionUpdater
         }
 
         $this->skip('6.7.0', '7.1.0');
+
+        if ($this->isVersion('7.1.0')) {
+            $userService = $this->getServiceManager()->get(\tao_models_classes_UserService::SERVICE_ID);
+            $config = $userService->getOptions();
+            $newLtiUserService = new UserService($config);
+            $this->getServiceManager()->register(\tao_models_classes_UserService::SERVICE_ID, $newLtiUserService);
+            $this->setVersion('7.2.0');
+        }
     }
 }
