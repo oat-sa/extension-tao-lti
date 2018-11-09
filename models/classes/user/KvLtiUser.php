@@ -14,7 +14,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2013 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
+ * Copyright (c) 2018 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
  *
  *
  */
@@ -23,13 +23,13 @@ namespace oat\taoLti\models\classes\user;
 
 use oat\generis\model\GenerisRdf;
 use oat\generis\model\OntologyRdfs;
-use oat\taoLti\models\classes\LtiInvalidVariableException;
-use oat\taoLti\models\classes\LtiLaunchData;
-use oat\taoLti\models\classes\LtiRoles;
-use oat\taoLti\models\classes\LtiUtils;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorAwareTrait;
 
+/**
+ * Class KvLtiUser
+ * @package oat\taoLti\models\classes\user
+ */
 class KvLtiUser extends \common_user_User implements ServiceLocatorAwareInterface, \JsonSerializable
 {
     use ServiceLocatorAwareTrait;
@@ -146,7 +146,9 @@ class KvLtiUser extends \common_user_User implements ServiceLocatorAwareInterfac
         // nothing to do
     }
 
-
+    /**
+     * @return array
+     */
     public function jsonSerialize()
     {
         return [
