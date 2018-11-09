@@ -36,6 +36,8 @@ abstract class LtiUserService extends ConfigurableService
 {
     const SERVICE_ID = 'taoLti/LtiUserService';
 
+    const OPTION_FACTORY_LTI_USER = 'factoryLtiUser';
+
     const PROPERTY_USER_LTICONSUMER = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#UserConsumer';
 
     const PROPERTY_USER_LTIKEY = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#UserKey';
@@ -70,6 +72,7 @@ abstract class LtiUserService extends ConfigurableService
      * @throws \core_kernel_users_CacheException
      * @throws \core_kernel_users_Exception
      * @throws \oat\taoLti\models\classes\LtiVariableMissingException
+     * @throws \Exception
      */
     public function findUser(LtiLaunchData $ltiContext)
     {
@@ -79,7 +82,7 @@ abstract class LtiUserService extends ConfigurableService
             return null;
         }
 
-        $ltiUser = new LtiUser($ltiContext, $taoUserId);
+        $ltiUser = $this->createLtiUser($ltiContext, $taoUserId);
 
         \common_Logger::t("LTI User '" . $ltiUser->getIdentifier() . "' found.");
 
@@ -93,7 +96,7 @@ abstract class LtiUserService extends ConfigurableService
      * @param LtiLaunchData $ltiContext
      * @return mixed
      */
-    abstract protected function updateUser(LtiUser $user, LtiLaunchData $ltiContext);
+    abstract protected function updateUser(LtiUserInterface $user, LtiLaunchData $ltiContext);
 
     /**
      * Find the tao user identifier related to a lti user id and a consumer
@@ -107,19 +110,20 @@ abstract class LtiUserService extends ConfigurableService
      * Creates a new LTI User with the absolute minimum of required informations
      *
      * @param LtiLaunchData $ltiContext
-     * @return LtiUser
+     * @return LtiUserInterface
      * @throws \common_Exception
      * @throws \common_exception_Error
      * @throws \core_kernel_users_CacheException
      * @throws \core_kernel_users_Exception
      * @throws \oat\taoLti\models\classes\LtiVariableMissingException
+     * @throws \Exception
      */
     public function spawnUser(LtiLaunchData $ltiContext)
     {
         //@TODO create LtiUser after create and save in db.
         $userId = $ltiContext->getUserID();
 
-        $ltiUser = new LtiUser($ltiContext, $userId);
+        $ltiUser = $this->createLtiUser($ltiContext, $userId);
 
         $this->updateUser($ltiUser, $ltiContext);
 
@@ -175,5 +179,33 @@ abstract class LtiUserService extends ConfigurableService
         return isset($userData[GenerisRdf::PROPERTY_USER_FIRSTNAME])
             ? $userData[GenerisRdf::PROPERTY_USER_FIRSTNAME]
             : '';
+    }
+
+    /**
+     * @param LtiLaunchData $ltiContext
+     * @param string $userId
+     * @return LtiUserInterface
+     * @throws \Exception
+     */
+    protected function createLtiUser(LtiLaunchData $ltiContext, $userId)
+    {
+        $ltiUserFactory = $this->getLtiUserFactory();
+
+        return $ltiUserFactory->create($ltiContext, $userId);
+    }
+
+    /**
+     * @return LtiUserFactoryInterface
+     * @throws \Exception
+     */
+    protected function getLtiUserFactory()
+    {
+        $ltiUserFactory = $this->getServiceLocator()->get($this->getOption(static::OPTION_FACTORY_LTI_USER));
+        if (!$ltiUserFactory instanceof LtiUserFactoryInterface) {
+            throw new \Exception('Lti Factory it is not a LtiUserFactoryInterface');
+        }
+
+        return $ltiUserFactory;
+
     }
 }

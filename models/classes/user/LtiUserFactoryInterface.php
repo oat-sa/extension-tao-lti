@@ -17,21 +17,17 @@
  * Copyright (c) 2018 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
  *
  */
+
 namespace oat\taoLti\models\classes\user;
 
 use oat\taoLti\models\classes\LtiLaunchData;
-use oat\oatbox\user\User;
 
-interface LtiUserInterface extends User
+interface LtiUserFactoryInterface
 {
     /**
-     * @return LtiLaunchData
-     */
-    public function getLaunchData();
-
-    /**
+     * @param LtiLaunchData $ltiContext
      * @param string $userId
-     * @return mixed
+     * @return LtiUserInterface
      */
-    public function setIdentifier($userId);
+    public function create(LtiLaunchData $ltiContext, $userId);
 }
