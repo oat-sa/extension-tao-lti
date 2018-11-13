@@ -188,7 +188,7 @@ class Updater extends \common_ext_ExtensionUpdater
             $ltiUserService->setOption(LtiUserService::OPTION_FACTORY_LTI_USER, LtiUserFactoryService::SERVICE_ID);
             $this->getServiceManager()->register(LtiUserService::SERVICE_ID, $ltiUserService);
 
-            $this->setVersion('7.2.0');
+            $this->setVersion('8.0.0');
         }
     }
 }
