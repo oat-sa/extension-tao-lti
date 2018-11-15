@@ -27,12 +27,18 @@ use oat\tao\model\mvc\error\ExceptionInterpreterService;
 use oat\tao\scripts\update\OntologyUpdater;
 use oat\taoLti\models\classes\CookieVerifyService;
 use oat\taoLti\models\classes\ExceptionInterpreter;
+use oat\taoLti\models\classes\FactoryLtiAuthAdapterService;
+use oat\taoLti\models\classes\FactoryLtiAuthAdapterServiceInterface;
+use oat\taoLti\models\classes\LaunchData\Validator\Lti11LaunchDataValidator;
+use oat\taoLti\models\classes\LaunchData\Validator\LtiValidatorService;
 use oat\taoLti\models\classes\LtiAuthAdapter;
 use oat\taoLti\models\classes\LtiException;
 use oat\taoLti\models\classes\ResourceLink\LinkService;
 use oat\taoLti\models\classes\ResourceLink\OntologyLink;
+use oat\taoLti\models\classes\user\LtiUserHelper;
 use oat\taoLti\models\classes\user\LtiUserService;
 use oat\taoLti\models\classes\user\OntologyLtiUserService;
+use oat\taoLti\models\classes\user\UserService;
 
 /**
  *
@@ -153,6 +159,32 @@ class Updater extends \common_ext_ExtensionUpdater
             $this->setVersion('6.4.0');
         }
 
-        $this->skip('6.4.0', '6.4.2');
+        $this->skip('6.4.0', '6.5.0');
+
+        if ($this->isVersion('6.5.0')) {
+            $factoryAuth = new FactoryLtiAuthAdapterService();
+
+            $this->getServiceManager()->register(FactoryLtiAuthAdapterServiceInterface::SERVICE_ID, $factoryAuth);
+
+            $this->setVersion('6.6.0');
+        }
+
+        if ($this->isVersion('6.6.0')) {
+            $ltiValidatorService = new LtiValidatorService([
+                LtiValidatorService::OPTION_LAUNCH_DATA_VALIDATOR => new Lti11LaunchDataValidator()
+            ]);
+            $this->getServiceManager()->register(LtiValidatorService::SERVICE_ID, $ltiValidatorService);
+            $this->setVersion('6.7.0');
+        }
+
+        $this->skip('6.7.0', '7.1.0');
+
+        if ($this->isVersion('7.1.0')) {
+            $userService = $this->getServiceManager()->get(\tao_models_classes_UserService::SERVICE_ID);
+            $config = $userService->getOptions();
+            $newLtiUserService = new UserService($config);
+            $this->getServiceManager()->register(\tao_models_classes_UserService::SERVICE_ID, $newLtiUserService);
+            $this->setVersion('7.2.0');
+        }
     }
 }

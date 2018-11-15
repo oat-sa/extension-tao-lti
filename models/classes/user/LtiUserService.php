@@ -21,6 +21,7 @@
 
 namespace oat\taoLti\models\classes\user;
 
+use oat\generis\model\GenerisRdf;
 use oat\oatbox\service\ConfigurableService;
 use oat\taoLti\models\classes\LtiLaunchData;
 
@@ -139,4 +140,40 @@ abstract class LtiUserService extends ConfigurableService
      * ]
      */
     abstract public function getUserDataFromId($taoUserId);
+
+    /**
+     * @param array $userData
+     * @return string
+     */
+    public function getUserName(array $userData)
+    {
+        $firstName = $this->getFirstName($userData);
+        $lastName = $this->getLastName($userData);
+
+        $userName = trim($firstName . ' ' . $lastName);
+
+        return $userName;
+    }
+
+    /**
+     * @param array $userData
+     * @return mixed|string
+     */
+    public function getLastName(array $userData)
+    {
+        return isset($userData[GenerisRdf::PROPERTY_USER_LASTNAME])
+            ? $userData[GenerisRdf::PROPERTY_USER_LASTNAME]
+            : '';
+    }
+
+    /**
+     * @param array $userData
+     * @return string
+     */
+    public function getFirstName(array $userData)
+    {
+        return isset($userData[GenerisRdf::PROPERTY_USER_FIRSTNAME])
+            ? $userData[GenerisRdf::PROPERTY_USER_FIRSTNAME]
+            : '';
+    }
 }
