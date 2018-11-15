@@ -186,5 +186,7 @@ class Updater extends \common_ext_ExtensionUpdater
             $this->getServiceManager()->register(\tao_models_classes_UserService::SERVICE_ID, $newLtiUserService);
             $this->setVersion('7.2.0');
         }
+
+        $this->skip('7.2.0', '7.3.0');
     }
 }
