@@ -37,7 +37,7 @@ class UserService extends \tao_models_classes_UserService
     public function getUserById($userId)
     {
         $user = parent::getUserById($userId);
-        if (!$user) {
+        if (!$user || !$this->getResource($user->getIdentifier())->exists()) {
             /** @var LtiUserService $ltiUserService */
             $ltiUserService = $this->getServiceLocator()->get(LtiUserService::SERVICE_ID);
             $userData = $ltiUserService->getUserDataFromId($userId);
