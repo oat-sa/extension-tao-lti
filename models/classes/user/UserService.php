@@ -41,7 +41,9 @@ class UserService extends \tao_models_classes_UserService
             /** @var LtiUserService $ltiUserService */
             $ltiUserService = $this->getServiceLocator()->get(LtiUserService::SERVICE_ID);
             $userData = $ltiUserService->getUserDataFromId($userId);
-            $user = new KvLtiUser($userData);
+            if ($userData) {
+                $user = new KvLtiUser($userData);
+            }
         }
         return $user;
     }
