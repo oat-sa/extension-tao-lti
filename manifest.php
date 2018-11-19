@@ -40,7 +40,7 @@ return array(
     'version' => '7.3.0',
     'author' => 'Open Assessment Technologies SA',
     'requires' => array(
-        'generis' => '>=5.9.0',
+        'generis' => '>=8.0.0',
         'tao' => '>=21.10.0'
     ),
     'routes' => array(
