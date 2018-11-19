@@ -184,6 +184,19 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
         return $returnValue;
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \common_user_User::getPropertiesValues()
+     */
+    public function getPropertiesValues($properties)
+    {
+        $returnValues = [];
+        foreach ($properties as $property) {
+            $returnValues[$property] = $this->getPropertyValues($property);
+        }
+        return $returnValues;
+    }
+
 
     /**
      * (non-PHPdoc)
