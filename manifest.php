@@ -33,25 +33,25 @@ $extpath = dirname(__FILE__).DIRECTORY_SEPARATOR;
 $taopath = dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'tao'.DIRECTORY_SEPARATOR;
 
 return array(
-	'name' => 'taoLti',
-	'label' => 'LTI library',
+    'name' => 'taoLti',
+    'label' => 'LTI library',
     'description' => 'TAO LTI library and helpers',
     'license' => 'GPL-2.0',
     'version' => '8.0.0',
-	'author' => 'Open Assessment Technologies SA',
-	'requires' => array(
+	  'author' => 'Open Assessment Technologies SA',
+	  'requires' => array(
         'generis' => '>=5.9.0',
-        'tao' => '>=21.0.0'
-	),
+        'tao' => '>=21.10.0'
+    ),
     'routes' => array(
         '/taoLti' => 'oat\\taoLti\\controller'
     ),
-	'models' => array(
-	 	'http://www.tao.lu/Ontologies/TAOLTI.rdf',
-	 	'http://www.imsglobal.org/imspurl/lis/v1/vocab/person',
-	 	'http://www.imsglobal.org/imspurl/lis/v1/vocab/membership'
-	 ),
-	'install' => array(
+    'models' => array(
+        'http://www.tao.lu/Ontologies/TAOLTI.rdf',
+        'http://www.imsglobal.org/imspurl/lis/v1/vocab/person',
+        'http://www.imsglobal.org/imspurl/lis/v1/vocab/membership'
+     ),
+    'install' => array(
         'rdf' => array(
             $extpath . 'install/ontology/lti.rdf',
             $extpath . 'install/ontology/roledefinition.rdf',
@@ -61,27 +61,27 @@ return array(
         'php' => [
             InstallServices::class
         ]
-	),
-	'update' => Updater::class,
+    ),
+    'update' => Updater::class,
     'managementRole' => 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiManagerRole',
     'acl' => array(
         array('grant', 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiManagerRole', array('ext'=>'taoLti')),
         array('grant', TaoRoles::ANONYMOUS, CookieUtils::class),
         array('grant', 'http://www.tao.lu/Ontologies/TAO.rdf#BaseUserRole', array('ext'=>'taoLti','mod' => 'LtiConsumer', 'act' => 'call'))
     ),
-	'constants' => array(
-		# controller directory
-		"DIR_ACTIONS"			=> $extpath."controller".DIRECTORY_SEPARATOR,
+    'constants' => array(
+        # controller directory
+        "DIR_ACTIONS"			=> $extpath."controller".DIRECTORY_SEPARATOR,
 
-		# views directory
-		"DIR_VIEWS"				=> $extpath."views".DIRECTORY_SEPARATOR,
+        # views directory
+        "DIR_VIEWS"				=> $extpath."views".DIRECTORY_SEPARATOR,
 
-		#BASE PATH: the root path in the file system (usually the document root)
-		'BASE_PATH'				=> $extpath ,
+        #BASE PATH: the root path in the file system (usually the document root)
+        'BASE_PATH'				=> $extpath ,
 
-		#BASE URL (usually the domain root)
-		'BASE_URL'				=> ROOT_URL . 'taoLti/',
-	),
+        #BASE URL (usually the domain root)
+        'BASE_URL'				=> ROOT_URL . 'taoLti/',
+    ),
     'extra' => array(
         'structures' => $extpath . 'controller' . DIRECTORY_SEPARATOR . 'structures.xml',
     )

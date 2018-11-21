@@ -26,6 +26,7 @@ use oat\oatbox\extension\AbstractAction;
 use oat\tao\model\mvc\error\ExceptionInterpreterService;
 use oat\taoLti\models\classes\ExceptionInterpreter;
 use oat\taoLti\models\classes\LtiException;
+use oat\taoLti\models\classes\user\UserService;
 
 /**
  * @package oat\taoLti\scripts\install
@@ -46,6 +47,11 @@ class InstallServices extends AbstractAction
         $interpreters[LtiException::class] = ExceptionInterpreter::class;
         $exceptionInterpreterService->setOption(ExceptionInterpreterService::OPTION_INTERPRETERS, $interpreters);
         $this->getServiceManager()->register(ExceptionInterpreterService::SERVICE_ID, $exceptionInterpreterService);
+
+        $userService = $this->getServiceManager()->get(\tao_models_classes_UserService::SERVICE_ID);
+        $config = $userService->getOptions();
+        $newLtiUserService = new UserService($config);
+        $this->getServiceManager()->register(\tao_models_classes_UserService::SERVICE_ID, $newLtiUserService);
 
         return common_report_Report::createSuccess('Successfully installed');
     }
