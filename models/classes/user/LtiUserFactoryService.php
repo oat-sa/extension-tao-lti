@@ -19,19 +19,21 @@
  */
 namespace oat\taoLti\models\classes\user;
 
+use oat\oatbox\service\ConfigurableService;
 use oat\taoLti\models\classes\LtiLaunchData;
-use oat\oatbox\user\User;
 
-interface LtiUserInterface extends User
+class LtiUserFactoryService extends ConfigurableService implements LtiUserFactoryInterface
 {
-    /**
-     * @return LtiLaunchData
-     */
-    public function getLaunchData();
+    const SERVICE_ID = 'taoLti/LtiUserFactory';
 
     /**
+     * @param LtiLaunchData $ltiContext
      * @param string $userId
-     * @return mixed
+     * @return LtiUserInterface
+     * @throws \Exception
      */
-    public function setIdentifier($userId);
+    public function create(LtiLaunchData $ltiContext, $userId)
+    {
+        return new LtiUser($ltiContext, $userId);
+    }
 }

@@ -17,21 +17,21 @@
  * Copyright (c) 2018 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
  *
  */
-namespace oat\taoLti\models\classes\user;
 
+namespace oat\taoLti\test\models\classes\user;
+
+use oat\generis\test\TestCase;
 use oat\taoLti\models\classes\LtiLaunchData;
-use oat\oatbox\user\User;
+use oat\taoLti\models\classes\user\LtiUserFactoryService;
+use oat\taoLti\models\classes\user\LtiUserInterface;
 
-interface LtiUserInterface extends User
+class LtiUserFactoryServiceTest extends TestCase
 {
-    /**
-     * @return LtiLaunchData
-     */
-    public function getLaunchData();
+    public function testCreate()
+    {
+        $ltiUserFactory = new LtiUserFactoryService();
+        $launchData = $this->getMockBuilder(LtiLaunchData::class)->disableOriginalConstructor()->getMock();
 
-    /**
-     * @param string $userId
-     * @return mixed
-     */
-    public function setIdentifier($userId);
+        $this->assertInstanceOf(LtiUserInterface::class, $ltiUserFactory->create($launchData, '123'));
+    }
 }

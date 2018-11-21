@@ -35,6 +35,7 @@ use oat\taoLti\models\classes\LtiAuthAdapter;
 use oat\taoLti\models\classes\LtiException;
 use oat\taoLti\models\classes\ResourceLink\LinkService;
 use oat\taoLti\models\classes\ResourceLink\OntologyLink;
+use oat\taoLti\models\classes\user\LtiUserFactoryService;
 use oat\taoLti\models\classes\user\LtiUserHelper;
 use oat\taoLti\models\classes\user\LtiUserService;
 use oat\taoLti\models\classes\user\OntologyLtiUserService;
@@ -180,6 +181,7 @@ class Updater extends \common_ext_ExtensionUpdater
         $this->skip('6.7.0', '7.1.0');
 
         if ($this->isVersion('7.1.0')) {
+
             $userService = $this->getServiceManager()->get(\tao_models_classes_UserService::SERVICE_ID);
             $config = $userService->getOptions();
             $newLtiUserService = new UserService($config);
@@ -188,5 +190,17 @@ class Updater extends \common_ext_ExtensionUpdater
         }
 
         $this->skip('7.2.0', '7.3.1');
+      
+        if ($this->isVersion('7.3.1')) {
+            $ltiUserFactory = new LtiUserFactoryService();
+            $this->getServiceManager()->register(LtiUserFactoryService::SERVICE_ID, $ltiUserFactory);
+
+            /** @var LtiUserService $ltiUserService */
+            $ltiUserService = $this->getServiceManager()->get(LtiUserService::SERVICE_ID);
+            $ltiUserService->setOption(LtiUserService::OPTION_FACTORY_LTI_USER, LtiUserFactoryService::SERVICE_ID);
+            $this->getServiceManager()->register(LtiUserService::SERVICE_ID, $ltiUserService);
+
+            $this->setVersion('8.0.0');
+        }
     }
 }

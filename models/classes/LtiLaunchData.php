@@ -27,7 +27,7 @@ use core_kernel_classes_Resource;
 use tao_helpers_Request;
 use tao_models_classes_oauth_DataStore;
 
-class LtiLaunchData
+class LtiLaunchData implements \JsonSerializable
 {
     const OAUTH_CONSUMER_KEY  = 'oauth_consumer_key';
     const RESOURCE_LINK_ID    = 'resource_link_id';
@@ -76,7 +76,7 @@ class LtiLaunchData
      * @param array $ltiVariables
      * @param array $customParameters
      */
-    private function __construct($ltiVariables, $customParameters)
+    public function __construct($ltiVariables, $customParameters)
     {
         $this->variables = $ltiVariables;
         $this->customParams = $customParameters;
@@ -338,5 +338,20 @@ class LtiLaunchData
     public function getReturnUrl()
     {
         return $this->getVariable(self::LAUNCH_PRESENTATION_RETURN_URL);
+    }
+
+    /**
+     * Specify data which should be serialized to JSON
+     * @link https://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     * @since 5.4.0
+     */
+    public function jsonSerialize()
+    {
+        return [
+              'variables' => $this->variables,
+              'customParams' => $this->customParams,
+        ];
     }
 }

@@ -130,7 +130,7 @@ class OntologyLtiUserService extends LtiUserService
      * @throws \common_exception_InvalidArgumentType
      * @throws LtiVariableMissingException
      */
-    protected function updateUser(LtiUser $user, LtiLaunchData $ltiContext)
+    protected function updateUser(LtiUserInterface $user, LtiLaunchData $ltiContext)
     {
         $userResource = new \core_kernel_classes_Resource($user->getIdentifier());
 
@@ -152,6 +152,7 @@ class OntologyLtiUserService extends LtiUserService
             }
         } else {
             $class = new \core_kernel_classes_Class(self::CLASS_LTI_USER);
+
 
             $props = array(
                 self::PROPERTY_USER_LTIKEY => $ltiContext->getUserID(),
