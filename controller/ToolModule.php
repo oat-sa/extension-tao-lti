@@ -25,10 +25,12 @@ use common_Exception;
 use common_exception_Error;
 use common_exception_IsAjaxAction;
 use common_http_Request;
+use tao_helpers_Request;
 use common_Logger;
 use common_user_auth_AuthFailedException;
 use InterruptedActionException;
 use oat\taoLti\models\classes\CookieVerifyService;
+use oat\taoLti\models\classes\LaunchData\Validator\LtiValidatorService;
 use oat\taoLti\models\classes\LtiException;
 use oat\taoLti\models\classes\LtiLaunchData;
 use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
@@ -47,33 +49,37 @@ abstract class ToolModule extends LtiModule
     /**
      * Entrypoint of every tool
      *
-     * @throws InterruptedActionException
      * @throws LtiException
      * @throws ResolverException
-     * @throws \oat\taoLti\models\classes\LtiVariableMissingException
      * @throws common_Exception
      * @throws common_exception_Error
-     * @throws common_exception_IsAjaxAction
      */
     public function launch()
     {
         try {
-            LtiService::singleton()->startLtiSession(common_http_Request::currentRequest());
+            $request = common_http_Request::currentRequest();
+            $ltiLaunchData = LtiLaunchData::fromRequest($request);
+            /** @var LtiValidatorService $validator */
+            $validator = $this->getServiceLocator()->get(LtiValidatorService::SERVICE_ID);
+            $validator->validateLaunchData($ltiLaunchData);
+
+            LtiService::singleton()->startLtiSession($request);
+
+
             /** @var CookieVerifyService $cookieService */
             $cookieService = $this->getServiceManager()->get(CookieVerifyService::SERVICE_ID);
             if ($cookieService->isVerifyCookieRequired()) {
                 if (tao_models_classes_accessControl_AclProxy::hasAccess('verifyCookie', 'CookieUtils', 'taoLti')) {
-                    $this->redirect(
-                        _url(
-                            'verifyCookie',
-                            'CookieUtils',
-                            'taoLti',
-                            [
-                                'session'  => session_id(),
-                                'redirect' => _url('run', null, null, $_GET)
-                            ]
-                        )
+                    $cookieRedirect = _url(
+                        'verifyCookie',
+                        'CookieUtils',
+                        'taoLti',
+                        [
+                            'session' => session_id(),
+                            'redirect' => urlencode(_url('run', null, null, $_GET)),
+                        ]
                     );
+                    $this->redirect($cookieRedirect);
                 } else {
                     throw new LtiException(
                         __('You are not authorized to use this system'),
@@ -90,34 +96,12 @@ abstract class ToolModule extends LtiModule
                 LtiErrorMessage::ERROR_UNAUTHORIZED
             );
         } catch (LtiException $e) {
-            // In regard of the IMS LTI standard, we have to show a back button that refer to the
-            // launch_presentation_return_url url param. So we have to retrieve this parameter before trying to start
-            // the session
-            $params = common_http_Request::currentRequest()->getParams();
-            if (isset($params[LtiLaunchData::TOOL_CONSUMER_INSTANCE_NAME])) {
-                $this->setData(
-                    'consumerLabel',
-                    $params[LtiLaunchData::TOOL_CONSUMER_INSTANCE_NAME]
-                );
-            } elseif (isset($params[LtiLaunchData::TOOL_CONSUMER_INSTANCE_DESCRIPTION])) {
-                $this->setData(
-                    'consumerLabel',
-                    $params[LtiLaunchData::TOOL_CONSUMER_INSTANCE_DESCRIPTION]
-                );
-            }
+            common_Logger::i($e->__toString());
 
-            if (isset($params[LtiLaunchData::LAUNCH_PRESENTATION_RETURN_URL])) {
-                $returnUrl = $params[LtiLaunchData::LAUNCH_PRESENTATION_RETURN_URL];
-                $serverName = $_SERVER['SERVER_NAME'];
-                $pieces = parse_url($returnUrl);
-                $domain = isset($pieces['host']) ? $pieces['host'] : '';
-                if ($serverName == $domain) {
-                    $this->setData('returnUrl', $returnUrl);
-                }
+            if (tao_helpers_Request::isAjax()) {
+                throw new common_exception_IsAjaxAction(__CLASS__ . '::' . __FUNCTION__);
             }
-
-            common_Logger::i($e->getMessage());
-            $this->returnLtiError($e, false);
+            throw $e;
         } catch (tao_models_classes_oauth_Exception $e) {
             common_Logger::i($e->getMessage());
             throw new LtiException(

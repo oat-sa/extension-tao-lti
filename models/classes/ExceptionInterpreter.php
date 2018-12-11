@@ -57,7 +57,7 @@ class ExceptionInterpreter extends ExceptionInterpretor
     {
         $this->log((string) $this->exception);
 
-        $response = new LtiReturnResponse;
+        $response = new LtiReturnResponse(new \Renderer());
         $response->setServiceLocator($this->getServiceLocator());
         $response->setException($this->exception);
 
@@ -73,5 +73,5 @@ class ExceptionInterpreter extends ExceptionInterpretor
 
         $fs->put('lti_'. $this->exception->getKey() .'.log', $msg);
     }
-    
+
 }

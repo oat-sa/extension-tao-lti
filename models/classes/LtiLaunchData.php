@@ -27,7 +27,7 @@ use core_kernel_classes_Resource;
 use tao_helpers_Request;
 use tao_models_classes_oauth_DataStore;
 
-class LtiLaunchData
+class LtiLaunchData implements \JsonSerializable
 {
     const OAUTH_CONSUMER_KEY  = 'oauth_consumer_key';
     const RESOURCE_LINK_ID    = 'resource_link_id';
@@ -47,6 +47,9 @@ class LtiLaunchData
 
     const TOOL_CONSUMER_INSTANCE_NAME        = 'tool_consumer_instance_name';
     const TOOL_CONSUMER_INSTANCE_DESCRIPTION = 'tool_consumer_instance_description';
+
+    const LTI_VERSION = 'lti_version';
+    const LTI_MESSAGE_TYPE = 'lti_message_type';
 
     /**
      * LTI variables
@@ -73,7 +76,7 @@ class LtiLaunchData
      * @param array $ltiVariables
      * @param array $customParameters
      */
-    private function __construct($ltiVariables, $customParameters)
+    public function __construct($ltiVariables, $customParameters)
     {
         $this->variables = $ltiVariables;
         $this->customParams = $customParameters;
@@ -89,7 +92,7 @@ class LtiLaunchData
     {
         $extra = self::getParametersFromUrl($request->getUrl());
 
-        return new self($request->getParams(), $extra);
+        return new static($request->getParams(), $extra);
     }
 
     /**
@@ -210,20 +213,22 @@ class LtiLaunchData
 
     /**
      * @return mixed
-     * @throws LtiVariableMissingException
      */
     public function getUserGivenName()
     {
-        return $this->getVariable(self::LIS_PERSON_NAME_GIVEN);
+        if ($this->hasVariable(static::LIS_PERSON_NAME_GIVEN)) {
+            return $this->getVariable(static::LIS_PERSON_NAME_GIVEN);
+        }
     }
 
     /**
      * @return mixed
-     * @throws LtiVariableMissingException
      */
     public function getUserFamilyName()
     {
-        return $this->getVariable(self::LIS_PERSON_NAME_FAMILY);
+        if ($this->hasVariable(static::LIS_PERSON_NAME_FAMILY)) {
+            return $this->getVariable(static::LIS_PERSON_NAME_FAMILY);
+        }
     }
 
     /**
@@ -333,5 +338,20 @@ class LtiLaunchData
     public function getReturnUrl()
     {
         return $this->getVariable(self::LAUNCH_PRESENTATION_RETURN_URL);
+    }
+
+    /**
+     * Specify data which should be serialized to JSON
+     * @link https://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     * @since 5.4.0
+     */
+    public function jsonSerialize()
+    {
+        return [
+              'variables' => $this->variables,
+              'customParams' => $this->customParams,
+        ];
     }
 }

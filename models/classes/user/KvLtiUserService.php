@@ -65,7 +65,7 @@ class KvLtiUserService extends LtiUserService
      * @throws \common_Exception
      * @throws \oat\taoLti\models\classes\LtiVariableMissingException
      */
-    protected function updateUser(LtiUser $user, LtiLaunchData $ltiContext)
+    protected function updateUser(LtiUserInterface $user, LtiLaunchData $ltiContext)
     {
         $technicalId = self::LTI_USER . $ltiContext->getUserID() . $ltiContext->getLtiConsumer()->getUri();
 

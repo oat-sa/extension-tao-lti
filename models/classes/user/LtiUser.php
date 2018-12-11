@@ -23,6 +23,7 @@ namespace oat\taoLti\models\classes\user;
 
 use oat\generis\model\GenerisRdf;
 use oat\generis\model\OntologyRdfs;
+use oat\taoLti\models\classes\LtiInvalidVariableException;
 use oat\taoLti\models\classes\LtiLaunchData;
 use oat\taoLti\models\classes\LtiRoles;
 use oat\taoLti\models\classes\LtiUtils;
@@ -37,7 +38,7 @@ use Zend\ServiceManager\ServiceLocatorAwareTrait;
  * @author Joel Bout, <joel@taotesting.com>
  * @package taoLti
  */
-class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface, \JsonSerializable
+class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface, \JsonSerializable, LtiUserInterface
 {
     use ServiceLocatorAwareTrait;
 
@@ -83,21 +84,21 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
      * @param $userUri
      * @throws \common_Exception
      * @throws \common_exception_Error
-     * @throws \core_kernel_users_CacheException
-     * @throws \core_kernel_users_Exception
+     * @throws \oat\taoLti\models\classes\LtiVariableMissingException
      */
     public function __construct($launchData, $userUri)
     {
         $this->ltiLaunchData = $launchData;
         $this->userUri = $userUri;
         $taoRoles = $this->determineTaoRoles($launchData);
+        if (empty($taoRoles)) {
+            $message = "Invalid LTI role parameter value: " . $this->ltiLaunchData->getVariable(LtiLaunchData::ROLES);
+            throw new LtiInvalidVariableException($message);
+        }
+
         $this->setRoles($taoRoles);
 
-
-        $firstname = '';
-        $lastname = '';
         $email = '';
-        $label = '';
 
         if ($launchData->hasLaunchLanguage()) {
             $launchLanguage = $launchData->getLaunchLanguage();
@@ -106,18 +107,12 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
             $language = DEFAULT_LANG;
         }
 
-        if ($launchData->hasVariable(LtiLaunchData::LIS_PERSON_NAME_FULL)) {
-            $label = $launchData->getUserFullName();
-        }
+        $label = $launchData->getUserFullName();
+        $firstname = $launchData->getUserGivenName();
+        $lastname = $launchData->getUserFamilyName();
 
-        if ($launchData->hasVariable(LtiLaunchData::LIS_PERSON_NAME_GIVEN)) {
-            $firstname = $launchData->getUserGivenName();
-        }
-        if ($launchData->hasVariable(LtiLaunchData::LIS_PERSON_NAME_FAMILY)) {
-            $lastname = $launchData->getUserFamilyName();
-        }
         if ($launchData->hasVariable(LtiLaunchData::LIS_PERSON_CONTACT_EMAIL_PRIMARY)) {
-            $email = $launchData->getUserEmail();;
+            $email = $launchData->getUserEmail();
         }
 
         $this->language = $language;
