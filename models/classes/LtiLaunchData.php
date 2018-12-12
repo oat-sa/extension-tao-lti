@@ -321,11 +321,17 @@ class LtiLaunchData implements \JsonSerializable
     public function hasReturnUrl()
     {
         if ($this->hasVariable(self::LAUNCH_PRESENTATION_RETURN_URL)) {
-            if (filter_var($this->getReturnUrl(), FILTER_VALIDATE_URL)) {
-                return true;
+            $returnUrl = $this->getReturnUrl();
+
+            if (!empty($returnUrl)) {
+                if (filter_var($returnUrl, FILTER_VALIDATE_URL)) {
+                    return true;
+                } else {
+                    common_Logger::w("Invalid LTI Return URL '${$returnUrl}'.");
+                }
             }
-            common_Logger::w("Please provide a valid url. " . $this->getReturnUrl() . " is not valid");
         }
+
         return false;
     }
 
