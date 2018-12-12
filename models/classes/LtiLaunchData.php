@@ -330,7 +330,7 @@ class LtiLaunchData implements \JsonSerializable
                 if (filter_var($returnUrl, FILTER_VALIDATE_URL)) {
                     return true;
                 } else {
-                    $this->logWarning("Invalid LTI Return URL '${$returnUrl}'.");
+                    $this->logWarning("Invalid LTI Return URL '${returnUrl}'.");
                 }
             }
         }
