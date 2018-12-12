@@ -30,7 +30,7 @@ class LaunchDataTest extends TestCase
         $logger = $this->prophesize(LoggerInterface::class);
         $emptyLaunch = new LtiLaunchData([LtiLaunchData::LAUNCH_PRESENTATION_RETURN_URL => 'notAurl'], []);
         $emptyLaunch->setLogger($logger->reveal());
-        $emptyLaunch->hasReturnUrl();
+        $this->assertFalse($emptyLaunch->hasReturnUrl());
         $logger->warning("Invalid LTI Return URL 'notAurl'.", Argument::any())->shouldHaveBeenCalled();
     }
 
@@ -39,7 +39,7 @@ class LaunchDataTest extends TestCase
         $logger = $this->prophesize(LoggerInterface::class);
         $emptyLaunch = new LtiLaunchData([], []);
         $emptyLaunch->setLogger($logger->reveal());
-        $emptyLaunch->hasReturnUrl();
+        $this->assertFalse($emptyLaunch->hasReturnUrl());
         $logger->warning(Argument::any(), Argument::any())->shouldNotHaveBeenCalled();
     }
 
@@ -48,7 +48,7 @@ class LaunchDataTest extends TestCase
         $logger = $this->prophesize(LoggerInterface::class);
         $emptyLaunch = new LtiLaunchData([LtiLaunchData::LAUNCH_PRESENTATION_RETURN_URL => 'http://valid.url.com'], []);
         $emptyLaunch->setLogger($logger->reveal());
-        $emptyLaunch->hasReturnUrl();
+        $this->assertTrue($emptyLaunch->hasReturnUrl());
         $logger->warning(Argument::any(), Argument::any())->shouldNotHaveBeenCalled();
     }
 }
