@@ -24,8 +24,6 @@ use oat\generis\model\GenerisRdf;
 use oat\generis\model\OntologyAwareTrait;
 use oat\generis\model\OntologyRdfs;
 use oat\oatbox\extension\script\ScriptAction;
-use oat\oatbox\log\LoggerAggregator;
-use oat\oatbox\log\VerboseLoggerFactory;
 use oat\taoLti\models\classes\ResourceLink\LinkService;
 use oat\taoLti\models\classes\user\KvLtiUserService;
 use oat\taoLti\models\classes\user\LtiUser;
@@ -61,9 +59,13 @@ class OntologyLtiUserToKvMigration extends ScriptAction
                 return new \common_report_Report(\common_report_Report::TYPE_ERROR, ' LtiUserService migration must be done on a Ontology Service e.q. OntologyLtiUserService.');
             }
 
-            $kvService = new KvLtiUserService(array(
-                KvLtiUserService::OPTION_PERSISTENCE => $this->getKeyValuePersistenceName()
-            ));
+            $kvService = new KvLtiUserService(
+                array_merge(
+                    [
+                        KvLtiUserService::OPTION_PERSISTENCE => $this->getKeyValuePersistenceName(),
+                    ], $ontologyLinkService->getOptions()
+                ));
+
             if ($this->getOption('no-migrate-service') !== true) {
                 $this->registerService(LtiUserService::SERVICE_ID, $kvService);
                 $this->logNotice('LtiUser service was set to KeyValue implementation.');

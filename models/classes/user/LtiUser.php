@@ -23,6 +23,7 @@ namespace oat\taoLti\models\classes\user;
 
 use oat\generis\model\GenerisRdf;
 use oat\generis\model\OntologyRdfs;
+use oat\generis\model\user\UserRdf;
 use oat\taoLti\models\classes\LtiInvalidVariableException;
 use oat\taoLti\models\classes\LtiLaunchData;
 use oat\taoLti\models\classes\LtiRoles;
@@ -79,6 +80,8 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
      */
     protected $uiLanguage;
 
+    private $login;
+
     /**
      * @param LtiLaunchData $launchData
      * @param $userUri
@@ -120,6 +123,7 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
         $this->lastname = $lastname;
         $this->email = $email;
         $this->label = $label;
+        $this->login = $launchData->getUserID();
     }
 
     public function setRoles($roles)
@@ -177,6 +181,9 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
             case  OntologyRdfs::RDFS_LABEL :
                 $returnValue = [$this->label];
                 break;
+            case  UserRdf::PROPERTY_LOGIN:
+                $returnValue = [$this->login];
+                break;
             default:
                 \common_Logger::d('Unkown property ' . $property . ' requested from ' . __CLASS__);
                 $returnValue = array();
@@ -204,6 +211,7 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
             GenerisRdf::PROPERTY_USER_FIRSTNAME => $this->firstname,
             GenerisRdf::PROPERTY_USER_LASTNAME => $this->lastname,
             GenerisRdf::PROPERTY_USER_MAIL => $this->email,
+            GenerisRdf::PROPERTY_USER_LOGIN => $this->login,
             OntologyRdfs::RDFS_LABEL => $this->label,
         ];
     }

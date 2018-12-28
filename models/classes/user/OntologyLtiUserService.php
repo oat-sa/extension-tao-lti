@@ -23,6 +23,7 @@ namespace oat\taoLti\models\classes\user;
 
 use oat\generis\model\GenerisRdf;
 use oat\generis\model\OntologyRdfs;
+use oat\generis\model\user\UserRdf;
 use oat\taoLti\models\classes\LtiException;
 use oat\taoLti\models\classes\LtiLaunchData;
 use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
@@ -55,7 +56,6 @@ class OntologyLtiUserService extends LtiUserService
      * @throws \Doctrine\DBAL\ConnectionException
      * @throws \common_Exception
      * @throws \common_exception_Error
-     * @throws \common_exception_InconsistentData
      * @throws \core_kernel_users_CacheException
      * @throws \core_kernel_users_Exception
      * @throws LtiVariableMissingException
@@ -135,14 +135,7 @@ class OntologyLtiUserService extends LtiUserService
         $userResource = new \core_kernel_classes_Resource($user->getIdentifier());
 
         if($userResource->exists()){
-
-            $properties = $userResource->getPropertiesValues([
-                GenerisRdf::PROPERTY_USER_UILG,
-                GenerisRdf::PROPERTY_USER_FIRSTNAME,
-                GenerisRdf::PROPERTY_USER_LASTNAME,
-                GenerisRdf::PROPERTY_USER_MAIL,
-                GenerisRdf::PROPERTY_USER_ROLES,
-            ]);
+            $properties = $userResource->getPropertiesValues($this->getAvailableProperties());
 
             foreach ($properties as $key => $values){
                 if ($values != $user->getPropertyValues($key)){
@@ -163,6 +156,7 @@ class OntologyLtiUserService extends LtiUserService
                 GenerisRdf::PROPERTY_USER_LASTNAME => $user->getPropertyValues(GenerisRdf::PROPERTY_USER_LASTNAME),
                 GenerisRdf::PROPERTY_USER_MAIL => $user->getPropertyValues(GenerisRdf::PROPERTY_USER_MAIL),
                 GenerisRdf::PROPERTY_USER_ROLES => $user->getPropertyValues(GenerisRdf::PROPERTY_USER_ROLES),
+                UserRdf::PROPERTY_LOGIN => $ltiContext->getUserID(),
             );
 
             $userResource = $class->createInstanceWithProperties($props);
@@ -216,14 +210,7 @@ class OntologyLtiUserService extends LtiUserService
     {
         $user = new \core_kernel_classes_Resource($taoUserId);
         if($user->exists()){
-            $properties = $user->getPropertiesValues([
-                GenerisRdf::PROPERTY_USER_UILG,
-                OntologyRdfs::RDFS_LABEL,
-                GenerisRdf::PROPERTY_USER_FIRSTNAME,
-                GenerisRdf::PROPERTY_USER_LASTNAME,
-                GenerisRdf::PROPERTY_USER_MAIL,
-                GenerisRdf::PROPERTY_USER_ROLES
-            ]);
+            $properties = $user->getPropertiesValues(array_merge($this->getAvailableProperties(), [OntologyRdfs::RDFS_LABEL,]));
 
             $userData = [];
             foreach ($properties as $key => $values){
@@ -241,5 +228,20 @@ class OntologyLtiUserService extends LtiUserService
         }
 
         return null;
+    }
+
+    /**
+     * @return array
+     */
+    private function getAvailableProperties()
+    {
+        return [
+            UserRdf::PROPERTY_UILG,
+            UserRdf::PROPERTY_FIRSTNAME,
+            UserRdf::PROPERTY_LASTNAME,
+            UserRdf::PROPERTY_MAIL,
+            UserRdf::PROPERTY_ROLES,
+            UserRdf::PROPERTY_LOGIN
+        ];
     }
 }
