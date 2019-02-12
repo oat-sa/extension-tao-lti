@@ -94,13 +94,7 @@ class LtiReturnResponse extends ResponseAbstract
      * @return bool
      */
     protected function requiresRedirect() {
-        if ($this->exception instanceof LtiInvalidLaunchDataException
-            || $this->exception instanceof LtiVariableMissingException
-        ) {
-            return true;
-        }
-
-        return false;
+        return $this->exception instanceof LtiException;
     }
 
     /**
@@ -205,9 +199,9 @@ class LtiReturnResponse extends ResponseAbstract
 
         if (!empty($baseUrl)) {
             return $baseUrl . (parse_url($baseUrl, PHP_URL_QUERY) ? '&' : '?') . http_build_query($queryParams);
-        } else {
-            throw new LtiException('Invalid LTI return url.');
         }
+
+        throw new LtiException('Invalid LTI return url.');
     }
 
     /**
