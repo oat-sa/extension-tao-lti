@@ -22,7 +22,7 @@ namespace oat\taoLti\models\classes;
 
 use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
 
-class LtiVariableMissingException extends LtiException
+class LtiVariableMissingException extends LtiClientException
     implements \common_log_SeverityLevel
 {
     public function __construct($variableName)
