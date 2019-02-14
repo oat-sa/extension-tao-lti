@@ -94,13 +94,7 @@ class LtiReturnResponse extends ResponseAbstract
      * @return bool
      */
     protected function requiresRedirect() {
-        if ($this->exception instanceof LtiInvalidLaunchDataException
-            || $this->exception instanceof LtiVariableMissingException
-        ) {
-            return true;
-        }
-
-        return false;
+        return $this->exception instanceof LtiClientException;
     }
 
     /**
