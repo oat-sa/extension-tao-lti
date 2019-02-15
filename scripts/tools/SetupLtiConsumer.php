@@ -28,6 +28,14 @@ use \common_report_Report as Report;
 use oat\tao\model\oauth\DataStore;
 use oat\taoLti\models\classes\ConsumerService;
 
+/**
+ * Class SetupLtiConsumer
+ *
+ * usage `sudo -u www-data php index.php 'oat\taoLti\scripts\tools\SetupLtiConsumer' -k 123456 -s 123456`
+ *
+ * @author Ilya Yarkavets <ilya.yarkavets@1pt.com>
+ * @package oat\taoLti\scripts\tools
+ */
 class SetupLtiConsumer extends ScriptAction
 {
     use OntologyAwareTrait;
