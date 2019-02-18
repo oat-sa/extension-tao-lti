@@ -129,9 +129,7 @@ class SetupLtiConsumer extends ScriptAction
             $consumer->setPropertyValue($this->getProperty(DataStore::PROPERTY_OAUTH_CALLBACK), $this->getOption('callbackUrl'));
         }
 
-        $consumerLabel = $consumer->getLabel();
-
-        return new Report(Report::TYPE_SUCCESS, 'Lti consumer \'' . $consumerLabel .'\' was created. Check GUI to edit its properties');
+        return new Report(Report::TYPE_SUCCESS, sprintf('Lti consumer "%s" was created. Check GUI to edit its properties', $consumer->getLabel()));
     }
 
     /**
