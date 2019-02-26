@@ -37,6 +37,7 @@ class LtiLaunchData implements \JsonSerializable
     const RESOURCE_LINK_TITLE = 'resource_link_title';
     const CONTEXT_ID          = 'context_id';
     const CONTEXT_LABEL       = 'context_label';
+    const CONTEXT_TITLE       = 'context_title';
 
     const USER_ID                          = 'user_id';
     const ROLES                            = 'roles';
