@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 3.1.0-sprint15\n"
-"PO-Revision-Date: 2015-12-23T13:18:55\n"
+"Project-Id-Version: TAO 3.3.0-sprint96\n"
+"PO-Revision-Date: 2019-03-01T09:49:48\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: sv-SE\n"
@@ -25,6 +25,18 @@ msgid "Delete"
 msgstr ""
 
 msgid "Error"
+msgstr ""
+
+msgid "Error (%s): "
+msgstr ""
+
+msgid "Error(%s): [key %s] %s \"%s"
+msgstr ""
+
+msgid "Error: "
+msgstr ""
+
+msgid "Error: [key %s] \"%s"
 msgstr ""
 
 #, tao-public
