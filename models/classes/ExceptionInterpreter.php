@@ -66,6 +66,10 @@ class ExceptionInterpreter extends ExceptionInterpretor
 
     private function log($msg)
     {
+        if (!$this->exception instanceof LtiException) {
+            return;
+        }
+
         /** @var FileSystem $fs */
         $fs = $this->getServiceLocator()
             ->get(FileSystemService::SERVICE_ID)
