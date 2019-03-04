@@ -190,7 +190,7 @@ class Updater extends \common_ext_ExtensionUpdater
         }
 
         $this->skip('7.2.0', '7.3.1');
-      
+
         if ($this->isVersion('7.3.1')) {
             $ltiUserFactory = new LtiUserFactoryService();
             $this->getServiceManager()->register(LtiUserFactoryService::SERVICE_ID, $ltiUserFactory);
@@ -203,6 +203,6 @@ class Updater extends \common_ext_ExtensionUpdater
             $this->setVersion('8.0.0');
         }
 
-        $this->skip('8.0.0', '8.6.1');
+        $this->skip('8.0.0', '8.7.0');
     }
 }
