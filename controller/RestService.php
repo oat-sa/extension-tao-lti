@@ -22,6 +22,7 @@
 namespace oat\taoLti\controller;
 
 use oat\generis\model\OntologyRdfs;
+use oat\tao\model\routing\AnnotationReader\security;
 use oat\taoLti\models\classes\LtiRestApiService;
 use oat\tao\model\oauth\DataStore;
 
@@ -34,6 +35,7 @@ class RestService extends \tao_actions_CommonRestModule
      * taoLti_actions_RestService constructor.
      * Pass model service to handle http call business
      * @throws \common_exception_NoImplementation
+     * @security("hide")
      */
     public function __construct()
     {
