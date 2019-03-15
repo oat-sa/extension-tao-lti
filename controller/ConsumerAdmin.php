@@ -21,6 +21,7 @@
 
 namespace oat\taoLti\controller;
 
+use oat\tao\model\routing\AnnotationReader\security;
 use oat\taoLti\models\classes\ConsumerService;
 use tao_actions_SaSModule;
 
@@ -37,6 +38,7 @@ class ConsumerAdmin extends tao_actions_SaSModule
 {
     /**
      * work around for legacy support
+     * @security("hide");
      */
     public function __construct()
     {
@@ -48,6 +50,7 @@ class ConsumerAdmin extends tao_actions_SaSModule
      * (non-PHPdoc)
      *
      * @see tao_actions_RdfController::getClassService()
+     * @security("hide");
      */
     public function getClassService()
     {
