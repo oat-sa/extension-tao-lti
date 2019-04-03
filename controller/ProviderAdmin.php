@@ -26,10 +26,8 @@ use tao_actions_SaSModule;
 /**
  * This controller allows the adding and deletion of LTI Oauth Providers
  *
- * @author Jonathan VUILLEMIN, <jonathan@taotesting.com>
  * @package taoLti
  * @license GPLv2 http://www.opensource.org/licenses/gpl-2.0.php
- *
  */
 class ProviderAdmin extends tao_actions_SaSModule
 {

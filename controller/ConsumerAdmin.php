@@ -27,7 +27,6 @@ use tao_actions_SaSModule;
  * This controller allows the additon and deletion
  * of LTI Oauth Consumers
  *
- * @author Joel Bout
  * @package taoLti
  * @license GPLv2 http://www.opensource.org/licenses/gpl-2.0.php
  */

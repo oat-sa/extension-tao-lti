@@ -25,8 +25,6 @@ use oat\tao\model\OntologyClassService;
 /**
  * Service methods to manage the LTI consumer business objects using the RDF API.
  *
- * @access public
- * @author Joel Bout, <joel.bout@tudor.lu>
  * @package taoLti
  */
 class ConsumerService extends OntologyClassService
@@ -37,8 +35,6 @@ class ConsumerService extends OntologyClassService
     /**
      * return the group top level class
      *
-     * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return core_kernel_classes_Class
      */
     public function getRootClass()

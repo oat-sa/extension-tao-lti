@@ -25,8 +25,6 @@ use oat\tao\model\OntologyClassService;
 /**
  * Service methods to manage the LTI provider business objects using the RDF API.
  *
- * @access public
- * @author Jonathan VUILLEMIN, <jonathan@taotesting.com>
  * @package taoLti
  */
 class ProviderService extends OntologyClassService
@@ -37,8 +35,6 @@ class ProviderService extends OntologyClassService
     /**
      * return the group top level class
      *
-     * @access public
-     * @author Jonathan VUILLEMIN, <jonathan@taotesting.com>
      * @return core_kernel_classes_Class
      */
     public function getRootClass()
