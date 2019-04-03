@@ -15,31 +15,24 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
  * Copyright (c) 2019 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
- */
-
-namespace oat\taoLti\controller;
-
-use oat\tao\model\routing\AnnotationReader\security;
-use oat\taoLti\models\classes\ConsumerService;
-use tao_actions_SaSModule;
-
-/**
- * This controller allows the additon and deletion
- * of LTI Oauth Consumers
  *
- * @package taoLti
- * @license GPLv2 http://www.opensource.org/licenses/gpl-2.0.php
  */
-class ConsumerAdmin extends tao_actions_SaSModule
+namespace oat\taoLti\test\unit\models\classes;
+
+use core_kernel_classes_Class;
+use oat\generis\test\unit\OntologyMockTest;
+use oat\taoLti\models\classes\ConsumerService;
+
+class ConsumerServiceTest extends OntologyMockTest
 {
-    /**
-     * (non-PHPdoc)
-     *
-     * @see tao_actions_RdfController::getClassService()
-     * @security("hide");
-     */
-    public function getClassService()
+    public function testGetRootClass()
     {
-        return $this->getServiceLocator()->get(ConsumerService::SERVICE_ID);
+        $subject = new ConsumerService();
+        $subject->setModel($this->getOntologyMock());
+
+        $rootClass = $subject->getRootClass();
+
+        $this->assertInstanceOf(core_kernel_classes_Class::class, $rootClass);
+        $this->assertEquals(ConsumerService::CLASS_URI, $rootClass->getUri());
     }
 }

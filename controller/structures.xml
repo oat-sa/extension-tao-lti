@@ -4,7 +4,7 @@
 	<structure id="settings" name="Settings" level="11" group="invisible">
 		<description />
 		<sections>
-			<section id="settings_oauth_mng" name="LTI Consumers" url="/taoLti/ConsumerAdmin/index">
+			<section id="settings_oauth_mng_consumer" name="LTI Consumers" url="/taoLti/ConsumerAdmin/index">
 				<trees>
 					<tree name="LTI Consumers"
 						className="LTI Consumers"
@@ -32,6 +32,36 @@
 					<action id="lticonsumer-new" name="Add Consumer" url="/taoLti/ConsumerAdmin/addInstanceForm" context="class" group="tree">
                         <icon id="icon-add"/>
                     </action>
+				</actions>
+			</section>
+			<section id="settings_oauth_mng_provider" name="LTI Providers" url="/taoLti/ProviderAdmin/index">
+				<trees>
+					<tree name="LTI Providers"
+						  className="LTI Providers"
+						  dataUrl="/taoLti/ProviderAdmin/getOntologyData"
+						  rootNode="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIProvider"
+						  selectClass="ltiprovider-index"
+						  selectInstance="ltiprovider-edit"
+						  delete="ltiprovider-delete"
+					/>
+				</trees>
+				<actions>
+					<action id="ltiprovider-index" name="Index" url="/taoLti/ProviderAdmin/index" context="class" group="none" />
+					<action id="ltiprovider-edit" name="Properties" url="/taoLti/ProviderAdmin/editInstance" context="instance" group="none">
+						<icon id="icon-edit"/>
+					</action>
+					<action id="ltiprovider-delete" name="Delete" binding="removeNode" url="/taoLti/ProviderAdmin/delete" context="instance" group="tree">
+						<icon id="icon-bin"/>
+					</action>
+					<action id="ltiprovider-import" name="Import" url="/tao/Import/index"  context="class" group="tree">
+						<icon id="icon-import"/>
+					</action>
+					<action id="ltiprovider-export" name="Export" url="/tao/Export/index"  context="resource" group="tree">
+						<icon id="icon-export"/>
+					</action>
+					<action id="ltiprovider-new" name="Add Provider" url="/taoLti/ProviderAdmin/addInstanceForm" context="class" group="tree">
+						<icon id="icon-add"/>
+					</action>
 				</actions>
 			</section>
 		</sections>
