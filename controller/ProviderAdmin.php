@@ -20,18 +20,18 @@
 namespace oat\taoLti\controller;
 
 use oat\tao\model\routing\AnnotationReader\security;
-use oat\taoLti\models\classes\ConsumerService;
+use oat\taoLti\models\classes\ProviderService;
 use tao_actions_SaSModule;
 
 /**
- * This controller allows the additon and deletion
- * of LTI Oauth Consumers
+ * This controller allows the adding and deletion of LTI Oauth Providers
  *
- * @author Joel Bout
+ * @author Jonathan VUILLEMIN, <jonathan@taotesting.com>
  * @package taoLti
  * @license GPLv2 http://www.opensource.org/licenses/gpl-2.0.php
+ *
  */
-class ConsumerAdmin extends tao_actions_SaSModule
+class ProviderAdmin extends tao_actions_SaSModule
 {
     /**
      * (non-PHPdoc)
@@ -41,6 +41,6 @@ class ConsumerAdmin extends tao_actions_SaSModule
      */
     public function getClassService()
     {
-        return $this->getServiceLocator()->get(ConsumerService::SERVICE_ID);
+        return $this->getServiceLocator()->get(ProviderService::SERVICE_ID);
     }
 }
