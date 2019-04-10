@@ -209,11 +209,17 @@ class Updater extends \common_ext_ExtensionUpdater
 
         if ($this->isVersion('9.0.0')) {
             OntologyUpdater::syncModels();
-
-            $this->getServiceManager()->register(ConsumerService::SERVICE_ID, new ConsumerService());
-            $this->getServiceManager()->register(ProviderService::SERVICE_ID, new ProviderService());
+            // Removed as of 9.2.0 due to autowiring
+            // $this->getServiceManager()->register(ConsumerService::SERVICE_ID, new ConsumerService());
+            // $this->getServiceManager()->register(ProviderService::SERVICE_ID, new ProviderService());
 
             $this->setVersion('9.1.0');
+        }
+
+        if ($this->isVersion('9.1.0')) {
+            $this->getServiceManager()->unregister(ConsumerService::SERVICE_ID);
+            $this->getServiceManager()->unregister(ProviderService::SERVICE_ID);
+            $this->setVersion('9.2.0');
         }
     }
 }
