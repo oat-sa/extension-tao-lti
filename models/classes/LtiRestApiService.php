@@ -27,7 +27,7 @@ class LtiRestApiService extends \tao_models_classes_CrudService
 {
     protected function getClassService()
     {
-        return ConsumerService::singleton();
+        return $this->getServiceLocator()->get(ConsumerService::class);
     }
 
     /**
