@@ -35,11 +35,11 @@ class ConsumerAdmin extends tao_actions_SaSModule
     /**
      * (non-PHPdoc)
      *
-     * @see tao_actions_RdfController::getClassService()
+     * @see \tao_actions_RdfController::getClassService()
      * @security("hide");
      */
     public function getClassService()
     {
-        return $this->getServiceLocator()->get(ConsumerService::SERVICE_ID);
+        return $this->getServiceLocator()->get(ConsumerService::class);
     }
 }
