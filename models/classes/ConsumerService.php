@@ -14,34 +14,31 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2015 (original work) Open Assessment Technologies SA
+ * Copyright (c) 2019 (original work) Open Assessment Technologies SA
  */
 
 namespace oat\taoLti\models\classes;
 
 use core_kernel_classes_Class;
-use tao_models_classes_ClassService;
+use oat\tao\model\OntologyClassService;
 
 /**
  * Service methods to manage the LTI consumer business objects using the RDF API.
  *
- * @access public
- * @author Joel Bout, <joel.bout@tudor.lu>
- * @package taoGroups
+ * @package taoLti
  */
-class ConsumerService extends tao_models_classes_ClassService
+class ConsumerService extends OntologyClassService
 {
+    const SERVICE_ID = 'taoLti/ConsumerService';
     const CLASS_URI = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIConsumer';
 
     /**
      * return the group top level class
      *
-     * @access public
-     * @author Joel Bout, <joel.bout@tudor.lu>
      * @return core_kernel_classes_Class
      */
     public function getRootClass()
     {
-        return new core_kernel_classes_Class(self::CLASS_URI);
+        return $this->getClass(self::CLASS_URI);
     }
 }

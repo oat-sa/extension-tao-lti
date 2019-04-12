@@ -22,7 +22,6 @@
 namespace oat\taoLti\controller;
 
 use oat\generis\model\OntologyRdfs;
-use oat\tao\model\routing\AnnotationReader\security;
 use oat\taoLti\models\classes\LtiRestApiService;
 use oat\tao\model\oauth\DataStore;
 
@@ -32,15 +31,11 @@ class RestService extends \tao_actions_CommonRestModule
     const LTI_CONSUMER_KEY = 'lti_consumer_key';
 
     /**
-     * taoLti_actions_RestService constructor.
-     * Pass model service to handle http call business
-     * @throws \common_exception_NoImplementation
-     * @security("hide")
+     * @return LtiRestApiService
      */
-    public function __construct()
+    protected function getCrudService()
     {
-        parent::__construct();
-        $this->service = LtiRestApiService::singleton();
+        return $this->propagate(LtiRestApiService::singleton());
     }
 
     /**
@@ -71,7 +66,7 @@ class RestService extends \tao_actions_CommonRestModule
             $id = $parameters[self::LTI_USER_ID];
             $key = $parameters[self::LTI_CONSUMER_KEY];
 
-            $data = $this->service->getUserId($id, $key);
+            $data = $this->getCrudService->getUserId($id, $key);
             if (!$data) {
                 \common_Logger::i('Id ' . $id . ' is not found.');
                 throw new \common_exception_NotFound('No data found for the given id.');

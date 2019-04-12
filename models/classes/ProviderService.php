@@ -14,32 +14,31 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2019 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
+ * Copyright (c) 2019 (original work) Open Assessment Technologies SA
  */
 
-namespace oat\taoLti\controller;
+namespace oat\taoLti\models\classes;
 
-use oat\tao\model\routing\AnnotationReader\security;
-use oat\taoLti\models\classes\ConsumerService;
-use tao_actions_SaSModule;
+use core_kernel_classes_Class;
+use oat\tao\model\OntologyClassService;
 
 /**
- * This controller allows the additon and deletion
- * of LTI Oauth Consumers
+ * Service methods to manage the LTI provider business objects using the RDF API.
  *
  * @package taoLti
- * @license GPLv2 http://www.opensource.org/licenses/gpl-2.0.php
  */
-class ConsumerAdmin extends tao_actions_SaSModule
+class ProviderService extends OntologyClassService
 {
+    const SERVICE_ID = 'taoLti/ProviderService';
+    const CLASS_URI = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIProvider';
+
     /**
-     * (non-PHPdoc)
+     * return the group top level class
      *
-     * @see \tao_actions_RdfController::getClassService()
-     * @security("hide");
+     * @return core_kernel_classes_Class
      */
-    public function getClassService()
+    public function getRootClass()
     {
-        return $this->getServiceLocator()->get(ConsumerService::class);
+        return $this->getClass(self::CLASS_URI);
     }
 }

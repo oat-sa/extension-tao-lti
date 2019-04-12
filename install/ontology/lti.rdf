@@ -13,9 +13,15 @@
     <rdfs:subClassOf rdf:resource="http://www.tao.lu/Ontologies/TAO.rdf#TAOObject"/>
     <rdfs:label xml:lang="en-US"><![CDATA[LTI Object]]></rdfs:label>
   </rdf:Description>
+
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIConsumer">
     <rdfs:subClassOf rdf:resource="http://www.tao.lu/Ontologies/TAO.rdf#OauthConsumer"/>
     <rdfs:label xml:lang="en-US"><![CDATA[LTI Consumer]]></rdfs:label>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIProvider">
+    <rdfs:subClassOf rdf:resource="http://www.tao.lu/Ontologies/TAO.rdf#OauthConsumer"/>
+    <rdfs:label xml:lang="en-US"><![CDATA[LTI Provider]]></rdfs:label>
   </rdf:Description>
   
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIUser">

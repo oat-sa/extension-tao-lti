@@ -22,12 +22,16 @@ namespace oat\taoLti\models\classes;
 
 use oat\generis\model\OntologyRdfs;
 use oat\taoLti\models\classes\user\LtiUserService;
+use Zend\ServiceManager\ServiceLocatorAwareTrait;
+use Zend\ServiceManager\ServiceLocatorAwareInterface;
 
-class LtiRestApiService extends \tao_models_classes_CrudService
+class LtiRestApiService extends \tao_models_classes_CrudService implements ServiceLocatorAwareInterface
 {
+    use ServiceLocatorAwareTrait;
+
     protected function getClassService()
     {
-        return ConsumerService::singleton();
+        return $this->getServiceLocator()->get(ConsumerService::class);
     }
 
     /**

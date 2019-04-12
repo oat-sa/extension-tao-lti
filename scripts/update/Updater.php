@@ -25,6 +25,7 @@ use common_Exception;
 use common_ext_ExtensionsManager;
 use oat\tao\model\mvc\error\ExceptionInterpreterService;
 use oat\tao\scripts\update\OntologyUpdater;
+use oat\taoLti\models\classes\ConsumerService;
 use oat\taoLti\models\classes\CookieVerifyService;
 use oat\taoLti\models\classes\ExceptionInterpreter;
 use oat\taoLti\models\classes\FactoryLtiAuthAdapterService;
@@ -33,6 +34,7 @@ use oat\taoLti\models\classes\LaunchData\Validator\Lti11LaunchDataValidator;
 use oat\taoLti\models\classes\LaunchData\Validator\LtiValidatorService;
 use oat\taoLti\models\classes\LtiAuthAdapter;
 use oat\taoLti\models\classes\LtiException;
+use oat\taoLti\models\classes\ProviderService;
 use oat\taoLti\models\classes\ResourceLink\LinkService;
 use oat\taoLti\models\classes\ResourceLink\OntologyLink;
 use oat\taoLti\models\classes\user\LtiUserFactoryService;
@@ -204,5 +206,20 @@ class Updater extends \common_ext_ExtensionUpdater
         }
 
         $this->skip('8.0.0', '9.0.0');
+
+        if ($this->isVersion('9.0.0')) {
+            OntologyUpdater::syncModels();
+            // Removed as of 9.2.0 due to autowiring
+            // $this->getServiceManager()->register(ConsumerService::SERVICE_ID, new ConsumerService());
+            // $this->getServiceManager()->register(ProviderService::SERVICE_ID, new ProviderService());
+
+            $this->setVersion('9.1.0');
+        }
+
+        if ($this->isVersion('9.1.0')) {
+            $this->getServiceManager()->unregister(ConsumerService::SERVICE_ID);
+            $this->getServiceManager()->unregister(ProviderService::SERVICE_ID);
+            $this->setVersion('9.2.0');
+        }
     }
 }
