@@ -221,5 +221,7 @@ class Updater extends \common_ext_ExtensionUpdater
             $this->getServiceManager()->unregister(ProviderService::SERVICE_ID);
             $this->setVersion('9.2.0');
         }
+
+        $this->skip('9.2.0', '9.2.1');
     }
 }
