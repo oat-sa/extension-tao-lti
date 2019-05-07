@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TAO 3.3.0-sprint96\n"
-"PO-Revision-Date: 2019-03-01T09:49:47\n"
+"PO-Revision-Date: 2019-04-25T01:12:44\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: ru-RU\n"
@@ -15,17 +15,17 @@ msgstr ""
 
 #, tao-public
 msgid "Add Consumer"
-msgstr ""
+msgstr "Добавить Потребителя"
 
 msgid "Back"
-msgstr ""
+msgstr "Назад"
 
 #, tao-public
 msgid "Delete"
-msgstr ""
+msgstr "Удалить"
 
 msgid "Error"
-msgstr ""
+msgstr "Ошибка"
 
 msgid "Error (%s): "
 msgstr ""
@@ -41,61 +41,61 @@ msgstr ""
 
 #, tao-public
 msgid "Export"
-msgstr ""
+msgstr "Экспортировать"
 
 #, tao-public
 msgid "Import"
-msgstr ""
+msgstr "Импортировать"
 
 #, tao-public
 msgid "Index"
-msgstr ""
+msgstr "Индекс"
 
 msgid "Learning Tools Interoperability"
-msgstr ""
+msgstr "Взаимодействие инструментов обучения"
 
 msgid "link"
-msgstr ""
+msgstr "ссылка"
 
 #, tao-public
 msgid "LTI Consumers"
-msgstr ""
+msgstr "Потребители LTI"
 
 msgid "Open in a new window"
-msgstr ""
+msgstr "Открыть новое окно"
 
 #, tao-public
 msgid "Properties"
-msgstr ""
+msgstr "Свойства"
 
 msgid "Return to %s."
 msgstr ""
 
 msgid "Server Error"
-msgstr ""
+msgstr "Ошибка сервера"
 
 #, tao-public
 msgid "Settings"
-msgstr ""
+msgstr "Настройки"
 
 msgid "The LTI connection could not be established"
-msgstr ""
+msgstr "Не удалось установить подключение LTI"
 
 msgid "The LTI Provider library."
 msgstr ""
 
 msgid "The LTI tool could not be opened in the current window. Please click on the button to open it in a new window."
-msgstr ""
+msgstr "Не удалось открыть инструмент LTI в текущем окне. Пожалуйста, нажмите на кнопку, чтобы открыть ее в новом окне."
 
 msgid "Third party cookies are not supported by your browser"
-msgstr ""
+msgstr "Файлы cookies третьей стороны не поддерживаются вашим браузером"
 
 msgid "Unable to restore Session"
-msgstr ""
+msgstr "Не удается восстановить сеанс"
 
 msgid "user"
-msgstr ""
+msgstr "пользователь"
 
 msgid "You are not authorized to use this system"
-msgstr ""
+msgstr "Вы не авторизованы для использования этой системы"
 

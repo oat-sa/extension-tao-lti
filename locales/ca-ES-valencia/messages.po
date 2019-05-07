@@ -1,0 +1,101 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: TAO 3.3.0-sprint96\n"
+"PO-Revision-Date: 2019-04-25T01:10:55\n"
+"Last-Translator: TAO Translation Team <translation@tao.lu>\n"
+"MIME-Version: 1.0\n"
+"Language: ca-ES-valencia\n"
+"sourceLanguage: en-US\n"
+"targetLanguage: ca-ES-valencia\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Basepath: ../../\n"
+"X-Poedit-KeywordsList: __\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#, tao-public
+msgid "Add Consumer"
+msgstr "Afig un consumidor"
+
+msgid "Back"
+msgstr "Arrere"
+
+#, tao-public
+msgid "Delete"
+msgstr "Elimina"
+
+msgid "Error"
+msgstr "Error"
+
+msgid "Error (%s): "
+msgstr "Error (%s): "
+
+msgid "Error(%s): [key %s] %s \"%s"
+msgstr "Error(%s): [clau %s] %s \"%s"
+
+msgid "Error: "
+msgstr ""
+
+msgid "Error: [key %s] \"%s"
+msgstr ""
+
+#, tao-public
+msgid "Export"
+msgstr "Exporta"
+
+#, tao-public
+msgid "Import"
+msgstr "Importa"
+
+#, tao-public
+msgid "Index"
+msgstr "Índex"
+
+msgid "Learning Tools Interoperability"
+msgstr "Interoperabilitat d'Eines d'Aprenentatge (LTI)"
+
+msgid "link"
+msgstr "enllaç"
+
+#, tao-public
+msgid "LTI Consumers"
+msgstr "Consumidors LTI"
+
+msgid "Open in a new window"
+msgstr "Obri una finestra nova"
+
+#, tao-public
+msgid "Properties"
+msgstr "Propietats"
+
+msgid "Return to %s."
+msgstr "Torna a %s"
+
+msgid "Server Error"
+msgstr "S'ha produït un error del servidor."
+
+#, tao-public
+msgid "Settings"
+msgstr "Configuració"
+
+msgid "The LTI connection could not be established"
+msgstr "No s'ha pogut establir la connexió LTI."
+
+msgid "The LTI Provider library."
+msgstr "La biblioteca del proveïdor LTI"
+
+msgid "The LTI tool could not be opened in the current window. Please click on the button to open it in a new window."
+msgstr "L'eina LTI no s'ha pogut obrir en la finestra actual. Feu clic al botó per a obrir-la en una finestra nova."
+
+msgid "Third party cookies are not supported by your browser"
+msgstr "El vostre navegador no accepta galetes de tercers."
+
+msgid "Unable to restore Session"
+msgstr "No es pot restaurar la sessió."
+
+msgid "user"
+msgstr "usuari"
+
+msgid "You are not authorized to use this system"
+msgstr "No esteu autoritzat a utilitzar aquest sistema."
+

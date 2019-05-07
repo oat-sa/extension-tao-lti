@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TAO 3.3.0-sprint96\n"
-"PO-Revision-Date: 2019-03-01T09:49:45\n"
+"PO-Revision-Date: 2019-04-25T01:04:23\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: it-IT\n"
@@ -15,7 +15,7 @@ msgstr ""
 
 #, tao-public
 msgid "Add Consumer"
-msgstr "Aggiungi consumatore"
+msgstr "Aggiungi Consumatore"
 
 msgid "Back"
 msgstr "Indietro"
@@ -52,50 +52,50 @@ msgid "Index"
 msgstr "Indice"
 
 msgid "Learning Tools Interoperability"
-msgstr "Strumenti di apprendimento "
+msgstr "Interoperabilità degli strumenti di apprendimento"
 
 msgid "link"
-msgstr "link"
+msgstr "collegamento"
 
 #, tao-public
 msgid "LTI Consumers"
-msgstr "Cliente LTI "
+msgstr "Clienti LTI"
 
 msgid "Open in a new window"
-msgstr "Apri in nuova finestra"
+msgstr "Apri in una nuova finestra"
 
 #, tao-public
 msgid "Properties"
 msgstr "Proprietà"
 
 msgid "Return to %s."
-msgstr "Torna a "
+msgstr "Ritorna a %s."
 
 msgid "Server Error"
-msgstr "Errore del server"
+msgstr "Errore Server"
 
 #, tao-public
 msgid "Settings"
 msgstr "Impostazioni"
 
 msgid "The LTI connection could not be established"
-msgstr "La connessione a LTI non può essere stabilita"
+msgstr "Non è stato possibile stabilire la connessione LTI"
 
 msgid "The LTI Provider library."
-msgstr "Raccolta di Provider LTI"
+msgstr "La libreria di Fornitori LTI."
 
 msgid "The LTI tool could not be opened in the current window. Please click on the button to open it in a new window."
-msgstr "Lo strumento LTI non può essere aperto nella finestra corrente. Si prega di premere il bottone per visualizzarlo in una nuova finestra"
+msgstr "Impossibile aprire lo strumento LTI nella finestra corrente. Si prega di fare clic sul pulsante per aprirlo in una nuova finestra."
 
 msgid "Third party cookies are not supported by your browser"
-msgstr "I cookies da terze parti non sono supportati dal tuo browser"
+msgstr "I cookie di terze parti non sono supportati dal tuo browser"
 
 msgid "Unable to restore Session"
-msgstr "Impossibile ripristinare la sessione"
+msgstr "Impossibile ripristinare la Sessione"
 
 msgid "user"
 msgstr "utente"
 
 msgid "You are not authorized to use this system"
-msgstr "Non sei autorizzato ad usare questo sistema"
+msgstr "Non sei autorizzato a utilizzare questo sistema"
 

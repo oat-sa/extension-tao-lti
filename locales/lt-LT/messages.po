@@ -1,0 +1,101 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: TAO 3.3.0-sprint96\n"
+"PO-Revision-Date: 2019-04-25T01:14:02\n"
+"Last-Translator: TAO Translation Team <translation@tao.lu>\n"
+"MIME-Version: 1.0\n"
+"Language: lt-LT\n"
+"sourceLanguage: en-US\n"
+"targetLanguage: lt-LT\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Basepath: ../../\n"
+"X-Poedit-KeywordsList: __\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#, tao-public
+msgid "Add Consumer"
+msgstr "Pridėti Naudotoją"
+
+msgid "Back"
+msgstr "Grįžti"
+
+#, tao-public
+msgid "Delete"
+msgstr "Ištrinti"
+
+msgid "Error"
+msgstr "Klaida"
+
+msgid "Error (%s): "
+msgstr "Klaida (%s): "
+
+msgid "Error(%s): [key %s] %s \"%s"
+msgstr "Klaida(%s): [key %s] %s \"%s"
+
+msgid "Error: "
+msgstr ""
+
+msgid "Error: [key %s] \"%s"
+msgstr ""
+
+#, tao-public
+msgid "Export"
+msgstr "Eksportuoti"
+
+#, tao-public
+msgid "Import"
+msgstr "Importuoti"
+
+#, tao-public
+msgid "Index"
+msgstr "Indeksas"
+
+msgid "Learning Tools Interoperability"
+msgstr "Mokymo Įrankių Sąveika"
+
+msgid "link"
+msgstr "nuoroda"
+
+#, tao-public
+msgid "LTI Consumers"
+msgstr "LTI Naudotojai"
+
+msgid "Open in a new window"
+msgstr "Atidaryti naujame lange"
+
+#, tao-public
+msgid "Properties"
+msgstr "Savybės"
+
+msgid "Return to %s."
+msgstr "Grįžti į %s."
+
+msgid "Server Error"
+msgstr "Serverio Klaida"
+
+#, tao-public
+msgid "Settings"
+msgstr "Nustatymai"
+
+msgid "The LTI connection could not be established"
+msgstr "LTI ryšys negali būti užmegztas"
+
+msgid "The LTI Provider library."
+msgstr "LTI Tiekėjo biblioteka."
+
+msgid "The LTI tool could not be opened in the current window. Please click on the button to open it in a new window."
+msgstr "LTI įrankis negali būti atidarytas dabartiniame lange. Prašome paspausti ant mygtuko, kad atidaryti naujame lange."
+
+msgid "Third party cookies are not supported by your browser"
+msgstr "Trečios šalies slapukai yra nepalaikomi jūsų naršyklėje"
+
+msgid "Unable to restore Session"
+msgstr "Nepavyko atkurti Sesijos"
+
+msgid "user"
+msgstr "vartotojas"
+
+msgid "You are not authorized to use this system"
+msgstr "Jūs esate neautorizuotas naudotis šia sistema"
+

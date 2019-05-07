@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TAO 3.3.0-sprint96\n"
-"PO-Revision-Date: 2019-03-01T09:49:45\n"
+"PO-Revision-Date: 2019-04-25T01:04:23\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: it-IT\n"
@@ -13,22 +13,22 @@ msgstr ""
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiObject
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "LTI Object"
-msgstr "LTI Object"
+msgstr "Oggetto LTI"
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#ServiceLtiConsumer
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "LTI Consumer"
-msgstr "LTI Consumer"
+msgstr "Consumatore LTI"
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIUser
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "LTI User"
-msgstr "LTI User"
+msgstr "Utente LTI"
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#UserKey
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "LTI Consumer User Key"
-msgstr "LTI Consumer User Key"
+msgstr "Chiave utente consumatore LTI"
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#UserKey
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
@@ -38,130 +38,130 @@ msgstr "Chiave dell'utente LTI"
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#UserConsumer
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "LTI Consumer of User"
-msgstr "LTI Consumer of User"
+msgstr "Consumatore LTI dell'utente"
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#LTITool
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "LTI Tool"
-msgstr "LTI Tool"
+msgstr "Strumento LTI"
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#ToolService
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "LTI Tool Service"
-msgstr "LTI Tool Service"
+msgstr "Servizio Strumento LTI"
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#ToolService
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Service to implemnt the Tool"
-msgstr "Servizio per implementare il Tool"
+msgstr "Servizio per implementare lo Strumento"
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#LTILink
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "LTI Link"
-msgstr "LTI Link"
+msgstr "Collegamento LTI"
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#LTILink
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Link between Tool and Consumer"
-msgstr "Collegamento fra Tool e Consumer"
+msgstr "Collegamento fra Strumento e Consumer"
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#LTILinkConsumer
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "LTI link consumer"
-msgstr "LTI link consumer"
+msgstr "Consumatore Collegamento LTI"
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiIncomingLink
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Incoming LTI link"
-msgstr "Incoming LTI link"
+msgstr "Collegamento LTI in entrata"
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiIncomingLink
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "An external link calling TAO as tool provider"
-msgstr "Un collegamento esterno chiamante TAO come fornitore di Tool"
+msgstr "Un collegamento esterno che chiama TAO come fornitore di strumenti"
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#LTILinkId
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "LTI link ID"
-msgstr "LTI link ID"
+msgstr "ID collegamento LTI"
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiOutgoingLink
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Outgoing LTI link"
-msgstr "Outgoing LTI link"
+msgstr "Collegamento LTI in uscita"
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiOutgoingLink
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "An link in TAO calling a remote tool provider"
-msgstr "Un collegamento in TAO chiamante un fornitore di tool remoto"
+msgstr "Un collegamento in TAO che chiama un fornitore di strumenti remoto"
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#ResourceLinkLaunchUrl
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Launch URL"
-msgstr "Launch URL"
+msgstr "URL di avvio"
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#ResourceLinkLaunchUrl
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "LTI launch url"
-msgstr "LTI launch url"
+msgstr "URL di avvio LTI"
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiLaunchUrl
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "LTI Launch Url"
-msgstr "LTI Launch Url"
+msgstr "URL di Avvio LTI"
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiLaunchUrl
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "LTI Launch Url"
-msgstr "LTI Launch Url"
+msgstr "URL di Avvio LTI"
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiConsumerUri
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "LTI Consumer Uri"
-msgstr "LTI Consumer Uri"
+msgstr "URI Consumatore LTI"
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiConsumerUri
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "LTI Consumer Uri"
-msgstr "LTI Consumer Uri"
+msgstr "URI Consumatore LTI"
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#ServiceLtiConsumer
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "LTI Consumer service calls an LTI Producer"
-msgstr "Un servizio LTI Consumer chiama LTI Produttore"
+msgstr "Servizio Consumatore LTI chiama un produttore LTI"
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#UserKey
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "LTI Consumer User Key"
-msgstr "Key of LTI User"
+msgstr "Chiave utente consumatore LTI"
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#ServiceLtiConsumer
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "LTI Consumer"
-msgstr "LTI Consumer service calls an LTI Producer"
+msgstr "Consumatore LTI"
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#ToolService
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "LTI Tool Service"
-msgstr "Service to implemnt the Tool"
+msgstr "Servizio Strumento LTI"
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#LTILink
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "LTI Link"
-msgstr "Link between Tool and Consumer"
+msgstr "Collegamento LTI"
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiIncomingLink
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Incoming LTI link"
-msgstr "An external link calling TAO as tool provider"
+msgstr "Collegamento LTI in entrata"
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiOutgoingLink
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Outgoing LTI link"
-msgstr "An link in TAO calling a remote tool provider"
+msgstr "Collegamento LTI in uscita"
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#ResourceLinkLaunchUrl
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Launch URL"
-msgstr "LTI launch url"
+msgstr "URL di avvio"
 

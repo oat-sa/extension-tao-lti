@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TAO 3.3.0-sprint96\n"
-"PO-Revision-Date: 2019-03-01T09:49:46\n"
+"PO-Revision-Date: 2019-04-25T01:06:30\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: ja-JP\n"
@@ -18,7 +18,7 @@ msgstr ""
 # http://www.imsglobal.org/imspurl/lis/v1/vocab/person#Learner
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "The LTI Institution Learner Role"
-msgstr "LTI　ラーナー権限"
+msgstr "LTI　ラーナーロール"
 
 # http://www.imsglobal.org/imspurl/lis/v1/vocab/person#Instructor
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -38,7 +38,7 @@ msgstr ""
 # http://www.imsglobal.org/imspurl/lis/v1/vocab/person#Student
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "The LTI Student Role"
-msgstr "LTI　学生権限"
+msgstr "LTI 学生権限"
 
 # http://www.imsglobal.org/imspurl/lis/v1/vocab/person#Administrator
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"

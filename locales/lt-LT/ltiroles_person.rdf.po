@@ -1,0 +1,52 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: TAO 3.3.0-sprint96\n"
+"PO-Revision-Date: 2019-04-25T01:14:02\n"
+"Last-Translator: TAO Translation Team <translation@tao.lu>\n"
+"MIME-Version: 1.0\n"
+"Language: lt-LT\n"
+"sourceLanguage: en-US\n"
+"targetLanguage: lt-LT\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+# http://www.imsglobal.org/imspurl/lis/v1/vocab/person#Learner
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI Learner (Institution)"
+msgstr "LTI Mokinys (Institucija)"
+
+# http://www.imsglobal.org/imspurl/lis/v1/vocab/person#Learner
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI Institution Learner Role"
+msgstr "LTI Institucijos Mokinio Rolė"
+
+# http://www.imsglobal.org/imspurl/lis/v1/vocab/person#Instructor
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI Instructor (Institution)"
+msgstr "LTI Instruktorius (Institucija)"
+
+# http://www.imsglobal.org/imspurl/lis/v1/vocab/person#Instructor
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI Institution Instructor Role"
+msgstr "LTI Institucijos Instruktoriaus Rolė"
+
+# http://www.imsglobal.org/imspurl/lis/v1/vocab/person#Student
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI Student (Institution)"
+msgstr "LTI Studentas (Institucija)"
+
+# http://www.imsglobal.org/imspurl/lis/v1/vocab/person#Student
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI Student Role"
+msgstr "LTI Studento Rolė"
+
+# http://www.imsglobal.org/imspurl/lis/v1/vocab/person#Administrator
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI Administrator (System)"
+msgstr "LTI Administratorius (Sistema)"
+
+# http://www.imsglobal.org/imspurl/lis/v1/vocab/person#Administrator
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI Administrator Role"
+msgstr "LTI Administratoriaus Rolė"
+
