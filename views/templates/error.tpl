@@ -7,7 +7,7 @@ use oat\tao\helpers\Template;
 <head>
 	<title><?= __('Server Error')?></title>
 	<link rel="stylesheet" type="text/css" href="<?= Template::css('reset.css','tao') ?>" />
-	<link rel="stylesheet" type="text/css" href="<?= Template::css('custom-theme/jquery-ui-1.8.22.custom.css','tao') ?>" />
+	<link rel="stylesheet" type="text/css" href="<?= Template::css('custom-theme/jquery-ui-1.9.2.custom.css','tao') ?>" />
 	<link rel="stylesheet" type="text/css" href="<?= Template::css('errors.css','tao') ?>" />
 	<link rel="stylesheet" type="text/css" href="<?= Template::css('userError.css','tao') ?>" />
 </head>
