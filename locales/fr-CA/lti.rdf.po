@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 3.3.0-sprint96\n"
-"PO-Revision-Date: 2019-03-15T09:26:12\n"
+"Project-Id-Version: TAO 3.3.0-sprint101\n"
+"PO-Revision-Date: 2019-05-10T14:30:51\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: fr-CA\n"
@@ -19,6 +19,11 @@ msgstr "LTI Object"
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "LTI Consumer"
 msgstr "LTI Consumer"
+
+# http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIProvider
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI Provider"
+msgstr ""
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIUser
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
