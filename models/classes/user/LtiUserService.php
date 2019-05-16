@@ -24,6 +24,7 @@ namespace oat\taoLti\models\classes\user;
 use oat\generis\model\GenerisRdf;
 use oat\oatbox\service\ConfigurableService;
 use oat\taoLti\models\classes\LtiLaunchData;
+use oat\oatbox\mutex\LockTrait;
 
 /**
  * Lti user service, allow us to find or spawn a lti user based on launch data
@@ -34,6 +35,8 @@ use oat\taoLti\models\classes\LtiLaunchData;
  */
 abstract class LtiUserService extends ConfigurableService
 {
+    use LockTrait;
+
     const SERVICE_ID = 'taoLti/LtiUserService';
 
     const OPTION_FACTORY_LTI_USER = 'factoryLtiUser';
@@ -41,6 +44,7 @@ abstract class LtiUserService extends ConfigurableService
     const PROPERTY_USER_LTICONSUMER = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#UserConsumer';
 
     const PROPERTY_USER_LTIKEY = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#UserKey';
+
     /**
      * Returns the existing tao User that corresponds to
      * the LTI request or spawns it
@@ -55,10 +59,13 @@ abstract class LtiUserService extends ConfigurableService
      */
     public function findOrSpawnUser(LtiLaunchData $launchData)
     {
+        $lock = $this->createLock(__METHOD__.$launchData->getUserID().$launchData->getLtiConsumer());
+        $lock->acquire(true);
         $taoUser = $this->findUser($launchData);
-        if (is_null($taoUser)) {
+        if ($taoUser === null) {
             $taoUser = $this->spawnUser($launchData);
         }
+        $lock->release();
         return $taoUser;
     }
 
