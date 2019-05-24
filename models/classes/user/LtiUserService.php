@@ -59,13 +59,18 @@ abstract class LtiUserService extends ConfigurableService
      */
     public function findOrSpawnUser(LtiLaunchData $launchData)
     {
-        $lock = $this->createLock(__METHOD__.$launchData->getUserID().$launchData->getLtiConsumer());
+        $lock = $this->createLock(__METHOD__.$launchData->getUserID().$launchData->getLtiConsumer(), 30);
         $lock->acquire(true);
-        $taoUser = $this->findUser($launchData);
-        if ($taoUser === null) {
-            $taoUser = $this->spawnUser($launchData);
+
+        try {
+            $taoUser = $this->findUser($launchData);
+            if ($taoUser === null) {
+                $taoUser = $this->spawnUser($launchData);
+            }
+        } finally {
+            $lock->release();
         }
-        $lock->release();
+
         return $taoUser;
     }
 
