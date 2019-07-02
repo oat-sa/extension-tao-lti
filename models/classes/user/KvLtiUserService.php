@@ -68,6 +68,7 @@ class KvLtiUserService extends LtiUserService
     protected function updateUser(LtiUserInterface $user, LtiLaunchData $ltiContext)
     {
         $technicalId = self::LTI_USER . $ltiContext->getUserID() . $ltiContext->getLtiConsumer()->getUri();
+        $isUpdate = $this->getPersistence()->exists($technicalId);
 
         if (empty($user->getIdentifier())) {
             $user->setIdentifier($technicalId);
@@ -83,6 +84,12 @@ class KvLtiUserService extends LtiUserService
 
         $this->getPersistence()->set($technicalId, json_encode($data));
         $this->getPersistence()->set(self::LTI_USER_LOOKUP . $taoUserId, $technicalId);
+
+        if ($isUpdate) {
+            $this->userUpdatedEvent($technicalId);
+        } else {
+            $this->userCreatedEvent($technicalId);
+        }
     }
 
     /**

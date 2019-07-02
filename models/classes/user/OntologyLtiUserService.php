@@ -41,7 +41,7 @@ class OntologyLtiUserService extends LtiUserService
     const CLASS_LTI_USER = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIUser';
 
     const OPTION_TRANSACTION_SAFE = 'transaction-safe';
-    
+
     const OPTION_TRANSACTION_SAFE_RETRY = 'transaction-safe-retry';
 
     /**
@@ -68,14 +68,14 @@ class OntologyLtiUserService extends LtiUserService
             ]);
 
             foreach ($properties as $key => $values){
-                if ($values != $user->getPropertyValues($key)){
+                if ($values !== $user->getPropertyValues($key)){
                     $userResource->editPropertyValues(new \core_kernel_classes_Property($key), $user->getPropertyValues($key));
                 }
-
             }
+
+            $this->userUpdatedEvent($userResource->getUri());
         } else {
             $class = new \core_kernel_classes_Class(self::CLASS_LTI_USER);
-
 
             $props = array(
                 self::PROPERTY_USER_LTIKEY => $ltiContext->getUserID(),
@@ -90,6 +90,7 @@ class OntologyLtiUserService extends LtiUserService
 
             $userResource = $class->createInstanceWithProperties($props);
             \common_Logger::i('added User ' . $userResource->getLabel());
+            $this->userCreatedEvent($userResource->getUri());
         }
         $user->setIdentifier($userResource->getUri());
     }
@@ -123,11 +124,11 @@ class OntologyLtiUserService extends LtiUserService
 
     }
 
-    
+
     private function getRetryOption()
     {
         $retryOption = $this->getOption(self::OPTION_TRANSACTION_SAFE_RETRY);
-        
+
         // Arbitrary default is 1.
         return ($retryOption) ? $retryOption : 1;
     }

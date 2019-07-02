@@ -21,10 +21,15 @@
 
 namespace oat\taoLti\models\classes\user;
 
+use common_Exception;
+use Exception;
 use oat\generis\model\GenerisRdf;
+use oat\oatbox\event\EventManager;
 use oat\oatbox\service\ConfigurableService;
 use oat\taoLti\models\classes\LtiLaunchData;
 use oat\oatbox\mutex\LockTrait;
+use oat\taoLti\models\classes\user\events\LtiUserCreatedEvent;
+use oat\taoLti\models\classes\user\events\LtiUserUpdatedEvent;
 
 /**
  * Lti user service, allow us to find or spawn a lti user based on launch data
@@ -51,7 +56,7 @@ abstract class LtiUserService extends ConfigurableService
      *
      * @param LtiLaunchData $launchData
      * @return LtiUser
-     * @throws \common_Exception
+     * @throws common_Exception
      * @throws \common_exception_Error
      * @throws \core_kernel_users_CacheException
      * @throws \core_kernel_users_Exception
@@ -79,12 +84,12 @@ abstract class LtiUserService extends ConfigurableService
      *
      * @param LtiLaunchData $ltiContext
      * @return LtiUser
-     * @throws \common_Exception
+     * @throws common_Exception
      * @throws \common_exception_Error
      * @throws \core_kernel_users_CacheException
      * @throws \core_kernel_users_Exception
      * @throws \oat\taoLti\models\classes\LtiVariableMissingException
-     * @throws \Exception
+     * @throws Exception
      */
     public function findUser(LtiLaunchData $ltiContext)
     {
@@ -123,12 +128,12 @@ abstract class LtiUserService extends ConfigurableService
      *
      * @param LtiLaunchData $ltiContext
      * @return LtiUserInterface
-     * @throws \common_Exception
+     * @throws common_Exception
      * @throws \common_exception_Error
      * @throws \core_kernel_users_CacheException
      * @throws \core_kernel_users_Exception
      * @throws \oat\taoLti\models\classes\LtiVariableMissingException
-     * @throws \Exception
+     * @throws Exception
      */
     public function spawnUser(LtiLaunchData $ltiContext)
     {
@@ -197,27 +202,43 @@ abstract class LtiUserService extends ConfigurableService
      * @param LtiLaunchData $ltiContext
      * @param string $userId
      * @return LtiUserInterface
-     * @throws \Exception
+     * @throws common_Exception
      */
     protected function createLtiUser(LtiLaunchData $ltiContext, $userId)
     {
-        $ltiUserFactory = $this->getLtiUserFactory();
-
-        return $ltiUserFactory->create($ltiContext, $userId);
+        return $this->getLtiUserFactory()->create($ltiContext, $userId);
     }
 
     /**
      * @return LtiUserFactoryInterface
-     * @throws \Exception
+     * @throws common_Exception
      */
     protected function getLtiUserFactory()
     {
         $ltiUserFactory = $this->getServiceLocator()->get($this->getOption(static::OPTION_FACTORY_LTI_USER));
         if (!$ltiUserFactory instanceof LtiUserFactoryInterface) {
-            throw new \Exception('Lti Factory it is not a LtiUserFactoryInterface');
+            throw new common_Exception('Lti Factory it is not a LtiUserFactoryInterface');
         }
 
         return $ltiUserFactory;
 
+    }
+
+    /**
+     * @return EventManager
+     */
+    protected function getEventManager()
+    {
+        return $this->getServiceLocator()->get(EventManager::SERVICE_ID);
+    }
+
+    protected function userUpdatedEvent($userId)
+    {
+        $this->getEventManager()->trigger(new LtiUserUpdatedEvent($userId));
+    }
+
+    protected function userCreatedEvent($userId)
+    {
+        $this->getEventManager()->trigger(new LtiUserCreatedEvent($userId));
     }
 }
