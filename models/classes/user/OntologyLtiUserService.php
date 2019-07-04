@@ -67,13 +67,17 @@ class OntologyLtiUserService extends LtiUserService
                 GenerisRdf::PROPERTY_USER_ROLES,
             ]);
 
+            $hasUpdates = false;
             foreach ($properties as $key => $values){
-                if ($values !== $user->getPropertyValues($key)){
+                if ($values != $user->getPropertyValues($key)){
                     $userResource->editPropertyValues(new \core_kernel_classes_Property($key), $user->getPropertyValues($key));
+                    $hasUpdates = true;
                 }
             }
 
-            $this->userUpdatedEvent($userResource->getUri());
+            if ($hasUpdates) {
+                $this->userUpdatedEvent($userResource->getUri());
+            }
         } else {
             $class = new \core_kernel_classes_Class(self::CLASS_LTI_USER);
 
