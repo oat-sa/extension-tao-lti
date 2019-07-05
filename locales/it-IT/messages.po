@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 3.3.0-sprint96\n"
-"PO-Revision-Date: 2019-03-15T09:26:13\n"
+"Project-Id-Version: TAO 3.3.0-sprint105\n"
+"PO-Revision-Date: 2019-07-05T12:03:50\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: it-IT\n"
@@ -16,6 +16,10 @@ msgstr ""
 #, tao-public
 msgid "Add Consumer"
 msgstr "Aggiungi consumatore"
+
+#, tao-public
+msgid "Add Provider"
+msgstr ""
 
 msgid "Back"
 msgstr "Indietro"
@@ -60,6 +64,10 @@ msgstr "link"
 #, tao-public
 msgid "LTI Consumers"
 msgstr "Cliente LTI "
+
+#, tao-public
+msgid "LTI Providers"
+msgstr ""
 
 msgid "Open in a new window"
 msgstr "Apri in nuova finestra"

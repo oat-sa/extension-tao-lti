@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 3.3.0-sprint96\n"
-"PO-Revision-Date: 2019-03-15T09:26:13\n"
+"Project-Id-Version: TAO 3.3.0-sprint105\n"
+"PO-Revision-Date: 2019-07-05T12:03:50\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: ja-JP\n"
@@ -16,6 +16,10 @@ msgstr ""
 #, tao-public
 msgid "Add Consumer"
 msgstr "コンシューマに追加"
+
+#, tao-public
+msgid "Add Provider"
+msgstr ""
 
 msgid "Back"
 msgstr "戻る"
@@ -60,6 +64,10 @@ msgstr "リンク"
 #, tao-public
 msgid "LTI Consumers"
 msgstr "LTI コンシューマ"
+
+#, tao-public
+msgid "LTI Providers"
+msgstr ""
 
 msgid "Open in a new window"
 msgstr "新しいウインドウで開く"
