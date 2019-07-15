@@ -6,9 +6,7 @@
 ![GitHub release](https://img.shields.io/github/release/oat-sa/extension-tao-lti.svg)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/y/oat-sa/extension-tao-lti.svg)
 
-> Short description of `oat-sa/extension-tao-lti`
-
-Long description of `oat-sa/extension-tao-lti`
+> Extension to manage LTI services for TAO
 
 ## Installation instructions
 
