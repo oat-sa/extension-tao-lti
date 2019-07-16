@@ -48,9 +48,6 @@ As a system administrator you can also install it through the TAO Extension Mana
 ## LTI Endpoints
 -->
 
-## Extension Wiki
-You can find the [extension wiki here](https://github.com/oat-sa/extension-tao-lti/wiki).
-
 ## Configuration options
 
 ### auth.conf.php
@@ -75,12 +72,6 @@ You can find the [extension wiki here](https://github.com/oat-sa/extension-tao-l
 *Possible values:* 
 * `true`: enable the session check. 2 more HTTP redirects are needed
 * `false`: disable the session check
-
-### FactoryLtiAuthAdapter.conf.php
-No options
-
-### LtiUserFactory.conf.php
-No options
 
 ### LtiUserService.conf.php
 
@@ -125,5 +116,5 @@ No options
 *Value examples:* 
 * `[ new oat\taoLti\models\classes\LaunchData\Validator\Lti11LaunchDataValidator() ]`
 
-### ResourceLink.conf.php
-No options
+## Extension Wiki
+You can find the [extension wiki here](https://github.com/oat-sa/extension-tao-lti/wiki).
