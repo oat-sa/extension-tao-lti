@@ -57,7 +57,7 @@ You can find the [extension wiki here](https://github.com/oat-sa/extension-tao-l
 
 #### Configuration option `config`
 
-*Description:* specifies a single option as the `adapter` key of the array. This adapter is to be used to authenticate LTI requests and is retrieved in [FactoryLtiAuthAdapterService](taoLti/models/classes/FactoryLtiAuthAdapterService.php).
+*Description:* this specifies a single option as the `adapter` key of the array. This adapter is to be used to authenticate LTI requests and is retrieved in [FactoryLtiAuthAdapterService](taoLti/models/classes/FactoryLtiAuthAdapterService.php).
 
 *Possible values of the `adapter` key:* 
 * an instance of any class that implements the `common_user_auth_Adapter` interface
