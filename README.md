@@ -70,7 +70,7 @@ You can find the [extension wiki here](https://github.com/oat-sa/extension-tao-l
 
 #### Configuration option `verify_cookie`
 
-*Description:* whether to check if the 'session' request parameter matches the internal PHP session ID before launching an LTI tool
+*Description:* This option determine whether to check if the 'session' request parameter matches the internal PHP session ID before launching an LTI tool
 
 *Possible values:* 
 * `true`: enable the session check. 2 more HTTP redirects are needed
