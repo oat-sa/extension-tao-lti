@@ -37,7 +37,7 @@ sudo php tao/scripts/installExtension oat-sa/extension-tao-lti
 php tao\scripts\installExtension oat-sa/extension-tao-lti
 ```
 
-As a system administrator you also install it through the TAO Extension Manager:
+As a system administrator you can also install it through the TAO Extension Manager:
 - Settings (the gears on the right hand side of the menu) -> Extension manager
 - Select _taoLti_ on the right hand side, check the box and hit _install_
 
