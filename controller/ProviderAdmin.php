@@ -19,8 +19,7 @@
 
 namespace oat\taoLti\controller;
 
-use oat\tao\model\routing\AnnotationReader\security;
-use oat\taoLti\models\classes\ProviderService;
+use oat\taoLti\models\classes\LtiProvider\RdfLtiProviderFinder;
 use tao_actions_SaSModule;
 
 /**
@@ -39,6 +38,6 @@ class ProviderAdmin extends tao_actions_SaSModule
      */
     public function getClassService()
     {
-        return $this->getServiceLocator()->get(ProviderService::class);
+        return $this->getServiceLocator()->get(RdfLtiProviderFinder::class);
     }
 }
