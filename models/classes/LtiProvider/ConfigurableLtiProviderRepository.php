@@ -19,11 +19,14 @@
 
 namespace oat\taoLti\models\classes\LtiProvider;
 
+use oat\oatbox\service\ConfigurableService;
+
 /**
  * Service methods to manage the LTI provider business objects.
  */
-class ConfigurableLtiProviderRepository implements LtiProviderRepositoryInterface
+class ConfigurableLtiProviderRepository extends ConfigurableService implements LtiProviderRepositoryInterface
 {
+    const OPTION_LTI_PROVIDER_LIST_URL = 'OPTION_LTI_PROVIDER_LIST_URL';
     const ENV_LTI_PROVIDER_LIST_URL = 'LTI_PROVIDER_LIST_URL';
 
     /**
@@ -31,10 +34,15 @@ class ConfigurableLtiProviderRepository implements LtiProviderRepositoryInterfac
      */
     private $configuredProviders = [];
 
-    public function __construct()
+    public function __construct($options = array())
     {
-        $ltiProviderListFileName = $_ENV[self::ENV_LTI_PROVIDER_LIST_URL];
+        parent::__construct($options);
+
+        $ltiProviderListFileName = $this->getOption(self::OPTION_LTI_PROVIDER_LIST_URL);
+
+        // Temporary endpoint mock reading.
         $ltiProviderList = file_get_contents($ltiProviderListFileName);
+
         $providerList = json_decode($ltiProviderList, true);
         if ($providerList === null) {
             throw new \InvalidArgumentException('LTI provider list in .env is not a valid json string.');

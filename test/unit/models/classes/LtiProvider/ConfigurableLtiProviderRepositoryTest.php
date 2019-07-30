@@ -20,7 +20,8 @@
 namespace oat\taoLti\models\classes\LtiProvider;
 
 use oat\generis\test\TestCase;
-use oat\taoLti\models\classes\LtiProvider\ConfigurableLtiProviderRepository;
+use oat\oatbox\service\EnvironmentVariable;
+
 /**
  * Service methods to manage the LTI provider business objects.
  */
@@ -29,7 +30,7 @@ class ConfigurableLtiProviderRepositoryTest extends TestCase
     public function testConstructorCountFindAll()
     {
         $_ENV[ConfigurableLtiProviderRepository::ENV_LTI_PROVIDER_LIST_URL] = __DIR__ . '/_resources/lti_provider_list.json';
-        $subject = new ConfigurableLtiProviderRepository();
+        $subject = new ConfigurableLtiProviderRepository([ConfigurableLtiProviderRepository::OPTION_LTI_PROVIDER_LIST_URL => new EnvironmentVariable(ConfigurableLtiProviderRepository::ENV_LTI_PROVIDER_LIST_URL)]);
 
         $this->assertEquals(2, $subject->count());
 
@@ -51,7 +52,7 @@ class ConfigurableLtiProviderRepositoryTest extends TestCase
     public function testSearchByLabel()
     {
         $_ENV[ConfigurableLtiProviderRepository::ENV_LTI_PROVIDER_LIST_URL] = __DIR__ . '/_resources/lti_provider_list.json';
-        $subject = new ConfigurableLtiProviderRepository();
+        $subject = new ConfigurableLtiProviderRepository([ConfigurableLtiProviderRepository::OPTION_LTI_PROVIDER_LIST_URL => new EnvironmentVariable(ConfigurableLtiProviderRepository::ENV_LTI_PROVIDER_LIST_URL)]);
 
         $providers = $subject->searchByLabel('provider1');
         $this->assertEquals(1, count($providers));
@@ -67,6 +68,6 @@ class ConfigurableLtiProviderRepositoryTest extends TestCase
     {
         $_ENV[ConfigurableLtiProviderRepository::ENV_LTI_PROVIDER_LIST_URL] = __DIR__ . '/_resources/invalid_lti_provider_list.json';
         $this->setExpectedException(\InvalidArgumentException::class);
-        new ConfigurableLtiProviderRepository();
+        new ConfigurableLtiProviderRepository([ConfigurableLtiProviderRepository::OPTION_LTI_PROVIDER_LIST_URL => new EnvironmentVariable(ConfigurableLtiProviderRepository::ENV_LTI_PROVIDER_LIST_URL)]);
     }
 }
