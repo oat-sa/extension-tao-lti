@@ -97,6 +97,9 @@ class LtiProvider implements \JsonSerializable
         return $this->callbackUrl;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function jsonSerialize()
     {
         return [

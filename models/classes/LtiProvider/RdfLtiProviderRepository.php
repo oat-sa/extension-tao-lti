@@ -34,6 +34,9 @@ class RdfLtiProviderRepository extends OntologyClassService implements LtiProvid
 {
     const CLASS_URI = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIProvider';
 
+    /**
+     * @inheritdoc
+     */
     public function getRootClass()
     {
         return $this->getClass(self::CLASS_URI);
@@ -49,11 +52,17 @@ class RdfLtiProviderRepository extends OntologyClassService implements LtiProvid
         return $this->queryResources([], 'count', 0);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function findAll()
     {
         return $this->getProviders();
     }
 
+    /**
+     * @inheritdoc
+     */
     public function searchByLabel($queryString)
     {
         return $this->getProviders([OntologyRdfs::RDFS_LABEL => $queryString]);

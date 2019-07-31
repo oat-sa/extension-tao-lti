@@ -38,11 +38,17 @@ class ConfigurableLtiProviderRepository extends ConfigurableService implements L
         return count($this->getProviders());
     }
 
+    /**
+     * @inheritdoc
+     */
     public function findAll()
     {
         return $this->getProviders();
     }
 
+    /**
+     * @inheritdoc
+     */
     public function searchByLabel($label)
     {
         return array_filter(
@@ -53,6 +59,11 @@ class ConfigurableLtiProviderRepository extends ConfigurableService implements L
         );
     }
 
+    /**
+     * Get providers from configuration.
+     *
+     * @return LtiProvider[]
+     */
     private function getProviders()
     {
         $keys = ['uri', 'label', 'key', 'secret', 'callback_url'];
