@@ -26,7 +26,7 @@ namespace oat\taoLti\models\classes\LtiProvider;
 class LtiProvider implements \JsonSerializable
 {
     /** @var string */
-    private $uri;
+    private $id;
 
     /** @var string */
     private $label;
@@ -43,15 +43,15 @@ class LtiProvider implements \JsonSerializable
     /**
      * LtiProvider constructor.
      *
-     * @param string $uri
+     * @param string $id
      * @param string $label
      * @param string $key
      * @param string $secret
      * @param string $callbackUrl
      */
-    public function __construct($uri = '', $label = '', $key = '', $secret = '', $callbackUrl = '')
+    public function __construct($id = '', $label = '', $key = '', $secret = '', $callbackUrl = '')
     {
-        $this->uri = $uri;
+        $this->id = $id;
         $this->label = $label;
         $this->key = $key;
         $this->secret = $secret;
@@ -61,19 +61,19 @@ class LtiProvider implements \JsonSerializable
     /**
      * @return string
      */
-    public function getUri()
+    public function getId()
     {
-        return $this->uri;
+        return $this->id;
     }
 
     /**
-     * @param string $uri
+     * @param string $id
      *
      * @return LtiProvider
      */
-    public function setUri($uri)
+    public function setId($id)
     {
-        $this->uri = $uri;
+        $this->id = $id;
 
         return $this;
     }
@@ -161,8 +161,8 @@ class LtiProvider implements \JsonSerializable
     public function jsonSerialize()
     {
         return [
-            'id' => $this->getUri(),
-            'uri' => $this->getUri(),
+            'id' => $this->getId(),
+            'uri' => $this->getId(),
             'text' => $this->getLabel(),
             'key' => $this->getKey(),
             'secret' => $this->getSecret(),

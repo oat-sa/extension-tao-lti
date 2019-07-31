@@ -26,56 +26,52 @@ use oat\oatbox\service\ConfigurableService;
  */
 class ConfigurableLtiProviderRepository extends ConfigurableService implements LtiProviderRepositoryInterface
 {
-    const OPTION_LTI_PROVIDER_LIST_URL = 'OPTION_LTI_PROVIDER_LIST_URL';
-    const ENV_LTI_PROVIDER_LIST_URL = 'LTI_PROVIDER_LIST_URL';
+    const OPTION_LTI_PROVIDER_LIST = 'OPTION_LTI_PROVIDER_LIST';
 
     /**
      * @var array|LtiProvider[]
      */
-    private $configuredProviders = [];
-
-    public function __construct($options = array())
-    {
-        parent::__construct($options);
-
-        $ltiProviderListFileName = $this->getOption(self::OPTION_LTI_PROVIDER_LIST_URL);
-
-        // Temporary endpoint mock reading.
-        $ltiProviderList = file_get_contents($ltiProviderListFileName);
-
-        $providerList = json_decode($ltiProviderList, true);
-        if ($providerList === null) {
-            throw new \InvalidArgumentException('LTI provider list in .env is not a valid json string.');
-        }
-
-        foreach ($providerList as $provider) {
-            $this->configuredProviders[] = new LtiProvider(
-                $provider['uri'],
-                $provider['label'],
-                $provider['key'],
-                $provider['secret'],
-                $provider['callback_url']
-            );
-        }
-    }
+    private $providers;
 
     public function count()
     {
-        return count($this->configuredProviders);
+        return count($this->getProviders());
     }
 
     public function findAll()
     {
-        return $this->configuredProviders;
+        return $this->getProviders();
     }
 
     public function searchByLabel($label)
     {
         return array_filter(
-            $this->configuredProviders,
+            $this->getProviders(),
             function (LtiProvider $provider) use ($label) {
                 return stripos($provider->getLabel(), $label) !== false;
             }
         );
+    }
+
+    private function getProviders()
+    {
+        if ($this->providers === null) {
+            $providerList = $this->getOption(self::OPTION_LTI_PROVIDER_LIST);
+            if ($providerList === null) {
+                throw new \InvalidArgumentException('LTI provider list is not valid.');
+            }
+
+            foreach ($providerList as $provider) {
+                $this->providers[] = new LtiProvider(
+                    $provider['uri'],
+                    $provider['label'],
+                    $provider['key'],
+                    $provider['secret'],
+                    $provider['callback_url']
+                );
+            }
+        }
+
+        return $this->providers;
     }
 }

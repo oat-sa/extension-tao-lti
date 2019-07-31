@@ -19,39 +19,74 @@
 
 namespace oat\taoLti\models\classes\LtiProvider;
 
+use common_exception_Error as ErrorException;
+use common_exception_InvalidArgumentType as InvalidArgumentTypeException;
+use core_kernel_classes_Class as RdfClass;
+use core_kernel_classes_Resource as RdfResource;
+use oat\generis\model\kernel\persistence\smoothsql\search\ComplexSearchService;
 use oat\generis\model\OntologyRdfs;
-use oat\generis\test\TestCase;
+use oat\generis\test\unit\OntologyMockTest;
 use oat\oatbox\service\exception\InvalidServiceManagerException;
 use oat\oatbox\service\ServiceManager;
+use oat\search\base\QueryBuilderInterface;
+use oat\search\base\QueryInterface;
+use oat\search\base\SearchGateWayInterface;
+use oat\tao\model\oauth\DataStore;
 use Psr\Log\LoggerInterface;
 
 /**
  * Service methods to manage the LTI provider business objects.
  */
-class RdfLtiProviderRepositoryTest extends TestCase
+class RdfLtiProviderRepositoryTest extends OntologyMockTest
 {
     /** @var RdfLtiProviderRepository */
     private $subject;
 
-    /** @var RdfLtiProviderFinder|\PHPUnit_Framework_MockObject_MockObject $finderService */
-    private $finderService;
+    /** @var ComplexSearchService|\PHPUnit_Framework_MockObject_MockObject $finderService */
+    private $searchService;
 
     /** @var LoggerInterface|\PHPUnit_Framework_MockObject_MockObject $logger */
     private $logger;
 
+    /** @var QueryBuilderInterface|\PHPUnit_Framework_MockObject_MockObject $queryBuilder */
+    private $queryBuilder;
+
+    /** @var QueryInterface|\PHPUnit_Framework_MockObject_MockObject $query */
+    private $query;
+
+    /** @var SearchGateWayInterface|\PHPUnit_Framework_MockObject_MockObject $query */
+    private $gateWay;
+
     public function setUp()
     {
-        $this->finderService = $this->getMockBuilder(RdfLtiProviderFinder::class)
+        $this->query = $this->getMockBuilder(QueryInterface::class)
             ->disableOriginalConstructor()
-            ->setMethods(['getResources', 'getResourcesCount'])
+            ->setMethods(['add', 'contains'])
+            ->getMockForAbstractClass();
+
+        $this->queryBuilder = $this->getMockBuilder(QueryBuilderInterface::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['setCriteria'])
+            ->getMockForAbstractClass();
+
+        $this->gateWay = $this->getMockBuilder(SearchGateWayInterface::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['count', 'search'])
+            ->getMockForAbstractClass();
+
+        $this->searchService = $this->getMockBuilder(ComplexSearchService::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['query', 'searchType', 'getGateway'])
             ->getMock();
+        $this->searchService->method('query')->willReturn($this->queryBuilder);
+        $this->searchService->method('getGateway')->willReturn($this->gateWay);
 
         /** @var ServiceManager|\PHPUnit_Framework_MockObject_MockObject $serviceLocator */
         $serviceLocator = $this->getMockBuilder(ServiceManager::class)
             ->disableOriginalConstructor()
             ->setMethods(['get'])
             ->getMockForAbstractClass();
-        $serviceLocator->method('get')->with(RdfLtiProviderFinder::class)->willReturn($this->finderService);
+        $serviceLocator->method('get')->with(ComplexSearchService::SERVICE_ID)->willReturn($this->searchService);
 
         $this->logger = $this->getMockBuilder(LoggerInterface::class)
             ->disableOriginalConstructor()
@@ -63,18 +98,35 @@ class RdfLtiProviderRepositoryTest extends TestCase
         $this->subject->setLogger($this->logger);
     }
 
+    public function testGetRootClass()
+    {
+        $this->subject->setModel($this->getOntologyMock());
+
+        $rootClass = $this->subject->getRootClass();
+
+        $this->assertInstanceOf(RdfClass::class, $rootClass);
+        $this->assertEquals(RdfLtiProviderRepository::CLASS_URI, $rootClass->getUri());
+    }
+
     public function testCount()
     {
         $count = 12;
-        $this->finderService->method('getResourcesCount')->willReturn($count);
+
+        $this->searchService->method('searchType')
+            ->with($this->queryBuilder, RdfLtiProviderRepository::CLASS_URI, true)
+            ->willReturn($this->query);
+        $this->queryBuilder->expects($this->once())->method('setCriteria')->with($this->query);
+        $this->gateWay->method('count')->with($this->queryBuilder)->willReturn($count);
+
         $this->assertEquals($count, $this->subject->count());
     }
 
-    public function testCountWithExceptionReturn0AndLogsException()
+    public function testGetProvidersCountWithExceptionReturn0AndLogsException()
     {
         $message = 'the exception message';
-        $this->finderService->method('getResourcesCount')
-            ->willThrowException(new InvalidServiceManagerException($message));
+        $this->searchService->method('searchType')
+            ->with($this->queryBuilder, RdfLtiProviderRepository::CLASS_URI, true)
+            ->willThrowException(new ErrorException($message));
         $this->logger->expects($this->once())->method('error')->with('Unable to retrieve providers: ' . $message, []);
 
         $this->assertEquals(0, $this->subject->count());
@@ -100,61 +152,105 @@ class RdfLtiProviderRepositoryTest extends TestCase
         $secret2 = 'secret2';
         $callbackUrl2 = 'callbackUrl2';
 
-        $resource1 = new LtiProviderResource($uri1);
-        $resource1->setLabel($label1);
-        $resource1->setKey($key1);
-        $resource1->setSecret($secret1);
-        $resource1->setCallbackUrl($callbackUrl1);
-        $resource2 = new LtiProviderResource($uri2);
-        $resource2->setLabel($label2);
-        $resource2->setKey($key2);
-        $resource2->setSecret($secret2);
-        $resource2->setCallbackUrl($callbackUrl2);
+        $resource1 = $this->getRdfResourceMock($uri1, $label1, $key1, $secret1, $callbackUrl1);
+        $resource2 = $this->getRdfResourceMock($uri2, $label2, $key2, $secret2, $callbackUrl2);
         $resources = [$resource1, $resource2];
 
-        $expected = [
-            new LtiProvider($uri1, $label1, $key1, $secret1, $callbackUrl1),
-            new LtiProvider($uri2, $label2, $key2, $secret2, $callbackUrl2),
-        ];
+        $ltiProvider1 = new LtiProvider($uri1, $label1, $key1, $secret1, $callbackUrl1);
+        $ltiProvider2 = new LtiProvider($uri2, $label2, $key2, $secret2, $callbackUrl2);
+        $expected = [$ltiProvider1, $ltiProvider2];
 
-        $this->finderService->method('getResources')->with($criteria)->willReturn($resources);
+        $this->searchService->method('searchType')
+            ->with($this->queryBuilder, RdfLtiProviderRepository::CLASS_URI, true)
+            ->willReturn($this->query);
+
+        $this->queryBuilder->expects($this->once())->method('setCriteria')->with($this->query);
+        $this->gateWay->method('search')->with($this->queryBuilder)->willReturn($resources);
+        if (count($criteria)) {
+            foreach ($criteria as $key => $value) {
+                $this->query->expects($this->once())->method('add')->with($key)->willReturn($this->query);
+                $this->query->expects($this->once())->method('contains')->with($value)->willReturn($this->query);
+            }
+        }
+
         $this->assertEquals($expected, $this->subject->$method($param));
     }
 
     public function criteriaToTest()
     {
-        $key = 'key';
-        $value = 'value';
+        $label = 'value';
 
         return [
             ['findAll', null, []],
-            ['searchByLabel', $value, [OntologyRdfs::RDFS_LABEL => $value]],
-            ['findBy', [$key => $value], [$key => $value]],
+            ['searchByLabel', $label, [OntologyRdfs::RDFS_LABEL => $label]],
         ];
+    }
+
+    public function testFindWithExceptionReturn0AndLogsException()
+    {
+        $message = 'the exception message';
+        $this->searchService->method('searchType')
+            ->willThrowException(new ErrorException($message));
+        $this->logger->expects($this->once())->method('error')->with('Unable to retrieve providers: ' . $message, []);
+
+        $this->assertEquals([], $this->subject->findAll());
+    }
+
+    public function testFindWithFaultyPropertyValuesReturnsEmptyArray()
+    {
+        $class = 'class';
+        $function = 'function';
+        $position = 0;
+        $type = 'type';
+        $object = 'object';
+
+        $resource = $this->getMockBuilder(RdfResource::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['getPropertiesValues'])
+            ->getMock();
+        $resource->method('getPropertiesValues')->willThrowException(new InvalidArgumentTypeException($class, $function, $position, $type, $object));
+        $resources = [$resource];
+
+        $this->searchService->method('searchType')
+            ->with($this->queryBuilder, RdfLtiProviderRepository::CLASS_URI, true)
+            ->willReturn($this->query);
+
+        $this->queryBuilder->expects($this->once())->method('setCriteria')->with($this->query);
+        $this->gateWay->method('search')->with($this->queryBuilder)->willReturn($resources);
+
+        $this->logger->expects($this->once())->method('error')
+            ->with('Unable to retrieve provider properties: Argument ' . $position . ' passed to ' . $class . '::' . $function . '() must be an ' . $type . ', string given', []);
+        $this->assertEquals([], $this->subject->findAll());
     }
 
     /**
-     * @dataProvider methodsToTest
+     * @param string $uri
+     * @param string $label
+     * @param string $key
+     * @param string $secret
+     * @param string $callbackUrl
      *
-     * @param string $method
-     * @param string|array $param
+     * @return \PHPUnit_Framework_MockObject_MockObject
      */
-    public function testFindWithExceptionReturn0AndLogsException($method, $param)
+    private function getRdfResourceMock($uri, $label, $key, $secret, $callbackUrl)
     {
-        $message = 'the exception message';
-        $this->finderService->method('getResources')
-            ->willThrowException(new InvalidServiceManagerException($message));
-        $this->logger->expects($this->once())->method('error')->with('Unable to retrieve providers: ' . $message, []);
-
-        $this->assertEquals([], $this->subject->$method($param));
-    }
-
-    public function methodsToTest()
-    {
-        return [
-            ['findAll', null],
-            ['searchByLabel', 'blah'],
-            ['findBy', ['key' => 'value']],
-        ];
+        $resource = $this->getMockBuilder(RdfResource::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['getUri', 'getLabel', 'getPropertiesValues'])
+            ->getMock();
+        $resource->method('getUri')->willReturn($uri);
+        $resource->method('getLabel')->willReturn($label);
+        $resource->method('getPropertiesValues')
+            ->with([
+                DataStore::PROPERTY_OAUTH_KEY,
+                DataStore::PROPERTY_OAUTH_SECRET,
+                DataStore::PROPERTY_OAUTH_CALLBACK,
+            ])
+            ->willReturn([
+                DataStore::PROPERTY_OAUTH_KEY => [$key],
+                DataStore::PROPERTY_OAUTH_SECRET => [$secret],
+                DataStore::PROPERTY_OAUTH_CALLBACK => [$callbackUrl],
+            ]);
+        return $resource;
     }
 }

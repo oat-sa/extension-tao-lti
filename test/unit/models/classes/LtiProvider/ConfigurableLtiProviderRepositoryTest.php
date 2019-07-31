@@ -29,20 +29,19 @@ class ConfigurableLtiProviderRepositoryTest extends TestCase
 {
     public function testConstructorCountFindAll()
     {
-        $_ENV[ConfigurableLtiProviderRepository::ENV_LTI_PROVIDER_LIST_URL] = __DIR__ . '/_resources/lti_provider_list.json';
-        $subject = new ConfigurableLtiProviderRepository([ConfigurableLtiProviderRepository::OPTION_LTI_PROVIDER_LIST_URL => new EnvironmentVariable(ConfigurableLtiProviderRepository::ENV_LTI_PROVIDER_LIST_URL)]);
+        $subject = new ConfigurableLtiProviderRepository([ConfigurableLtiProviderRepository::OPTION_LTI_PROVIDER_LIST => json_decode(file_get_contents(__DIR__ . '/_resources/lti_provider_list.json'), true)]);
 
         $this->assertEquals(2, $subject->count());
 
         $providers = $subject->findAll();
         $this->assertInstanceOf(LtiProvider::class, $providers[0]);
-        $this->assertEquals('provider1_uri', $providers[0]->getUri());
+        $this->assertEquals('provider1_uri', $providers[0]->getId());
         $this->assertEquals('provider1_label', $providers[0]->getLabel());
         $this->assertEquals('provider1_key', $providers[0]->getKey());
         $this->assertEquals('provider1_secret', $providers[0]->getSecret());
         $this->assertEquals('provider1_callback_url', $providers[0]->getCallbackUrl());
         $this->assertInstanceOf(LtiProvider::class, $providers[1]);
-        $this->assertEquals('provider2_uri', $providers[1]->getUri());
+        $this->assertEquals('provider2_uri', $providers[1]->getId());
         $this->assertEquals('provider2_label', $providers[1]->getLabel());
         $this->assertEquals('provider2_key', $providers[1]->getKey());
         $this->assertEquals('provider2_secret', $providers[1]->getSecret());
@@ -51,13 +50,12 @@ class ConfigurableLtiProviderRepositoryTest extends TestCase
 
     public function testSearchByLabel()
     {
-        $_ENV[ConfigurableLtiProviderRepository::ENV_LTI_PROVIDER_LIST_URL] = __DIR__ . '/_resources/lti_provider_list.json';
-        $subject = new ConfigurableLtiProviderRepository([ConfigurableLtiProviderRepository::OPTION_LTI_PROVIDER_LIST_URL => new EnvironmentVariable(ConfigurableLtiProviderRepository::ENV_LTI_PROVIDER_LIST_URL)]);
+        $subject = new ConfigurableLtiProviderRepository([ConfigurableLtiProviderRepository::OPTION_LTI_PROVIDER_LIST => json_decode(file_get_contents(__DIR__ . '/_resources/lti_provider_list.json'), true)]);
 
         $providers = $subject->searchByLabel('provider1');
         $this->assertEquals(1, count($providers));
         $this->assertInstanceOf(LtiProvider::class, $providers[0]);
-        $this->assertEquals('provider1_uri', $providers[0]->getUri());
+        $this->assertEquals('provider1_uri', $providers[0]->getId());
         $this->assertEquals('provider1_label', $providers[0]->getLabel());
         $this->assertEquals('provider1_key', $providers[0]->getKey());
         $this->assertEquals('provider1_secret', $providers[0]->getSecret());
@@ -66,8 +64,9 @@ class ConfigurableLtiProviderRepositoryTest extends TestCase
 
     public function testConstructorWithInvalidProviderListThrowsException()
     {
-        $_ENV[ConfigurableLtiProviderRepository::ENV_LTI_PROVIDER_LIST_URL] = __DIR__ . '/_resources/invalid_lti_provider_list.json';
+        $subject = new ConfigurableLtiProviderRepository([ConfigurableLtiProviderRepository::OPTION_LTI_PROVIDER_LIST => null]);
         $this->setExpectedException(\InvalidArgumentException::class);
-        new ConfigurableLtiProviderRepository([ConfigurableLtiProviderRepository::OPTION_LTI_PROVIDER_LIST_URL => new EnvironmentVariable(ConfigurableLtiProviderRepository::ENV_LTI_PROVIDER_LIST_URL)]);
+
+        $subject->count();
     }
 }

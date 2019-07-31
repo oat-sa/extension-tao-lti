@@ -28,7 +28,7 @@ class LtiProviderTest extends TestCase
     public function testConstructorWithDefaultValues()
     {
         $subject = new LtiProvider();
-        $this->assertEquals('', $subject->getUri());
+        $this->assertEquals('', $subject->getId());
         $this->assertEquals('', $subject->getLabel());
         $this->assertEquals('', $subject->getKey());
         $this->assertEquals('', $subject->getSecret());
@@ -37,7 +37,7 @@ class LtiProviderTest extends TestCase
 
     public function testGettersSetters()
     {
-        $uri = 'http://uri.com/blah/blah/blah';
+        $id = 'an id';
         $label = 'A beautiful label';
         $key = 'foo';
         $secret = 'bar';
@@ -45,13 +45,13 @@ class LtiProviderTest extends TestCase
 
         $subject = new LtiProvider();
 
-        $this->assertEquals($subject, $subject->setUri($uri));
+        $this->assertEquals($subject, $subject->setId($id));
         $this->assertEquals($subject, $subject->setLabel($label));
         $this->assertEquals($subject, $subject->setKey($key));
         $this->assertEquals($subject, $subject->setSecret($secret));
         $this->assertEquals($subject, $subject->setCallbackUrl($callbackUrl));
 
-        $this->assertEquals($uri, $subject->getUri());
+        $this->assertEquals($id, $subject->getId());
         $this->assertEquals($label, $subject->getLabel());
         $this->assertEquals($key, $subject->getKey());
         $this->assertEquals($secret, $subject->getSecret());
@@ -60,16 +60,16 @@ class LtiProviderTest extends TestCase
 
     public function testConstructorAndSerializer()
     {
-        $uri = 'http://uri.com/blah/blah/blah';
+        $id = 'an id';
         $label = 'A beautiful label';
         $key = 'foo';
         $secret = 'bar';
         $callbackUrl = 'baz';
 
-        $subject = new LtiProvider($uri, $label, $key, $secret, $callbackUrl);
+        $subject = new LtiProvider($id, $label, $key, $secret, $callbackUrl);
         $expected = [
-            'id' => $uri,
-            'uri' => $uri,
+            'id' => $id,
+            'uri' => $id,
             'text' => $label,
             'key' => $key,
             'secret' => $secret,
