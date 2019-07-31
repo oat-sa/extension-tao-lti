@@ -14,8 +14,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2016 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
- *
+ * Copyright (c) 2019 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
  */
 
 namespace oat\taoLti\models\classes\LtiProvider;
@@ -67,35 +66,11 @@ class LtiProvider implements \JsonSerializable
     }
 
     /**
-     * @param string $id
-     *
-     * @return LtiProvider
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-
-        return $this;
-    }
-
-    /**
      * @return string
      */
     public function getLabel()
     {
         return $this->label;
-    }
-
-    /**
-     * @param string $label
-     *
-     * @return LtiProvider
-     */
-    public function setLabel($label)
-    {
-        $this->label = $label;
-
-        return $this;
     }
 
     /**
@@ -107,18 +82,6 @@ class LtiProvider implements \JsonSerializable
     }
 
     /**
-     * @param string $key
-     *
-     * @return LtiProvider
-     */
-    public function setKey($key)
-    {
-        $this->key = $key;
-
-        return $this;
-    }
-
-    /**
      * @return string
      */
     public function getSecret()
@@ -127,35 +90,11 @@ class LtiProvider implements \JsonSerializable
     }
 
     /**
-     * @param string $secret
-     *
-     * @return LtiProvider
-     */
-    public function setSecret($secret)
-    {
-        $this->secret = $secret;
-
-        return $this;
-    }
-
-    /**
      * @return string
      */
     public function getCallbackUrl()
     {
         return $this->callbackUrl;
-    }
-
-    /**
-     * @param string $callbackUrl
-     *
-     * @return LtiProvider
-     */
-    public function setCallbackUrl($callbackUrl)
-    {
-        $this->callbackUrl = $callbackUrl;
-
-        return $this;
     }
 
     public function jsonSerialize()
