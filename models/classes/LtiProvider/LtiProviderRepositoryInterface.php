@@ -19,22 +19,17 @@
 
 namespace oat\taoLti\models\classes\LtiProvider;
 
+use Countable;
+
 /**
  * Service methods to manage the LTI provider business objects.
  */
-interface LtiProviderRepositoryInterface
+interface LtiProviderRepositoryInterface extends Countable
 {
-    /**
-     * Returns the number of providers.
-     *
-     * @return int
-     */
-    public function count();
-
     /**
      * Returns all providers.
      *
-     * @return array|LtiProvider[]
+     * @return LtiProvider[]
      */
     public function findAll();
 
@@ -43,7 +38,7 @@ interface LtiProviderRepositoryInterface
      *
      * @param string $label
      *
-     * @return array|LtiProvider[]
+     * @return LtiProvider[]
      */
     public function searchByLabel($label);
 }

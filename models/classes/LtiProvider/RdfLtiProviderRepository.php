@@ -19,13 +19,13 @@
 
 namespace oat\taoLti\models\classes\LtiProvider;
 
-use oat\generis\model\OntologyRdfs;
-use oat\tao\model\OntologyClassService;
 use common_exception_Error as ErrorException;
 use common_exception_InvalidArgumentType as InvalidArgumentTypeException;
 use core_kernel_classes_Resource as RdfResource;
 use oat\generis\model\kernel\persistence\smoothsql\search\ComplexSearchService;
+use oat\generis\model\OntologyRdfs;
 use oat\tao\model\oauth\DataStore;
+use oat\tao\model\OntologyClassService;
 
 /**
  * Service methods to manage the LTI provider business objects.
