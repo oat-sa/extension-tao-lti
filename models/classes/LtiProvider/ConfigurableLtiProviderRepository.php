@@ -29,7 +29,7 @@ class ConfigurableLtiProviderRepository extends ConfigurableService implements L
     const OPTION_LTI_PROVIDER_LIST = 'OPTION_LTI_PROVIDER_LIST';
 
     /**
-     * @var array|LtiProvider[]
+     * @var LtiProvider[]
      */
     private $providers;
 

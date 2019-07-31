@@ -24,7 +24,7 @@ use oat\oatbox\service\ConfigurableService;
 /**
  * Service methods to manage the LTI provider business objects.
  */
-class LtiProviderService extends ConfigurableService
+class LtiProviderService extends ConfigurableService implements LtiProviderRepositoryInterface
 {
     const SERVICE_ID = 'taoLti/LtiProviderService';
     const LTI_PROVIDER_LIST_IMPLEMENTATIONS = 'ltiProviderListImplementations';
