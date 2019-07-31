@@ -1,0 +1,8 @@
+[
+    {
+        "uri": "provider1_uri",
+        "label": "provider1_label",
+        "key": "provider1_key",
+        "secret": "provider1_secret"
+    }
+]

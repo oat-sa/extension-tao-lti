@@ -14,30 +14,31 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2019 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
+ * Copyright (c) 2019 (original work) Open Assessment Technologies SA
  */
 
-namespace oat\taoLti\controller;
+namespace oat\taoLti\models\classes\LtiProvider;
 
-use oat\taoLti\models\classes\LtiProvider\RdfLtiProviderFinder;
-use tao_actions_SaSModule;
+use Countable;
 
 /**
- * This controller allows the adding and deletion of LTI Oauth Providers
- *
- * @package taoLti
- * @license GPLv2 http://www.opensource.org/licenses/gpl-2.0.php
+ * Service methods to manage the LTI provider business objects.
  */
-class ProviderAdmin extends tao_actions_SaSModule
+interface LtiProviderRepositoryInterface extends Countable
 {
     /**
-     * (non-PHPdoc)
+     * Returns all providers.
      *
-     * @see \tao_actions_RdfController::getClassService()
-     * @security("hide");
+     * @return LtiProvider[]
      */
-    public function getClassService()
-    {
-        return $this->getServiceLocator()->get(RdfLtiProviderFinder::class);
-    }
+    public function findAll();
+
+    /**
+     * Search all LTI providers with label property containing the given label.
+     *
+     * @param string $label
+     *
+     * @return LtiProvider[]
+     */
+    public function searchByLabel($label);
 }
