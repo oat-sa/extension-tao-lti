@@ -39,6 +39,11 @@ class RdfLtiProviderRepository extends OntologyClassService implements LtiProvid
         return $this->getClass(self::CLASS_URI);
     }
 
+    /**
+     * Returns the number of LtiProviders.
+     *
+     * @return int
+     */
     public function count()
     {
         return $this->queryResources([], 'count', 0);
