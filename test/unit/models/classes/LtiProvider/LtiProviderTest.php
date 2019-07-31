@@ -25,17 +25,7 @@ use oat\taoLti\models\classes\LtiProvider\LtiProvider;
 
 class LtiProviderTest extends TestCase
 {
-    public function testConstructorWithDefaultValues()
-    {
-        $subject = new LtiProvider();
-        $this->assertEquals('', $subject->getId());
-        $this->assertEquals('', $subject->getLabel());
-        $this->assertEquals('', $subject->getKey());
-        $this->assertEquals('', $subject->getSecret());
-        $this->assertEquals('', $subject->getCallbackUrl());
-    }
-
-    public function testGettersSetters()
+    public function testGetters()
     {
         $id = 'an id';
         $label = 'A beautiful label';
@@ -43,13 +33,7 @@ class LtiProviderTest extends TestCase
         $secret = 'bar';
         $callbackUrl = 'baz';
 
-        $subject = new LtiProvider();
-
-        $this->assertEquals($subject, $subject->setId($id));
-        $this->assertEquals($subject, $subject->setLabel($label));
-        $this->assertEquals($subject, $subject->setKey($key));
-        $this->assertEquals($subject, $subject->setSecret($secret));
-        $this->assertEquals($subject, $subject->setCallbackUrl($callbackUrl));
+        $subject = new LtiProvider($id, $label, $key, $secret, $callbackUrl);
 
         $this->assertEquals($id, $subject->getId());
         $this->assertEquals($label, $subject->getLabel());
@@ -58,7 +42,7 @@ class LtiProviderTest extends TestCase
         $this->assertEquals($callbackUrl, $subject->getCallbackUrl());
     }
 
-    public function testConstructorAndSerializer()
+    public function testSerializer()
     {
         $id = 'an id';
         $label = 'A beautiful label';
