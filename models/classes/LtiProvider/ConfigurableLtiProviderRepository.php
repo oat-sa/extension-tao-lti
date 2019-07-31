@@ -55,6 +55,8 @@ class ConfigurableLtiProviderRepository extends ConfigurableService implements L
 
     private function getProviders()
     {
+        $keys = ['uri', 'label', 'key', 'secret', 'callback_url'];
+
         if ($this->providers === null) {
             $providerList = $this->getOption(self::OPTION_LTI_PROVIDER_LIST);
             if ($providerList === null) {
@@ -63,6 +65,11 @@ class ConfigurableLtiProviderRepository extends ConfigurableService implements L
 
             $this->providers = [];
             foreach ($providerList as $provider) {
+                foreach ($keys as $key) {
+                    if (!isset($provider[$key])) {
+                        throw new \InvalidArgumentException(sprintf('Missing key \'%s\' in LTI provider list.', $key));
+                    }
+                }
                 $this->providers[] = new LtiProvider(
                     $provider['uri'],
                     $provider['label'],

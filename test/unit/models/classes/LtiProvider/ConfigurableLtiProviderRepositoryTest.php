@@ -62,10 +62,18 @@ class ConfigurableLtiProviderRepositoryTest extends TestCase
         $this->assertEquals('provider1_callback_url', $providers[0]->getCallbackUrl());
     }
 
-    public function testConstructorWithInvalidProviderListThrowsException()
+    public function testConstructorWithNullProviderListThrowsException()
     {
         $subject = new ConfigurableLtiProviderRepository([ConfigurableLtiProviderRepository::OPTION_LTI_PROVIDER_LIST => null]);
         $this->setExpectedException(\InvalidArgumentException::class);
+
+        $subject->count();
+    }
+
+    public function testConstructorWithInvalidProviderListThrowsException()
+    {
+        $subject = new ConfigurableLtiProviderRepository([ConfigurableLtiProviderRepository::OPTION_LTI_PROVIDER_LIST => json_decode(file_get_contents(__DIR__ . '/_resources/incomplete_lti_provider_list.json'), true)]);
+        $this->setExpectedException(\InvalidArgumentException::class, 'Missing key \'callback_url\' in LTI provider list.');
 
         $subject->count();
     }
