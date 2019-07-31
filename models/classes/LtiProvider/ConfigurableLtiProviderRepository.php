@@ -61,6 +61,7 @@ class ConfigurableLtiProviderRepository extends ConfigurableService implements L
                 throw new \InvalidArgumentException('LTI provider list is not valid.');
             }
 
+            $this->providers = [];
             foreach ($providerList as $provider) {
                 $this->providers[] = new LtiProvider(
                     $provider['uri'],
