@@ -47,7 +47,7 @@ class LtiProviderService extends ConfigurableService implements LtiProviderRepos
     /**
      * Gathers LTI providers found from all implementations configured.
      *
-     * @return array|LtiProvider[]
+     * @return LtiProvider[]
      */
     public function findAll()
     {
@@ -64,7 +64,7 @@ class LtiProviderService extends ConfigurableService implements LtiProviderRepos
      *
      * @param string $label
      *
-     * @return array|LtiProvider[]
+     * @return LtiProvider[]
      */
     public function searchByLabel($label)
     {

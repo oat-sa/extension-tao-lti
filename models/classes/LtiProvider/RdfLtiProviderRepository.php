@@ -59,7 +59,7 @@ class RdfLtiProviderRepository extends OntologyClassService implements LtiProvid
      *
      * @param array $criteria
      *
-     * @return array|LtiProvider[]
+     * @return LtiProvider[]
      */
     private function getProviders(array $criteria = [])
     {
