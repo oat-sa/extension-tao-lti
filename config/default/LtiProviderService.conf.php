@@ -1,4 +1,5 @@
 <?php
+
 use oat\taoLti\models\classes\LtiProvider\LtiProviderService;
 use oat\taoLti\models\classes\LtiProvider\RdfLtiProviderRepository;
 
