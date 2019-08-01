@@ -34,14 +34,11 @@ use oat\taoLti\models\classes\LaunchData\Validator\Lti11LaunchDataValidator;
 use oat\taoLti\models\classes\LaunchData\Validator\LtiValidatorService;
 use oat\taoLti\models\classes\LtiAuthAdapter;
 use oat\taoLti\models\classes\LtiException;
-use oat\taoLti\models\classes\LtiProvider\ConfigurableLtiProviderRepository;
 use oat\taoLti\models\classes\LtiProvider\LtiProviderService;
 use oat\taoLti\models\classes\LtiProvider\RdfLtiProviderRepository;
-use oat\taoLti\models\classes\ProviderService;
 use oat\taoLti\models\classes\ResourceLink\LinkService;
 use oat\taoLti\models\classes\ResourceLink\OntologyLink;
 use oat\taoLti\models\classes\user\LtiUserFactoryService;
-use oat\taoLti\models\classes\user\LtiUserHelper;
 use oat\taoLti\models\classes\user\LtiUserService;
 use oat\taoLti\models\classes\user\OntologyLtiUserService;
 use oat\taoLti\models\classes\user\UserService;
@@ -233,13 +230,11 @@ class Updater extends \common_ext_ExtensionUpdater
                 $ltiProviderService = $this->getServiceManager()->get(LtiProviderService::SERVICE_ID);
                 $ltiProviderService->setOption($ltiProviderService::LTI_PROVIDER_LIST_IMPLEMENTATIONS, [
                     new RdfLtiProviderRepository(),
-                    new ConfigurableLtiProviderRepository(),
                 ]);
             } else {
                 $ltiProviderService = new LtiProviderService([
                     LtiProviderService::LTI_PROVIDER_LIST_IMPLEMENTATIONS => [
                         new RdfLtiProviderRepository(),
-                        new ConfigurableLtiProviderRepository(),
                     ]
                 ]);
             }
