@@ -228,15 +228,25 @@ class Updater extends \common_ext_ExtensionUpdater
         $this->skip('9.2.0', '10.2.0');
 
         if ($this->isVersion('10.2.0')) {
-            /** @var LtiProviderService $ltiProviderService */
-            $ltiProviderService = $this->getServiceManager()->get(LtiProviderService::SERVICE_ID);
-            $ltiProviderService->setOption($ltiProviderService::LTI_PROVIDER_LIST_IMPLEMENTATIONS, [
-                new RdfLtiProviderRepository(),
-                new ConfigurableLtiProviderRepository(),
-            ]);
+            if ($this->getServiceManager()->has(LtiProviderService::SERVICE_ID)) {
+                /** @var LtiProviderService $ltiProviderService */
+                $ltiProviderService = $this->getServiceManager()->get(LtiProviderService::SERVICE_ID);
+                $ltiProviderService->setOption($ltiProviderService::LTI_PROVIDER_LIST_IMPLEMENTATIONS, [
+                    new RdfLtiProviderRepository(),
+                    new ConfigurableLtiProviderRepository(),
+                ]);
+            } else {
+                $ltiProviderService = new LtiProviderService([
+                    LtiProviderService::LTI_PROVIDER_LIST_IMPLEMENTATIONS => [
+                        new RdfLtiProviderRepository(),
+                        new ConfigurableLtiProviderRepository(),
+                    ]
+                ]);
+            }
             $this->getServiceManager()->register(LtiProviderService::SERVICE_ID, $ltiProviderService);
-
             $this->setVersion('10.3.0');
         }
+
+        $this->skip('10.3.0', '10.3.1');
     }
 }
