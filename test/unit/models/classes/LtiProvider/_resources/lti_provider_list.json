@@ -1,0 +1,16 @@
+[
+    {
+        "uri": "provider1_uri",
+        "label": "provider1_label",
+        "key": "provider1_key",
+        "secret": "provider1_secret",
+        "callback_url": "provider1_callback_url"
+    },
+    {
+        "uri": "provider2_uri",
+        "label": "provider2_label",
+        "key": "provider2_key",
+        "secret": "provider2_secret",
+        "callback_url": "provider2_callback_url"
+    }
+]

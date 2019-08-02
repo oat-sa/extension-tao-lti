@@ -34,11 +34,11 @@ use oat\taoLti\models\classes\LaunchData\Validator\Lti11LaunchDataValidator;
 use oat\taoLti\models\classes\LaunchData\Validator\LtiValidatorService;
 use oat\taoLti\models\classes\LtiAuthAdapter;
 use oat\taoLti\models\classes\LtiException;
-use oat\taoLti\models\classes\ProviderService;
+use oat\taoLti\models\classes\LtiProvider\LtiProviderService;
+use oat\taoLti\models\classes\LtiProvider\RdfLtiProviderRepository;
 use oat\taoLti\models\classes\ResourceLink\LinkService;
 use oat\taoLti\models\classes\ResourceLink\OntologyLink;
 use oat\taoLti\models\classes\user\LtiUserFactoryService;
-use oat\taoLti\models\classes\user\LtiUserHelper;
 use oat\taoLti\models\classes\user\LtiUserService;
 use oat\taoLti\models\classes\user\OntologyLtiUserService;
 use oat\taoLti\models\classes\user\UserService;
@@ -218,10 +218,30 @@ class Updater extends \common_ext_ExtensionUpdater
 
         if ($this->isVersion('9.1.0')) {
             $this->getServiceManager()->unregister(ConsumerService::SERVICE_ID);
-            $this->getServiceManager()->unregister(ProviderService::SERVICE_ID);
+            $this->getServiceManager()->unregister('taoLti/ProviderService');
             $this->setVersion('9.2.0');
         }
 
         $this->skip('9.2.0', '10.2.0');
+
+        if ($this->isVersion('10.2.0')) {
+            if ($this->getServiceManager()->has(LtiProviderService::SERVICE_ID)) {
+                /** @var LtiProviderService $ltiProviderService */
+                $ltiProviderService = $this->getServiceManager()->get(LtiProviderService::SERVICE_ID);
+                $ltiProviderService->setOption($ltiProviderService::LTI_PROVIDER_LIST_IMPLEMENTATIONS, [
+                    new RdfLtiProviderRepository(),
+                ]);
+            } else {
+                $ltiProviderService = new LtiProviderService([
+                    LtiProviderService::LTI_PROVIDER_LIST_IMPLEMENTATIONS => [
+                        new RdfLtiProviderRepository(),
+                    ]
+                ]);
+            }
+            $this->getServiceManager()->register(LtiProviderService::SERVICE_ID, $ltiProviderService);
+            $this->setVersion('10.3.0');
+        }
+
+        $this->skip('10.3.0', '10.3.1');
     }
 }
