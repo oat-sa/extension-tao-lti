@@ -93,4 +93,18 @@ class ConfigurableLtiProviderRepository extends ConfigurableService implements L
 
         return $this->providers;
     }
+
+    /**
+     * @param string $id
+     * @return LtiProvider
+     */
+    public function searchById($id)
+    {
+        return current(array_filter(
+            $this->getProviders(),
+            function (LtiProvider $provider) use ($id) {
+                return stripos($provider->getId(), $id) !== false;
+            }
+        ));
+    }
 }

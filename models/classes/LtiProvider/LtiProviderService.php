@@ -93,4 +93,18 @@ class LtiProviderService extends ConfigurableService implements LtiProviderRepos
 
         return $result;
     }
+
+    /**
+     * @param string $id
+     * @return LtiProvider
+     */
+    public function searchById($id)
+    {
+        return current($this->aggregate(
+            [],
+            function ($providers, LtiProviderRepositoryInterface $implementation) use ($id) {
+                return array_merge($providers, [$implementation->searchById($id)]);
+            }
+        ));
+    }
 }
