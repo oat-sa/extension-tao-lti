@@ -21,7 +21,6 @@
 namespace oat\taoLti\test\unit\models\classes\LtiProvider;
 
 use oat\generis\test\TestCase;
-use oat\taoLti\models\classes\LtiProvider\LtiProvider;
 use oat\taoLti\models\classes\LtiProvider\LtiProviderRepositoryInterface;
 use oat\taoLti\models\classes\LtiProvider\LtiProviderService;
 
@@ -32,8 +31,10 @@ class LtiProviderServiceTest extends TestCase
     const FIND_ALL_1 = ['key1' => 'value1'];
     const FIND_ALL_2 = ['key2' => 'value2'];
     const LABEL = 'the sought label';
+    const ID = 'uri';
     const SEARCH_1 = ['key3' => 'value3'];
     const SEARCH_2 = ['key4' => 'value4'];
+    const SEARCH_ID_RESULT = ['uri' => 'v4'];
 
     /** @var LtiProviderService */
     private $subject;
@@ -41,10 +42,10 @@ class LtiProviderServiceTest extends TestCase
     public function setUp()
     {
         $repository1 = $this->createRepositoryMock(
-            self::COUNT_1, self::FIND_ALL_1, self::LABEL, self::SEARCH_1
+            self::COUNT_1, self::FIND_ALL_1, self::LABEL, self::SEARCH_1, self::ID, self::SEARCH_ID_RESULT
         );
         $repository2 = $this->createRepositoryMock(
-            self::COUNT_2, self::FIND_ALL_2, self::LABEL, self::SEARCH_2
+            self::COUNT_2, self::FIND_ALL_2, self::LABEL, self::SEARCH_2, self::ID, null
         );
 
         $this->subject = new LtiProviderService([
@@ -67,15 +68,21 @@ class LtiProviderServiceTest extends TestCase
         $this->assertEquals(array_merge(self::SEARCH_1, self::SEARCH_2), $this->subject->searchByLabel(self::LABEL));
     }
 
-    private function createRepositoryMock($count, array $findAllResult, $label, array $searchResult)
+    public function testSearchById()
+    {
+        $this->assertEquals(self::SEARCH_ID_RESULT, $this->subject->searchById(self::ID));
+    }
+
+    private function createRepositoryMock($count, array $findAllResult, $label, array $searchResult, $searchId, $searchByIdhResult)
     {
         $repository = $this->getMockBuilder(LtiProviderRepositoryInterface::class)
             ->disableOriginalConstructor()
-            ->setMethods(['count', 'findAll', 'searchByLabel'])
+            ->setMethods(['count', 'findAll', 'searchByLabel', 'searchById'])
             ->getMockForAbstractClass();
         $repository->method('count')->willReturn($count);
         $repository->method('findAll')->willReturn($findAllResult);
         $repository->method('searchByLabel')->with($label)->willReturn($searchResult);
+        $repository->method('searchById')->with($searchId)->willReturn($searchByIdhResult);
 
         return $repository;
     }
