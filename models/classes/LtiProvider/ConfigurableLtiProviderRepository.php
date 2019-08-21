@@ -100,11 +100,10 @@ class ConfigurableLtiProviderRepository extends ConfigurableService implements L
      */
     public function searchById($id)
     {
-        return current(array_filter(
-            $this->getProviders(),
-            function (LtiProvider $provider) use ($id) {
-                return stripos($provider->getId(), $id) !== false;
+        foreach ($this->getProviders() as $provider) {
+            if ($provider->getId() === $id) {
+                return $provider;
             }
-        ));
+        }
     }
 }
