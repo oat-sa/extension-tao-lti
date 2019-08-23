@@ -153,11 +153,13 @@ class RdfLtiProviderRepository extends OntologyClassService implements LtiProvid
 
     /**
      * @param string $id
-     * @return LtiProvider
+     * @return LtiProvider|null
      * @throws InvalidArgumentTypeException
      */
     public function searchById($id)
     {
-        return $this->getLtiProviderFromResource($this->getResource($id));
+        if ($this->getResource($id)->exists()) {
+            return $this->getLtiProviderFromResource($this->getResource($id));
+        }
     }
 }
