@@ -96,7 +96,7 @@ class ConfigurableLtiProviderRepository extends ConfigurableService implements L
 
     /**
      * @param string $id
-     * @return LtiProvider
+     * @return LtiProvider|null
      */
     public function searchById($id)
     {

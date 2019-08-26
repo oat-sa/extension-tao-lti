@@ -44,7 +44,7 @@ interface LtiProviderRepositoryInterface extends Countable
 
     /**
      * @param string $id
-     * @return LtiProvider
+     * @return LtiProvider|null
      */
     public function searchById($id);
 }
