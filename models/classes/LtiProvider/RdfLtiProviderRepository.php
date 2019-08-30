@@ -150,4 +150,16 @@ class RdfLtiProviderRepository extends OntologyClassService implements LtiProvid
             (string)reset($propertiesValues[DataStore::PROPERTY_OAUTH_CALLBACK])
         );
     }
+
+    /**
+     * @param string $id
+     * @return LtiProvider|null
+     * @throws InvalidArgumentTypeException
+     */
+    public function searchById($id)
+    {
+        if ($this->getResource($id)->exists()) {
+            return $this->getLtiProviderFromResource($this->getResource($id));
+        }
+    }
 }
