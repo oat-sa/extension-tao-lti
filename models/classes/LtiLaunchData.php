@@ -90,14 +90,15 @@ class LtiLaunchData implements \JsonSerializable
     /**
      *
      * @param common_http_Request $request
+     * @param array $data
      * @return LtiLaunchData
      * @throws \ResolverException
      */
-    public static function fromRequest(common_http_Request $request)
+    public static function fromRequest(common_http_Request $request, array $data = [])
     {
         $extra = self::getParametersFromUrl($request->getUrl());
 
-        return new static($request->getParams(), $extra);
+        return new static(array_merge($request->getParams(), $data), $extra);
     }
 
     /**
