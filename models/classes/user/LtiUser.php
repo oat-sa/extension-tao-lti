@@ -29,6 +29,7 @@ use oat\taoLti\models\classes\LtiRoles;
 use oat\taoLti\models\classes\LtiUtils;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorAwareTrait;
+use oat\oatbox\user\UserLanguageService;
 
 
 /**
@@ -99,14 +100,6 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
         $this->setRoles($taoRoles);
 
         $email = '';
-
-        if ($launchData->hasLaunchLanguage()) {
-            $launchLanguage = $launchData->getLaunchLanguage();
-            $language = LtiUtils::mapCode2InterfaceLanguage($launchLanguage);
-        } else {
-            $language = DEFAULT_LANG;
-        }
-
         $label = $launchData->getUserFullName();
         $firstname = $launchData->getUserGivenName();
         $lastname = $launchData->getUserFamilyName();
@@ -115,7 +108,6 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
             $email = $launchData->getUserEmail();
         }
 
-        $this->language = $language;
         $this->firstname = $firstname;
         $this->lastname = $lastname;
         $this->email = $email;
@@ -145,10 +137,29 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
         $this->userUri = $userId;
     }
 
-
+    /**
+     * @return LtiLaunchData
+     */
     public function getLaunchData()
     {
         return $this->ltiLaunchData;
+    }
+
+    /**
+     * Get user langugae
+     * @return string
+     */
+    public function getLanguage()
+    {
+        if (!isset($this->language)) {
+            if ($this->getLaunchData()->hasLaunchLanguage()) {
+                $launchLanguage = $this->getLaunchData()->getLaunchLanguage();
+                $this->language = LtiUtils::mapCode2InterfaceLanguage($launchLanguage);
+            } else {
+                $this->language = $this->getServiceLocator()->get(UserLanguageService::SERVICE_ID)->getDefaultLanguage();
+            }
+        }
+        return $this->language;
     }
 
     /**
@@ -163,7 +174,7 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
                 $returnValue = array(DEFAULT_LANG);
                 break;
             case GenerisRdf::PROPERTY_USER_UILG :
-                $returnValue = array($this->language);
+                $returnValue = array($this->getLanguage());
                 break;
             case  GenerisRdf::PROPERTY_USER_ROLES :
                 $returnValue = $this->taoRoles;
@@ -184,7 +195,6 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
         return $returnValue;
     }
 
-
     /**
      * (non-PHPdoc)
      * @see \common_user_User::refresh()
@@ -194,13 +204,12 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
         // nothing to do
     }
 
-
     public function jsonSerialize()
     {
         return [
             self::USER_IDENTIFIER => $this->userUri,
             GenerisRdf::PROPERTY_USER_ROLES => $this->taoRoles,
-            GenerisRdf::PROPERTY_USER_UILG => $this->language,
+            GenerisRdf::PROPERTY_USER_UILG => $this->getLanguage(),
             GenerisRdf::PROPERTY_USER_FIRSTNAME => $this->firstname,
             GenerisRdf::PROPERTY_USER_LASTNAME => $this->lastname,
             GenerisRdf::PROPERTY_USER_MAIL => $this->email,
