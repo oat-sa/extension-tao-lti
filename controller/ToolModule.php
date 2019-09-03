@@ -46,6 +46,7 @@ use tao_models_classes_oauth_Exception;
  */
 abstract class ToolModule extends LtiModule
 {
+
     /**
      * Entrypoint of every tool
      *
@@ -58,7 +59,8 @@ abstract class ToolModule extends LtiModule
     {
         try {
             $request = common_http_Request::currentRequest();
-            $ltiLaunchData = LtiLaunchData::fromRequest($request);
+            $ltiLaunchData = $this->buildLaunchData($request);
+
             /** @var LtiValidatorService $validator */
             $validator = $this->getServiceLocator()->get(LtiValidatorService::SERVICE_ID);
             $validator->validateLaunchData($ltiLaunchData);
@@ -115,4 +117,19 @@ abstract class ToolModule extends LtiModule
      * run() contains the actual tool's controller
      */
     abstract public function run();
+
+    /**
+     * Build launch data from request and add extra parameters
+     *
+     * @param common_http_Request $request
+     * @return LtiLaunchData
+     * @throws ResolverException
+     */
+    protected function buildLaunchData(common_http_Request $request)
+    {
+        return LtiLaunchData::fromRequest(
+            $request,
+            ['lis_outcome_service_url' => _url('manageResults', 'ResultController', 'taoLtiConsumer')]
+        );
+    }
 }
