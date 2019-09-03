@@ -14,8 +14,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2013 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
- *
+ * Copyright (c) 2013-2019 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
  *
  */
 
@@ -54,6 +53,7 @@ abstract class ToolModule extends LtiModule
      * @throws ResolverException
      * @throws common_Exception
      * @throws common_exception_Error
+     * @throws InterruptedActionException
      */
     public function launch()
     {
@@ -129,7 +129,7 @@ abstract class ToolModule extends LtiModule
     {
         return LtiLaunchData::fromRequest(
             $request,
-            ['lis_outcome_service_url' => _url('manageResults', 'ResultController', 'taoLtiConsumer')]
+            [LtiLaunchData::LIS_OUTCOME_SERVICE_URL => _url('manageResults', 'ResultController', 'taoLtiConsumer')]
         );
     }
 }
