@@ -114,12 +114,14 @@ class Updater extends \common_ext_ExtensionUpdater
         $this->skip('3.4.0', '3.4.4');
 
         if ($this->isVersion('3.4.4')) {
-            $userService = $this->getServiceManager()->get(LtiUserService::SERVICE_ID);
+            /* option no longer has any effect
+             $userService = $this->getServiceManager()->get(LtiUserService::SERVICE_ID);
             if ($userService instanceof OntologyLtiUserService) {
                 $userService->setOption(OntologyLtiUserService::OPTION_TRANSACTION_SAFE, false);
                 $userService->setOption(OntologyLtiUserService::OPTION_TRANSACTION_SAFE_RETRY, 1);
             }
             $this->getServiceManager()->register(LtiUserService::SERVICE_ID, $userService);
+            */
 
             $this->setVersion('3.5.0');
         }
