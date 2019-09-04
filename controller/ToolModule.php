@@ -127,9 +127,6 @@ abstract class ToolModule extends LtiModule
      */
     protected function buildLaunchData(common_http_Request $request)
     {
-        return LtiLaunchData::fromRequest(
-            $request,
-            [LtiLaunchData::LIS_OUTCOME_SERVICE_URL => _url('manageResults', 'ResultController', 'taoLtiConsumer')]
-        );
+        return LtiLaunchData::fromRequest($request);
     }
 }
