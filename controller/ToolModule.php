@@ -14,8 +14,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2013 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
- *
+ * Copyright (c) 2013-2019 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
  *
  */
 
@@ -46,6 +45,7 @@ use tao_models_classes_oauth_Exception;
  */
 abstract class ToolModule extends LtiModule
 {
+
     /**
      * Entrypoint of every tool
      *
@@ -53,12 +53,14 @@ abstract class ToolModule extends LtiModule
      * @throws ResolverException
      * @throws common_Exception
      * @throws common_exception_Error
+     * @throws InterruptedActionException
      */
     public function launch()
     {
         try {
             $request = common_http_Request::currentRequest();
-            $ltiLaunchData = LtiLaunchData::fromRequest($request);
+            $ltiLaunchData = $this->buildLaunchData($request);
+
             /** @var LtiValidatorService $validator */
             $validator = $this->getServiceLocator()->get(LtiValidatorService::SERVICE_ID);
             $validator->validateLaunchData($ltiLaunchData);
@@ -115,4 +117,16 @@ abstract class ToolModule extends LtiModule
      * run() contains the actual tool's controller
      */
     abstract public function run();
+
+    /**
+     * Build launch data from request and add extra parameters
+     *
+     * @param common_http_Request $request
+     * @return LtiLaunchData
+     * @throws ResolverException
+     */
+    protected function buildLaunchData(common_http_Request $request)
+    {
+        return LtiLaunchData::fromRequest($request);
+    }
 }
