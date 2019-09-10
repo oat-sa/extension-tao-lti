@@ -36,19 +36,11 @@ class LtiLaunchDataTest extends TestCase
         }
     }
 
-    /**
-     * @dataProvider dataToTest
-     *
-     * @param $data
-     *
-     * @throws \ResolverException
-     */
-    public function testFromRequestWithoutData($data)
+    public function testFromRequest()
     {
         $params = ['key1' => 'value2'];
         $extraParams = ['key2' => 'value2'];
-        $expectedParams = array_merge($params, $data);
-        $url = self::ROOT_URL . 'tao/tao/tao/' . base64_encode(json_encode($extraParams));
+        $url = ROOT_URL . 'tao/tao/tao/' . base64_encode(json_encode($extraParams));
 
         /** @var Request|MockObject $request */
         $request = $this->getMockBuilder(Request::class)
@@ -58,17 +50,9 @@ class LtiLaunchDataTest extends TestCase
         $request->method('getUrl')->willReturn($url);
         $request->method('getParams')->willReturn($params);
 
-        $subject = LtiLaunchData::fromRequest($request, $data);
+        $subject = LtiLaunchData::fromRequest($request);
 
-        $this->assertEquals($expectedParams, $subject->getVariables());
+        $this->assertEquals($params, $subject->getVariables());
         $this->assertEquals($extraParams, $subject->getCustomParameters());
-    }
-
-    public function dataToTest()
-    {
-        return [
-            [[]],
-            [['key3' => 'value3']],
-        ];
     }
 }
