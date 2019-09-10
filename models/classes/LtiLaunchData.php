@@ -53,6 +53,9 @@ class LtiLaunchData implements \JsonSerializable
     const LTI_VERSION = 'lti_version';
     const LTI_MESSAGE_TYPE = 'lti_message_type';
 
+    const LIS_RESULT_SOURCEDID = 'lis_result_sourcedid';
+    const LIS_OUTCOME_SERVICE_URL = 'lis_outcome_service_url';
+
     /**
      * LTI variables
      *
