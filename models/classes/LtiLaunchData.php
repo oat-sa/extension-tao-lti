@@ -53,9 +53,6 @@ class LtiLaunchData implements \JsonSerializable
     const LTI_VERSION = 'lti_version';
     const LTI_MESSAGE_TYPE = 'lti_message_type';
 
-    const LIS_RESULT_SOURCEDID = 'lis_result_sourcedid';
-    const LIS_OUTCOME_SERVICE_URL = 'lis_outcome_service_url';
-
     /**
      * LTI variables
      *
@@ -90,15 +87,14 @@ class LtiLaunchData implements \JsonSerializable
     /**
      *
      * @param common_http_Request $request
-     * @param array $data
      * @return LtiLaunchData
      * @throws \ResolverException
      */
-    public static function fromRequest(common_http_Request $request, array $data = [])
+    public static function fromRequest(common_http_Request $request)
     {
         $extra = self::getParametersFromUrl($request->getUrl());
 
-        return new static(array_merge($request->getParams(), $data), $extra);
+        return new static($request->getParams(), $extra);
     }
 
     /**
