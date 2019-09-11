@@ -171,10 +171,10 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
         $returnValue = null;
         switch ($property) {
             case GenerisRdf::PROPERTY_USER_DEFLG :
-                $returnValue = array(DEFAULT_LANG);
+                $returnValue = [$this->getServiceLocator()->get(UserLanguageService::SERVICE_ID)->getDefaultLanguage()];
                 break;
             case GenerisRdf::PROPERTY_USER_UILG :
-                $returnValue = array($this->getLanguage());
+                $returnValue = [$this->getLanguage()];
                 break;
             case  GenerisRdf::PROPERTY_USER_ROLES :
                 $returnValue = $this->taoRoles;
@@ -190,7 +190,7 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
                 break;
             default:
                 \common_Logger::d('Unkown property ' . $property . ' requested from ' . __CLASS__);
-                $returnValue = array();
+                $returnValue = [];
         }
         return $returnValue;
     }
