@@ -244,6 +244,17 @@ class Updater extends \common_ext_ExtensionUpdater
             $this->setVersion('10.3.0');
         }
 
-        $this->skip('10.3.0', '10.5.3');
+        $this->skip('10.3.0', '10.5.2');
+
+        if ($this->isVersion('10.5.2')) {
+            $ltiUserService = $this->getServiceManager()->get(LtiUserService::SERVICE_ID);
+
+            if ($ltiUserService->hasOption(LtiUserService::OPTION_FACTORY_LTI_USER)) {
+                $ltiUserService->setOption(LtiUserService::OPTION_FACTORY_LTI_USER, LtiUserFactoryService::SERVICE_ID);
+                $this->getServiceManager()->register(LtiUserService::SERVICE_ID, $ltiUserService);
+            }
+            $this->setVersion('10.5.3');
+        }
+
     }
 }
