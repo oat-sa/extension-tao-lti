@@ -14,15 +14,13 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2013 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
- *
+ * Copyright (c) 2013-2019 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
  *
  */
 
 namespace oat\taoLti\models\classes;
 
 use common_http_Request;
-use common_Logger;
 use core_kernel_classes_Resource;
 use tao_helpers_Request;
 use tao_models_classes_oauth_DataStore;
@@ -54,6 +52,9 @@ class LtiLaunchData implements \JsonSerializable
 
     const LTI_VERSION = 'lti_version';
     const LTI_MESSAGE_TYPE = 'lti_message_type';
+
+    const LIS_RESULT_SOURCEDID = 'lis_result_sourcedid';
+    const LIS_OUTCOME_SERVICE_URL = 'lis_outcome_service_url';
 
     /**
      * LTI variables
@@ -303,10 +304,10 @@ class LtiLaunchData implements \JsonSerializable
     {
         if (is_null($this->ltiConsumer)) {
             $dataStore = new tao_models_classes_oauth_DataStore();
-            $this->ltiConsumer = $dataStore->findOauthConsumerResource($this->getOauthKey());
+            $this->ltiConsumer = $dataStore->findOauthConsumerResource($this->getOauthKey())->getUri();
         }
 
-        return $this->ltiConsumer;
+        return new \core_kernel_classes_Resource($this->ltiConsumer);
     }
 
     /**

@@ -21,7 +21,6 @@
 namespace oat\taoLti\scripts\install;
 
 use oat\oatbox\extension\InstallAction;
-use oat\taoLti\models\classes\user\KvLtiUserService;
 use oat\taoLti\models\classes\user\OntologyLtiUserService;
 
 /**

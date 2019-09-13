@@ -40,8 +40,14 @@ class OntologyLtiUserService extends LtiUserService
 {
     const CLASS_LTI_USER = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIUser';
 
+    /**
+     * @deprecated no longer serves any purpose
+     */
     const OPTION_TRANSACTION_SAFE = 'transaction-safe';
 
+    /**
+     * @deprecated no longer serves any purpose
+     */
     const OPTION_TRANSACTION_SAFE_RETRY = 'transaction-safe-retry';
 
     /**
@@ -126,15 +132,6 @@ class OntologyLtiUserService extends LtiUserService
             return null;
         }
 
-    }
-
-
-    private function getRetryOption()
-    {
-        $retryOption = $this->getOption(self::OPTION_TRANSACTION_SAFE_RETRY);
-
-        // Arbitrary default is 1.
-        return ($retryOption) ? $retryOption : 1;
     }
 
     /**
