@@ -90,11 +90,11 @@ class KvLtiUserService extends LtiUserService
             $this->userUpdatedEvent($technicalId);
         } else {
             $this->userCreatedEvent($technicalId);
-            common_Logger::i(
+            $this->logInfo(
                 sprintf(
                     'added User %s, LTI user Id: %s, LTI consumer %s',
                     $data[OntologyRdfs::RDFS_LABEL],
-                    $data[self::PROPERTY_USER_LTIKEY] ,
+                    $data[self::PROPERTY_USER_LTIKEY],
                     $data[self::PROPERTY_USER_LTICONSUMER]
                 )
             );

@@ -99,7 +99,7 @@ class OntologyLtiUserService extends LtiUserService
             );
 
             $userResource = $class->createInstanceWithProperties($props);
-            \common_Logger::i(
+            $this->logInfo(
                 sprintf(
                     'added User %s, LTI user Id: %s, LTI consumer %s',
                     $userResource->getLabel(),
