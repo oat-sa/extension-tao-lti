@@ -125,7 +125,7 @@ abstract class ToolModule extends LtiModule
     protected function logLti($variables)
     {
         foreach ($variables as $key => $value) {
-            if (strpos($key, 'oauth_') !== 0) {
+            if (strpos($key, 'oauth_') === 0) {
                 unset($variables[$key]);
             }
         }
