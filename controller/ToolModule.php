@@ -59,8 +59,7 @@ abstract class ToolModule extends LtiModule
         try {
             $request = common_http_Request::currentRequest();
             $ltiLaunchData = LtiLaunchData::fromRequest($request);
-
-            $this->logInfo('LTI_LAUNCH_PARAMS', json_encode($ltiLaunchData->getVariables()));
+            $this->logLti($ltiLaunchData->getVariables());
             /** @var LtiValidatorService $validator */
             $validator = $this->getServiceLocator()->get(LtiValidatorService::SERVICE_ID);
             $validator->validateLaunchData($ltiLaunchData);
@@ -117,4 +116,19 @@ abstract class ToolModule extends LtiModule
      * run() contains the actual tool's controller
      */
     abstract public function run();
+
+
+    /**
+     * Logging LTI launch params
+     * @param $variables
+     */
+    protected function logLti($variables)
+    {
+        foreach ($variables as $key => $value) {
+            if (strpos($key, 'oauth_') !== 0) {
+                unset($variables[$key]);
+            }
+        }
+        $this->logInfo('LTI_LAUNCH_PARAMS:' . json_encode($variables));
+    }
 }
