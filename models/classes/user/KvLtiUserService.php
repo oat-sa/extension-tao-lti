@@ -21,6 +21,7 @@
 
 namespace oat\taoLti\models\classes\user;
 
+use common_Logger;
 use oat\generis\model\OntologyRdfs;
 use oat\taoLti\models\classes\LtiLaunchData;
 
@@ -89,6 +90,14 @@ class KvLtiUserService extends LtiUserService
             $this->userUpdatedEvent($technicalId);
         } else {
             $this->userCreatedEvent($technicalId);
+            $this->logInfo(
+                sprintf(
+                    'added User %s, LTI user Id: %s, LTI consumer %s',
+                    $data[OntologyRdfs::RDFS_LABEL],
+                    $data[self::PROPERTY_USER_LTIKEY],
+                    $data[self::PROPERTY_USER_LTICONSUMER]
+                )
+            );
         }
     }
 
