@@ -60,6 +60,8 @@ abstract class ToolModule extends LtiModule
             $request = common_http_Request::currentRequest();
             $ltiLaunchData = LtiLaunchData::fromRequest($request);
 
+            $variables = json_encode($ltiLaunchData->getVariables());
+            \common_Logger::i("Lti launch data {$variables}");
             /** @var LtiValidatorService $validator */
             $validator = $this->getServiceLocator()->get(LtiValidatorService::SERVICE_ID);
             $validator->validateLaunchData($ltiLaunchData);
