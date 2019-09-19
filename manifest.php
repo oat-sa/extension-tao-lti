@@ -37,7 +37,7 @@ return array(
     'label' => 'LTI library',
     'description' => 'TAO LTI library and helpers',
     'license' => 'GPL-2.0',
-    'version' => '9.2.1',
+    'version' => '9.2.1.1',
       'author' => 'Open Assessment Technologies SA',
       'requires' => array(
         'generis' => '>=9.1.0',
