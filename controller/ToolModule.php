@@ -60,8 +60,7 @@ abstract class ToolModule extends LtiModule
             $request = common_http_Request::currentRequest();
             $ltiLaunchData = LtiLaunchData::fromRequest($request);
 
-            $variables = json_encode($ltiLaunchData->getVariables());
-            \common_Logger::i("Lti launch data {$variables}");
+            $this->logInfo('LTI_LAUNCH_PARAMS', json_encode($ltiLaunchData->getVariables()));
             /** @var LtiValidatorService $validator */
             $validator = $this->getServiceLocator()->get(LtiValidatorService::SERVICE_ID);
             $validator->validateLaunchData($ltiLaunchData);
@@ -78,7 +77,7 @@ abstract class ToolModule extends LtiModule
                         'CookieUtils',
                         'taoLti',
                         [
-                            'session' => session_id(),
+                            'session'  => session_id(),
                             'redirect' => urlencode(_url('run', null, null, $_GET)),
                         ]
                     );
