@@ -30,6 +30,7 @@ class LtiUserFactoryServiceTest extends TestCase
     public function testCreate()
     {
         $ltiUserFactory = new LtiUserFactoryService();
+        $ltiUserFactory->setServiceLocator($this->getServiceLocatorMock());
         $launchData = $this->getMockBuilder(LtiLaunchData::class)->disableOriginalConstructor()->getMock();
 
         $this->assertInstanceOf(LtiUserInterface::class, $ltiUserFactory->create($launchData, '123'));

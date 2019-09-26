@@ -34,6 +34,6 @@ class LtiUserFactoryService extends ConfigurableService implements LtiUserFactor
      */
     public function create(LtiLaunchData $ltiContext, $userId)
     {
-        return new LtiUser($ltiContext, $userId);
+        return $this->propagate(new LtiUser($ltiContext, $userId));
     }
 }
