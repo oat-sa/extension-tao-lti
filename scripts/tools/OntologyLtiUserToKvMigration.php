@@ -61,9 +61,12 @@ class OntologyLtiUserToKvMigration extends ScriptAction
                 return new \common_report_Report(\common_report_Report::TYPE_ERROR, ' LtiUserService migration must be done on a Ontology Service e.q. OntologyLtiUserService.');
             }
 
+            $userFactory = $this->getServiceLocator()->get(LtiUserService::SERVICE_ID)->getOption(LtiUserService::OPTION_FACTORY_LTI_USER);
             $kvService = new KvLtiUserService(array(
-                KvLtiUserService::OPTION_PERSISTENCE => $this->getKeyValuePersistenceName()
+                KvLtiUserService::OPTION_PERSISTENCE => $this->getKeyValuePersistenceName(),
+                KvLtiUserService::OPTION_FACTORY_LTI_USER => $userFactory
             ));
+
             if ($this->getOption('no-migrate-service') !== true) {
                 $this->registerService(LtiUserService::SERVICE_ID, $kvService);
                 $this->logNotice('LtiUser service was set to KeyValue implementation.');
