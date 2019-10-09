@@ -49,8 +49,6 @@ class LisAuthAdapter implements common_user_auth_Adapter, ServiceLocatorAwareInt
     {
         try {
             $authorization = $this->request->getHeader('Authorization');
-            $this->logDebug('Authorization: ', $authorization);
-
             if (empty($authorization)) {
                 throw new LisAuthAdapterException('Header auth missing, header received.');
             }
