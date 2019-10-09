@@ -18,11 +18,9 @@
  */
 namespace oat\taoLti\models\classes\Lis;
 
-use common_http_InvalidSignatureException;
 use common_user_auth_Adapter;
 use IMSGlobal\LTI\OAuth\OAuthConsumer;
 use IMSGlobal\LTI\OAuth\OAuthRequest;
-use IMSGlobal\LTI\OAuth\OAuthSignatureMethod_HMAC_SHA1;
 use oat\oatbox\log\LoggerAwareTrait;
 use oat\taoLti\models\classes\LtiLaunchData;
 use oat\taoLti\models\classes\user\LtiUser;
@@ -58,7 +56,18 @@ class LisAuthAdapter implements common_user_auth_Adapter, ServiceLocatorAwareInt
                 $this->request->getUri()
             );
 
-            $params = $this->validateSignature($oauthRequest);
+            $validator = new LisSignatureValidator();
+
+            $consumerSecret = $this->getConsumerSecret($oauthRequest->get_parameter(self::OAUTH_CONSUMER_KEY));
+
+            $oauthConsumer = $this->getOAuthConsumer($oauthRequest, $consumerSecret);
+
+            $params = $validator->validate(
+                $oauthRequest,
+                $oauthConsumer,
+                $this->request->getMethod(),
+                $this->request->getUri()
+            );
 
             $ltiLaunchData = $this->getLaunchData($params);
 
@@ -98,36 +107,5 @@ class LisAuthAdapter implements common_user_auth_Adapter, ServiceLocatorAwareInt
     private function getLaunchData(array $ltiVariables, array $customParameters = [])
     {
         return new LtiLaunchData($ltiVariables, $customParameters);
-    }
-
-    /**
-     * @param OAuthRequest $oauthRequest
-     *
-     * @return array
-     * @throws common_http_InvalidSignatureException
-     */
-    private function validateSignature(OAuthRequest $oauthRequest): array
-    {
-        $consumerSecret = $this->getConsumerSecret($oauthRequest->get_parameter(self::OAUTH_CONSUMER_KEY));
-
-        $hmacMethod = new OAuthSignatureMethod_HMAC_SHA1();
-
-        $oauthConsumer = $this->getOAuthConsumer($oauthRequest, $consumerSecret);
-
-        $oauthReq = OAuthRequest::from_consumer_and_token(
-            $oauthConsumer,
-            null,
-            $this->request->getMethod(),
-            $this->request->getUri(),
-            $oauthRequest->get_parameters()
-        );
-
-        $oauthReq->sign_request($hmacMethod, $oauthConsumer, null);
-
-        if ($oauthRequest->get_parameter('oauth_signature') !== $oauthReq->get_parameter('oauth_signature')) {
-            throw new common_http_InvalidSignatureException('Invalid signature.');
-        }
-
-        return $oauthReq->get_parameters();
     }
 }
