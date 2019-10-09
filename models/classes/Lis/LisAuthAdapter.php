@@ -118,7 +118,7 @@ class LisAuthAdapter implements common_user_auth_Adapter, ServiceLocatorAwareInt
             $oauthConsumer,
             null,
             $this->request->getMethod(),
-            'http://ltiapps.net/test/tc-outcomes.php', //$this->request->getUri(),
+            $this->request->getUri(),
             $oauthRequest->get_parameters()
         );
 
