@@ -77,8 +77,14 @@ class OntologyLtiResourceLinksToKvMigration extends ScriptAction
 
                 $consumerId = $this->getPropertyValue($properties, OntologyLink::PROPERTY_CONSUMER);
                 $resourceLink = $this->getPropertyValue($properties, OntologyLink::PROPERTY_LINK_ID);
+                $kvKey = KeyValueLink::PREFIX . $consumerId . $resourceLink;
 
-                if ($this->getKeyValuePersistence()->set(KeyValueLink::PREFIX . $consumerId . $resourceLink, $instance->getUri())) {
+                if ($this->getKeyValuePersistence()->exists($kvKey)) {
+                    $this->logNotice(sprintf('LTI link "%s" already exists', $kvKey));
+                    continue;
+                }
+
+                if ($this->getKeyValuePersistence()->set($kvKey, $instance->getUri())) {
                     if ($this->getOption('no-delete') !== true) {
                         $instance->delete();
                         $this->logInfo('Link "' . $instance->getUri() .'" deleted from ontology storage.');
