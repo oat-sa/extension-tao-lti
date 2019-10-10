@@ -33,6 +33,7 @@ use oat\search\base\QueryInterface;
 use oat\search\base\SearchGateWayInterface;
 use oat\tao\model\oauth\DataStore;
 use Psr\Log\LoggerInterface;
+use oat\generis\test\MockObject;
 
 /**
  * Service methods to manage the LTI provider business objects.
@@ -42,19 +43,19 @@ class RdfLtiProviderRepositoryTest extends OntologyMockTest
     /** @var RdfLtiProviderRepository */
     private $subject;
 
-    /** @var ComplexSearchService|\PHPUnit_Framework_MockObject_MockObject $finderService */
+    /** @var ComplexSearchService|MockObject $finderService */
     private $searchService;
 
-    /** @var LoggerInterface|\PHPUnit_Framework_MockObject_MockObject $logger */
+    /** @var LoggerInterface|MockObject $logger */
     private $logger;
 
-    /** @var QueryBuilderInterface|\PHPUnit_Framework_MockObject_MockObject $queryBuilder */
+    /** @var QueryBuilderInterface|MockObject $queryBuilder */
     private $queryBuilder;
 
-    /** @var QueryInterface|\PHPUnit_Framework_MockObject_MockObject $query */
+    /** @var QueryInterface|MockObject $query */
     private $query;
 
-    /** @var SearchGateWayInterface|\PHPUnit_Framework_MockObject_MockObject $query */
+    /** @var SearchGateWayInterface|MockObject $query */
     private $gateWay;
 
     public function setUp()
@@ -81,7 +82,7 @@ class RdfLtiProviderRepositoryTest extends OntologyMockTest
         $this->searchService->method('query')->willReturn($this->queryBuilder);
         $this->searchService->method('getGateway')->willReturn($this->gateWay);
 
-        /** @var ServiceManager|\PHPUnit_Framework_MockObject_MockObject $serviceLocator */
+        /** @var ServiceManager|MockObject $serviceLocator */
         $serviceLocator = $this->getMockBuilder(ServiceManager::class)
             ->disableOriginalConstructor()
             ->setMethods(['get'])
@@ -230,7 +231,7 @@ class RdfLtiProviderRepositoryTest extends OntologyMockTest
      * @param string $secret
      * @param string $callbackUrl
      *
-     * @return \PHPUnit_Framework_MockObject_MockObject
+     * @return MockObject
      */
     private function getRdfResourceMock($uri, $label, $key, $secret, $callbackUrl)
     {

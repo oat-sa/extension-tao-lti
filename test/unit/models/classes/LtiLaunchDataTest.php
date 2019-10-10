@@ -23,7 +23,7 @@ namespace oat\taoLti\test\unit\models\classes;
 use common_http_Request as Request;
 use oat\generis\test\TestCase;
 use oat\taoLti\models\classes\LtiLaunchData;
-use PHPUnit_Framework_MockObject_MockObject as MockObject;
+use oat\generis\test\MockObject;
 
 class LtiLaunchDataTest extends TestCase
 {
