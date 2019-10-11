@@ -4,9 +4,9 @@ msgstr ""
 "PO-Revision-Date: 2019-10-11T08:34:47\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
-"Language: fr-CA\n"
+"Language: lt-LT\n"
 "sourceLanguage: en-US\n"
-"targetLanguage: fr-CA\n"
+"targetLanguage: lt-LT\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Basepath: ../../\n"
@@ -15,95 +15,95 @@ msgstr ""
 
 #, tao-public
 msgid "Add Consumer"
-msgstr ""
+msgstr "Pridėti Naudotoją"
 
 #, tao-public
 msgid "Add Provider"
 msgstr ""
 
 msgid "Back"
-msgstr ""
+msgstr "Grįžti"
 
 #, tao-public
 msgid "Delete"
-msgstr ""
+msgstr "Ištrinti"
 
 msgid "Error"
-msgstr ""
+msgstr "Klaida"
 
 msgid "Error (%s): "
-msgstr ""
+msgstr "Klaida (%s): "
 
 msgid "Error(%s): [key %s] %s \"%s"
-msgstr ""
+msgstr "Klaida(%s): [key %s] %s \"%s"
 
 msgid "Error: "
-msgstr ""
+msgstr "Klaida:"
 
 msgid "Error: [key %s] \"%s"
-msgstr ""
+msgstr "Klaida: [raktas %s] \"%s"
 
 #, tao-public
 msgid "Export"
-msgstr ""
+msgstr "Eksportuoti"
 
 #, tao-public
 msgid "Import"
-msgstr ""
+msgstr "Importuoti"
 
 #, tao-public
 msgid "Index"
-msgstr ""
+msgstr "Indeksas"
 
 msgid "Learning Tools Interoperability"
-msgstr ""
+msgstr "Mokymo Įrankių Sąveika"
 
 msgid "link"
-msgstr ""
+msgstr "nuoroda"
 
 #, tao-public
 msgid "LTI Consumers"
-msgstr ""
+msgstr "LTI Naudotojai"
 
 #, tao-public
 msgid "LTI Providers"
 msgstr ""
 
 msgid "Open in a new window"
-msgstr ""
+msgstr "Atidaryti naujame lange"
 
 #, tao-public
 msgid "Properties"
-msgstr ""
+msgstr "Savybės"
 
 msgid "Return to %s."
-msgstr ""
+msgstr "Grįžti į %s."
 
 msgid "Server Error"
-msgstr ""
+msgstr "Serverio Klaida"
 
 #, tao-public
 msgid "Settings"
-msgstr ""
+msgstr "Nustatymai"
 
 msgid "The LTI connection could not be established"
-msgstr ""
+msgstr "LTI ryšys negali būti užmegztas"
 
 msgid "The LTI Provider library."
-msgstr ""
+msgstr "LTI Tiekėjo biblioteka."
 
 msgid "The LTI tool could not be opened in the current window. Please click on the button to open it in a new window."
-msgstr ""
+msgstr "LTI įrankis negali būti atidarytas dabartiniame lange. Prašome paspausti ant mygtuko, kad atidaryti naujame lange."
 
 msgid "Third party cookies are not supported by your browser"
-msgstr ""
+msgstr "Trečios šalies slapukai yra nepalaikomi jūsų naršyklėje"
 
 msgid "Unable to restore Session"
-msgstr ""
+msgstr "Nepavyko atkurti Sesijos"
 
 msgid "user"
-msgstr ""
+msgstr "vartotojas"
 
 msgid "You are not authorized to use this system"
-msgstr ""
+msgstr "Jūs esate neautorizuotas naudotis šia sistema"
 
