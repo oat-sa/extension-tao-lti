@@ -137,6 +137,7 @@ class LtiProvider implements \JsonSerializable
             'key' => $this->getKey(),
             'secret' => $this->getSecret(),
             'callback' => $this->getCallbackUrl(),
+            'tenant_id' => $this->getTenantId(),
             'roles' => $this->getRoles()
         ];
     }
