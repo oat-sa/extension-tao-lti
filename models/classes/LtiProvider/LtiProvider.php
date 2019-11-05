@@ -46,9 +46,6 @@ class LtiProvider implements \JsonSerializable
      */
     private $tenantId;
 
-    /** @var string[] */
-    private $roles;
-
     /**
      * @param string $id
      * @param string $label
@@ -56,9 +53,8 @@ class LtiProvider implements \JsonSerializable
      * @param string $secret
      * @param string $callbackUrl
      * @param string|null $tenantId
-     * @param string[] $roles
      */
-    public function __construct($id, $label, $key, $secret, $callbackUrl, $tenantId, $roles)
+    public function __construct($id, $label, $key, $secret, $callbackUrl, $tenantId)
     {
         $this->id = $id;
         $this->label = $label;
@@ -66,7 +62,6 @@ class LtiProvider implements \JsonSerializable
         $this->secret = $secret;
         $this->callbackUrl = $callbackUrl;
         $this->tenantId = $tenantId;
-        $this->roles = $roles;
     }
 
     /**
@@ -118,14 +113,6 @@ class LtiProvider implements \JsonSerializable
     }
 
     /**
-     * @return string[]
-     */
-    public function getRoles()
-    {
-        return $this->roles;
-    }
-
-    /**
      * @inheritdoc
      */
     public function jsonSerialize()
@@ -137,8 +124,7 @@ class LtiProvider implements \JsonSerializable
             'key' => $this->getKey(),
             'secret' => $this->getSecret(),
             'callback' => $this->getCallbackUrl(),
-            'tenant_id' => $this->getTenantId(),
-            'roles' => $this->getRoles()
+            'tenant_id' => $this->getTenantId()
         ];
     }
 }

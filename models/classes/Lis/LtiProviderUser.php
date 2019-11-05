@@ -75,7 +75,7 @@ class LtiProviderUser extends common_user_User
      */
     public function getRoles()
     {
-        return $this->getLtiProvider()->getRoles();
+        return [];
     }
 
     /**
