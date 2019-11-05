@@ -257,18 +257,17 @@ class Updater extends \common_ext_ExtensionUpdater
             }
             $this->setVersion('10.5.3');
         }
-        $this->skip('10.5.3', '10.7.0');
 
-        if ($this->isVersion('10.7.0')) {
+        $this->skip('10.5.3', '10.9.0');
+
+        if ($this->isVersion('10.9.0')) {
             $this->getServiceManager()->register(LisOauthService::SERVICE_ID,
                 new LisOauthService([
                     LisOauthService::OPTION_DATASTORE => new LisOauthDataStore([
                         LisOauthDataStore::OPTION_NONCE_STORE => new NoNonce()
                     ])
                 ]));
-            $this->setVersion('10.8.0');
+            $this->setVersion('11.0.0');
         }
-
-        $this->skip('10.8.0', '11.0.0');
     }
 }

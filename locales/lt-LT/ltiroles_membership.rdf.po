@@ -4,74 +4,59 @@ msgstr ""
 "PO-Revision-Date: 2019-10-11T08:34:47\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
-"Language: da-DK\n"
+"Language: lt-LT\n"
 "sourceLanguage: en-US\n"
-"targetLanguage: da-DK\n"
+"targetLanguage: lt-LT\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 # http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#Learner
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "LTI Learner"
-msgstr "LTI Learner"
+msgstr "LTI Mokinys"
 
 # http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#Learner
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "The LTI Context Learner Role"
-msgstr ""
+msgstr "LTI Konteksto Mokinio Rolė"
 
 # http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#Instructor
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "LTI Instructor"
-msgstr "LTI Instructor"
+msgstr "LTI Instruktorius"
 
 # http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#Instructor
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "The LTI Context Instructor Role"
-msgstr ""
+msgstr "LTI Konteksto Instruktoriaus Rolė"
 
 # http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#ContentDeveloper
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "LTI Content Developer"
-msgstr ""
+msgstr "LTI Turinio Kurėjas"
 
 # http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#ContentDeveloper
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "The LTI Context Content Developer Role"
-msgstr ""
+msgstr "LTI Konteksto Turinio Kurėjo Rolė"
 
 # http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#TeachingAssistant
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "LTI Teaching Assistant"
-msgstr ""
+msgstr "LTI Mokymo Asistentas"
 
 # http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#TeachingAssistant
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "The LTI Context Teaching Assistant Role"
-msgstr ""
+msgstr "LTI Konteksto Mokymo Asistavimo Rolė"
 
 # http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#Administrator
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "LTI Administrator"
-msgstr "LTI Administrator"
+msgstr "LTI Administratorius"
 
 # http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#Administrator
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "The LTI Context Administrator Role"
-msgstr ""
-
-# http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#Learner
-msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
-msgid "LTI Learner"
-msgstr "The LTI Context Learner Role"
-
-# http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#Instructor
-msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
-msgid "LTI Instructor"
-msgstr "The LTI Context Instructor Role"
-
-# http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#Administrator
-msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
-msgid "LTI Administrator"
-msgstr "The LTI Context Administrator Role"
+msgstr "LTI Konteksto Administratoriaus Rolė"
 
