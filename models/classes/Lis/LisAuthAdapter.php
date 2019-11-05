@@ -18,22 +18,16 @@
  */
 namespace oat\taoLti\models\classes\Lis;
 
+use common_http_InvalidSignatureException;
 use common_user_auth_Adapter;
-use IMSGlobal\LTI\OAuth\OAuthConsumer;
-use IMSGlobal\LTI\OAuth\OAuthRequest;
-use oat\oatbox\log\LoggerAwareTrait;
-use oat\taoLti\models\classes\LtiLaunchData;
-use oat\taoLti\models\classes\user\LtiUser;
+use common_user_User;
 use Psr\Http\Message\ServerRequestInterface;
-use Throwable;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorAwareTrait;
 
 class LisAuthAdapter implements common_user_auth_Adapter, ServiceLocatorAwareInterface
 {
     use ServiceLocatorAwareTrait;
-    use LoggerAwareTrait;
-    const OAUTH_CONSUMER_KEY = 'oauth_consumer_key';
 
     /** @var ServerRequestInterface */
     protected $request;
@@ -43,69 +37,34 @@ class LisAuthAdapter implements common_user_auth_Adapter, ServiceLocatorAwareInt
         $this->request = $request;
     }
 
+    /**
+     * @return common_user_User|LtiProviderUser
+     * @throws LisAuthAdapterException
+     */
     public function authenticate()
     {
+        $oauthService = $this->getLisOauthService();
         try {
-            $authorization = $this->request->getHeader('Authorization');
-            if (empty($authorization)) {
-                throw new LisAuthAdapterException('Header auth missing, header received.');
-            }
-
-            $oauthRequest = OAuthRequest::from_request(
-                $this->request->getMethod(),
-                $this->request->getUri()
+            /** @var LisOAuthConsumer $oauthConsumer */
+            [$oauthConsumer, $token] = $oauthService->validatePsrRequest($this->request);
+        } catch (common_http_InvalidSignatureException $exception) {
+            // to meet interface requirement
+            throw new LisAuthAdapterException(
+                $exception->getMessage(),
+                $exception->getCode(),
+                $exception
             );
-
-            $validator = new LisSignatureValidator();
-
-            $consumerSecret = $this->getConsumerSecret($oauthRequest->get_parameter(self::OAUTH_CONSUMER_KEY));
-
-            $oauthConsumer = $this->getOAuthConsumer($oauthRequest, $consumerSecret);
-
-            $params = $validator->validate(
-                $oauthRequest,
-                $oauthConsumer,
-                $this->request->getMethod(),
-                $this->request->getUri()
-            );
-
-            $ltiLaunchData = $this->getLaunchData($params);
-
-            return new LtiUser($ltiLaunchData, $oauthRequest->get_parameter(self::OAUTH_CONSUMER_KEY));
-        } catch (Throwable $exception) {
-            throw new LisAuthAdapterException('Authentication failed');
         }
-    }
 
-    private function getConsumerSecret($oauthConsumerKey = null)
-    {
-        // @todo retrieve secret for key -- ?
-        return 'secret';
+        return new LtiProviderUser($oauthConsumer->getLtiProvider());
     }
 
     /**
-     * @param OAuthRequest $oauthRequest
-     * @param string       $consumerSecret
-     *
-     * @return OAuthConsumer
+     * @return LisOauthService
      */
-    private function getOAuthConsumer(OAuthRequest $oauthRequest, string $consumerSecret)
+    private function getLisOauthService()
     {
-        return new OAuthConsumer(
-            $oauthRequest->get_parameter(self::OAUTH_CONSUMER_KEY),
-            $consumerSecret,
-            null
-        );
-    }
-
-    /**
-     * @param array $ltiVariables
-     * @param array $customParameters
-     *
-     * @return LtiLaunchData
-     */
-    private function getLaunchData(array $ltiVariables, array $customParameters = [])
-    {
-        return new LtiLaunchData($ltiVariables, $customParameters);
+        /** @noinspection PhpIncompatibleReturnTypeInspection */
+        return $this->getServiceLocator()->get(LisOauthService::class);
     }
 }

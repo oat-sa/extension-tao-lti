@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,14 +16,25 @@
  *
  * Copyright (c) 2019 (original work) Open Assessment Technologies SA;
  */
+
 namespace oat\taoLti\models\classes\Lis;
 
-use common_user_auth_AuthFailedException;
+use oat\oatbox\service\ConfigurableService;
+use Psr\Http\Message\ServerRequestInterface;
 
-class LisAuthAdapterException extends common_user_auth_AuthFailedException
+/**
+ * LisAuthAdapter has params in constructor and couldn't be instantiated by ServiceLocator
+ * So you can use this factory to get LisAuthAdapter in controllers/services to keep your code testable
+ */
+class LisAuthAdapterFactory extends ConfigurableService
 {
-    public function getUserMessage()
+    /**
+     * @param ServerRequestInterface $request
+     * @return LisAuthAdapter
+     */
+    public function create(ServerRequestInterface $request)
     {
-        return __('Authorization failed');
+        $adapter = new LisAuthAdapter($request);
+        return $this->propagate($adapter);
     }
 }

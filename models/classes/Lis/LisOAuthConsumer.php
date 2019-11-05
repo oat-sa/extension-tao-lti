@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,14 +16,35 @@
  *
  * Copyright (c) 2019 (original work) Open Assessment Technologies SA;
  */
+
 namespace oat\taoLti\models\classes\Lis;
 
-use common_user_auth_AuthFailedException;
+use IMSGlobal\LTI\OAuth\OAuthConsumer;
+use oat\taoLti\models\classes\LtiProvider\LtiProvider;
 
-class LisAuthAdapterException extends common_user_auth_AuthFailedException
+/**
+ * Class compatible with
+ * @see \IMSGlobal\LTI\OAuth\OAuthServer
+ * Provides OAuth key and secret from LtiProvider
+ */
+class LisOAuthConsumer extends OAuthConsumer
 {
-    public function getUserMessage()
+    /**
+     * @var LtiProvider
+     */
+    private $ltiProvider;
+
+    public function __construct(LtiProvider $ltiProvider, $callback_url = null)
     {
-        return __('Authorization failed');
+        parent::__construct($ltiProvider->getKey(), $ltiProvider->getSecret(), $callback_url);
+        $this->ltiProvider = $ltiProvider;
+    }
+
+    /**
+     * @return LtiProvider
+     */
+    public function getLtiProvider()
+    {
+        return $this->ltiProvider;
     }
 }

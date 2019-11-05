@@ -147,7 +147,9 @@ class RdfLtiProviderRepository extends OntologyClassService implements LtiProvid
             $resource->getLabel(),
             (string)reset($propertiesValues[DataStore::PROPERTY_OAUTH_KEY]),
             (string)reset($propertiesValues[DataStore::PROPERTY_OAUTH_SECRET]),
-            (string)reset($propertiesValues[DataStore::PROPERTY_OAUTH_CALLBACK])
+            (string)reset($propertiesValues[DataStore::PROPERTY_OAUTH_CALLBACK]),
+            null,
+            []
         );
     }
 
@@ -161,5 +163,23 @@ class RdfLtiProviderRepository extends OntologyClassService implements LtiProvid
         if ($this->getResource($id)->exists()) {
             return $this->getLtiProviderFromResource($this->getResource($id));
         }
+        return null;
+    }
+
+    /**
+     * @param string $oauthKey
+     * @return LtiProvider|null
+     */
+    public function searchByOauthKey($oauthKey)
+    {
+        $providers = $this->getProviders([DataStore::PROPERTY_OAUTH_KEY => $oauthKey]);
+        $count = count($providers);
+        if ($count === 0) {
+            return null;
+        }
+        if ($count > 1) {
+            $this->logWarning("Found $count LTI providers with the same oauthKey: '$oauthKey'");
+        }
+        return reset($providers);
     }
 }

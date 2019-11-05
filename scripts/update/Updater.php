@@ -24,6 +24,7 @@ namespace oat\taoLti\scripts\update;
 use common_Exception;
 use common_ext_ExtensionsManager;
 use oat\tao\model\mvc\error\ExceptionInterpreterService;
+use oat\tao\model\oauth\nonce\NoNonce;
 use oat\tao\scripts\update\OntologyUpdater;
 use oat\taoLti\models\classes\ConsumerService;
 use oat\taoLti\models\classes\CookieVerifyService;
@@ -32,6 +33,8 @@ use oat\taoLti\models\classes\FactoryLtiAuthAdapterService;
 use oat\taoLti\models\classes\FactoryLtiAuthAdapterServiceInterface;
 use oat\taoLti\models\classes\LaunchData\Validator\Lti11LaunchDataValidator;
 use oat\taoLti\models\classes\LaunchData\Validator\LtiValidatorService;
+use oat\taoLti\models\classes\Lis\LisOauthDataStore;
+use oat\taoLti\models\classes\Lis\LisOauthService;
 use oat\taoLti\models\classes\LtiAuthAdapter;
 use oat\taoLti\models\classes\LtiException;
 use oat\taoLti\models\classes\LtiProvider\LtiProviderService;
@@ -255,5 +258,15 @@ class Updater extends \common_ext_ExtensionUpdater
             $this->setVersion('10.5.3');
         }
         $this->skip('10.5.3', '10.7.0');
+
+        if ($this->isVersion('10.7.0')) {
+            $this->getServiceManager()->register(LisOauthService::SERVICE_ID,
+                new LisOauthService([
+                    LisOauthService::OPTION_DATASTORE => new LisOauthDataStore([
+                        LisOauthDataStore::OPTION_NONCE_STORE => new NoNonce()
+                    ])
+                ]));
+            $this->setVersion('10.8.0');
+        }
     }
 }
