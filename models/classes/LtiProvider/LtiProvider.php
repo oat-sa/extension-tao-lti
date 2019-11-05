@@ -54,7 +54,7 @@ class LtiProvider implements \JsonSerializable
      * @param string $callbackUrl
      * @param string|null $tenantId
      */
-    public function __construct($id, $label, $key, $secret, $callbackUrl, $tenantId)
+    public function __construct($id, $label, $key, $secret, $callbackUrl, $tenantId = null)
     {
         $this->id = $id;
         $this->label = $label;

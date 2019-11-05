@@ -32,14 +32,16 @@ class LtiProviderTest extends TestCase
         $key = 'foo';
         $secret = 'bar';
         $callbackUrl = 'baz';
+        $tenantId = 't_id';
 
-        $subject = new LtiProvider($id, $label, $key, $secret, $callbackUrl);
+        $subject = new LtiProvider($id, $label, $key, $secret, $callbackUrl, $tenantId);
 
         $this->assertEquals($id, $subject->getId());
         $this->assertEquals($label, $subject->getLabel());
         $this->assertEquals($key, $subject->getKey());
         $this->assertEquals($secret, $subject->getSecret());
         $this->assertEquals($callbackUrl, $subject->getCallbackUrl());
+        $this->assertEquals($tenantId, $subject->getTenantId());
     }
 
     public function testSerializer()
@@ -49,8 +51,9 @@ class LtiProviderTest extends TestCase
         $key = 'foo';
         $secret = 'bar';
         $callbackUrl = 'baz';
+        $tenantId = 't_id';
 
-        $subject = new LtiProvider($id, $label, $key, $secret, $callbackUrl);
+        $subject = new LtiProvider($id, $label, $key, $secret, $callbackUrl, $tenantId);
         $expected = [
             'id' => $id,
             'uri' => $id,
@@ -58,6 +61,7 @@ class LtiProviderTest extends TestCase
             'key' => $key,
             'secret' => $secret,
             'callback' => $callbackUrl,
+            'tenant_id' => $tenantId
         ];
         $this->assertEquals($expected, $subject->jsonSerialize());
     }
