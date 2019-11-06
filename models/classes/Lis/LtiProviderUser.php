@@ -47,7 +47,7 @@ class LtiProviderUser extends common_user_User
      */
     public function getIdentifier()
     {
-        return 'ltiProvider_' . $this->ltiProvider->getKey();
+        return 'ltiProvider_' . $this->ltiProvider->getId();
     }
 
     /**

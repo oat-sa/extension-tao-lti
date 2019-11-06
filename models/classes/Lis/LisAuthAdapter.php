@@ -65,6 +65,6 @@ class LisAuthAdapter implements common_user_auth_Adapter, ServiceLocatorAwareInt
     private function getLisOauthService()
     {
         /** @noinspection PhpIncompatibleReturnTypeInspection */
-        return $this->getServiceLocator()->get(LisOauthService::class);
+        return $this->getServiceLocator()->get(LisOauthService::SERVICE_ID);
     }
 }

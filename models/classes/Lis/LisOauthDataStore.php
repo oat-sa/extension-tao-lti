@@ -51,7 +51,7 @@ class LisOauthDataStore extends ConfigurableService implements ImsOauthDataStore
         if ($provider === null) {
             throw new LtiOAuthException('LTI provider with given consumer key not found');
         }
-        return new LisOAuthConsumer($provider, null);
+        return new LisOAuthConsumer($provider, $provider->getCallbackUrl());
     }
 
     /**
@@ -114,6 +114,6 @@ class LisOauthDataStore extends ConfigurableService implements ImsOauthDataStore
     private function getLtiProviderService()
     {
         /** @noinspection PhpIncompatibleReturnTypeInspection */
-        return $this->getServiceLocator()->get(LtiProviderService::class);
+        return $this->getServiceLocator()->get(LtiProviderService::SERVICE_ID);
     }
 }

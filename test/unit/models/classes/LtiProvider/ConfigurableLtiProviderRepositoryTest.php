@@ -29,7 +29,10 @@ class ConfigurableLtiProviderRepositoryTest extends TestCase
 {
     public function testConstructorCountFindAll()
     {
-        $subject = new ConfigurableLtiProviderRepository([ConfigurableLtiProviderRepository::OPTION_LTI_PROVIDER_LIST => json_decode(file_get_contents(__DIR__ . '/_resources/lti_provider_list.json'), true)]);
+        $subject = new ConfigurableLtiProviderRepository([
+            ConfigurableLtiProviderRepository::OPTION_LTI_PROVIDER_LIST => json_decode(
+                file_get_contents(__DIR__ . '/_resources/lti_provider_list.json'), true)
+        ]);
 
         $this->assertEquals(2, $subject->count());
 
@@ -50,7 +53,10 @@ class ConfigurableLtiProviderRepositoryTest extends TestCase
 
     public function testSearchByLabel()
     {
-        $subject = new ConfigurableLtiProviderRepository([ConfigurableLtiProviderRepository::OPTION_LTI_PROVIDER_LIST => json_decode(file_get_contents(__DIR__ . '/_resources/lti_provider_list.json'), true)]);
+        $subject = new ConfigurableLtiProviderRepository([
+            ConfigurableLtiProviderRepository::OPTION_LTI_PROVIDER_LIST => json_decode(
+                file_get_contents(__DIR__ . '/_resources/lti_provider_list.json'), true)
+        ]);
 
         $providers = $subject->searchByLabel('provider1');
         $this->assertEquals(1, count($providers));
@@ -62,9 +68,29 @@ class ConfigurableLtiProviderRepositoryTest extends TestCase
         $this->assertEquals('provider1_callback_url', $providers[0]->getCallbackUrl());
     }
 
+    public function testSearchByOauthKey()
+    {
+        $subject = new ConfigurableLtiProviderRepository([
+            ConfigurableLtiProviderRepository::OPTION_LTI_PROVIDER_LIST => json_decode(
+                file_get_contents(__DIR__ . '/_resources/lti_provider_list.json'), true)
+        ]);
+
+        $provider = $subject->searchByOauthKey('provider2_key');
+        $this->assertInstanceOf(LtiProvider::class, $provider);
+        $this->assertEquals('provider2_uri', $provider->getId());
+        $this->assertEquals('provider2_label', $provider->getLabel());
+        $this->assertEquals('provider2_key', $provider->getKey());
+        $this->assertEquals('provider2_secret', $provider->getSecret());
+        $this->assertEquals('provider2_callback_url', $provider->getCallbackUrl());
+
+        $this->assertNull($subject->searchByOauthKey('not_existing'));
+    }
+
     public function testConstructorWithNullProviderListThrowsException()
     {
-        $subject = new ConfigurableLtiProviderRepository([ConfigurableLtiProviderRepository::OPTION_LTI_PROVIDER_LIST => null]);
+        $subject = new ConfigurableLtiProviderRepository([
+            ConfigurableLtiProviderRepository::OPTION_LTI_PROVIDER_LIST => null
+        ]);
         $this->setExpectedException(\InvalidArgumentException::class);
 
         $subject->count();
@@ -72,7 +98,10 @@ class ConfigurableLtiProviderRepositoryTest extends TestCase
 
     public function testConstructorWithInvalidProviderListThrowsException()
     {
-        $subject = new ConfigurableLtiProviderRepository([ConfigurableLtiProviderRepository::OPTION_LTI_PROVIDER_LIST => json_decode(file_get_contents(__DIR__ . '/_resources/incomplete_lti_provider_list.json'), true)]);
+        $subject = new ConfigurableLtiProviderRepository([
+            ConfigurableLtiProviderRepository::OPTION_LTI_PROVIDER_LIST => json_decode(
+                file_get_contents(__DIR__ . '/_resources/incomplete_lti_provider_list.json'), true)
+        ]);
         $this->setExpectedException(\InvalidArgumentException::class, 'Missing key \'callback_url\' in LTI provider list.');
 
         $subject->count();
