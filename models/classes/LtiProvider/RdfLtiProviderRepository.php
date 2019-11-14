@@ -147,8 +147,7 @@ class RdfLtiProviderRepository extends OntologyClassService implements LtiProvid
             $resource->getLabel(),
             (string)reset($propertiesValues[DataStore::PROPERTY_OAUTH_KEY]),
             (string)reset($propertiesValues[DataStore::PROPERTY_OAUTH_SECRET]),
-            (string)reset($propertiesValues[DataStore::PROPERTY_OAUTH_CALLBACK]),
-            null
+            (string)reset($propertiesValues[DataStore::PROPERTY_OAUTH_CALLBACK])
         );
     }
 

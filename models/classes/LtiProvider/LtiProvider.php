@@ -40,28 +40,19 @@ class LtiProvider implements \JsonSerializable
     private $callbackUrl;
 
     /**
-     * Optional field for LtiProviders retrieved from
-     * @see \oat\taoDeliverConnect\model\TenantLtiProviderRepository
-     * @var string|null
-     */
-    private $tenantId;
-
-    /**
      * @param string $id
      * @param string $label
      * @param string $key
      * @param string $secret
      * @param string $callbackUrl
-     * @param string|null $tenantId
      */
-    public function __construct($id, $label, $key, $secret, $callbackUrl, $tenantId = null)
+    public function __construct($id, $label, $key, $secret, $callbackUrl)
     {
         $this->id = $id;
         $this->label = $label;
         $this->key = $key;
         $this->secret = $secret;
         $this->callbackUrl = $callbackUrl;
-        $this->tenantId = $tenantId;
     }
 
     /**
@@ -105,14 +96,6 @@ class LtiProvider implements \JsonSerializable
     }
 
     /**
-     * @return string|null
-     */
-    public function getTenantId()
-    {
-        return $this->tenantId;
-    }
-
-    /**
      * @inheritdoc
      */
     public function jsonSerialize()
@@ -123,8 +106,7 @@ class LtiProvider implements \JsonSerializable
             'text' => $this->getLabel(),
             'key' => $this->getKey(),
             'secret' => $this->getSecret(),
-            'callback' => $this->getCallbackUrl(),
-            'tenant_id' => $this->getTenantId()
+            'callback' => $this->getCallbackUrl()
         ];
     }
 }
