@@ -258,7 +258,7 @@ class Updater extends \common_ext_ExtensionUpdater
             $this->setVersion('10.5.3');
         }
 
-        $this->skip('10.5.3', '10.9.0');
+        $this->skip('10.5.3', '10.9.1');
 
         if ($this->isVersion('10.9.0')) {
             $this->getServiceManager()->register(LisOauthService::SERVICE_ID,
