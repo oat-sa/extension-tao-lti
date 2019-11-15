@@ -71,7 +71,7 @@ class LtiService extends ConfigurableService
      */
     public function startLtiSession(common_http_Request $request)
     {
-        $this->getServiceLocator()->get(SessionService::SERVICE_ID)->startSession($this->createLtiSession($request));
+        $this->getServiceLocator()->get(SessionService::SERVICE_ID)->setSession($this->createLtiSession($request));
     }
 
     /**
