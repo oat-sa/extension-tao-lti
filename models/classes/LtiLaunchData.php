@@ -25,6 +25,7 @@ use core_kernel_classes_Resource;
 use tao_helpers_Request;
 use tao_models_classes_oauth_DataStore;
 use oat\oatbox\log\LoggerAwareTrait;
+use Psr\Http\Message\ServerRequestInterface;
 
 class LtiLaunchData implements \JsonSerializable
 {
@@ -88,6 +89,28 @@ class LtiLaunchData implements \JsonSerializable
     }
 
     /**
+     * @param array $json
+     * @return LtiLaunchData
+     */
+    public static function fromJsonArray($json)
+    {
+        return new static($json['variables'], $json['customParams']);
+    }
+
+    /**
+     *
+     * @param common_http_Request $request
+     * @return LtiLaunchData
+     * @throws \ResolverException
+     */
+    public static function fromPsrRequest(ServerRequestInterface $request)
+    {
+        $extra = self::getParametersFromUrl($request->getUri()->__toString());
+        $combined = array_merge($request->getQueryParams(), $request->getParsedBody());
+        return new static($combined, $extra);
+    }
+
+    /**
      *
      * @param common_http_Request $request
      * @return LtiLaunchData
@@ -96,7 +119,6 @@ class LtiLaunchData implements \JsonSerializable
     public static function fromRequest(common_http_Request $request)
     {
         $extra = self::getParametersFromUrl($request->getUrl());
-
         return new static($request->getParams(), $extra);
     }
 

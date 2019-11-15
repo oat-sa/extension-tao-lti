@@ -29,7 +29,6 @@ use oat\oatbox\log\LoggerService;
 use oat\tao\model\TaoOntology;
 use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
 use Psr\Log\LogLevel;
-use tao_models_classes_Service;
 use oat\oatbox\service\ServiceManager;
 use oat\oatbox\service\ConfigurableService;
 
