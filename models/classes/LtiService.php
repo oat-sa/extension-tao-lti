@@ -31,6 +31,7 @@ use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
 use Psr\Log\LogLevel;
 use oat\oatbox\service\ServiceManager;
 use oat\oatbox\service\ConfigurableService;
+use oat\oatbox\session\SessionService;
 
 class LtiService extends ConfigurableService
 {
@@ -70,7 +71,7 @@ class LtiService extends ConfigurableService
      */
     public function startLtiSession(common_http_Request $request)
     {
-        common_session_SessionManager::startSession($this->createLtiSession($request));
+        $this->getServiceLocator()->get(SessionService::SERVICE_ID)->startSession($this->createLtiSession($request));
     }
 
     /**
