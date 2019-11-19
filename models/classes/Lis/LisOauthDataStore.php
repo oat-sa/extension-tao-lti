@@ -19,7 +19,6 @@
 
 namespace oat\taoLti\models\classes\Lis;
 
-use IMSGlobal\LTI\OAuth\OAuthConsumer;
 use IMSGlobal\LTI\OAuth\OAuthException as LtiOAuthException;
 use IMSGlobal\LTI\OAuth\OAuthToken;
 use oat\oatbox\service\ConfigurableService;
@@ -41,8 +40,7 @@ class LisOauthDataStore extends ConfigurableService implements ImsOauthDataStore
     public const OPTION_NONCE_STORE = 'nonce_store';
 
     /**
-     * @param string $consumer_key
-     * @return LisOAuthConsumer
+     * @inheritDoc
      * @throws LtiOAuthException
      */
     public function lookup_consumer($consumer_key)
@@ -55,14 +53,7 @@ class LisOauthDataStore extends ConfigurableService implements ImsOauthDataStore
     }
 
     /**
-     * Should verify if the token exists and return it
-     * Always returns an token with an empty secret for now
-     * @see \oat\tao\model\oauth\DataStore
-     *
-     * @param OAuthConsumer $consumer
-     * @param string $token_type
-     * @param string $token
-     * @return OAuthToken
+     * @inheritDoc
      */
     public function lookup_token($consumer, $token_type, $token)
     {
@@ -70,13 +61,7 @@ class LisOauthDataStore extends ConfigurableService implements ImsOauthDataStore
     }
 
     /**
-     * Should verify if a nonce has already been used
-     *
-     * @param OAuthConsumer $consumer
-     * @param string $token
-     * @param string $nonce
-     * @param string $timestamp
-     * @return bool if nonce value exists
+     * @inheritDoc
      * @throws InvalidService
      * @throws InvalidServiceManagerException
      */
@@ -88,9 +73,7 @@ class LisOauthDataStore extends ConfigurableService implements ImsOauthDataStore
     }
 
     /**
-     * @param OAuthConsumer $consumer
-     * @param callable|null $callback
-     * @return mixed
+     * @inheritDoc
      */
     public function new_request_token($consumer, $callback = null)
     {
@@ -98,10 +81,7 @@ class LisOauthDataStore extends ConfigurableService implements ImsOauthDataStore
     }
 
     /**
-     * @param string $token
-     * @param OAuthConsumer $consumer
-     * @param string $verifier Verification code
-     * @return string
+     * @inheritDoc
      */
     public function new_access_token($token, $consumer, $verifier = null)
     {
