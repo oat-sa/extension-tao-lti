@@ -19,8 +19,8 @@
 
 namespace oat\taoLti\models\classes\LtiProvider;
 
+use InvalidArgumentException;
 use oat\generis\test\TestCase;
-use oat\oatbox\service\EnvironmentVariable;
 
 /**
  * Service methods to manage the LTI provider business objects.
@@ -43,12 +43,15 @@ class ConfigurableLtiProviderRepositoryTest extends TestCase
         $this->assertEquals('provider1_key', $providers[0]->getKey());
         $this->assertEquals('provider1_secret', $providers[0]->getSecret());
         $this->assertEquals('provider1_callback_url', $providers[0]->getCallbackUrl());
+        $this->assertEquals(['Learner'], $providers[0]->getRoles());
+
         $this->assertInstanceOf(LtiProvider::class, $providers[1]);
         $this->assertEquals('provider2_uri', $providers[1]->getId());
         $this->assertEquals('provider2_label', $providers[1]->getLabel());
         $this->assertEquals('provider2_key', $providers[1]->getKey());
         $this->assertEquals('provider2_secret', $providers[1]->getSecret());
         $this->assertEquals('provider2_callback_url', $providers[1]->getCallbackUrl());
+        $this->assertEquals(null, $providers[1]->getRoles());
     }
 
     public function testSearchByLabel()
@@ -91,7 +94,7 @@ class ConfigurableLtiProviderRepositoryTest extends TestCase
         $subject = new ConfigurableLtiProviderRepository([
             ConfigurableLtiProviderRepository::OPTION_LTI_PROVIDER_LIST => null
         ]);
-        $this->setExpectedException(\InvalidArgumentException::class);
+        $this->setExpectedException(InvalidArgumentException::class);
 
         $subject->count();
     }
@@ -102,7 +105,7 @@ class ConfigurableLtiProviderRepositoryTest extends TestCase
             ConfigurableLtiProviderRepository::OPTION_LTI_PROVIDER_LIST => json_decode(
                 file_get_contents(__DIR__ . '/_resources/incomplete_lti_provider_list.json'), true)
         ]);
-        $this->setExpectedException(\InvalidArgumentException::class, 'Missing key \'callback_url\' in LTI provider list.');
+        $this->setExpectedException(InvalidArgumentException::class, 'Missing key \'callback_url\' in LTI provider list.');
 
         $subject->count();
     }

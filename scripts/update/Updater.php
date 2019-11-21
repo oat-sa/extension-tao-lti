@@ -57,13 +57,6 @@ class Updater extends \common_ext_ExtensionUpdater
      *
      * @return string $versionUpdatedTo
      *
-     * @throws \common_exception_Error
-     * @throws \common_exception_InconsistentData
-     * @throws \common_exception_InvalidArgumentType
-     * @throws \common_exception_MissingParameter
-     * @throws \common_ext_ExtensionException
-     * @throws \common_ext_InstallationException
-     * @throws \common_ext_ManifestNotFoundException
      * @throws common_Exception
      */
     public function update($initialVersion)
@@ -269,5 +262,8 @@ class Updater extends \common_ext_ExtensionUpdater
                 ]));
             $this->setVersion('11.0.0');
         }
+
+        $this->skip('11.0.0', '11.1.0');
+
     }
 }

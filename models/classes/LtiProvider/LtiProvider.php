@@ -19,10 +19,12 @@
 
 namespace oat\taoLti\models\classes\LtiProvider;
 
+use JsonSerializable;
+
 /**
  * LTI provider business object.
  */
-class LtiProvider implements \JsonSerializable
+class LtiProvider implements JsonSerializable
 {
     /** @var string */
     private $id;
@@ -39,20 +41,25 @@ class LtiProvider implements \JsonSerializable
     /** @var string */
     private $callbackUrl;
 
+    /** @var array */
+    private $roles;
+
     /**
      * @param string $id
      * @param string $label
      * @param string $key
      * @param string $secret
      * @param string $callbackUrl
+     * @param string[] $roles
      */
-    public function __construct($id, $label, $key, $secret, $callbackUrl)
+    public function __construct($id, $label, $key, $secret, $callbackUrl, array $roles = [])
     {
         $this->id = $id;
         $this->label = $label;
         $this->key = $key;
         $this->secret = $secret;
         $this->callbackUrl = $callbackUrl;
+        $this->roles = $roles;
     }
 
     /**
@@ -106,7 +113,16 @@ class LtiProvider implements \JsonSerializable
             'text' => $this->getLabel(),
             'key' => $this->getKey(),
             'secret' => $this->getSecret(),
-            'callback' => $this->getCallbackUrl()
+            'callback' => $this->getCallbackUrl(),
+            'roles' => $this->getRoles(),
         ];
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getRoles()
+    {
+        return $this->roles;
     }
 }
