@@ -118,6 +118,9 @@ class LtiProvider implements JsonSerializable
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function getRoles()
     {
         return $this->roles;
