@@ -33,14 +33,22 @@ class LisOauthService extends OauthService
     public const SERVICE_ID = 'taoLti/LisOauthService';
 
     /**
-     * @param common_http_Request $request
-     * @param common_http_Credentials $credentials
-     * @param bool $authorizationHeader
-     * @return common_http_Request|void
+     * @inheritDoc
      * @throws common_exception_NoImplementation
      */
     public function sign(common_http_Request $request, common_http_Credentials $credentials, $authorizationHeader = false)
     {
         throw new common_exception_NoImplementation('Signing not implemented');
+    }
+
+    /**
+     * Perform a real check of body hash
+     * @inheritDoc
+     */
+    protected function validateBodyHash($body, $bodyHash)
+    {
+        // No need to perform time insensitive comparison here, because possible
+        // attacker already has both bodyHash and body
+        return $this->calculateOauthBodyHash($body) === $bodyHash;
     }
 }
