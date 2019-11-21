@@ -41,8 +41,8 @@ class LtiProvider implements JsonSerializable
     /** @var string */
     private $callbackUrl;
 
-    /** @var null|array */
-    private $roles = null;
+    /** @var array */
+    private $roles;
 
     /**
      * @param string $id
@@ -50,9 +50,9 @@ class LtiProvider implements JsonSerializable
      * @param string $key
      * @param string $secret
      * @param string $callbackUrl
-     * @param null|array $roles
+     * @param array $roles
      */
-    public function __construct($id, $label, $key, $secret, $callbackUrl, array $roles = null)
+    public function __construct($id, $label, $key, $secret, $callbackUrl, array $roles = [])
     {
         $this->id = $id;
         $this->label = $label;
