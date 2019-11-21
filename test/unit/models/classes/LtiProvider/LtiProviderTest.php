@@ -57,7 +57,7 @@ class LtiProviderTest extends TestCase
             'text' => $label,
             'key' => $key,
             'secret' => $secret,
-            'callback' => $callbackUrl,
+            'callback' => $callbackUrl
         ];
         $this->assertEquals($expected, $subject->jsonSerialize());
     }

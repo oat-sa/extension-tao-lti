@@ -32,9 +32,11 @@ class LtiProviderServiceTest extends TestCase
     const FIND_ALL_2 = ['key2' => 'value2'];
     const LABEL = 'the sought label';
     const ID = 'uri';
+    const OAUTH_KEY = 'okey1';
     const SEARCH_1 = ['key3' => 'value3'];
     const SEARCH_2 = ['key4' => 'value4'];
     const SEARCH_ID_RESULT = ['uri' => 'v4'];
+    const SEARCH_OAUTH_KEY_RESULT = ['uri' => 'v5'];
 
     /** @var LtiProviderService */
     private $subject;
@@ -42,10 +44,24 @@ class LtiProviderServiceTest extends TestCase
     public function setUp()
     {
         $repository1 = $this->createRepositoryMock(
-            self::COUNT_1, self::FIND_ALL_1, self::LABEL, self::SEARCH_1, self::ID, self::SEARCH_ID_RESULT
+            self::COUNT_1,
+            self::FIND_ALL_1,
+            self::LABEL,
+            self::SEARCH_1,
+            self::ID,
+            self::OAUTH_KEY,
+            self::SEARCH_ID_RESULT,
+            null
         );
         $repository2 = $this->createRepositoryMock(
-            self::COUNT_2, self::FIND_ALL_2, self::LABEL, self::SEARCH_2, self::ID, null
+            self::COUNT_2,
+            self::FIND_ALL_2,
+            self::LABEL,
+            self::SEARCH_2,
+            self::ID,
+            self::OAUTH_KEY,
+            null,
+            self::SEARCH_OAUTH_KEY_RESULT
         );
 
         $this->subject = new LtiProviderService([
@@ -73,8 +89,21 @@ class LtiProviderServiceTest extends TestCase
         $this->assertEquals(self::SEARCH_ID_RESULT, $this->subject->searchById(self::ID));
     }
 
-    private function createRepositoryMock($count, array $findAllResult, $label, array $searchResult, $searchId, $searchByIdhResult)
+    public function testSearchByOauthKey()
     {
+        $this->assertEquals(self::SEARCH_OAUTH_KEY_RESULT, $this->subject->searchByOauthKey(self::OAUTH_KEY));
+    }
+
+    private function createRepositoryMock(
+        $count,
+        array $findAllResult,
+        $label,
+        array $searchResult,
+        $searchId,
+        $searchOauthKey,
+        $searchByIdhResult,
+        $searchByOauthKeyResult
+    ) {
         $repository = $this->getMockBuilder(LtiProviderRepositoryInterface::class)
             ->disableOriginalConstructor()
             ->setMethods(['count', 'findAll', 'searchByLabel', 'searchById'])
@@ -83,6 +112,7 @@ class LtiProviderServiceTest extends TestCase
         $repository->method('findAll')->willReturn($findAllResult);
         $repository->method('searchByLabel')->with($label)->willReturn($searchResult);
         $repository->method('searchById')->with($searchId)->willReturn($searchByIdhResult);
+        $repository->method('searchByOauthKey')->with($searchOauthKey)->willReturn($searchByOauthKeyResult);
 
         return $repository;
     }

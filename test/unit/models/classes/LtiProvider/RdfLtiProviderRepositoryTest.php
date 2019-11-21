@@ -26,7 +26,6 @@ use core_kernel_classes_Resource as RdfResource;
 use oat\generis\model\kernel\persistence\smoothsql\search\ComplexSearchService;
 use oat\generis\model\OntologyRdfs;
 use oat\generis\test\unit\OntologyMockTest;
-use oat\oatbox\service\exception\InvalidServiceManagerException;
 use oat\oatbox\service\ServiceManager;
 use oat\search\base\QueryBuilderInterface;
 use oat\search\base\QueryInterface;
@@ -185,6 +184,35 @@ class RdfLtiProviderRepositoryTest extends OntologyMockTest
             ['findAll', null, []],
             ['searchByLabel', $label, [OntologyRdfs::RDFS_LABEL => $label]],
         ];
+    }
+
+    public function testSearchByOauthKey()
+    {
+        $uri2 = 'uri2';
+        $label2 = 'label2';
+        $key2 = 'key2';
+        $secret2 = 'secret2';
+        $callbackUrl2 = 'callbackUrl2';
+
+        $resource2 = $this->getRdfResourceMock($uri2, $label2, $key2, $secret2, $callbackUrl2);
+        $ltiProvider2 = new LtiProvider($uri2, $label2, $key2, $secret2, $callbackUrl2);
+
+        $this->searchService->method('searchType')
+            ->with($this->queryBuilder, RdfLtiProviderRepository::CLASS_URI, true)
+            ->willReturn($this->query);
+
+        $this->queryBuilder->expects($this->once())->method('setCriteria')->with($this->query);
+        $this->gateWay->method('search')->with($this->queryBuilder)->willReturn([$resource2]);
+        $this->query->expects($this->once())
+            ->method('add')
+            ->with(DataStore::PROPERTY_OAUTH_KEY)
+            ->willReturn($this->query);
+        $this->query->expects($this->once())
+            ->method('contains')
+            ->with('key2')
+            ->willReturn($this->query);
+
+        $this->assertEquals($ltiProvider2, $this->subject->searchByOauthKey('key2'));
     }
 
     public function testFindWithExceptionReturn0AndLogsException()

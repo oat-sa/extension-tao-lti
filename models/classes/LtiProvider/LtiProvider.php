@@ -40,8 +40,6 @@ class LtiProvider implements \JsonSerializable
     private $callbackUrl;
 
     /**
-     * LtiProvider constructor.
-     *
      * @param string $id
      * @param string $label
      * @param string $key
@@ -108,7 +106,7 @@ class LtiProvider implements \JsonSerializable
             'text' => $this->getLabel(),
             'key' => $this->getKey(),
             'secret' => $this->getSecret(),
-            'callback' => $this->getCallbackUrl(),
+            'callback' => $this->getCallbackUrl()
         ];
     }
 }
