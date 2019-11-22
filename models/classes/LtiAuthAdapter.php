@@ -73,7 +73,9 @@ class LtiAuthAdapter implements \common_user_auth_Adapter, ServiceLocatorAwareIn
     public function authenticate()
     {
         try {
-            $this->getServiceLocator()->get(OauthService::SERVICE_ID)->validate($this->request);
+            /** @var OauthService $oauthService */
+            $oauthService = $this->getServiceLocator()->get(OauthService::SERVICE_ID);
+            $oauthService->validate($this->request);
             $ltiLaunchData = $this->getLaunchData();
             /** @var LtiUserService $userService */
             $userService = $this->getServiceLocator()->get(LtiUserService::SERVICE_ID);

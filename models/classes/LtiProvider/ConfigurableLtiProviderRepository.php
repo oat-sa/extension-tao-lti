@@ -86,7 +86,8 @@ class ConfigurableLtiProviderRepository extends ConfigurableService implements L
                     $provider['label'],
                     $provider['key'],
                     $provider['secret'],
-                    $provider['callback_url']
+                    $provider['callback_url'],
+                    $provider['roles'] ?? []
                 );
             }
         }
@@ -105,5 +106,20 @@ class ConfigurableLtiProviderRepository extends ConfigurableService implements L
                 return $provider;
             }
         }
+        return null;
+    }
+
+    /**
+     * @param string $oauthKey
+     * @return mixed|LtiProvider|null
+     */
+    public function searchByOauthKey($oauthKey)
+    {
+        foreach ($this->getProviders() as $provider) {
+            if ($provider->getKey() === $oauthKey) {
+                return $provider;
+            }
+        }
+        return null;
     }
 }

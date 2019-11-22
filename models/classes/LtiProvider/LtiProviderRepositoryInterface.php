@@ -47,4 +47,10 @@ interface LtiProviderRepositoryInterface extends Countable
      * @return LtiProvider|null
      */
     public function searchById($id);
+
+    /**
+     * @param string $oauthKey
+     * @return LtiProvider|null
+     */
+    public function searchByOauthKey($oauthKey);
 }
