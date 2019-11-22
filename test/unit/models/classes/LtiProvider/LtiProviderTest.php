@@ -61,7 +61,7 @@ class LtiProviderTest extends TestCase
     public function ltiDataProvide()
     {
         return [
-            ['uid', 'uuuulabel', 'uuukey', 'uuuusecr', 'uuucallbacl', null],
+            ['uid', 'uuuulabel', 'uuukey', 'uuuusecr', 'uuucallbacl', []],
             ['uid', 'uuuulabel', 'uuukey', 'uuuusecr', 'uuucallbacl', []],
             ['uid', 'uuuulabel', 'uuukey', 'uuuusecr', 'uuucallbacl', ['role1', 'role2']],
         ];
