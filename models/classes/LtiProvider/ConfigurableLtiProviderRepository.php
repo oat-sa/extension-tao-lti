@@ -87,7 +87,7 @@ class ConfigurableLtiProviderRepository extends ConfigurableService implements L
                     $provider['key'],
                     $provider['secret'],
                     $provider['callback_url'],
-                    $provider['roles']
+                    $provider['roles'] ?? []
                 );
             }
         }

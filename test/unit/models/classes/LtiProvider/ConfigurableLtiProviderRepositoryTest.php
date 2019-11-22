@@ -51,7 +51,7 @@ class ConfigurableLtiProviderRepositoryTest extends TestCase
         $this->assertEquals('provider2_key', $providers[1]->getKey());
         $this->assertEquals('provider2_secret', $providers[1]->getSecret());
         $this->assertEquals('provider2_callback_url', $providers[1]->getCallbackUrl());
-        $this->assertEquals(null, $providers[1]->getRoles());
+        $this->assertEquals([], $providers[1]->getRoles());
     }
 
     public function testSearchByLabel()
