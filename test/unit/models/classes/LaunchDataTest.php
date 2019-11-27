@@ -51,4 +51,15 @@ class LaunchDataTest extends TestCase
         $this->assertTrue($emptyLaunch->hasReturnUrl());
         $logger->warning(Argument::any(), Argument::any())->shouldNotHaveBeenCalled();
     }
+
+    public function testJsonEncode()
+    {
+        $sampleLaunch = new LtiLaunchData(['a$%' => '!@#$%^&*()_', 'b' => 'c'], ['\\\'s' => '+++']);
+        $unserialized = LtiLaunchData::fromJsonArray(json_decode(json_encode($sampleLaunch), true));
+        $this->assertEquals($sampleLaunch, $unserialized);
+
+        $emptyLaunch = new LtiLaunchData([],[]);
+        $unserialized = LtiLaunchData::fromJsonArray(json_decode(json_encode($emptyLaunch), true));
+        $this->assertEquals($emptyLaunch, $unserialized);
+    }
 }
