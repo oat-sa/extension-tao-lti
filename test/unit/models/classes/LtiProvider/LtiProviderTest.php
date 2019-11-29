@@ -25,32 +25,27 @@ use oat\taoLti\models\classes\LtiProvider\LtiProvider;
 
 class LtiProviderTest extends TestCase
 {
-    public function testGetters()
+    /**
+     * @dataProvider ltiDataProvide
+     */
+    public function testGetters($id, $label, $key, $secret, $callbackUrl, $roles)
     {
-        $id = 'an id';
-        $label = 'A beautiful label';
-        $key = 'foo';
-        $secret = 'bar';
-        $callbackUrl = 'baz';
-
-        $subject = new LtiProvider($id, $label, $key, $secret, $callbackUrl);
+        $subject = new LtiProvider($id, $label, $key, $secret, $callbackUrl, $roles);
 
         $this->assertEquals($id, $subject->getId());
         $this->assertEquals($label, $subject->getLabel());
         $this->assertEquals($key, $subject->getKey());
         $this->assertEquals($secret, $subject->getSecret());
         $this->assertEquals($callbackUrl, $subject->getCallbackUrl());
+        $this->assertEquals($roles, $subject->getRoles());
     }
 
-    public function testSerializer()
+    /**
+     * @dataProvider ltiDataProvide
+     */
+    public function testSerializer($id, $label, $key, $secret, $callbackUrl, $roles)
     {
-        $id = 'an id';
-        $label = 'A beautiful label';
-        $key = 'foo';
-        $secret = 'bar';
-        $callbackUrl = 'baz';
-
-        $subject = new LtiProvider($id, $label, $key, $secret, $callbackUrl);
+        $subject = new LtiProvider($id, $label, $key, $secret, $callbackUrl, $roles);
         $expected = [
             'id' => $id,
             'uri' => $id,
@@ -58,7 +53,17 @@ class LtiProviderTest extends TestCase
             'key' => $key,
             'secret' => $secret,
             'callback' => $callbackUrl,
+            'roles' => $roles,
         ];
         $this->assertEquals($expected, $subject->jsonSerialize());
+    }
+
+    public function ltiDataProvide()
+    {
+        return [
+            ['uid', 'uuuulabel', 'uuukey', 'uuuusecr', 'uuucallbacl', []],
+            ['uid', 'uuuulabel', 'uuukey', 'uuuusecr', 'uuucallbacl', []],
+            ['uid', 'uuuulabel', 'uuukey', 'uuuusecr', 'uuucallbacl', ['role1', 'role2']],
+        ];
     }
 }

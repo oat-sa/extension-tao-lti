@@ -19,8 +19,8 @@
 
 namespace oat\taoLti\models\classes\LtiProvider;
 
+use InvalidArgumentException;
 use oat\generis\test\TestCase;
-use oat\oatbox\service\EnvironmentVariable;
 
 /**
  * Service methods to manage the LTI provider business objects.
@@ -29,7 +29,10 @@ class ConfigurableLtiProviderRepositoryTest extends TestCase
 {
     public function testConstructorCountFindAll()
     {
-        $subject = new ConfigurableLtiProviderRepository([ConfigurableLtiProviderRepository::OPTION_LTI_PROVIDER_LIST => json_decode(file_get_contents(__DIR__ . '/_resources/lti_provider_list.json'), true)]);
+        $subject = new ConfigurableLtiProviderRepository([
+            ConfigurableLtiProviderRepository::OPTION_LTI_PROVIDER_LIST => json_decode(
+                file_get_contents(__DIR__ . '/_resources/lti_provider_list.json'), true)
+        ]);
 
         $this->assertEquals(2, $subject->count());
 
@@ -40,17 +43,23 @@ class ConfigurableLtiProviderRepositoryTest extends TestCase
         $this->assertEquals('provider1_key', $providers[0]->getKey());
         $this->assertEquals('provider1_secret', $providers[0]->getSecret());
         $this->assertEquals('provider1_callback_url', $providers[0]->getCallbackUrl());
+        $this->assertEquals(['Learner'], $providers[0]->getRoles());
+
         $this->assertInstanceOf(LtiProvider::class, $providers[1]);
         $this->assertEquals('provider2_uri', $providers[1]->getId());
         $this->assertEquals('provider2_label', $providers[1]->getLabel());
         $this->assertEquals('provider2_key', $providers[1]->getKey());
         $this->assertEquals('provider2_secret', $providers[1]->getSecret());
         $this->assertEquals('provider2_callback_url', $providers[1]->getCallbackUrl());
+        $this->assertEquals([], $providers[1]->getRoles());
     }
 
     public function testSearchByLabel()
     {
-        $subject = new ConfigurableLtiProviderRepository([ConfigurableLtiProviderRepository::OPTION_LTI_PROVIDER_LIST => json_decode(file_get_contents(__DIR__ . '/_resources/lti_provider_list.json'), true)]);
+        $subject = new ConfigurableLtiProviderRepository([
+            ConfigurableLtiProviderRepository::OPTION_LTI_PROVIDER_LIST => json_decode(
+                file_get_contents(__DIR__ . '/_resources/lti_provider_list.json'), true)
+        ]);
 
         $providers = $subject->searchByLabel('provider1');
         $this->assertEquals(1, count($providers));
@@ -62,18 +71,41 @@ class ConfigurableLtiProviderRepositoryTest extends TestCase
         $this->assertEquals('provider1_callback_url', $providers[0]->getCallbackUrl());
     }
 
+    public function testSearchByOauthKey()
+    {
+        $subject = new ConfigurableLtiProviderRepository([
+            ConfigurableLtiProviderRepository::OPTION_LTI_PROVIDER_LIST => json_decode(
+                file_get_contents(__DIR__ . '/_resources/lti_provider_list.json'), true)
+        ]);
+
+        $provider = $subject->searchByOauthKey('provider2_key');
+        $this->assertInstanceOf(LtiProvider::class, $provider);
+        $this->assertEquals('provider2_uri', $provider->getId());
+        $this->assertEquals('provider2_label', $provider->getLabel());
+        $this->assertEquals('provider2_key', $provider->getKey());
+        $this->assertEquals('provider2_secret', $provider->getSecret());
+        $this->assertEquals('provider2_callback_url', $provider->getCallbackUrl());
+
+        $this->assertNull($subject->searchByOauthKey('not_existing'));
+    }
+
     public function testConstructorWithNullProviderListThrowsException()
     {
-        $subject = new ConfigurableLtiProviderRepository([ConfigurableLtiProviderRepository::OPTION_LTI_PROVIDER_LIST => null]);
-        $this->setExpectedException(\InvalidArgumentException::class);
+        $subject = new ConfigurableLtiProviderRepository([
+            ConfigurableLtiProviderRepository::OPTION_LTI_PROVIDER_LIST => null
+        ]);
+        $this->setExpectedException(InvalidArgumentException::class);
 
         $subject->count();
     }
 
     public function testConstructorWithInvalidProviderListThrowsException()
     {
-        $subject = new ConfigurableLtiProviderRepository([ConfigurableLtiProviderRepository::OPTION_LTI_PROVIDER_LIST => json_decode(file_get_contents(__DIR__ . '/_resources/incomplete_lti_provider_list.json'), true)]);
-        $this->setExpectedException(\InvalidArgumentException::class, 'Missing key \'callback_url\' in LTI provider list.');
+        $subject = new ConfigurableLtiProviderRepository([
+            ConfigurableLtiProviderRepository::OPTION_LTI_PROVIDER_LIST => json_decode(
+                file_get_contents(__DIR__ . '/_resources/incomplete_lti_provider_list.json'), true)
+        ]);
+        $this->setExpectedException(InvalidArgumentException::class, 'Missing key \'callback_url\' in LTI provider list.');
 
         $subject->count();
     }

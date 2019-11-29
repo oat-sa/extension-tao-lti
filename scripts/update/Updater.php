@@ -24,6 +24,7 @@ namespace oat\taoLti\scripts\update;
 use common_Exception;
 use common_ext_ExtensionsManager;
 use oat\tao\model\mvc\error\ExceptionInterpreterService;
+use oat\tao\model\oauth\nonce\NoNonce;
 use oat\tao\scripts\update\OntologyUpdater;
 use oat\taoLti\models\classes\ConsumerService;
 use oat\taoLti\models\classes\CookieVerifyService;
@@ -32,6 +33,8 @@ use oat\taoLti\models\classes\FactoryLtiAuthAdapterService;
 use oat\taoLti\models\classes\FactoryLtiAuthAdapterServiceInterface;
 use oat\taoLti\models\classes\LaunchData\Validator\Lti11LaunchDataValidator;
 use oat\taoLti\models\classes\LaunchData\Validator\LtiValidatorService;
+use oat\taoLti\models\classes\Lis\LisOauthDataStore;
+use oat\taoLti\models\classes\Lis\LisOauthService;
 use oat\taoLti\models\classes\LtiAuthAdapter;
 use oat\taoLti\models\classes\LtiException;
 use oat\taoLti\models\classes\LtiProvider\LtiProviderService;
@@ -54,13 +57,6 @@ class Updater extends \common_ext_ExtensionUpdater
      *
      * @return string $versionUpdatedTo
      *
-     * @throws \common_exception_Error
-     * @throws \common_exception_InconsistentData
-     * @throws \common_exception_InvalidArgumentType
-     * @throws \common_exception_MissingParameter
-     * @throws \common_ext_ExtensionException
-     * @throws \common_ext_InstallationException
-     * @throws \common_ext_ManifestNotFoundException
      * @throws common_Exception
      */
     public function update($initialVersion)
@@ -257,5 +253,16 @@ class Updater extends \common_ext_ExtensionUpdater
 
         $this->skip('10.5.3', '10.10.0');
 
+        if ($this->isVersion('10.9.1')) {
+            $this->getServiceManager()->register(LisOauthService::SERVICE_ID,
+                new LisOauthService([
+                    LisOauthService::OPTION_DATASTORE => new LisOauthDataStore([
+                        LisOauthDataStore::OPTION_NONCE_STORE => new NoNonce()
+                    ])
+                ]));
+            $this->setVersion('11.0.0');
+        }
+
+        $this->skip('11.0.0', '11.2.0');
     }
 }

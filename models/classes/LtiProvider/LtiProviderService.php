@@ -38,7 +38,7 @@ class LtiProviderService extends ConfigurableService implements LtiProviderRepos
     {
         return $this->aggregate(
             0,
-            function ($count, LtiProviderRepositoryInterface $implementation) {
+            static function ($count, LtiProviderRepositoryInterface $implementation) {
                 return $count + $implementation->count();
             }
         );
@@ -53,7 +53,7 @@ class LtiProviderService extends ConfigurableService implements LtiProviderRepos
     {
         return $this->aggregate(
             [],
-            function ($providers, LtiProviderRepositoryInterface $implementation) {
+            static function ($providers, LtiProviderRepositoryInterface $implementation) {
                 return array_merge($providers, $implementation->findAll());
             }
         );
@@ -70,7 +70,7 @@ class LtiProviderService extends ConfigurableService implements LtiProviderRepos
     {
         return $this->aggregate(
             [],
-            function ($providers, LtiProviderRepositoryInterface $implementation) use ($label) {
+            static function ($providers, LtiProviderRepositoryInterface $implementation) use ($label) {
                 return array_merge($providers, $implementation->searchByLabel($label));
             }
         );
@@ -102,9 +102,26 @@ class LtiProviderService extends ConfigurableService implements LtiProviderRepos
     {
         return current(array_filter($this->aggregate(
             [],
-            function ($providers, LtiProviderRepositoryInterface $implementation) use ($id) {
+            static function ($providers, LtiProviderRepositoryInterface $implementation) use ($id) {
                 return array_merge($providers, [$implementation->searchById($id)]);
             }
         )));
+    }
+
+    /**
+     * @param string $oauthKey
+     * @return LtiProvider|null
+     */
+    public function searchByOauthKey($oauthKey)
+    {
+        $found = array_filter($this->aggregate(
+            [],
+            static function ($providers, LtiProviderRepositoryInterface $implementation) use ($oauthKey) {
+                return array_merge($providers, [$implementation->searchByOauthKey($oauthKey)]);
+            }
+        ));
+        return count($found) > 0
+            ? reset($found)
+            : null;
     }
 }
