@@ -30,14 +30,13 @@ use oat\taoLti\scripts\update\Updater;
  * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
  */
 $extpath = dirname(__FILE__).DIRECTORY_SEPARATOR;
-$taopath = dirname(dirname(__FILE__)).DIRECTORY_SEPARATOR.'tao'.DIRECTORY_SEPARATOR;
 
 return array(
     'name' => 'taoLti',
     'label' => 'LTI library',
     'description' => 'TAO LTI library and helpers',
     'license' => 'GPL-2.0',
-    'version' => '11.1.1',
+    'version' => '11.2.0',
       'author' => 'Open Assessment Technologies SA',
       'requires' => array(
         'generis' => '>=12.5.0',

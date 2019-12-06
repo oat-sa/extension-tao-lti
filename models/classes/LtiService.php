@@ -29,13 +29,36 @@ use oat\oatbox\log\LoggerService;
 use oat\tao\model\TaoOntology;
 use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
 use Psr\Log\LogLevel;
-use tao_models_classes_Service;
+use oat\oatbox\service\ServiceManager;
+use oat\oatbox\service\ConfigurableService;
+use oat\oatbox\session\SessionService;
 
-class LtiService extends tao_models_classes_Service
+class LtiService extends ConfigurableService
 {
     const LIS_CONTEXT_ROLE_NAMESPACE = 'urn:lti:role:ims/lis/';
 
     const LTICONTEXT_SESSION_KEY = 'LTICONTEXT';
+
+    public function createLtiSession(common_http_Request $request)
+    {
+        try {
+            /** @var FactoryLtiAuthAdapterService $factoryAuth */
+            $factoryAuth = $this->getServiceLocator()->get(FactoryLtiAuthAdapterServiceInterface::SERVICE_ID);
+            $adapter     = $factoryAuth->create($request);
+            $user = $adapter->authenticate();
+            $session = new TaoLtiSession($user);
+
+            $this->getServiceLocator()->propagate($session);
+            return $session;
+        } catch (LtiInvalidVariableException $e) {
+            $this->getServiceLocator()->get(LoggerService::SERVICE_ID)
+                ->log(LogLevel::INFO, $e->getMessage());
+            throw new LtiException(
+                __('You are not authorized to use this system'),
+                LtiErrorMessage::ERROR_UNAUTHORIZED
+            );
+        }
+    }
 
     /**
      * start a session from the provided OAuth Request
@@ -48,27 +71,7 @@ class LtiService extends tao_models_classes_Service
      */
     public function startLtiSession(common_http_Request $request)
     {
-        try {
-            /** @var FactoryLtiAuthAdapterService $factoryAuth */
-            $factoryAuth = $this->getServiceLocator()->get(FactoryLtiAuthAdapterServiceInterface::SERVICE_ID);
-            $adapter     = $factoryAuth->create($request);
-
-            $user = $adapter->authenticate();
-
-            $session = new TaoLtiSession($user);
-
-            $this->getServiceLocator()->propagate($session);
-            common_session_SessionManager::startSession($session);
-        } catch (LtiInvalidVariableException $e) {
-            $this->getServiceLocator()
-                ->get(LoggerService::SERVICE_ID)
-                ->log(LogLevel::INFO, $e->getMessage());
-
-            throw new LtiException(
-                __('You are not authorized to use this system'),
-                LtiErrorMessage::ERROR_UNAUTHORIZED
-            );
-        }
+        $this->getServiceLocator()->get(SessionService::SERVICE_ID)->setSession($this->createLtiSession($request));
     }
 
     /**
@@ -124,5 +127,13 @@ class LtiService extends tao_models_classes_Service
     public function getLtiConsumerResource($launchData)
     {
         return $launchData->getLtiConsumer();
+    }
+
+    /**
+     * @deprecated
+     * @return LtiService
+     */
+    public static function singleton() {
+        return ServiceManager::getServiceManager()->get(static::class);
     }
 }
