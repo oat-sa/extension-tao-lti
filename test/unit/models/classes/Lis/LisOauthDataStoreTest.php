@@ -24,6 +24,7 @@ use IMSGlobal\LTI\OAuth\OAuthException as LtiOAuthException;
 use IMSGlobal\LTI\OAuth\OAuthToken;
 use oat\generis\test\MockObject;
 use oat\generis\test\TestCase;
+use oat\oatbox\log\LoggerService;
 use oat\tao\model\oauth\nonce\NoNonce;
 use oat\taoLti\models\classes\Lis\LisOauthDataStore;
 use oat\taoLti\models\classes\LtiProvider\LtiProvider;
@@ -97,7 +98,9 @@ class LisOauthDataStoreTest extends TestCase
 
         $dataStore = new LisOauthDataStore();
         $dataStore->setOption(LisOauthDataStore::OPTION_NONCE_STORE, $nonceStoreMock);
-        $dataStore->setServiceLocator($this->getServiceLocatorMock([]));
+        $dataStore->setServiceLocator($this->getServiceLocatorMock([
+            LoggerService::SERVICE_ID => $this->createMock(LoggerService::class),
+        ]));
 
         /** @noinspection PhpUnhandledExceptionInspection */
         $res = $dataStore->lookup_nonce($oauthConsumerMock, 'token', 'nnnonnnce', '1234567');
