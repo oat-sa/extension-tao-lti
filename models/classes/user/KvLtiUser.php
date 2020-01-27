@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -34,7 +35,7 @@ class KvLtiUser extends \common_user_User implements ServiceLocatorAwareInterfac
 {
     use ServiceLocatorAwareTrait;
 
-    CONST USER_IDENTIFIER = 'identifier';
+    const USER_IDENTIFIER = 'identifier';
 
     /**
      * Local representation of user
@@ -95,30 +96,30 @@ class KvLtiUser extends \common_user_User implements ServiceLocatorAwareInterfac
     {
         $returnValue = null;
         switch ($property) {
-            case GenerisRdf::PROPERTY_USER_DEFLG :
-                $returnValue = array(DEFAULT_LANG);
+            case GenerisRdf::PROPERTY_USER_DEFLG:
+                $returnValue = [DEFAULT_LANG];
                 break;
-            case GenerisRdf::PROPERTY_USER_UILG :
-                $returnValue = array(new \core_kernel_classes_Literal($this->language));
+            case GenerisRdf::PROPERTY_USER_UILG:
+                $returnValue = [new \core_kernel_classes_Literal($this->language)];
                 break;
-            case  GenerisRdf::PROPERTY_USER_ROLES :
+            case GenerisRdf::PROPERTY_USER_ROLES:
                 $returnValue = $this->taoRoles;
                 break;
-            case  GenerisRdf::PROPERTY_USER_FIRSTNAME :
+            case GenerisRdf::PROPERTY_USER_FIRSTNAME:
                 $returnValue = [new \core_kernel_classes_Literal($this->firstname)];
                 break;
-            case  GenerisRdf::PROPERTY_USER_LASTNAME :
+            case GenerisRdf::PROPERTY_USER_LASTNAME:
                 $returnValue = [new \core_kernel_classes_Literal($this->lastname)];
                 break;
-            case  OntologyRdfs::RDFS_LABEL :
+            case OntologyRdfs::RDFS_LABEL:
                 $returnValue = [new \core_kernel_classes_Literal($this->label)];
                 break;
-            case  GenerisRdf::PROPERTY_USER_MAIL :
+            case GenerisRdf::PROPERTY_USER_MAIL:
                 $returnValue = [new \core_kernel_classes_Literal($this->email)];
                 break;
             default:
                 \common_Logger::d('Unkown property ' . $property . ' requested from ' . __CLASS__);
-                $returnValue = array();
+                $returnValue = [];
         }
         return $returnValue;
     }
@@ -161,5 +162,4 @@ class KvLtiUser extends \common_user_User implements ServiceLocatorAwareInterfac
             OntologyRdfs::RDFS_LABEL => $this->label,
         ];
     }
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -63,8 +64,7 @@ class OntologyLtiUserService extends LtiUserService
     {
         $userResource = new \core_kernel_classes_Resource($user->getIdentifier());
 
-        if($userResource->exists()){
-
+        if ($userResource->exists()) {
             $properties = $userResource->getPropertiesValues([
                 GenerisRdf::PROPERTY_USER_UILG,
                 GenerisRdf::PROPERTY_USER_FIRSTNAME,
@@ -74,8 +74,8 @@ class OntologyLtiUserService extends LtiUserService
             ]);
 
             $hasUpdates = false;
-            foreach ($properties as $key => $values){
-                if ($values != $user->getPropertyValues($key)){
+            foreach ($properties as $key => $values) {
+                if ($values != $user->getPropertyValues($key)) {
                     $userResource->editPropertyValues(new \core_kernel_classes_Property($key), $user->getPropertyValues($key));
                     $hasUpdates = true;
                 }
@@ -87,7 +87,7 @@ class OntologyLtiUserService extends LtiUserService
         } else {
             $class = new \core_kernel_classes_Class(self::CLASS_LTI_USER);
 
-            $props = array(
+            $props = [
                 self::PROPERTY_USER_LTIKEY => $ltiContext->getUserID(),
                 self::PROPERTY_USER_LTICONSUMER => $ltiContext->getLtiConsumer(),
                 GenerisRdf::PROPERTY_USER_UILG => $user->getPropertyValues(GenerisRdf::PROPERTY_USER_UILG),
@@ -96,7 +96,7 @@ class OntologyLtiUserService extends LtiUserService
                 GenerisRdf::PROPERTY_USER_LASTNAME => $user->getPropertyValues(GenerisRdf::PROPERTY_USER_LASTNAME),
                 GenerisRdf::PROPERTY_USER_MAIL => $user->getPropertyValues(GenerisRdf::PROPERTY_USER_MAIL),
                 GenerisRdf::PROPERTY_USER_ROLES => $user->getPropertyValues(GenerisRdf::PROPERTY_USER_ROLES),
-            );
+            ];
 
             $userResource = $class->createInstanceWithProperties($props);
             $this->logInfo(
@@ -119,12 +119,12 @@ class OntologyLtiUserService extends LtiUserService
     public function getUserIdentifier($ltiUserId, $ltiConsumer)
     {
         $class = new \core_kernel_classes_Class(self::CLASS_LTI_USER);
-        $instances = $class->searchInstances(array(
+        $instances = $class->searchInstances([
             self::PROPERTY_USER_LTIKEY => $ltiUserId,
             self::PROPERTY_USER_LTICONSUMER => $ltiConsumer
-        ), array(
+        ], [
             'like' => false
-        ));
+        ]);
         if (count($instances) > 1) {
             throw new LtiException(
                 'Multiple user accounts found for user key \'' . $ltiUserId . '\'',
@@ -138,7 +138,6 @@ class OntologyLtiUserService extends LtiUserService
         } else {
             return null;
         }
-
     }
 
     /**
@@ -147,7 +146,7 @@ class OntologyLtiUserService extends LtiUserService
     public function getUserDataFromId($taoUserId)
     {
         $user = new \core_kernel_classes_Resource($taoUserId);
-        if($user->exists()){
+        if ($user->exists()) {
             $properties = $user->getPropertiesValues([
                 GenerisRdf::PROPERTY_USER_UILG,
                 OntologyRdfs::RDFS_LABEL,
@@ -158,9 +157,9 @@ class OntologyLtiUserService extends LtiUserService
             ]);
 
             $userData = [];
-            foreach ($properties as $key => $values){
-                if(count($values) > 1){
-                    foreach ($values as $value){
+            foreach ($properties as $key => $values) {
+                if (count($values) > 1) {
+                    foreach ($values as $value) {
                         $userData[$key][] = ($value instanceof \core_kernel_classes_Resource) ? $value->getUri() : (string) $value;
                     }
                 } else {

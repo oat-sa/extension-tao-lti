@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -100,7 +101,7 @@ class LtiService extends ConfigurableService
     public function getCredential($key)
     {
         $class = new core_kernel_classes_Class(ConsumerService::CLASS_URI);
-        $instances = $class->searchInstances(array(TaoOntology::PROPERTY_OAUTH_KEY => $key), array('like' => false));
+        $instances = $class->searchInstances([TaoOntology::PROPERTY_OAUTH_KEY => $key], ['like' => false]);
         if (count($instances) == 0) {
             throw new LtiException('No Credentials for consumer key ' . $key, LtiErrorMessage::ERROR_UNAUTHORIZED);
         }
@@ -133,7 +134,8 @@ class LtiService extends ConfigurableService
      * @deprecated
      * @return LtiService
      */
-    public static function singleton() {
+    public static function singleton()
+    {
         return ServiceManager::getServiceManager()->get(static::class);
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -44,7 +45,8 @@ class ExceptionInterpreter extends ExceptionInterpretor
      * @param \Exception $exception
      * @return ExceptionInterpretor
      */
-    public function setException(\Exception $exception){
+    public function setException(\Exception $exception)
+    {
         parent::setException($exception);
         return $this;
     }
@@ -75,7 +77,6 @@ class ExceptionInterpreter extends ExceptionInterpretor
             ->get(FileSystemService::SERVICE_ID)
             ->getFileSystem(self::FILESYSTEM_ID_TO_LOG);
 
-        $fs->put('lti_'. $this->exception->getKey() .'.log', $msg);
+        $fs->put('lti_' . $this->exception->getKey() . '.log', $msg);
     }
-
 }

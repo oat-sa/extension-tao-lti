@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -40,5 +41,5 @@ abstract class LtiTool extends tao_models_classes_Service
      * @param array $parameters additional launch parameters
      * @return string
      */
-    public abstract function getLaunchUrl($parameters = array());
+    abstract public function getLaunchUrl($parameters = []);
 }

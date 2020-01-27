@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -28,7 +29,8 @@ class LtiValidatorService extends ConfigurableService
 
     const OPTION_LAUNCH_DATA_VALIDATOR = 'launchDataValidator';
 
-    public function validateLaunchData(LtiLaunchData $data) {
+    public function validateLaunchData(LtiLaunchData $data)
+    {
         $validator = $this->getOption(self::OPTION_LAUNCH_DATA_VALIDATOR);
         if ($validator instanceof LtiValidatorInterface) {
             $validator->validate($data);

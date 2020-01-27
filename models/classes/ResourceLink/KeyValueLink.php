@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,9 +19,11 @@
  *
  *
  */
+
 namespace oat\taoLti\models\classes\ResourceLink;
 
 use oat\oatbox\service\ConfigurableService;
+
 /**
  * Service to generate unique ids for consumers resource links,
  * and storing this link in a keyvalue store
@@ -39,10 +42,10 @@ class KeyValueLink extends ConfigurableService implements LinkService
      */
     public function getLinkId($consumerId, $resourceLink)
     {
-        $id = $this->getPersistence()->get(self::PREFIX.$consumerId.$resourceLink);
+        $id = $this->getPersistence()->get(self::PREFIX . $consumerId . $resourceLink);
         if ($id == false) {
             $id = \core_kernel_uri_UriService::singleton()->generateUri();
-            $this->getPersistence()->set(self::PREFIX.$consumerId.$resourceLink, $id);
+            $this->getPersistence()->set(self::PREFIX . $consumerId . $resourceLink, $id);
         }
         return $id;
     }

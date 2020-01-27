@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -47,7 +48,7 @@ class LtiException extends \common_Exception
     public function __construct($message = null, $code = 0, \Exception $previous = null)
     {
         if (!is_null($previous)) {
-            $message .= ' '. $previous->getMessage();
+            $message .= ' ' . $previous->getMessage();
         }
         parent::__construct($message, $code, $previous);
     }
@@ -65,11 +66,13 @@ class LtiException extends \common_Exception
         return $this->ltiMessage;
     }
 
-    public function setLaunchData(LtiLaunchData $data) {
+    public function setLaunchData(LtiLaunchData $data)
+    {
         $this->launchData = $data;
     }
 
-    public function getLaunchData() {
+    public function getLaunchData()
+    {
         return $this->launchData;
     }
 

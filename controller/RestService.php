@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -85,14 +86,14 @@ class RestService extends \tao_actions_CommonRestModule
      */
     protected function getParametersAliases()
     {
-        return array(
+        return [
             'user_id' => self::LTI_USER_ID,
             'oauth_consumer_key' => self::LTI_CONSUMER_KEY,
             'label' => OntologyRdfs::RDFS_LABEL,
             'oauth-key' => DataStore::PROPERTY_OAUTH_KEY,
             'oauth-secret' => DataStore::PROPERTY_OAUTH_SECRET,
             'oauth-callback-url' => DataStore::PROPERTY_OAUTH_CALLBACK,
-        );
+        ];
     }
 
     /**
@@ -101,6 +102,6 @@ class RestService extends \tao_actions_CommonRestModule
      */
     protected function getParametersRequirements()
     {
-        return array();
+        return [];
     }
 }

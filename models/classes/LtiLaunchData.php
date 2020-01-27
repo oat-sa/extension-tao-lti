@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -129,7 +130,7 @@ class LtiLaunchData implements \JsonSerializable
      */
     private static function getParametersFromUrl($url)
     {
-        $returnValue = array();
+        $returnValue = [];
 
         // get parameters
         parse_str(parse_url($url, PHP_URL_QUERY), $returnValue);
