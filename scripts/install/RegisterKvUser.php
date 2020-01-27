@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,6 +19,7 @@
  *
  *
  */
+
 namespace oat\taoLti\scripts\install;
 
 use oat\oatbox\extension\InstallAction;
@@ -37,7 +39,7 @@ class RegisterKvUser extends InstallAction
      */
     public function __invoke($params)
     {
-        if(count($params) === 0){
+        if (count($params) === 0) {
             return new \common_report_Report(\common_report_Report::TYPE_ERROR, __('Please give the key value persistence id'));
         }
         $persistenceId = reset($params);

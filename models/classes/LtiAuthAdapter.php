@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -38,7 +39,6 @@ use oat\tao\model\oauth\OauthService;
  */
 class LtiAuthAdapter implements \common_user_auth_Adapter, ServiceLocatorAwareInterface
 {
-
     use ServiceLocatorAwareTrait;
 
     /**

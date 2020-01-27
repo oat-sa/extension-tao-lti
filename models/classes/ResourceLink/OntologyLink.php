@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,10 +19,12 @@
  *
  *
  */
+
 namespace oat\taoLti\models\classes\ResourceLink;
 
 use oat\oatbox\service\ConfigurableService;
 use oat\generis\model\OntologyAwareTrait;
+
 /**
  * Service to generate unique ids for consumers resource links
  * using the generis ontology
@@ -47,10 +50,10 @@ class OntologyLink extends ConfigurableService implements LinkService
     {
         $class = $this->getClass(self::CLASS_LTI_INCOMINGLINK);
         // search for existing resource
-        $instances = $class->searchInstances(array(
+        $instances = $class->searchInstances([
             self::PROPERTY_LINK_ID => $resourceLink,
             self::PROPERTY_CONSUMER => $consumerId
-        ), array('like' => false,'recursive' => false));
+        ], ['like' => false,'recursive' => false]);
         if (count($instances) > 1) {
             throw new \common_exception_Error('Multiple resources for link ' . $resourceLink);
         }
@@ -59,10 +62,10 @@ class OntologyLink extends ConfigurableService implements LinkService
             $ltiLink = current($instances);
         } else {
             // spawn new link
-            $ltiLink = $class->createInstanceWithProperties(array(
+            $ltiLink = $class->createInstanceWithProperties([
                 self::PROPERTY_LINK_ID => $resourceLink,
                 self::PROPERTY_CONSUMER => $consumerId
-            ));
+            ]);
         }
         return $ltiLink->getUri();
     }

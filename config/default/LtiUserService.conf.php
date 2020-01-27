@@ -1,4 +1,5 @@
 <?php
+
 use oat\taoLti\models\classes\user\LtiUserFactoryService;
 use oat\taoLti\models\classes\user\LtiUserService;
 

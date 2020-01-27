@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -57,9 +58,9 @@ class OntologyLtiResourceLinksToKvMigration extends ScriptAction
                 return new \common_report_Report(\common_report_Report::TYPE_ERROR, ' LtiLinks migration must be done on a Ontology Service e.q. LtiDeliveryExecutionService.');
             }
 
-            $kvLinkService = new KeyValueLink(array(
+            $kvLinkService = new KeyValueLink([
                 KeyValueLink::OPTION_PERSISTENCE => $this->getKeyValuePersistenceName()
-            ));
+            ]);
             if ($this->getOption('no-migrate-service') !== true) {
                 $this->registerService(LinkService::SERVICE_ID, $kvLinkService);
                 $this->logNotice('Link service was set to KeyValue implementation.');
@@ -69,11 +70,10 @@ class OntologyLtiResourceLinksToKvMigration extends ScriptAction
             $iterator = new \core_kernel_classes_ResourceIterator($class);
             $i = 0;
             foreach ($iterator as $instance) {
-
-                $properties = $instance->getPropertiesValues(array(
+                $properties = $instance->getPropertiesValues([
                     OntologyLink::PROPERTY_LINK_ID,
                     OntologyLink::PROPERTY_CONSUMER,
-                ));
+                ]);
 
                 $consumerId = $this->getPropertyValue($properties, OntologyLink::PROPERTY_CONSUMER);
                 $resourceLink = $this->getPropertyValue($properties, OntologyLink::PROPERTY_LINK_ID);
@@ -87,18 +87,17 @@ class OntologyLtiResourceLinksToKvMigration extends ScriptAction
                 if ($this->getKeyValuePersistence()->set($kvKey, $instance->getUri())) {
                     if ($this->getOption('no-delete') !== true) {
                         $instance->delete();
-                        $this->logInfo('Link "' . $instance->getUri() .'" deleted from ontology storage.');
+                        $this->logInfo('Link "' . $instance->getUri() . '" deleted from ontology storage.');
                     }
-                    $this->logNotice('Link "' . $instance->getUri() .'" successfully migrated.');
+                    $this->logNotice('Link "' . $instance->getUri() . '" successfully migrated.');
                     $i++;
                 } else {
-                    $this->logError('Link "' . $instance->getUri() .'" cannot be migrated.');
+                    $this->logError('Link "' . $instance->getUri() . '" cannot be migrated.');
                 }
             }
             $this->logNotice('LTI links migrated: ' . $i);
         } catch (\Exception $e) {
             return \common_report_Report::createFailure('LtiLinks migration has failed with error message : ' . $e->getMessage());
-
         }
 
         return \common_report_Report::createSuccess('LtiLinks successfully has been migrated from Ontology to KV value. Count of LtiLinks migrated: ' . $i);
@@ -157,10 +156,10 @@ class OntologyLtiResourceLinksToKvMigration extends ScriptAction
     {
         if ($this->getOption('verbose') === true) {
             $verboseLogger = VerboseLoggerFactory::getInstance(['-nc', '-vv']);
-            $this->setLogger(new LoggerAggregator(array(
+            $this->setLogger(new LoggerAggregator([
                 $this->getLogger(),
                 $verboseLogger
-            )));
+            ]));
         }
     }
 
@@ -172,30 +171,30 @@ class OntologyLtiResourceLinksToKvMigration extends ScriptAction
     protected function provideOptions()
     {
         return [
-            'kv-persistence' => array(
+            'kv-persistence' => [
                 'prefix' => 'kv',
                 'longPrefix' => 'kv-persistence',
                 'required' => true,
                 'description' => 'The KeyValue persistence where you want to migrate to.',
-            ),
-            'no-migrate-service' => array(
+            ],
+            'no-migrate-service' => [
                 'prefix' => 'nms',
                 'longPrefix' => 'no-migrate-service',
                 'flag' => true,
                 'description' => 'Don\'t migrate the OntologyLink from ontology to key value.',
-            ),
-            'no-delete' => array(
+            ],
+            'no-delete' => [
                 'prefix' => 'nd',
                 'longPrefix' => 'no-delete',
                 'flag' => true,
                 'description' => 'Don\'t delete ontology LTI links after migration.',
-            ),
-            'verbose' => array(
+            ],
+            'verbose' => [
                 'prefix' => 'v',
                 'longPrefix' => 'verbose',
                 'flag' => true,
                 'description' => 'Output the log as command output.',
-            ),
+            ],
         ];
     }
 

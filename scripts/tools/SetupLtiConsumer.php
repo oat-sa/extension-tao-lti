@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -20,7 +21,6 @@
  */
 
 namespace oat\taoLti\scripts\tools;
-
 
 use oat\generis\model\OntologyAwareTrait;
 use oat\oatbox\extension\script\ScriptAction;
@@ -48,27 +48,27 @@ class SetupLtiConsumer extends ScriptAction
     protected function provideOptions()
     {
         return [
-            'key' => array(
+            'key' => [
                 'prefix' => 'k',
                 'longPrefix' => 'key',
                 'description' => 'Consumer key',
                 'required' => true,
                 'cast' => 'string'
-            ),
-            'secret' => array(
+            ],
+            'secret' => [
                 'prefix' => 's',
                 'longPrefix' => 'secret',
                 'description' => 'Consumer secret',
                 'required' => true,
                 'cast' => 'string'
-            ),
-            'label' => array(
+            ],
+            'label' => [
                 'prefix' => 'l',
                 'longPrefix' => 'label',
                 'description' => 'Consumer label',
                 'required' => false,
                 'cast' => 'string'
-            ),
+            ],
             'callbackUrl' => [
                 'prefix' => 'cu',
                 'longPrefix' => 'callbackUrl',

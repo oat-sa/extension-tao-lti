@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -64,7 +65,7 @@ abstract class LtiUserService extends ConfigurableService
      */
     public function findOrSpawnUser(LtiLaunchData $launchData)
     {
-        $lock = $this->createLock(__METHOD__.$launchData->getUserID().$launchData->getLtiConsumer(), 30);
+        $lock = $this->createLock(__METHOD__ . $launchData->getUserID() . $launchData->getLtiConsumer(), 30);
         $lock->acquire(true);
 
         try {
@@ -221,7 +222,6 @@ abstract class LtiUserService extends ConfigurableService
         }
 
         return $ltiUserFactory;
-
     }
 
     /**

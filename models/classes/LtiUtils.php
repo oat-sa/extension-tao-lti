@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -64,9 +65,9 @@ class LtiUtils
 
             // search for fitting role
             $class = new core_kernel_classes_Class(LtiRoles::CLASS_URI);
-            $cand = $class->searchInstances(array(
+            $cand = $class->searchInstances([
                 LtiRoles::PROPERTY_URN => $urn
-            ));
+            ]);
             if (count($cand) > 1) {
                 throw new common_exception_Error('Multiple instances share the URN ' . $urn);
             }
@@ -91,7 +92,7 @@ class LtiUtils
      */
     public static function mapTaoRole2LTIRoles($roleUri)
     {
-        $roles = array($roleUri);
+        $roles = [$roleUri];
         if ($roleUri == 'http://www.tao.lu/Ontologies/TAO.rdf#DeliveryRole') {
             $roles[] = 'http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#Learner';
         }

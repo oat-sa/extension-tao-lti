@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -18,7 +19,6 @@
  */
 
 namespace oat\taoLti\models\classes\LaunchData\Validator;
-
 
 use oat\oatbox\Configurable;
 use oat\taoLti\models\classes\LtiException;
@@ -45,7 +45,8 @@ class Lti11LaunchDataValidator extends Configurable implements LtiValidatorInter
      * @throws LtiInvalidLaunchDataException
      * @throws LtiVariableMissingException
      */
-    public function validate(LtiLaunchData $data) {
+    public function validate(LtiLaunchData $data)
+    {
         try {
             if (!$this->isValidLinkId($this->getLaunchDataParameter($data, LtiLaunchData::RESOURCE_LINK_ID))) {
                 throw new LtiInvalidLaunchDataException("Required parameter resource_link_id can not be empty.");
@@ -63,7 +64,6 @@ class Lti11LaunchDataValidator extends Configurable implements LtiValidatorInter
             if (!$this->isValidLtiMessageType($this->getLaunchDataParameter($data, LtiLaunchData::LTI_MESSAGE_TYPE))) {
                 throw new LtiInvalidLaunchDataException('Invalid LTI message type provided.');
             }
-
         } catch (LtiException $e) {
             $e->setLaunchData($data);
             throw $e;
@@ -78,7 +78,8 @@ class Lti11LaunchDataValidator extends Configurable implements LtiValidatorInter
      * @param $linkId
      * @return bool
      */
-    private function isValidLinkId($linkId) {
+    private function isValidLinkId($linkId)
+    {
         return !empty($linkId);
     }
 
@@ -88,7 +89,8 @@ class Lti11LaunchDataValidator extends Configurable implements LtiValidatorInter
      * @param $ltiVersion
      * @return bool
      */
-    private function isValidLtiVersion($ltiVersion) {
+    private function isValidLtiVersion($ltiVersion)
+    {
         return (bool) preg_match(self::LTI_VERSION_PATTERN, $ltiVersion);
     }
 
@@ -98,11 +100,13 @@ class Lti11LaunchDataValidator extends Configurable implements LtiValidatorInter
      * @param $ltiVersion
      * @return bool
      */
-    private function isCorrectLtiVersion($ltiVersion) {
+    private function isCorrectLtiVersion($ltiVersion)
+    {
         return (bool) preg_match(self::LTI_VERSION_1_PATTERN, $ltiVersion);
     }
 
-    private function isValidLtiMessageType($ltiMessageType) {
+    private function isValidLtiMessageType($ltiMessageType)
+    {
         return $ltiMessageType == self::LTI_MESSAGE_TYPE;
     }
 
@@ -114,7 +118,8 @@ class Lti11LaunchDataValidator extends Configurable implements LtiValidatorInter
      * @return mixed
      * @throws LtiVariableMissingException
      */
-    private function getLaunchDataParameter(LtiLaunchData $data, $name) {
+    private function getLaunchDataParameter(LtiLaunchData $data, $name)
+    {
         if ($data->hasVariable($name)) {
             return $data->getVariable($name);
         }
