@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -59,5 +60,7 @@ abstract class LtiModule extends tao_actions_CommonModule
     /**
      * Override iframe header method to allow use of iframes
      */
-    protected function setIframeHeaders() {}
+    protected function setIframeHeaders()
+    {
+    }
 }

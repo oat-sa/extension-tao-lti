@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -31,7 +32,6 @@ use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorAwareTrait;
 use oat\oatbox\user\UserLanguageService;
 
-
 /**
  * Authentication adapter interface to be implemented by authentication methodes
  *
@@ -43,7 +43,7 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
 {
     use ServiceLocatorAwareTrait;
 
-    CONST USER_IDENTIFIER = 'identifier';
+    const USER_IDENTIFIER = 'identifier';
 
     /**
      * Data with which this session was launched
@@ -116,7 +116,7 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
 
     public function setRoles($roles)
     {
-        $newRoles = array_map(function($value){
+        $newRoles = array_map(function ($value) {
             return ($value instanceof \core_kernel_classes_Resource) ? $value->getUri() : $value;
         }, $roles);
 
@@ -170,22 +170,22 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
     {
         $returnValue = null;
         switch ($property) {
-            case GenerisRdf::PROPERTY_USER_DEFLG :
+            case GenerisRdf::PROPERTY_USER_DEFLG:
                 $returnValue = [$this->getServiceLocator()->get(UserLanguageService::SERVICE_ID)->getDefaultLanguage()];
                 break;
-            case GenerisRdf::PROPERTY_USER_UILG :
+            case GenerisRdf::PROPERTY_USER_UILG:
                 $returnValue = [$this->getLanguage()];
                 break;
-            case  GenerisRdf::PROPERTY_USER_ROLES :
+            case GenerisRdf::PROPERTY_USER_ROLES:
                 $returnValue = $this->taoRoles;
                 break;
-            case  GenerisRdf::PROPERTY_USER_FIRSTNAME :
+            case GenerisRdf::PROPERTY_USER_FIRSTNAME:
                 $returnValue = [$this->firstname];
                 break;
-            case  GenerisRdf::PROPERTY_USER_LASTNAME :
+            case GenerisRdf::PROPERTY_USER_LASTNAME:
                 $returnValue = [$this->lastname];
                 break;
-            case  OntologyRdfs::RDFS_LABEL :
+            case OntologyRdfs::RDFS_LABEL:
                 $returnValue = [$this->label];
                 break;
             default:
@@ -227,7 +227,7 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
      */
     protected function determineTaoRoles(LtiLaunchData $ltiLaunchData)
     {
-        $roles = array();
+        $roles = [];
         if ($ltiLaunchData->hasVariable(LtiLaunchData::ROLES)) {
             foreach ($ltiLaunchData->getUserRoles() as $role) {
                 $taoRole = LtiUtils::mapLTIRole2TaoRole($role);
@@ -237,7 +237,7 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
             }
             $roles = array_unique($roles);
         } else {
-            return array(LtiRoles::INSTANCE_LTI_BASE);
+            return [LtiRoles::INSTANCE_LTI_BASE];
         }
         return $roles;
     }

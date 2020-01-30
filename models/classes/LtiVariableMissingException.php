@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -22,15 +23,15 @@ namespace oat\taoLti\models\classes;
 
 use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
 
-class LtiVariableMissingException extends LtiClientException
-    implements \common_log_SeverityLevel
+class LtiVariableMissingException extends LtiClientException implements \common_log_SeverityLevel
 {
     public function __construct($variableName)
     {
-        parent::__construct('Undefined LTI variable '.$variableName, LtiErrorMessage::ERROR_MISSING_PARAMETER);
+        parent::__construct('Undefined LTI variable ' . $variableName, LtiErrorMessage::ERROR_MISSING_PARAMETER);
     }
 
-    public function getSeverity() {
+    public function getSeverity()
+    {
         return \common_Logger::DEBUG_LEVEL;
     }
 }

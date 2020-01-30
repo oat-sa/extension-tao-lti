@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -69,7 +70,7 @@ class LisOauthDataStore extends ConfigurableService implements ImsOauthDataStore
     {
         /** @var NonceStore $store */
         $store = $this->getSubService(self::OPTION_NONCE_STORE, NonceStore::class);
-        return !$store->isValid($timestamp .'_' . $consumer->key . '_' . $nonce);
+        return !$store->isValid($timestamp . '_' . $consumer->key . '_' . $nonce);
     }
 
     /**

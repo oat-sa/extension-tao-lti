@@ -1,4 +1,5 @@
 <?php
+
 /**
- * Configuration of cookie verification during lti launch 
+ * Configuration of cookie verification during lti launch
  */

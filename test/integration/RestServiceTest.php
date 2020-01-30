@@ -43,7 +43,7 @@ class RestServiceTest extends RestTestRunner
             'oauth-callback-url' => 'https://oauth-callback-url/',
         ];
 
-        $responseBody = $this->curl($url, CURLOPT_POST, 'data', array(CURLOPT_POSTFIELDS => $postData));
+        $responseBody = $this->curl($url, CURLOPT_POST, 'data', [CURLOPT_POSTFIELDS => $postData]);
         // here should be an assertion of status 200, but we can only curl() has a bad interface
 
         $instances = $this->consumerClass->getInstances(true);

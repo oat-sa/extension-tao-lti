@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -61,9 +62,9 @@ class LtiRestApiService extends \tao_models_classes_CrudService implements Servi
             return null;
         }
 
-        return array (
+        return  [
             'id' => $userIdentifier
-        );
+        ];
     }
 
     public function createFromArray(array $propertiesValues)

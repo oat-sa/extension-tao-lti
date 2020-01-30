@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -135,6 +136,6 @@ class KvLtiUserService extends LtiUserService
             $this->getPersistence()->set(self::LTI_USER_LOOKUP . $taoUserId, $taoUserId);
         }
 
-        return json_decode($data,true);
+        return json_decode($data, true);
     }
 }

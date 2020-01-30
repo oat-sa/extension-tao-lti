@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -31,7 +32,9 @@ class ConfigurableLtiProviderRepositoryTest extends TestCase
     {
         $subject = new ConfigurableLtiProviderRepository([
             ConfigurableLtiProviderRepository::OPTION_LTI_PROVIDER_LIST => json_decode(
-                file_get_contents(__DIR__ . '/_resources/lti_provider_list.json'), true)
+                file_get_contents(__DIR__ . '/_resources/lti_provider_list.json'),
+                true
+            )
         ]);
 
         $this->assertEquals(2, $subject->count());
@@ -58,7 +61,9 @@ class ConfigurableLtiProviderRepositoryTest extends TestCase
     {
         $subject = new ConfigurableLtiProviderRepository([
             ConfigurableLtiProviderRepository::OPTION_LTI_PROVIDER_LIST => json_decode(
-                file_get_contents(__DIR__ . '/_resources/lti_provider_list.json'), true)
+                file_get_contents(__DIR__ . '/_resources/lti_provider_list.json'),
+                true
+            )
         ]);
 
         $providers = $subject->searchByLabel('provider1');
@@ -75,7 +80,9 @@ class ConfigurableLtiProviderRepositoryTest extends TestCase
     {
         $subject = new ConfigurableLtiProviderRepository([
             ConfigurableLtiProviderRepository::OPTION_LTI_PROVIDER_LIST => json_decode(
-                file_get_contents(__DIR__ . '/_resources/lti_provider_list.json'), true)
+                file_get_contents(__DIR__ . '/_resources/lti_provider_list.json'),
+                true
+            )
         ]);
 
         $provider = $subject->searchByOauthKey('provider2_key');
@@ -103,7 +110,9 @@ class ConfigurableLtiProviderRepositoryTest extends TestCase
     {
         $subject = new ConfigurableLtiProviderRepository([
             ConfigurableLtiProviderRepository::OPTION_LTI_PROVIDER_LIST => json_decode(
-                file_get_contents(__DIR__ . '/_resources/incomplete_lti_provider_list.json'), true)
+                file_get_contents(__DIR__ . '/_resources/incomplete_lti_provider_list.json'),
+                true
+            )
         ]);
         $this->setExpectedException(InvalidArgumentException::class, 'Missing key \'callback_url\' in LTI provider list.');
 
