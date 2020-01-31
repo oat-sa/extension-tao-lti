@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -181,7 +182,6 @@ class Updater extends \common_ext_ExtensionUpdater
         $this->skip('6.7.0', '7.1.0');
 
         if ($this->isVersion('7.1.0')) {
-
             $userService = $this->getServiceManager()->get(\tao_models_classes_UserService::SERVICE_ID);
             $config = $userService->getOptions();
             $newLtiUserService = new UserService($config);
@@ -254,15 +254,17 @@ class Updater extends \common_ext_ExtensionUpdater
         $this->skip('10.5.3', '10.9.1');
 
         if ($this->isVersion('10.9.1')) {
-            $this->getServiceManager()->register(LisOauthService::SERVICE_ID,
+            $this->getServiceManager()->register(
+                LisOauthService::SERVICE_ID,
                 new LisOauthService([
                     LisOauthService::OPTION_DATASTORE => new LisOauthDataStore([
                         LisOauthDataStore::OPTION_NONCE_STORE => new NoNonce()
                     ])
-                ]));
+                ])
+            );
             $this->setVersion('11.0.0');
         }
 
-        $this->skip('11.0.0', '11.2.1');
+        $this->skip('11.0.0', '11.3.0');
     }
 }

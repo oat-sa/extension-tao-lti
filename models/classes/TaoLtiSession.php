@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -58,7 +59,7 @@ class TaoLtiSession extends common_session_DefaultSession
         if ($this->getLaunchData()->hasVariable(LtiLaunchData::LIS_PERSON_NAME_FULL)) {
             return $this->getLaunchData()->getUserFullName();
         } else {
-            $parts = array();
+            $parts = [];
             if ($this->getLaunchData()->hasVariable(LtiLaunchData::LIS_PERSON_NAME_GIVEN)) {
                 $parts[] = $this->getLaunchData()->getUserGivenName();
             }

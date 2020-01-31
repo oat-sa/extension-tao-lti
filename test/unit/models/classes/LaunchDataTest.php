@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,6 +18,7 @@
  * Copyright (c) 2018 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
  *
  */
+
 namespace oat\taoLti\models\classes;
 
 use oat\generis\test\TestCase;
@@ -58,8 +60,108 @@ class LaunchDataTest extends TestCase
         $unserialized = LtiLaunchData::fromJsonArray(json_decode(json_encode($sampleLaunch), true));
         $this->assertEquals($sampleLaunch, $unserialized);
 
-        $emptyLaunch = new LtiLaunchData([],[]);
+        $emptyLaunch = new LtiLaunchData([], []);
         $unserialized = LtiLaunchData::fromJsonArray(json_decode(json_encode($emptyLaunch), true));
         $this->assertEquals($emptyLaunch, $unserialized);
+    }
+
+    /**
+     * @param array $ltiVariables
+     *
+     * @dataProvider dataProviderTestGetBooleanVariableInvalidValueThrowsException
+     *
+     * @throws LtiException
+     * @throws LtiVariableMissingException
+     */
+    public function testGetBooleanVariableInvalidValueThrowsException(array $ltiVariables)
+    {
+        $customParameters = [];
+        $boolVariableKey = 'boolVariableKey';
+
+        $this->expectException(LtiInvalidVariableException::class);
+
+        $launchData = new LtiLaunchData($ltiVariables, $customParameters);
+        $launchData->getBooleanVariable($boolVariableKey);
+    }
+
+    /**
+     * @param array $ltiVariables
+     * @param boolean $expectedResult
+     *
+     * @dataProvider dataProviderTestGetBooleanVariable
+     *
+     * @throws LtiException
+     * @throws LtiVariableMissingException
+     */
+    public function testGetBooleanVariable(array $ltiVariables, $expectedResult)
+    {
+        $customParameters = [];
+        $boolVariableKey = 'boolVariableKey';
+
+        $launchData = new LtiLaunchData($ltiVariables, $customParameters);
+        $result = $launchData->getBooleanVariable($boolVariableKey);
+
+        $this->assertEquals($expectedResult, $result, "Method must return correct boolean value");
+    }
+
+    public function dataProviderTestGetBooleanVariableInvalidValueThrowsException()
+    {
+        return [
+            'Value integer 1' => [
+                'ltiVariables' => [
+                    'boolVariableKey' => 1,
+                ]
+            ],
+            'Value integer 0' => [
+                'ltiVariables' => [
+                    'boolVariableKey' => 0,
+                ]
+            ],
+            'Value string 1' => [
+                'ltiVariables' => [
+                    'boolVariableKey' => '1',
+                ]
+            ],
+            'Value string 0' => [
+                'ltiVariables' => [
+                    'boolVariableKey' => '0',
+                ]
+            ],
+            'Value random string' => [
+                'ltiVariables' => [
+                    'boolVariableKey' => 'DUMMY_VALUE',
+                ]
+            ]
+        ];
+    }
+
+    public function dataProviderTestGetBooleanVariable()
+    {
+        return [
+            'Value capital "TRUE"' => [
+                'ltiVariables' => [
+                    'boolVariableKey' => 'TRUE'
+                ],
+                'expectedResult' => true,
+            ],
+            'Value capital "true"' => [
+                'ltiVariables' => [
+                    'boolVariableKey' => 'true'
+                ],
+                'expectedResult' => true,
+            ],
+            'Value capital "FALSE"' => [
+                'ltiVariables' => [
+                    'boolVariableKey' => 'FALSE'
+                ],
+                'expectedResult' => false,
+            ],
+            'Value lover case "false"' => [
+                'ltiVariables' => [
+                    'boolVariableKey' => 'false'
+                ],
+                'expectedResult' => false,
+            ]
+        ];
     }
 }

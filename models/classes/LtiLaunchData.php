@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -22,6 +23,7 @@ namespace oat\taoLti\models\classes;
 
 use common_http_Request;
 use core_kernel_classes_Resource;
+use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
 use tao_helpers_Request;
 use tao_models_classes_oauth_DataStore;
 use oat\oatbox\log\LoggerAwareTrait;
@@ -82,7 +84,7 @@ class LtiLaunchData implements \JsonSerializable
      * @param array $ltiVariables
      * @param array $customParameters
      */
-    public function __construct($ltiVariables, $customParameters)
+    public function __construct(array $ltiVariables, array $customParameters)
     {
         $this->variables = $ltiVariables;
         $this->customParams = $customParameters;
@@ -129,7 +131,7 @@ class LtiLaunchData implements \JsonSerializable
      */
     private static function getParametersFromUrl($url)
     {
-        $returnValue = array();
+        $returnValue = [];
 
         // get parameters
         parse_str(parse_url($url, PHP_URL_QUERY), $returnValue);
@@ -209,7 +211,28 @@ class LtiLaunchData implements \JsonSerializable
         }
     }
 
-    // simpler access
+    /**
+     * @param string $key
+     * @return boolean mixed
+     *
+     * @throws LtiException
+     * @throws LtiVariableMissingException
+     */
+    public function getBooleanVariable($key)
+    {
+        $var = mb_strtolower($this->getVariable($key));
+
+        if ($var === 'true') {
+            return true;
+        } elseif ($var === 'false') {
+            return false;
+        } else {
+            throw new LtiInvalidVariableException(
+                'Invalid value of `' . $key . '` variable, boolean string expected.',
+                LtiErrorMessage::ERROR_INVALID_PARAMETER
+            );
+        }
+    }
 
     /**
      * @return mixed|string

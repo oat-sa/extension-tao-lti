@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -21,10 +22,9 @@
 
 namespace oat\taoLti\models\classes\user\events;
 
-
 use oat\oatbox\event\Event;
 
-abstract class LtiUserEvent  implements Event
+abstract class LtiUserEvent implements Event
 {
     private $userId;
 

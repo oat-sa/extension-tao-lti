@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -62,10 +63,10 @@ class OntologyLtiUserToKvMigration extends ScriptAction
             }
 
             $userFactory = $this->getServiceLocator()->get(LtiUserService::SERVICE_ID)->getOption(LtiUserService::OPTION_FACTORY_LTI_USER);
-            $kvService = new KvLtiUserService(array(
+            $kvService = new KvLtiUserService([
                 KvLtiUserService::OPTION_PERSISTENCE => $this->getKeyValuePersistenceName(),
                 KvLtiUserService::OPTION_FACTORY_LTI_USER => $userFactory
-            ));
+            ]);
 
             if ($this->getOption('no-migrate-service') !== true) {
                 $this->registerService(LtiUserService::SERVICE_ID, $kvService);
@@ -76,8 +77,7 @@ class OntologyLtiUserToKvMigration extends ScriptAction
             $iterator = new \core_kernel_classes_ResourceIterator($class);
             $i = 0;
             foreach ($iterator as $instance) {
-
-                $properties = $instance->getPropertiesValues(array(
+                $properties = $instance->getPropertiesValues([
                     OntologyLtiUserService::PROPERTY_USER_LTIKEY,
                     OntologyLtiUserService::PROPERTY_USER_LTICONSUMER,
                     GenerisRdf::PROPERTY_USER_UILG,
@@ -86,7 +86,7 @@ class OntologyLtiUserToKvMigration extends ScriptAction
                     GenerisRdf::PROPERTY_USER_LASTNAME,
                     GenerisRdf::PROPERTY_USER_MAIL,
                     GenerisRdf::PROPERTY_USER_ROLES,
-                ));
+                ]);
 
                 $ltiKey = $this->getPropertyValue($properties, OntologyLtiUserService::PROPERTY_USER_LTIKEY);
                 $ltiConsumer = $this->getPropertyValue($properties, OntologyLtiUserService::PROPERTY_USER_LTICONSUMER);
@@ -107,18 +107,17 @@ class OntologyLtiUserToKvMigration extends ScriptAction
                     $kvPersistence->set(KvLtiUserService::LTI_USER_LOOKUP . $instance->getUri(), $kvId);
                     if ($this->getOption('no-delete') !== true) {
                         $instance->delete();
-                        $this->logInfo('LtiUser "' . $instance->getUri() .'" deleted from ontology storage.');
+                        $this->logInfo('LtiUser "' . $instance->getUri() . '" deleted from ontology storage.');
                     }
-                    $this->logNotice('LtiUser "' . $instance->getUri() .'" successfully migrated.');
+                    $this->logNotice('LtiUser "' . $instance->getUri() . '" successfully migrated.');
                     $i++;
                 } else {
-                    $this->logError('LtiUser "' . $instance->getUri() .'" cannot be migrated.');
+                    $this->logError('LtiUser "' . $instance->getUri() . '" cannot be migrated.');
                 }
             }
             $this->logNotice('LtiUsers migrated: ' . $i);
         } catch (\Exception $e) {
             return \common_report_Report::createFailure('LtiUsers migration has failed with error message : ' . $e->getMessage());
-
         }
 
         return \common_report_Report::createSuccess('LtiUsers successfully has been migrated from Ontology to KV value. Count of LtiUsers migrated: ' . $i);
@@ -176,11 +175,11 @@ class OntologyLtiUserToKvMigration extends ScriptAction
     protected function setVerbosity()
     {
         if ($this->getOption('verbose') === true) {
-//            $verboseLogger = VerboseLoggerFactory::getInstance(['-nc', '-vvv']);
-//            $this->setLogger(new LoggerAggregator(array(
-//                $this->getLogger(),
-//                $verboseLogger
-//            )));
+            //            $verboseLogger = VerboseLoggerFactory::getInstance(['-nc', '-vvv']);
+            //            $this->setLogger(new LoggerAggregator(array(
+            //                $this->getLogger(),
+            //                $verboseLogger
+            //            )));
         }
     }
 
@@ -192,30 +191,30 @@ class OntologyLtiUserToKvMigration extends ScriptAction
     protected function provideOptions()
     {
         return [
-            'kv-persistence' => array(
+            'kv-persistence' => [
                 'prefix' => 'kv',
                 'longPrefix' => 'kv-persistence',
                 'required' => true,
                 'description' => 'The KeyValue persistence where you want to migrate to.',
-            ),
-            'no-migrate-service' => array(
+            ],
+            'no-migrate-service' => [
                 'prefix' => 'nms',
                 'longPrefix' => 'no-migrate-service',
                 'flag' => true,
                 'description' => 'Don\'t migrate the LtiUserService from ontology to key value.',
-            ),
-            'no-delete' => array(
+            ],
+            'no-delete' => [
                 'prefix' => 'nd',
                 'longPrefix' => 'no-delete',
                 'flag' => true,
                 'description' => 'Don\'t delete ontology LTI users after migration.',
-            ),
-            'verbose' => array(
+            ],
+            'verbose' => [
                 'prefix' => 'v',
                 'longPrefix' => 'verbose',
                 'flag' => true,
                 'description' => 'Output the log as command output.',
-            ),
+            ],
         ];
     }
 

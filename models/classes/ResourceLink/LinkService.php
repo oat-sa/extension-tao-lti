@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -20,6 +21,7 @@
  */
 
 namespace oat\taoLti\models\classes\ResourceLink;
+
 /**
  * Service to generate unique ids for consumers resource links
  * @author joel bout (joel@taotesting.com)

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -93,7 +94,8 @@ class LtiReturnResponse extends ResponseAbstract
      *
      * @return bool
      */
-    protected function requiresRedirect() {
+    protected function requiresRedirect()
+    {
         return $this->exception instanceof LtiClientException;
     }
 
@@ -102,7 +104,8 @@ class LtiReturnResponse extends ResponseAbstract
      *
      * @return LtiErrorMessage
      */
-    protected function getLtiErrorMessage() {
+    protected function getLtiErrorMessage()
+    {
         $message = __('Error: ') . $this->exception->getMessage();
         $log = __('Error: [key %s] "%s"', $this->exception->getKey(), $this->exception->getMessage());
         return new LtiErrorMessage($message, $log);
@@ -112,11 +115,12 @@ class LtiReturnResponse extends ResponseAbstract
      * Show error page
      *
      * @return string
-     * 
+     *
      * @throws LtiVariableMissingException
      * @throws \common_Exception
      */
-    protected function showLtiErrorPage() {
+    protected function showLtiErrorPage()
+    {
         if (isset($this->requestParams[LtiLaunchData::TOOL_CONSUMER_INSTANCE_NAME])) {
             $this->renderer->setData(
                 'consumerLabel',
@@ -194,7 +198,8 @@ class LtiReturnResponse extends ResponseAbstract
      * @throws LtiException
      * @throws \common_exception_Error
      */
-    private function getRedirectUrl(array $queryParams) {
+    private function getRedirectUrl(array $queryParams)
+    {
         $baseUrl = $this->getReturnBaseUrl();
 
         if (!empty($baseUrl)) {
