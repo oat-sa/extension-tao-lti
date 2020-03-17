@@ -58,7 +58,7 @@ class RdfLtiProviderRepositoryTest extends OntologyMockTest
     /** @var SearchGateWayInterface|MockObject $query */
     private $gateWay;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->query = $this->getMockBuilder(QueryInterface::class)
             ->disableOriginalConstructor()

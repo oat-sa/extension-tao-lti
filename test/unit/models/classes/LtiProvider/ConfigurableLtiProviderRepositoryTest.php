@@ -101,7 +101,7 @@ class ConfigurableLtiProviderRepositoryTest extends TestCase
         $subject = new ConfigurableLtiProviderRepository([
             ConfigurableLtiProviderRepository::OPTION_LTI_PROVIDER_LIST => null
         ]);
-        $this->setExpectedException(InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
 
         $subject->count();
     }
@@ -114,7 +114,8 @@ class ConfigurableLtiProviderRepositoryTest extends TestCase
                 true
             )
         ]);
-        $this->setExpectedException(InvalidArgumentException::class, 'Missing key \'callback_url\' in LTI provider list.');
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Missing key \'callback_url\' in LTI provider list.');
 
         $subject->count();
     }
