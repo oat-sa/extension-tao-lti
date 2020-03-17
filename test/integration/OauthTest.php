@@ -54,6 +54,9 @@ class OauthTestCase extends TaoPhpUnitTestRunner
         $this->oauthCustomer->delete();
     }
 
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testSignature()
     {
         $request = new common_http_Request('http://example.com/oauthtest');
