@@ -16,7 +16,7 @@ class RestServiceTest extends RestTestRunner
     /**
      * @throws \common_exception_Error
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->consumerClass = new \core_kernel_classes_Class(ConsumerService::CLASS_URI);

@@ -37,10 +37,10 @@ return [
     'label' => 'LTI library',
     'description' => 'TAO LTI library and helpers',
     'license' => 'GPL-2.0',
-    'version' => '11.3.0',
+    'version' => '11.4.0',
       'author' => 'Open Assessment Technologies SA',
       'requires' => [
-        'generis' => '>=12.5.0',
+        'generis' => '>=12.15.0',
         'tao' => '>=39.5.5'
     ],
     'routes' => [
