@@ -25,6 +25,7 @@ use common_Exception;
 use common_exception_Error;
 use common_exception_IsAjaxAction;
 use common_http_Request;
+use oat\tao\model\oauth\OauthService;
 use tao_helpers_Request;
 use common_Logger;
 use common_user_auth_AuthFailedException;
@@ -92,6 +93,9 @@ abstract class ToolModule extends LtiModule
                 $this->forward('run', null, null, $_GET);
             }
         } catch (common_user_auth_AuthFailedException $e) {
+            $lockoutService = $this->getServiceLocator()->get(OauthService::SERVICE_ID)
+                ->getSubService(OauthService::OPTION_LOCKOUT_SERVICE);
+            $lockoutService->logFailedAttempt();
             common_Logger::i($e->getMessage());
             throw new LtiException(
                 __('The LTI connection could not be established'),

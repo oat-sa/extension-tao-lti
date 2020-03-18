@@ -23,6 +23,7 @@ namespace oat\taoLti\models\classes\Lis;
 use common_http_InvalidSignatureException;
 use common_user_auth_Adapter;
 use common_user_User;
+use oat\tao\model\oauth\lockout\LockOutException;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorAwareTrait;
@@ -51,6 +52,12 @@ class LisAuthAdapter implements common_user_auth_Adapter, ServiceLocatorAwareInt
             [$oauthConsumer, $token] = $oauthService->validatePsrRequest($this->request);
         } catch (common_http_InvalidSignatureException $exception) {
             // to meet interface requirement
+            throw new LisAuthAdapterException(
+                $exception->getMessage(),
+                $exception->getCode(),
+                $exception
+            );
+        } catch (LockOutException $exception) {
             throw new LisAuthAdapterException(
                 $exception->getMessage(),
                 $exception->getCode(),
