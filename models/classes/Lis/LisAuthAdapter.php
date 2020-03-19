@@ -50,14 +50,8 @@ class LisAuthAdapter implements common_user_auth_Adapter, ServiceLocatorAwareInt
         try {
             /** @var LisOAuthConsumer $oauthConsumer */
             [$oauthConsumer, $token] = $oauthService->validatePsrRequest($this->request);
-        } catch (common_http_InvalidSignatureException $exception) {
+        } catch (common_http_InvalidSignatureException | LockOutException $exception) {
             // to meet interface requirement
-            throw new LisAuthAdapterException(
-                $exception->getMessage(),
-                $exception->getCode(),
-                $exception
-            );
-        } catch (LockOutException $exception) {
             throw new LisAuthAdapterException(
                 $exception->getMessage(),
                 $exception->getCode(),
