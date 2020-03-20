@@ -38,6 +38,8 @@ use oat\taoLti\models\classes\LtiProvider\LtiProviderService;
 use oat\taoLti\models\classes\LtiProvider\RdfLtiProviderRepository;
 use oat\taoLti\models\classes\ResourceLink\LinkService;
 use oat\taoLti\models\classes\ResourceLink\OntologyLink;
+use oat\taoLti\models\classes\Security\Business\Contract\SecretKeyServiceInterface;
+use oat\taoLti\models\classes\Security\Business\Service\SecretKeyService;
 use oat\taoLti\models\classes\user\LtiUserFactoryService;
 use oat\taoLti\models\classes\user\LtiUserService;
 use oat\taoLti\models\classes\user\OntologyLtiUserService;
@@ -255,6 +257,15 @@ class Updater extends \common_ext_ExtensionUpdater
             $this->setVersion('10.5.3');
         }
 
-        $this->skip('10.5.3', '10.5.3.2');
+        $this->skip('10.5.3', '10.5.3.1');
+
+        if ($this->isVersion('10.5.3.1')) {
+            $this->getServiceManager()->register(
+                SecretKeyServiceInterface::SERVICE_ID,
+                new SecretKeyService(40)
+            );
+
+            $this->setVersion('10.5.3.2');
+        }
     }
 }
