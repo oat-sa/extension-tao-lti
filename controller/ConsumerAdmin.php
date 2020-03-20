@@ -42,6 +42,10 @@ use tao_models_classes_dataBinding_GenerisFormDataBindingException as FormDataBi
  */
 class ConsumerAdmin extends tao_actions_SaSModule
 {
+    private const EXCLUDED_FIELDS = [
+        DataStore::PROPERTY_OAUTH_SECRET,
+    ];
+
     /** @var KernelClass */
     private $currentClass;
 
@@ -125,7 +129,7 @@ class ConsumerAdmin extends tao_actions_SaSModule
             [$this->getCurrentClass()],
             [
                 CreateInstanceContainer::CSRF_PROTECTION_OPTION => true,
-                'excludedProperties'                            => [DataStore::PROPERTY_OAUTH_SECRET],
+                'excludedProperties'                            => self::EXCLUDED_FIELDS,
             ]
         );
 
@@ -171,6 +175,8 @@ class ConsumerAdmin extends tao_actions_SaSModule
     {
         if ($form->isSubmited() && $form->isValid()) {
             $values = $form->getValues();
+
+            $values = array_diff_key($values, array_flip(self::EXCLUDED_FIELDS));
 
             $binder = new tao_models_classes_dataBinding_GenerisFormDataBinder($this->getCurrentInstance());
             $binder->bind($values);
