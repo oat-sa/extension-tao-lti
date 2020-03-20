@@ -99,7 +99,15 @@ class ConsumerAdmin extends tao_actions_SaSModule
      */
     public function regenerateSecret(): void
     {
-        $this->updateCurrentInstance([DataStore::PROPERTY_OAUTH_SECRET => $this->getSecretKeyService()->generate()]);
+        $requestBody = $this->getPsrRequest()->getParsedBody();
+
+        // Prevent double handler call as front end calls the last action before submitting a form
+        if (empty($requestBody['tao_forms_instance'])) {
+            $this->updateCurrentInstance(
+                [DataStore::PROPERTY_OAUTH_SECRET => $this->getSecretKeyService()->generate()]
+            );
+        }
+
         $this->editInstance();
     }
 
@@ -163,9 +171,14 @@ class ConsumerAdmin extends tao_actions_SaSModule
 
         $form = $myFormContainer->getForm();
 
+        $secret = $form->getElement(UriHelper::encode(DataStore::PROPERTY_OAUTH_SECRET));
+        $secret->addAttribute('readonly', 'readonly');
+
         foreach (self::EXCLUDED_FIELDS as $excludedField) {
             $form->removeElement(UriHelper::encode($excludedField));
         }
+
+        $form->addElement($secret);
 
         return $form;
     }
