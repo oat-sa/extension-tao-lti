@@ -30,18 +30,18 @@ use oat\taoLti\scripts\update\Updater;
  * @author CRP Henri Tudor - TAO Team - {@link http://www.tao.lu}
  * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
  */
-$extpath = dirname(__FILE__) . DIRECTORY_SEPARATOR;
+$extpath = __DIR__ . DIRECTORY_SEPARATOR;
 
 return [
     'name' => 'taoLti',
     'label' => 'LTI library',
     'description' => 'TAO LTI library and helpers',
     'license' => 'GPL-2.0',
-    'version' => '11.4.0',
+    'version' => '11.5.0',
       'author' => 'Open Assessment Technologies SA',
       'requires' => [
         'generis' => '>=12.15.0',
-        'tao' => '>=39.5.5'
+        'tao' => '>=41.2.0'
     ],
     'routes' => [
         '/taoLti' => 'oat\\taoLti\\controller'
@@ -71,16 +71,16 @@ return [
     ],
     'constants' => [
         # controller directory
-        "DIR_ACTIONS"           => $extpath . "controller" . DIRECTORY_SEPARATOR,
+        'DIR_ACTIONS' => $extpath . 'controller' . DIRECTORY_SEPARATOR,
 
         # views directory
-        "DIR_VIEWS"             => $extpath . "views" . DIRECTORY_SEPARATOR,
+        'DIR_VIEWS'   => $extpath . 'views' . DIRECTORY_SEPARATOR,
 
         #BASE PATH: the root path in the file system (usually the document root)
-        'BASE_PATH'             => $extpath ,
+        'BASE_PATH'   => $extpath ,
 
         #BASE URL (usually the domain root)
-        'BASE_URL'              => ROOT_URL . 'taoLti/',
+        'BASE_URL'    => ROOT_URL . 'taoLti/',
     ],
     'extra' => [
         'structures' => $extpath . 'controller' . DIRECTORY_SEPARATOR . 'structures.xml',
