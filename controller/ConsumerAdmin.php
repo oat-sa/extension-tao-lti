@@ -30,6 +30,7 @@ use oat\taoLti\models\classes\Security\Business\Contract\SecretKeyServiceInterfa
 use tao_actions_form_CreateInstance as CreateInstanceContainer;
 use tao_actions_SaSModule;
 use tao_helpers_form_Form as Form;
+use tao_helpers_Uri as UriHelper;
 use tao_models_classes_dataBinding_GenerisFormDataBinder;
 use tao_models_classes_dataBinding_GenerisFormDataBindingException as FormDataBindingException;
 
@@ -43,7 +44,9 @@ use tao_models_classes_dataBinding_GenerisFormDataBindingException as FormDataBi
 class ConsumerAdmin extends tao_actions_SaSModule
 {
     private const EXCLUDED_FIELDS = [
+        'id',
         DataStore::PROPERTY_OAUTH_SECRET,
+        DataStore::PROPERTY_OAUTH_CALLBACK,
     ];
 
     /** @var KernelClass */
@@ -145,21 +148,24 @@ class ConsumerAdmin extends tao_actions_SaSModule
         );
 
         $form = $myFormContainer->getForm();
-        $form->removeElement('id');
+
+        foreach (self::EXCLUDED_FIELDS as $excludedField) {
+            $form->removeElement(UriHelper::encode($excludedField));
+        }
 
         return $form;
     }
 
     /**
-     * @param Form $addInstanceForm
+     * @param Form $form
      */
-    private function handleNewInstanceSubmission(Form $addInstanceForm): void
+    private function handleNewInstanceSubmission(Form $form): void
     {
-        if ($addInstanceForm->isSubmited() && $addInstanceForm->isValid()) {
-            $properties                                   = $addInstanceForm->getValues();
-            $properties[DataStore::PROPERTY_OAUTH_SECRET] = $this->getSecretKeyService()->generate();
+        if ($form->isSubmited() && $form->isValid()) {
+            $values                                   = $this->extractValues($form);
+            $values[DataStore::PROPERTY_OAUTH_SECRET] = $this->getSecretKeyService()->generate();
 
-            $instance = $this->createInstance([$this->getCurrentClass()], $properties);
+            $instance = $this->createInstance([$this->getCurrentClass()], $values);
 
             $this->setData('message', __('%s created', $instance->getLabel()));
             $this->setData('reload', true);
@@ -174,9 +180,7 @@ class ConsumerAdmin extends tao_actions_SaSModule
     private function handleExistingInstanceSubmission(Form $form): void
     {
         if ($form->isSubmited() && $form->isValid()) {
-            $values = $form->getValues();
-
-            $values = array_diff_key($values, array_flip(self::EXCLUDED_FIELDS));
+            $values = $this->extractValues($form);
 
             $binder = new tao_models_classes_dataBinding_GenerisFormDataBinder($this->getCurrentInstance());
             $binder->bind($values);
@@ -184,6 +188,14 @@ class ConsumerAdmin extends tao_actions_SaSModule
             $this->setData('message', __('Instance saved'));
             $this->setData('reload', true);
         }
+    }
+
+    private function extractValues(Form $form): array
+    {
+        $values = $form->getValues();
+        $values = array_diff_key($values, array_flip(self::EXCLUDED_FIELDS));
+
+        return $values;
     }
 
     private function getSecretKeyService(): SecretKeyServiceInterface
