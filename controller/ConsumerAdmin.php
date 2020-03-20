@@ -174,6 +174,10 @@ class ConsumerAdmin extends tao_actions_SaSModule
         $secret = $form->getElement(UriHelper::encode(DataStore::PROPERTY_OAUTH_SECRET));
         $secret->addAttribute('readonly', 'readonly');
         $secret->addClass('copy-to-clipboard');
+        $secret->addAttribute(
+            'data-copy-success-feedback',
+            __('Oauth consumer secret has been copied to the clipboard')
+        );
 
         foreach (self::EXCLUDED_FIELDS as $excludedField) {
             $form->removeElement(UriHelper::encode($excludedField));
