@@ -20,9 +20,16 @@
 
 namespace oat\taoLti\models\classes\Security\Business\Contract;
 
+use oat\taoLti\models\classes\Security\Business\Domain\Exception\SecretKeyGenerationException;
+
 interface SecretKeyServiceInterface
 {
     public const SERVICE_ID = 'taoLti/SecretKeyService';
 
+    /**
+     * @return string
+     *
+     * @throws SecretKeyGenerationException
+     */
     public function generate(): string;
 }

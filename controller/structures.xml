@@ -32,6 +32,15 @@
 					<action id="lticonsumer-new" name="Add Consumer" url="/taoLti/ConsumerAdmin/addInstanceForm" context="class" group="tree">
                         <icon id="icon-add"/>
                     </action>
+					<action
+							id="lticonsumer-regenerate-secret"
+							name="Generate a new secret key"
+							url="taoLti/ConsumerAdmin/regenerateSecret"
+							context="instance"
+							group="content"
+					>
+						<icon id="icon-loop" />
+					</action>
 				</actions>
 			</section>
 			<section id="settings_oauth_mng_provider" name="LTI Providers" url="/taoLti/ProviderAdmin/index">
