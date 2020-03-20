@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 3.4.0-sprint112\n"
-"PO-Revision-Date: 2019-10-11T08:34:47\n"
+"Project-Id-Version: TAO 3.4.0-sprint124\n"
+"PO-Revision-Date: 2020-03-20T08:13:57\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: fr-FR\n"
@@ -13,7 +13,7 @@ msgstr ""
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "LTI Roles"
-msgstr "LTI Roles"
+msgstr "Rôles LTI"
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#RoleURN
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -23,17 +23,17 @@ msgstr "URN"
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#RoleURN
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "LTI Uniform Resource Name(deprecated)"
-msgstr ""
+msgstr "Nom uniforme de ressource (URN) LTI"
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiBaseRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "LTI Base Role"
-msgstr "LTI Base Role"
+msgstr "Rôle de base LTI"
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiBaseRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "The LTI Base Role"
-msgstr ""
+msgstr "Le rôle de base LTI"
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#RoleURN
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
@@ -43,5 +43,5 @@ msgstr "LTI Uniform Resource Name(deprecated)"
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiBaseRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "LTI Base Role"
-msgstr "The LTI Base Role"
+msgstr "Le rôle de base LTI"
 
