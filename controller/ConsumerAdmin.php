@@ -20,8 +20,10 @@
 
 namespace oat\taoLti\controller;
 
-use oat\tao\model\routing\AnnotationReader\security;
+use common_exception_BadRequest as BadRequestExcetpion;
+use oat\tao\model\oauth\DataStore;
 use oat\taoLti\models\classes\ConsumerService;
+use tao_actions_form_CreateInstance as CreateInstanceContainer;
 use tao_actions_SaSModule;
 
 /**
@@ -33,13 +35,41 @@ use tao_actions_SaSModule;
  */
 class ConsumerAdmin extends tao_actions_SaSModule
 {
+    public function addInstanceForm(): void
+    {
+        if (!$this->isXmlHttpRequest()) {
+            throw new BadRequestExcetpion('wrong request mode');
+        }
+
+        $class           = $this->getCurrentClass();
+        $formContainer   = new CreateInstanceContainer(
+            [$class],
+            [
+                CreateInstanceContainer::CSRF_PROTECTION_OPTION => true,
+                'excludedProperties' => [DataStore::PROPERTY_OAUTH_SECRET]
+            ]
+        );
+
+        $addInstanceForm = $formContainer->getForm();
+
+        if ($addInstanceForm->isSubmited() && $addInstanceForm->isValid()) {
+            $properties = $addInstanceForm->getValues();
+            $instance   = $this->createInstance([$class], $properties);
+
+            $this->setData('message', __('%s created', $instance->getLabel()));
+            $this->setData('reload', true);
+        }
+
+        $this->setData('formTitle', __('Create instance of ') . $class->getLabel());
+        $this->setData('myForm', $addInstanceForm->render());
+
+        $this->setView('form.tpl', 'tao');
+    }
+
     /**
-     * (non-PHPdoc)
-     *
-     * @see \tao_actions_RdfController::getClassService()
-     * @security("hide");
+     * @inheritDoc
      */
-    public function getClassService()
+    protected function getClassService()
     {
         return $this->getServiceLocator()->get(ConsumerService::class);
     }
