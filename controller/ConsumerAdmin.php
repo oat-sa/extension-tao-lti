@@ -182,7 +182,8 @@ class ConsumerAdmin extends tao_actions_SaSModule
 
     private function enrichWithRegenerateSecretAction(Form $form): void
     {
-        $regenerateButton = FormFactory::getElement('regenerate_secret', 'Button');
+        /** @noinspection PhpUnhandledExceptionInspection */
+        $regenerateButton = FormFactory::getElement(self::SECRET_REGENERATION_KEY, 'Button');
         $regenerateButton->addClass('small form-submitter');
         $regenerateButton->addAttribute('style', 'width: 100%;');
         $regenerateButton->setValue(__('Generate a new secret key'));
@@ -192,6 +193,7 @@ class ConsumerAdmin extends tao_actions_SaSModule
 
     private function enrichWithRegenerateSecretDisclaimer(Form $form): void
     {
+        /** @noinspection PhpUnhandledExceptionInspection */
         $regenerateDisclaimer = FormFactory::getElement('regenerate_disclaimer', 'Free');
         $regenerateDisclaimer->setValue(
             __('Please consider that generating a new key will replace the previously generated one.')
