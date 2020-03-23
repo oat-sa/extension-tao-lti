@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 3.4.0-sprint112\n"
-"PO-Revision-Date: 2019-10-11T08:34:47\n"
+"Project-Id-Version: TAO 3.4.0-sprint124\n"
+"PO-Revision-Date: 2020-03-20T11:17:02\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: nl-NL\n"
@@ -21,6 +21,9 @@ msgstr "Voeg eindgebruiker toe"
 msgid "Add Provider"
 msgstr ""
 
+msgid "Authorization failed"
+msgstr ""
+
 msgid "Back"
 msgstr "Terug"
 
@@ -32,16 +35,16 @@ msgid "Error"
 msgstr "Fout"
 
 msgid "Error (%s): "
-msgstr ""
+msgstr "Fout (%s): "
 
 msgid "Error(%s): [key %s] %s \"%s"
-msgstr ""
+msgstr "Fout(%s): [key %s] %s \"%s"
 
 msgid "Error: "
-msgstr ""
+msgstr "Fout: "
 
 msgid "Error: [key %s] \"%s"
-msgstr ""
+msgstr "Fout: [key %s] \"%s"
 
 #, tao-public
 msgid "Export"

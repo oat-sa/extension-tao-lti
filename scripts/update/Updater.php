@@ -267,15 +267,15 @@ class Updater extends \common_ext_ExtensionUpdater
             $this->setVersion('11.0.0');
         }
 
-        $this->skip('11.0.0', '11.4.1');
+        $this->skip('11.0.0', '11.5.0');
 
-        if ($this->isVersion('11.4.1')) {
+        if ($this->isVersion('11.5.0')) {
             $this->getServiceManager()->register(
                 SecretKeyServiceInterface::SERVICE_ID,
                 new SecretKeyService(40)
             );
 
-            $this->setVersion('11.5.0');
+            $this->setVersion('11.6.0');
         }
     }
 }
