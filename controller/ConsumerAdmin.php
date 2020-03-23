@@ -31,6 +31,7 @@ use oat\taoLti\models\classes\Security\Business\Domain\Exception\SecretKeyGenera
 use tao_actions_form_CreateInstance as CreateInstanceContainer;
 use tao_actions_SaSModule;
 use tao_helpers_form_Form as Form;
+use tao_helpers_form_FormFactory as FormFactory;
 use tao_helpers_Uri as UriHelper;
 use tao_models_classes_dataBinding_GenerisFormDataBinder as FormDataBinder;
 use tao_models_classes_dataBinding_GenerisFormDataBindingException as FormDataBindingException;
@@ -49,6 +50,8 @@ class ConsumerAdmin extends tao_actions_SaSModule
         DataStore::PROPERTY_OAUTH_SECRET,
         DataStore::PROPERTY_OAUTH_CALLBACK,
     ];
+
+    private const SECRET_REGENERATION_KEY = 'regenerate_secret';
 
     /** @var KernelClass|null */
     private $currentClass;
@@ -91,24 +94,6 @@ class ConsumerAdmin extends tao_actions_SaSModule
         $this->setData('formTitle', __('Edit Instance'));
         $this->setData('myForm', $form->render());
         $this->setView('form.tpl', 'tao');
-    }
-
-    /**
-     * @throws SecretKeyGenerationException
-     * @throws FormDataBindingException
-     */
-    public function regenerateSecret(): void
-    {
-        $requestBody = $this->getPsrRequest()->getParsedBody();
-
-        // Prevent double handler call as front end calls the last action before submitting a form
-        if (empty($requestBody['tao_forms_instance'])) {
-            $this->updateCurrentInstance(
-                [DataStore::PROPERTY_OAUTH_SECRET => $this->getSecretKeyService()->generate()]
-            );
-        }
-
-        $this->editInstance();
     }
 
     /**
@@ -171,6 +156,15 @@ class ConsumerAdmin extends tao_actions_SaSModule
 
         $form = $myFormContainer->getForm();
 
+        $this->enrichWithSecretField($form);
+        $this->enrichWithRegenerateSecretAction($form);
+        $this->enrichWithRegenerateSecretDisclaimer($form);
+
+        return $form;
+    }
+
+    private function enrichWithSecretField(Form $form): void
+    {
         $secret = $form->getElement(UriHelper::encode(DataStore::PROPERTY_OAUTH_SECRET));
         $secret->addAttribute('readonly', 'readonly');
         $secret->addClass('copy-to-clipboard');
@@ -184,8 +178,26 @@ class ConsumerAdmin extends tao_actions_SaSModule
         }
 
         $form->addElement($secret);
+    }
 
-        return $form;
+    private function enrichWithRegenerateSecretAction(Form $form): void
+    {
+        $regenerateButton = FormFactory::getElement('regenerate_secret', 'Button');
+        $regenerateButton->addClass('small form-submitter');
+        $regenerateButton->addAttribute('style', 'width: 100%;');
+        $regenerateButton->setValue(__('Generate a new secret key'));
+
+        $form->addElement($regenerateButton);
+    }
+
+    private function enrichWithRegenerateSecretDisclaimer(Form $form): void
+    {
+        $regenerateDisclaimer = FormFactory::getElement('regenerate_disclaimer', 'Free');
+        $regenerateDisclaimer->setValue(
+            __('Please consider that generating a new key will replace the previously generated one.')
+        );
+
+        $form->addElement($regenerateDisclaimer);
     }
 
     /**
@@ -215,6 +227,12 @@ class ConsumerAdmin extends tao_actions_SaSModule
     {
         if ($form->isSubmited() && $form->isValid()) {
             $values = $this->extractValues($form);
+
+            $requestBody = $this->getPsrRequest()->getParsedBody();
+
+            if (!empty($requestBody[self::SECRET_REGENERATION_KEY])) {
+                $values[DataStore::PROPERTY_OAUTH_SECRET] = $this->getSecretKeyService()->generate();
+            }
 
             $this->updateCurrentInstance($values);
 
