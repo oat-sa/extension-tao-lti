@@ -45,14 +45,4 @@ final class SecretKeyService extends InjectionAwareService implements SecretKeyS
             throw SecretKeyGenerationException::create($exception);
         }
     }
-
-    /**
-     * @inheritDoc
-     */
-    protected function getDependencies(): array
-    {
-        return [
-            $this->length,
-        ];
-    }
 }
