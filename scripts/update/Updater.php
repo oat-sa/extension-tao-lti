@@ -259,7 +259,7 @@ class Updater extends \common_ext_ExtensionUpdater
             $this->getServiceManager()->register(
                 LisOauthService::SERVICE_ID,
                 new LisOauthService([
-                    LisOauthService::OPTION_DATASTORE => new LisOauthDataStore([
+                    LisOauthService::OPTION_DATA_STORE => new LisOauthDataStore([
                         LisOauthDataStore::OPTION_NONCE_STORE => new NoNonce()
                     ])
                 ])
