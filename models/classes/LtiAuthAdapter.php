@@ -24,6 +24,7 @@ namespace oat\taoLti\models\classes;
 
 use common_http_InvalidSignatureException;
 use common_http_Request;
+use oat\tao\model\oauth\lockout\LockOutException;
 use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
 use oat\taoLti\models\classes\user\LtiUserService;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
@@ -82,6 +83,8 @@ class LtiAuthAdapter implements \common_user_auth_Adapter, ServiceLocatorAwareIn
             return $userService->findOrSpawnUser($ltiLaunchData);
         } catch (common_http_InvalidSignatureException $e) {
             throw new LtiException('Invalid LTI signature', LtiErrorMessage::ERROR_UNAUTHORIZED);
+        } catch (LockOutException $e) {
+            throw new LtiException('Too many incorrect attempts', LtiErrorMessage::ERROR_UNAUTHORIZED);
         }
     }
 
