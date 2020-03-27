@@ -42,6 +42,8 @@ use oat\taoLti\models\classes\LtiProvider\LtiProviderService;
 use oat\taoLti\models\classes\LtiProvider\RdfLtiProviderRepository;
 use oat\taoLti\models\classes\ResourceLink\LinkService;
 use oat\taoLti\models\classes\ResourceLink\OntologyLink;
+use oat\taoLti\models\classes\Security\Business\Contract\SecretKeyServiceInterface;
+use oat\taoLti\models\classes\Security\Business\Service\SecretKeyService;
 use oat\taoLti\models\classes\user\LtiUserFactoryService;
 use oat\taoLti\models\classes\user\LtiUserService;
 use oat\taoLti\models\classes\user\OntologyLtiUserService;
@@ -257,7 +259,7 @@ class Updater extends \common_ext_ExtensionUpdater
             $this->getServiceManager()->register(
                 LisOauthService::SERVICE_ID,
                 new LisOauthService([
-                    LisOauthService::OPTION_DATASTORE => new LisOauthDataStore([
+                    LisOauthService::OPTION_DATA_STORE => new LisOauthDataStore([
                         LisOauthDataStore::OPTION_NONCE_STORE => new NoNonce()
                     ])
                 ])
@@ -265,6 +267,17 @@ class Updater extends \common_ext_ExtensionUpdater
             $this->setVersion('11.0.0');
         }
 
-        $this->skip('11.0.0', '11.3.0');
+        $this->skip('11.0.0', '11.5.0');
+
+        if ($this->isVersion('11.5.0')) {
+            $this->getServiceManager()->register(
+                SecretKeyServiceInterface::SERVICE_ID,
+                new SecretKeyService(40)
+            );
+
+            $this->setVersion('11.6.0');
+        }
+
+        $this->skip('11.6.0', '11.7.0');
     }
 }

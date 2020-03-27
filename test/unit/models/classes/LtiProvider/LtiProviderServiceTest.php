@@ -42,7 +42,7 @@ class LtiProviderServiceTest extends TestCase
     /** @var LtiProviderService */
     private $subject;
 
-    public function setUp()
+    public function setUp(): void
     {
         $repository1 = $this->createRepositoryMock(
             self::COUNT_1,

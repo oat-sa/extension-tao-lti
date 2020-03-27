@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 3.4.0-sprint112\n"
-"PO-Revision-Date: 2019-10-11T08:34:47\n"
+"Project-Id-Version: TAO 3.4.0-sprint125\n"
+"PO-Revision-Date: 2020-03-27T10:30:41\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: fr-FR\n"
@@ -38,12 +38,12 @@ msgstr "LTI Consumer User Key"
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#UserKey
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Key of LTI User"
-msgstr ""
+msgstr "Clef de l'utilisateur LTI"
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#UserConsumer
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "LTI Consumer of User"
-msgstr ""
+msgstr "Consommateur LTI pour l'utilisateur"
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#LTITool
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -58,7 +58,7 @@ msgstr "LTI Tool Service"
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#ToolService
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Service to implemnt the Tool"
-msgstr ""
+msgstr "Service pour implémenter l'outil"
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#LTILink
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -68,7 +68,7 @@ msgstr "LTI Link"
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#LTILink
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Link between Tool and Consumer"
-msgstr ""
+msgstr "Lien entre l'outil et le consommateur"
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#LTILinkConsumer
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -83,7 +83,7 @@ msgstr "Incoming LTI link"
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiIncomingLink
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "An external link calling TAO as tool provider"
-msgstr ""
+msgstr "Un lien externe appelant TAO en tant que fournisseur d'outil"
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#LTILinkId
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -98,7 +98,7 @@ msgstr "Outgoing LTI link"
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiOutgoingLink
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "An link in TAO calling a remote tool provider"
-msgstr ""
+msgstr "Un lien dans TAO appelant un fournisseur d'outil distant"
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#ResourceLinkLaunchUrl
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -108,7 +108,7 @@ msgstr "Launch URL"
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#ResourceLinkLaunchUrl
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "LTI launch url"
-msgstr ""
+msgstr "URL de lancement LTI"
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiLaunchUrl
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -133,7 +133,7 @@ msgstr "LTI Consumer Uri"
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#ServiceLtiConsumer
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "LTI Consumer service calls an LTI Producer"
-msgstr ""
+msgstr "Le service consommateur LTI appelle un producteur LTI."
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#UserKey
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"

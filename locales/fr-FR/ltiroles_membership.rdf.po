@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 3.4.0-sprint112\n"
-"PO-Revision-Date: 2019-10-11T08:34:47\n"
+"Project-Id-Version: TAO 3.4.0-sprint125\n"
+"PO-Revision-Date: 2020-03-27T10:30:41\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: fr-FR\n"
@@ -18,7 +18,7 @@ msgstr "LTI Learner"
 # http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#Learner
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "The LTI Context Learner Role"
-msgstr ""
+msgstr "Le rôle d'apprenant du contexte LTI"
 
 # http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#Instructor
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -28,27 +28,27 @@ msgstr "LTI Instructor"
 # http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#Instructor
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "The LTI Context Instructor Role"
-msgstr ""
+msgstr "Le rôle d'instructeur du contexte LTI"
 
 # http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#ContentDeveloper
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "LTI Content Developer"
-msgstr ""
+msgstr "Développeur de contenu LTI"
 
 # http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#ContentDeveloper
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "The LTI Context Content Developer Role"
-msgstr ""
+msgstr "Le rôle de développeur de contenu de contexte LTI"
 
 # http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#TeachingAssistant
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "LTI Teaching Assistant"
-msgstr ""
+msgstr "Assistant pédagogique LTI"
 
 # http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#TeachingAssistant
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "The LTI Context Teaching Assistant Role"
-msgstr ""
+msgstr "Le rôle d'assistant pédagogique de contexte LTI"
 
 # http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#Administrator
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -58,7 +58,7 @@ msgstr "LTI Administrator"
 # http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#Administrator
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "The LTI Context Administrator Role"
-msgstr ""
+msgstr "Le rôle d'administrateur du contexte LTI"
 
 # http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#Learner
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"

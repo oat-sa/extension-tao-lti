@@ -32,13 +32,13 @@ include_once dirname(__FILE__) . '/../../includes/raw_start.php';
  */
 class OauthTestCase extends TaoPhpUnitTestRunner
 {
-    
+
     private $oauthCustomer;
 
     /**
      * tests initialization
      */
-    public function setUp()
+    public function setUp(): void
     {
         TaoPhpUnitTestRunner::initTest();
         $oauthClass = new core_kernel_classes_Class(OAuthDataStore::CLASS_URI_OAUTH_CONSUMER);
@@ -48,12 +48,15 @@ class OauthTestCase extends TaoPhpUnitTestRunner
         ]);
         $this->oauthCustomer = new tao_models_classes_oauth_Credentials($resource);
     }
-    
-    public function tearDown()
+
+    public function tearDown(): void
     {
         $this->oauthCustomer->delete();
     }
 
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testSignature()
     {
         $request = new common_http_Request('http://example.com/oauthtest');

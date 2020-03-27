@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 3.4.0-sprint112\n"
-"PO-Revision-Date: 2019-10-11T08:34:47\n"
+"Project-Id-Version: TAO 3.4.0-sprint125\n"
+"PO-Revision-Date: 2020-03-27T10:30:42\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: nl-NL\n"
@@ -13,6 +13,9 @@ msgstr ""
 "X-Poedit-KeywordsList: __\n"
 "X-Poedit-SearchPath-0: .\n"
 
+msgid "%s created"
+msgstr ""
+
 #, tao-public
 msgid "Add Consumer"
 msgstr "Voeg eindgebruiker toe"
@@ -21,31 +24,43 @@ msgstr "Voeg eindgebruiker toe"
 msgid "Add Provider"
 msgstr ""
 
+msgid "Authorization failed"
+msgstr ""
+
 msgid "Back"
 msgstr "Terug"
+
+msgid "Create instance of "
+msgstr ""
 
 #, tao-public
 msgid "Delete"
 msgstr "Verwijderen"
 
+msgid "Edit Instance"
+msgstr ""
+
 msgid "Error"
 msgstr "Fout"
 
 msgid "Error (%s): "
-msgstr ""
+msgstr "Fout (%s): "
 
 msgid "Error(%s): [key %s] %s \"%s"
-msgstr ""
+msgstr "Fout(%s): [key %s] %s \"%s"
 
 msgid "Error: "
-msgstr ""
+msgstr "Fout: "
 
 msgid "Error: [key %s] \"%s"
-msgstr ""
+msgstr "Fout: [key %s] \"%s"
 
 #, tao-public
 msgid "Export"
 msgstr "Exporteren"
+
+msgid "Generate a new secret key"
+msgstr ""
 
 #, tao-public
 msgid "Import"
@@ -54,6 +69,9 @@ msgstr "Importeren"
 #, tao-public
 msgid "Index"
 msgstr "Index"
+
+msgid "Instance saved"
+msgstr ""
 
 msgid "Learning Tools Interoperability"
 msgstr "Onderlinge uitwisselbaarheid van leermiddelen "
@@ -69,8 +87,14 @@ msgstr "LTI eindgebruikers"
 msgid "LTI Providers"
 msgstr ""
 
+msgid "Oauth consumer secret has been copied to the clipboard"
+msgstr ""
+
 msgid "Open in a new window"
 msgstr "Openen in een nieuw venster"
+
+msgid "Please consider that generating a new key will replace the previously generated one."
+msgstr ""
 
 #, tao-public
 msgid "Properties"

@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 3.4.0-sprint112\n"
-"PO-Revision-Date: 2019-10-11T08:34:47\n"
+"Project-Id-Version: TAO 3.4.0-sprint125\n"
+"PO-Revision-Date: 2020-03-27T10:30:41\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: fr-FR\n"
@@ -13,97 +13,121 @@ msgstr ""
 "X-Poedit-KeywordsList: __\n"
 "X-Poedit-SearchPath-0: .\n"
 
+msgid "%s created"
+msgstr ""
+
 #, tao-public
 msgid "Add Consumer"
-msgstr ""
+msgstr "Ajouter un consommateur"
 
 #, tao-public
 msgid "Add Provider"
 msgstr ""
 
+msgid "Authorization failed"
+msgstr ""
+
 msgid "Back"
+msgstr "Précédent"
+
+msgid "Create instance of "
 msgstr ""
 
 #, tao-public
 msgid "Delete"
+msgstr "Supprimer"
+
+msgid "Edit Instance"
 msgstr ""
 
 msgid "Error"
-msgstr ""
+msgstr "Erreur"
 
 msgid "Error (%s): "
-msgstr ""
+msgstr "Erreur (%s):"
 
 msgid "Error(%s): [key %s] %s \"%s"
-msgstr ""
+msgstr "Erreur(%s): [clé %s] %s \"%s"
 
 msgid "Error: "
-msgstr ""
+msgstr "Erreur:"
 
 msgid "Error: [key %s] \"%s"
-msgstr ""
+msgstr "Erreur: [clé %s] \"%s"
 
 #, tao-public
 msgid "Export"
+msgstr "Exporter"
+
+msgid "Generate a new secret key"
 msgstr ""
 
 #, tao-public
 msgid "Import"
-msgstr ""
+msgstr "Importer"
 
 #, tao-public
 msgid "Index"
+msgstr "Index"
+
+msgid "Instance saved"
 msgstr ""
 
 msgid "Learning Tools Interoperability"
-msgstr ""
+msgstr "Interopérabilité des outils d'apprentissage"
 
 msgid "link"
-msgstr ""
+msgstr "lien"
 
 #, tao-public
 msgid "LTI Consumers"
-msgstr ""
+msgstr "Consommateurs LTI"
 
 #, tao-public
 msgid "LTI Providers"
 msgstr ""
 
+msgid "Oauth consumer secret has been copied to the clipboard"
+msgstr ""
+
 msgid "Open in a new window"
+msgstr "Ouvrir dans une nouvelle fenêtre"
+
+msgid "Please consider that generating a new key will replace the previously generated one."
 msgstr ""
 
 #, tao-public
 msgid "Properties"
-msgstr ""
+msgstr "Propriétés"
 
 msgid "Return to %s."
-msgstr ""
+msgstr "Retour vers %s."
 
 msgid "Server Error"
-msgstr ""
+msgstr "Erreur serveur"
 
 #, tao-public
 msgid "Settings"
-msgstr ""
+msgstr "Paramètres"
 
 msgid "The LTI connection could not be established"
-msgstr ""
+msgstr "La connexion LTI n'a pu être établie."
 
 msgid "The LTI Provider library."
-msgstr ""
+msgstr "La bibliothèque de fournisseur LTI"
 
 msgid "The LTI tool could not be opened in the current window. Please click on the button to open it in a new window."
-msgstr ""
+msgstr "L'outil LTI n'a pu être ouvert dans la fenêtre courante. Veuillez cliquer sur le bouton pour l'ouvrir dans une nouvelle fenêtre."
 
 msgid "Third party cookies are not supported by your browser"
-msgstr ""
+msgstr "Les cookies tiers ne sont pas supportés par votre navigateur."
 
 msgid "Unable to restore Session"
-msgstr ""
+msgstr "Impossible de restaurer la session"
 
 msgid "user"
-msgstr ""
+msgstr "utilisateur"
 
 msgid "You are not authorized to use this system"
-msgstr ""
+msgstr "Vous n'êtes pas autorisés à utiliser ce système."
 

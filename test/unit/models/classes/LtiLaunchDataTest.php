@@ -30,7 +30,7 @@ class LtiLaunchDataTest extends TestCase
 {
     const ROOT_URL = 'http://example.com/';
 
-    public function setUp()
+    public function setUp(): void
     {
         if (!defined('ROOT_URL')) {
             define('ROOT_URL', self::ROOT_URL);

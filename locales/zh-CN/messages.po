@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 3.4.0-sprint112\n"
-"PO-Revision-Date: 2019-10-11T08:34:47\n"
+"Project-Id-Version: TAO 3.4.0-sprint125\n"
+"PO-Revision-Date: 2020-03-27T10:30:42\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: zh-CN\n"
@@ -13,6 +13,9 @@ msgstr ""
 "X-Poedit-KeywordsList: __\n"
 "X-Poedit-SearchPath-0: .\n"
 
+msgid "%s created"
+msgstr ""
+
 #, tao-public
 msgid "Add Consumer"
 msgstr "添加消费者"
@@ -21,12 +24,21 @@ msgstr "添加消费者"
 msgid "Add Provider"
 msgstr ""
 
+msgid "Authorization failed"
+msgstr ""
+
 msgid "Back"
 msgstr "返回"
+
+msgid "Create instance of "
+msgstr ""
 
 #, tao-public
 msgid "Delete"
 msgstr "删除"
+
+msgid "Edit Instance"
+msgstr ""
 
 msgid "Error"
 msgstr "错误"
@@ -47,6 +59,9 @@ msgstr ""
 msgid "Export"
 msgstr "导出"
 
+msgid "Generate a new secret key"
+msgstr ""
+
 #, tao-public
 msgid "Import"
 msgstr "导入"
@@ -54,6 +69,9 @@ msgstr "导入"
 #, tao-public
 msgid "Index"
 msgstr "索引"
+
+msgid "Instance saved"
+msgstr ""
 
 msgid "Learning Tools Interoperability"
 msgstr "学习工具的互操作性"
@@ -69,8 +87,14 @@ msgstr "LTI消费者"
 msgid "LTI Providers"
 msgstr ""
 
+msgid "Oauth consumer secret has been copied to the clipboard"
+msgstr ""
+
 msgid "Open in a new window"
 msgstr "在新窗口中打开"
+
+msgid "Please consider that generating a new key will replace the previously generated one."
+msgstr ""
 
 #, tao-public
 msgid "Properties"
