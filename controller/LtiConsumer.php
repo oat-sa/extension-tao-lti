@@ -20,18 +20,11 @@
  *
  */
 
-use oat\taoLti\models\classes\LtiUtils;
-
-/**
- * @author Joel Bout
- * @package taoLti
-
- * @license GPLv2  http://www.opensource.org/licenses/gpl-2.0.php
- *
- */
+declare(strict_types=1);
 
 namespace oat\taoLti\controller;
 
+use oat\taoLti\models\classes\LtiUtils;
 use common_exception_Error;
 use common_exception_MissingParameter;
 use common_http_Request;
@@ -111,7 +104,7 @@ class LtiConsumer extends tao_actions_ServiceModule
         
         $this->setData('launchUrl', $launchUrl);
         $this->setData('ltiData', $signedRequest->getParams());
-            $this->setData('client_config_url', $this->getClientConfigUrl());
+        $this->setData('client_config_url', $this->getClientConfigUrl());
         $this->setView('ltiConsumer.tpl');
     }
 }
