@@ -278,6 +278,6 @@ class Updater extends \common_ext_ExtensionUpdater
             $this->setVersion('11.6.0');
         }
 
-        $this->skip('11.6.0', '11.7.1');
+        $this->skip('11.6.0', '11.7.2');
     }
 }
