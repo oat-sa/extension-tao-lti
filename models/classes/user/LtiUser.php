@@ -180,10 +180,10 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
                 $returnValue = $this->taoRoles;
                 break;
             case GenerisRdf::PROPERTY_USER_FIRSTNAME:
-                $returnValue = [$this->firstname];
+                $returnValue = $this->firstname !== null ? [$this->firstname] : '';
                 break;
             case GenerisRdf::PROPERTY_USER_LASTNAME:
-                $returnValue = [$this->lastname];
+                $returnValue = $this->lastname !== null ? [$this->lastname] : '';
                 break;
             case OntologyRdfs::RDFS_LABEL:
                 $returnValue = [$this->label];
