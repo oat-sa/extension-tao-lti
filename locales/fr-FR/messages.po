@@ -85,7 +85,7 @@ msgstr "Consommateurs LTI"
 
 #, tao-public
 msgid "LTI Providers"
-msgstr ""
+msgstr "Prestataires de services LTI"
 
 msgid "Oauth consumer secret has been copied to the clipboard"
 msgstr ""
