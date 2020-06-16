@@ -25,7 +25,9 @@ namespace oat\taoLti\scripts\update;
 use common_Exception;
 use common_ext_ExtensionsManager;
 use oat\tao\model\mvc\error\ExceptionInterpreterService;
+use oat\tao\model\oauth\lockout\NoLockout;
 use oat\tao\model\oauth\nonce\NoNonce;
+use oat\tao\model\oauth\OauthService;
 use oat\tao\scripts\update\OntologyUpdater;
 use oat\taoLti\models\classes\ConsumerService;
 use oat\taoLti\models\classes\CookieVerifyService;
@@ -279,5 +281,13 @@ class Updater extends \common_ext_ExtensionUpdater
         }
 
         $this->skip('11.6.0', '11.8.0');
+
+        if ($this->isVersion('11.8.0')) {
+            $lisOauthService = $this->getServiceManager()->get(LisOauthService::SERVICE_ID);
+            $lisOauthService->setOption(OauthService::OPTION_LOCKOUT_SERVICE, new NoLockout());
+            $this->getServiceManager()->register(LisOauthService::SERVICE_ID, $lisOauthService);
+
+            $this->setVersion('11.8.1');
+        }
     }
 }
