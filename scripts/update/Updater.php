@@ -284,8 +284,11 @@ class Updater extends \common_ext_ExtensionUpdater
 
         if ($this->isVersion('11.8.0')) {
             $lisOauthService = $this->getServiceManager()->get(LisOauthService::SERVICE_ID);
-            $lisOauthService->setOption(OauthService::OPTION_LOCKOUT_SERVICE, new NoLockout());
-            $this->getServiceManager()->register(LisOauthService::SERVICE_ID, $lisOauthService);
+
+            if (!$lisOauthService->hasOption(OauthService::OPTION_LOCKOUT_SERVICE)) {
+                $lisOauthService->setOption(OauthService::OPTION_LOCKOUT_SERVICE, new NoLockout());
+                $this->getServiceManager()->register(LisOauthService::SERVICE_ID, $lisOauthService);
+            }
 
             $this->setVersion('11.8.1');
         }
