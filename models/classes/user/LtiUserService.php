@@ -29,6 +29,7 @@ use oat\oatbox\event\EventManager;
 use oat\oatbox\service\ConfigurableService;
 use oat\taoLti\models\classes\LtiLaunchData;
 use oat\oatbox\mutex\LockTrait;
+use oat\taoLti\models\classes\user\events\dispatcher\LtiUserEventDispatcher;
 use oat\taoLti\models\classes\user\events\LtiUserCreatedEvent;
 use oat\taoLti\models\classes\user\events\LtiUserUpdatedEvent;
 
@@ -72,6 +73,8 @@ abstract class LtiUserService extends ConfigurableService
             $taoUser = $this->findUser($launchData);
             if ($taoUser === null) {
                 $taoUser = $this->spawnUser($launchData);
+
+                $this->getLtiUserEventDispatcher()->dispatch($taoUser);
             }
         } finally {
             $lock->release();
@@ -240,5 +243,10 @@ abstract class LtiUserService extends ConfigurableService
     protected function userCreatedEvent($userId)
     {
         $this->getEventManager()->trigger(new LtiUserCreatedEvent($userId));
+    }
+
+    private function getLtiUserEventDispatcher(): LtiUserEventDispatcher
+    {
+        return $this->getServiceLocator()->get(LtiUserEventDispatcher::class);
     }
 }
