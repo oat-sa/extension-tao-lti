@@ -290,7 +290,7 @@ class Updater extends \common_ext_ExtensionUpdater
                 $this->getServiceManager()->register(LisOauthService::SERVICE_ID, $lisOauthService);
             }
 
-            $this->setVersion('11.8.1');
+            $this->setVersion('11.8.2');
         }
 
         $this->skip('11.8.1', '11.9.0');
