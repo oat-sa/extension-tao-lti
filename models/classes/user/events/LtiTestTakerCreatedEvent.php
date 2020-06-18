@@ -18,6 +18,8 @@
  * Copyright (c) 2020 (original work) Open Assessment Technologies SA;
  */
 
+declare(strict_types=1);
+
 namespace oat\taoLti\models\classes\user\events;
 
 use oat\tao\model\webhooks\WebhookSerializableEventInterface;
