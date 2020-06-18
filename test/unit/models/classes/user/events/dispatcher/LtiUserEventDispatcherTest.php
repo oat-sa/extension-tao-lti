@@ -50,7 +50,7 @@ class LtiUserEventDispatcherTest extends TestCase
         );
     }
 
-    public function testDispatchIfUserIsLearner()
+    public function testDispatchIfUserIsLearner(): void
     {
         $this->eventManager
             ->expects($this->once())
@@ -67,7 +67,7 @@ class LtiUserEventDispatcherTest extends TestCase
         );
     }
 
-    public function testDoNotDispatchIfUserIsNotLearner()
+    public function testDoNotDispatchIfUserIsNotLearner(): void
     {
         $this->eventManager
             ->expects($this->never())
