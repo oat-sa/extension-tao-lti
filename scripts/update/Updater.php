@@ -15,10 +15,10 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2014 (original work) Open Assessment Technologies SA;
- *
- *
+ * Copyright (c) 2014-2020 (original work) Open Assessment Technologies SA;
  */
+
+declare(strict_types=1);
 
 namespace oat\taoLti\scripts\update;
 
@@ -293,6 +293,6 @@ class Updater extends \common_ext_ExtensionUpdater
             $this->setVersion('11.8.1');
         }
 
-        $this->skip('11.8.1', '11.8.3');
+        $this->skip('11.8.1', '11.9.0');
     }
 }
