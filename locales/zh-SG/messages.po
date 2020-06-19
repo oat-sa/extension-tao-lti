@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 3.4.0-sprint126\n"
-"PO-Revision-Date: 2020-04-10T11:29:11\n"
+"Project-Id-Version: TAO 3.3.0-sprint107\n"
+"PO-Revision-Date: 2020-06-19T08:27:35\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: zh-SG\n"
@@ -96,8 +96,17 @@ msgstr ""
 msgid "Please consider that generating a new key will replace the previously generated one."
 msgstr ""
 
+msgid "Please give the key value persistence id"
+msgstr ""
+
 #, tao-public
 msgid "Properties"
+msgstr ""
+
+msgid "Registered Lti user in Key value"
+msgstr ""
+
+msgid "Registered Lti user in ontology"
 msgstr ""
 
 msgid "Return to %s."
