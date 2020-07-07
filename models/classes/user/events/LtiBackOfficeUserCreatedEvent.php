@@ -55,7 +55,7 @@ class LtiBackOfficeUserCreatedEvent implements WebhookSerializableEventInterface
     public function serializeForWebhook()
     {
         return [
-            'testTakerUri' => $this->userUri
+            'userId' => $this->userUri
         ];
     }
 }

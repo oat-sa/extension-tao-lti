@@ -20,13 +20,15 @@
 
 declare(strict_types=1);
 
-namespace oat\taoLti\test\models\classes\user\events\dispatcher;
+namespace oat\taoLti\test\unit\models\classes\user\events\dispatcher;
 
 use oat\generis\test\MockObject;
 use oat\generis\test\TestCase;
 use oat\oatbox\event\EventManager;
 use oat\taoLti\models\classes\LtiRoles;
 use oat\taoLti\models\classes\user\events\dispatcher\LtiUserEventDispatcher;
+use oat\taoLti\models\classes\user\events\LtiBackOfficeUserCreatedEvent;
+use oat\taoLti\models\classes\user\events\LtiTestTakerCreatedEvent;
 use oat\taoLti\models\classes\user\LtiUserInterface;
 
 class LtiUserEventDispatcherTest extends TestCase
@@ -55,7 +57,11 @@ class LtiUserEventDispatcherTest extends TestCase
     {
         $this->eventManager
             ->expects($this->once())
-            ->method('trigger');
+            ->method('trigger')
+            ->with(
+                $this->isInstanceOf(LtiTestTakerCreatedEvent::class)
+            )
+        ;
 
         $this->subject->dispatch(
             $this->createLtiUserMock(
@@ -68,17 +74,21 @@ class LtiUserEventDispatcherTest extends TestCase
         );
     }
 
-    public function testDoNotDispatchIfUserIsNotLearner(): void
+    public function testDispatchIfUserIsNotLearner(): void
     {
         $this->eventManager
-            ->expects($this->never())
-            ->method('trigger');
+            ->expects($this->once())
+            ->method('trigger')
+            ->with(
+                $this->isInstanceOf(LtiBackOfficeUserCreatedEvent::class)
+            )
+        ;
 
         $this->subject->dispatch(
             $this->createLtiUserMock(
                 'test',
                 [
-                    LtiRoles::CONTEXT_ADMINISTRATOR
+                    LtiRoles::CONTEXT_INSTRUCTOR,
                 ]
             )
         );
