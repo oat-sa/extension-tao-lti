@@ -22,20 +22,26 @@ declare(strict_types=1);
 
 namespace oat\taoLti\models\classes\user\events\dispatcher;
 
-use oat\oatbox\event\EventManagerAwareTrait;
+use oat\oatbox\event\EventManager;
 use oat\oatbox\service\ConfigurableService;
 use oat\taoLti\models\classes\LtiRoles;
+use oat\taoLti\models\classes\user\events\LtiBackOfficeUserCreatedEvent;
 use oat\taoLti\models\classes\user\events\LtiTestTakerCreatedEvent;
 use oat\taoLti\models\classes\user\LtiUserInterface;
 
 class LtiUserEventDispatcher extends ConfigurableService
 {
-    use EventManagerAwareTrait;
-
     public function dispatch(LtiUserInterface $ltiUser): void
     {
         if (in_array(LtiRoles::CONTEXT_LEARNER, $ltiUser->getRoles())) {
             $this->getEventManager()->trigger(new LtiTestTakerCreatedEvent($ltiUser->getIdentifier()));
+        } else {
+            $this->getEventManager()->trigger(new LtiBackOfficeUserCreatedEvent($ltiUser->getIdentifier()));
         }
+    }
+
+    private function getEventManager(): EventManager
+    {
+        return $this->getServiceLocator()->get(EventManager::SERVICE_ID);
     }
 }
