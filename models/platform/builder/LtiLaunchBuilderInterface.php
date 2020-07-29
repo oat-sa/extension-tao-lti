@@ -29,6 +29,8 @@ interface LtiLaunchBuilderInterface
 
     public function withUser(User $user): self;
 
+    public function withOpenIdConnect(string $loginHint): self;
+
     public function withRoles(array $roles): self;
 
     public function withClaims(array $claims): self;

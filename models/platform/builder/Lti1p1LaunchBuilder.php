@@ -34,6 +34,10 @@ class Lti1p1LaunchBuilder extends ConfigurableService implements LtiLaunchBuilde
     {
     }
 
+    public function withOpenIdConnect(string $loginHint): LtiLaunchBuilderInterface
+    {
+    }
+
     public function withRoles(array $roles): LtiLaunchBuilderInterface
     {
     }

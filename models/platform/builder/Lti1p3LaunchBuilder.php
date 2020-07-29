@@ -20,6 +20,7 @@
 namespace oat\taoLti\models\platform\builder;
 
 use OAT\Library\Lti1p3Core\Launch\Builder\LtiLaunchRequestBuilder;
+use OAT\Library\Lti1p3Core\Launch\Builder\OidcLaunchRequestBuilder;
 use OAT\Library\Lti1p3Core\Link\ResourceLink\ResourceLink;
 use OAT\Library\Lti1p3Core\Platform\Platform;
 use OAT\Library\Lti1p3Core\Registration\Registration;
@@ -43,6 +44,9 @@ class Lti1p3LaunchBuilder extends ConfigurableService implements LtiLaunchBuilde
     /** @var User */
     private $user;
 
+    /** @var bool */
+    private $openIdConnectLoginHint;
+
     /** @var array */
     private $roles;
 
@@ -59,6 +63,13 @@ class Lti1p3LaunchBuilder extends ConfigurableService implements LtiLaunchBuilde
     public function withUser(User $user): LtiLaunchBuilderInterface
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function withOpenIdConnect(string $loginHint): LtiLaunchBuilderInterface
+    {
+        $this->openIdConnectLoginHint = $loginHint;
 
         return $this;
     }
@@ -113,10 +124,22 @@ class Lti1p3LaunchBuilder extends ConfigurableService implements LtiLaunchBuilde
         }
 
         if (!$this->user) {
-            $builder = new LtiLaunchRequestBuilder();
             $ltiLaunchRequest = $builder->buildResourceLinkLtiLaunchRequest(
                 new ResourceLink('identifier'),
                 $registration,
+                null,
+                $this->roles,
+                $this->claims
+            );
+        }
+
+        if ($this->openIdConnectLoginHint) {
+            $builder = new OidcLaunchRequestBuilder();
+
+            $ltiLaunchRequest = $builder->buildResourceLinkOidcLaunchRequest(
+                new ResourceLink('identifier'),
+                $registration,
+                $this->openIdConnectLoginHint,
                 null,
                 $this->roles,
                 $this->claims
