@@ -96,7 +96,7 @@ class Lti1p3LaunchBuilder extends ConfigurableService implements LtiLaunchBuilde
             $deploymentIds,
             $platformKeyChain,
             $toolKeyChain,
-            'https://test-tao-deploy.docker.localhost/taoLti/LtiPlatform/jwks'
+            $this->getAudience() . '/taoLti/LtiPlatform/jwks'
         );
 
         $builder = new LtiLaunchRequestBuilder();
