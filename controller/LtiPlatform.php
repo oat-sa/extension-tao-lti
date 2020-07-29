@@ -32,11 +32,17 @@ use OAT\Library\Lti1p3Core\Security\Jwks\Exporter\JwksExporter;
 use OAT\Library\Lti1p3Core\Security\Key\KeyChainRepository;
 use OAT\Library\Lti1p3Core\Tool\Tool;
 use OAT\Library\Lti1p3Core\User\UserIdentity;
+use oat\oatbox\session\SessionService;
+use oat\oatbox\user\User;
 use oat\tao\model\controller\SignedFormInstance;
 use oat\tao\model\oauth\DataStore;
 use oat\taoLti\models\classes\ConsumerService;
+use oat\taoLti\models\classes\LtiProvider\LtiProvider;
+use oat\taoLti\models\classes\LtiProvider\LtiProviderService;
 use oat\taoLti\models\classes\Security\Business\Contract\SecretKeyServiceInterface;
 use oat\taoLti\models\classes\Security\Business\Domain\Exception\SecretKeyGenerationException;
+use oat\taoLti\models\platform\builder\Lti1p3LaunchBuilder;
+use oat\taoLti\models\platform\builder\LtiLaunchBuilderInterface;
 use oat\taoLti\models\platform\service\LtiPlatformJwkProvider;
 use oat\taoLti\models\platform\service\LtiPlatformJwksProvider;
 use tao_actions_form_CreateInstance as CreateInstanceContainer;
@@ -68,6 +74,7 @@ class LtiPlatform extends tao_actions_SaSModule
 
     public function oidc_auth(): void
     {
+        //@TODO Make open ID work
         $platformkeyChain = $this->getKeyChain();
         $toolKeyChain = $this->getToolKeyChain();
 
@@ -125,78 +132,34 @@ class LtiPlatform extends tao_actions_SaSModule
 
     public function launch(): void
     {
-        /*
-        TOOL: https://lti-ri.imsglobal.org/lti/tools/1149
-        LAUNCH URL: https://lti-ri.imsglobal.org/lti/tools/1149/launches
-        */
+        /** @var LtiLaunchBuilderInterface $builder */
+        $builder = $this->getServiceLocator()->get(Lti1p3LaunchBuilder::class);
 
-        $platformkeyChain = $this->getKeyChain();
-        $toolKeyChain = $this->getToolKeyChain();
+        $providerId = $_GET['provider'] ?? 'https://test-tao-deploy.docker.localhost/ontologies/tao.rdf#i5f1e85088826d7d0e37a39af157828';
 
-        $platform = new Platform(
-            'tao',
-            'tao',
-            'https://test-tao-deploy.docker.localhost'
-        );
+        /** @var LtiProvider $ltiProvider */
+        $ltiProvider = $this->getServiceLocator()->get(LtiProviderService::class)->searchById($providerId);
 
-        //
-        // @TODO Configure the tool to be used
-        //
-        // Using this tools as example: https://lti-ri.imsglobal.org/lti/tools/728
-        //
-        $tool = new Tool(
-            'local_demo',               // [required] identifier
-            'local_demo',                     // [required] name
-            'http://localhost:8888/tool',             // [required] audience
-            'http://localhost:8888/lti1p3/oidc/login-initiation',   // [optional] OIDC login initiation url
-            'http://localhost:8888/tool/launch'      // [optional] LTI default ResourceLink launch url
-        );
+        /** @var User $user */
+        $user = $this->getServiceLocator()
+            ->get(SessionService::SERVICE_ID)
+            ->getCurrentUser();
 
-        $deploymentIds = ['1']; //@TODO Must come from configuration
+        $ltiLaunch = $builder->withProvider($ltiProvider)
+            ->withUser($user)
+            ->withClaims(
+                [
+                    new ContextClaim('contextId'),  // LTI claim representing the context
+                    'myCustomClaim' => 'myCustomValue' // custom claim
+                ]
+            )->withRoles(
+                [
+                    'http://purl.imsglobal.org/vocab/lis/v2/membership#Learner'
+                ]
+            )->build();
 
-        $registration = new Registration(
-            'registrationIdentifier',
-            'client_id',
-            $platform,
-            $tool,
-            $deploymentIds,
-            $platformkeyChain,
-            $toolKeyChain,
-            'https://test-tao-deploy.docker.localhost/taoLti/LtiPlatform/jwks'
-        );
-
-        $user = new UserIdentity('gabriel', 'gabriel', 'gabriel@gabriel.com');
-
-        $builder = new LtiLaunchRequestBuilder();
-
-        $ltiLaunchRequest = $builder->buildUserResourceLinkLtiLaunchRequest(
-            new ResourceLink('identifier'),
-            $registration, // $this->repository->find('local'),
-            $user,
-            null,
-            [
-                'http://purl.imsglobal.org/vocab/lis/v2/membership#Learner' // role
-            ],
-            [
-                new ContextClaim('contextId'),  // LTI claim representing the context
-                'myCustomClaim' => 'myCustomValue' // custom claim
-            ]
-        );
-
-//        $ltiLaunchRequest = $builder->buildResourceLinkLtiLaunchRequest(
-//            new ResourceLink('identifier'),
-//            $registration, // $this->repository->find('local'),
-//            null,
-//            [
-//                'http://purl.imsglobal.org/vocab/lis/v2/membership#Learner' // role
-//            ],
-//            [
-//                new ContextClaim('contextId'),  // LTI claim representing the context
-//                'myCustomClaim' => 'myCustomValue' // custom claim
-//            ]
-//        );
-
-        $this->getPsrResponse()->getBody()->write($ltiLaunchRequest->toHtmlLink('Click me!!', ['target' => '_blank']));
+        //@TODO Add attributes to the link
+        echo '<a href="' . $ltiLaunch->getToolLaunchUrl() . '" target="_blank">Click me</a>';
     }
 
     public function oauth(): void

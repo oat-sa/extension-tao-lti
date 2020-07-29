@@ -19,6 +19,7 @@
  * Copyright (c) 2013-2020 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
  */
 
+use oat\tao\model\accessControl\func\AccessRule;
 use oat\tao\model\user\TaoRoles;
 use oat\taoLti\controller\CookieUtils;
 use oat\taoLti\scripts\install\InstallServices;
@@ -65,7 +66,21 @@ return [
     'acl' => [
         ['grant', 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiManagerRole', ['ext' => 'taoLti']],
         ['grant', TaoRoles::ANONYMOUS, CookieUtils::class],
-        ['grant', 'http://www.tao.lu/Ontologies/TAO.rdf#BaseUserRole', ['ext' => 'taoLti','mod' => 'LtiConsumer', 'act' => 'call']]
+        ['grant', 'http://www.tao.lu/Ontologies/TAO.rdf#BaseUserRole', ['ext' => 'taoLti','mod' => 'LtiConsumer', 'act' => 'call']],
+        [
+            AccessRule::GRANT,
+            TaoRoles::ANONYMOUS,
+            [
+                'ext' => 'taoLti', 'mod' => 'LtiPlatform', 'act' => 'jwks'
+            ]
+        ],
+        [
+            AccessRule::GRANT,
+            TaoRoles::ANONYMOUS,
+            [
+                'ext' => 'taoLti', 'mod' => 'LtiPlatform', 'act' => 'launch'
+            ]
+        ],
     ],
     'constants' => [
         # controller directory
