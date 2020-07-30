@@ -105,7 +105,7 @@ class LtiProvider implements JsonSerializable
 
     public function getLtiVersion(): string
     {
-        return '1.1'; //@TODO Will retrieve this info from DB
+        return '1.3'; //@TODO Will retrieve this info from DB
     }
 
     /**

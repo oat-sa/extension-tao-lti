@@ -81,8 +81,15 @@ class LtiPlatform extends Controller implements ServiceLocatorAwareInterface
 
     public function oidcAuth(): void
     {
-        //@TODO Make open ID work
-        $platformkeyChain = $this->getKeyChain();
+        /*
+         * //@TODO Make open ID work
+         *
+         * Tutorial: https://github.com/oat-sa/lib-lti1p3-core/blob/master/doc/message/oidc-resource-link-launch.md#platform-side-oidc-authentication
+         * Repository implementation example: https://github.com/oat-sa/lib-lti1p3-core/blob/master/tests/Traits/DomainTestingTrait.php#L158
+         * User authenticator example: https://github.com/oat-sa/lib-lti1p3-core/blob/master/tests/Traits/SecurityTestingTrait.php#L66
+         */
+
+        $platformkeyChain = $this->getPlatformKeyChain();
         $toolKeyChain = $this->getToolKeyChain();
 
         $platform = new Platform(
@@ -173,7 +180,7 @@ class LtiPlatform extends Controller implements ServiceLocatorAwareInterface
     {
     }
 
-    private function getKeyChain(): KeyChain
+    private function getPlatformKeyChain(): KeyChain
     {
         /** @var LtiPlatformJwkProvider $provider */
         $provider = $this->getServiceLocator()
