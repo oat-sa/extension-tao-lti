@@ -25,6 +25,12 @@ use oat\taoLti\models\classes\LtiProvider\LtiProvider;
 
 interface LtiLaunchBuilderInterface
 {
+    /*
+     * @TODO The launch URL must come from Provider configuration instead.
+     * @TODO Remove this method as soon we have this config there
+     */
+    public function withLaunchUrl(string $launchUrl): self;
+
     public function withProvider(LtiProvider $ltiProvider): self;
 
     public function withUser(User $user): self;

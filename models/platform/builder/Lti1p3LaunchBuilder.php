@@ -31,10 +31,10 @@ use oat\oatbox\service\ConfigurableService;
 use oat\oatbox\user\User;
 use oat\taoLti\models\platform\service\LtiPlatformJwkProvider;
 use oat\taoLti\models\platform\service\LtiPlatformJwksProvider;
+use oat\taoLti\models\tool\launch\LtiLaunch;
 use oat\taoLti\models\tool\launch\LtiLaunchInterface;
 use oat\taoLti\models\classes\LtiProvider\LtiProvider;
 use oat\taoLti\models\tool\service\LtiToolJwkProvider;
-use oat\taoLtiConsumer\model\delivery\container\Lti1p1DeliveryLaunch;
 
 class Lti1p3LaunchBuilder extends ConfigurableService implements LtiLaunchBuilderInterface
 {
@@ -52,6 +52,9 @@ class Lti1p3LaunchBuilder extends ConfigurableService implements LtiLaunchBuilde
 
     /** @var array */
     private $claims;
+
+    /** @var string */
+    private $launchUrl;
 
     public function withProvider(LtiProvider $ltiProvider): LtiLaunchBuilderInterface
     {
@@ -84,6 +87,13 @@ class Lti1p3LaunchBuilder extends ConfigurableService implements LtiLaunchBuilde
     public function withClaims(array $claims): LtiLaunchBuilderInterface
     {
         $this->claims = $claims;
+
+        return $this;
+    }
+
+    public function withLaunchUrl(string $launchUrl): LtiLaunchBuilderInterface
+    {
+        $this->launchUrl = $launchUrl;
 
         return $this;
     }
@@ -146,7 +156,7 @@ class Lti1p3LaunchBuilder extends ConfigurableService implements LtiLaunchBuilde
             );
         }
 
-        return new Lti1p1DeliveryLaunch($ltiLaunchRequest->getUrl(), $ltiLaunchRequest->getParameters());
+        return new LtiLaunch($ltiLaunchRequest->getUrl(), $ltiLaunchRequest->getParameters());
     }
 
     private function getPlatformKeyChain(): KeyChain

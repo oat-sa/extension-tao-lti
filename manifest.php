@@ -67,20 +67,9 @@ return [
         ['grant', 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiManagerRole', ['ext' => 'taoLti']],
         ['grant', TaoRoles::ANONYMOUS, CookieUtils::class],
         ['grant', 'http://www.tao.lu/Ontologies/TAO.rdf#BaseUserRole', ['ext' => 'taoLti','mod' => 'LtiConsumer', 'act' => 'call']],
-        [
-            AccessRule::GRANT,
-            TaoRoles::ANONYMOUS,
-            [
-                'ext' => 'taoLti', 'mod' => 'LtiPlatform', 'act' => 'jwks'
-            ]
-        ],
-        [
-            AccessRule::GRANT,
-            TaoRoles::ANONYMOUS,
-            [
-                'ext' => 'taoLti', 'mod' => 'LtiPlatform', 'act' => 'launch'
-            ]
-        ],
+        [AccessRule::GRANT, TaoRoles::ANONYMOUS, ['ext' => 'taoLti', 'mod' => 'LtiPlatform', 'act' => 'jwks']],
+        [AccessRule::GRANT, TaoRoles::ANONYMOUS, ['ext' => 'taoLti', 'mod' => 'LtiPlatform', 'act' => 'launch']], // @TODO @FIXME Remove after test
+        [AccessRule::GRANT, TaoRoles::ANONYMOUS, ['ext' => 'taoLti', 'mod' => 'LtiPlatform', 'act' => 'oidcAuth']],
     ],
     'constants' => [
         # controller directory

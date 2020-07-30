@@ -35,6 +35,8 @@ use OAT\Library\Lti1p3Core\User\UserIdentity;
 use oat\oatbox\session\SessionService;
 use oat\oatbox\user\User;
 use oat\tao\model\controller\SignedFormInstance;
+use oat\tao\model\http\Controller;
+use oat\tao\model\http\HttpJsonResponseTrait;
 use oat\tao\model\oauth\DataStore;
 use oat\taoLti\models\classes\ConsumerService;
 use oat\taoLti\models\classes\LtiProvider\LtiProvider;
@@ -58,9 +60,14 @@ use OAT\Library\Lti1p3Core\Registration\RegistrationRepositoryInterface;
 use OAT\Library\Lti1p3Core\Security\Oidc\Endpoint\OidcLoginAuthenticator;
 use OAT\Library\Lti1p3Core\Security\User\UserAuthenticatorInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Zend\ServiceManager\ServiceLocatorAwareInterface;
+use Zend\ServiceManager\ServiceLocatorAwareTrait;
 
-class LtiPlatform extends tao_actions_SaSModule
+class LtiPlatform extends Controller implements ServiceLocatorAwareInterface
 {
+    use ServiceLocatorAwareTrait;
+    use HttpJsonResponseTrait;
+
     public function jwks(): void
     {
         /** @var LtiPlatformJwksProvider $provider */
@@ -72,7 +79,7 @@ class LtiPlatform extends tao_actions_SaSModule
             ->write(json_encode($provider->getKeySet()));
     }
 
-    public function oidc_auth(): void
+    public function oidcAuth(): void
     {
         //@TODO Make open ID work
         $platformkeyChain = $this->getKeyChain();
@@ -127,7 +134,6 @@ class LtiPlatform extends tao_actions_SaSModule
 //
 //        // Auto redirection to the tool via the  user's browser
 //        echo $launchRequest->toHtmlRedirectForm();
-
     }
 
     public function launch(): void
@@ -158,8 +164,9 @@ class LtiPlatform extends tao_actions_SaSModule
                 ]
             )->build();
 
-        //@TODO Add attributes to the link
-        echo '<a href="' . $ltiLaunch->getToolLaunchUrl() . '" target="_blank">Click me</a>';
+        $this->getPsrResponse()
+            ->getBody()
+            ->write('<a href="' . $ltiLaunch->getToolLaunchUrlWithParams() . '" target="_blank">Click me</a>');
     }
 
     public function oauth(): void

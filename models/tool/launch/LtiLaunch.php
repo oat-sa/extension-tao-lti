@@ -19,11 +19,35 @@
 
 namespace oat\taoLti\models\tool\launch;
 
-interface LtiLaunchInterface
+class LtiLaunch implements LtiLaunchInterface
 {
-    public function getToolLaunchUrl(): string;
+    /** @var string */
+    private $launchUrl;
 
-    public function getToolLaunchParams(): array;
+    /** @var array */
+    private $launchParams;
 
-    public function getToolLaunchUrlWithParams(): string;
+    public function __construct(
+        string $launchUrl,
+        array $launchParams
+    )
+    {
+        $this->launchUrl = $launchUrl;
+        $this->launchParams = $launchParams;
+    }
+
+    public function getToolLaunchUrl(): string
+    {
+        return $this->launchUrl;
+    }
+
+    public function getToolLaunchParams(): array
+    {
+        return $this->launchParams;
+    }
+
+    public function getToolLaunchUrlWithParams(): string
+    {
+        return sprintf('%s?%s', $this->launchUrl, http_build_query(array_filter($this->launchParams)));
+    }
 }

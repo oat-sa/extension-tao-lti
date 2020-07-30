@@ -32,16 +32,6 @@
 					<action id="lticonsumer-new" name="Add Consumer" url="/taoLti/ConsumerAdmin/addInstanceForm" context="class" group="tree">
                         <icon id="icon-add"/>
                     </action>
-
-					<!-- FIXME -->
-					<action id="lticonsumer-new" name="" url="/taoLti/LtiPlatform/jwks" context="class" group="tree">
-						<icon id="icon-add"/>
-					</action>
-					<action id="lticonsumer-new" name="" url="/taoLti/LtiPlatform/launch" context="class" group="tree">
-						<icon id="icon-add"/>
-					</action>
-					<action id="lticonsumer-new" name="" url="/taoLti/LtiPlatform/oidc_auth" context="class" group="tree"></action>
-					<!-- FIXME -->
 				</actions>
 			</section>
 			<section id="settings_oauth_mng_provider" name="LTI Providers" url="/taoLti/ProviderAdmin/index">
