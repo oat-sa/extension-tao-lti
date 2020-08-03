@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 3.4.0-sprint112\n"
-"PO-Revision-Date: 2019-10-11T08:34:47\n"
+"Project-Id-Version: TAO 3.4.0-sprint121\n"
+"PO-Revision-Date: 2020-08-03T09:16:57\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: es-ES\n"
@@ -15,10 +15,13 @@ msgstr ""
 
 #, tao-public
 msgid "Add Consumer"
-msgstr "Añadit consumidor"
+msgstr "Añadir consumidor"
 
 #, tao-public
 msgid "Add Provider"
+msgstr ""
+
+msgid "Authorization failed"
 msgstr ""
 
 msgid "Back"
@@ -32,16 +35,16 @@ msgid "Error"
 msgstr "Error"
 
 msgid "Error (%s): "
-msgstr ""
+msgstr "Error (%s): "
 
 msgid "Error(%s): [key %s] %s \"%s"
-msgstr ""
+msgstr "Error(%s): [llave %s] %s \"%s"
 
 msgid "Error: "
-msgstr ""
+msgstr "Error: "
 
 msgid "Error: [key %s] \"%s"
-msgstr ""
+msgstr "Error: [llave %s] \"%s"
 
 #, tao-public
 msgid "Export"
@@ -59,7 +62,7 @@ msgid "Learning Tools Interoperability"
 msgstr "Herramientas de interoperabilidad de Aprendizaje"
 
 msgid "link"
-msgstr "vinculo"
+msgstr "vínculo"
 
 #, tao-public
 msgid "LTI Consumers"

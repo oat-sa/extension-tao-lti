@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 3.4.0-sprint112\n"
-"PO-Revision-Date: 2019-10-11T08:34:47\n"
+"Project-Id-Version: TAO 3.4.0-sprint121\n"
+"PO-Revision-Date: 2020-08-03T09:16:55\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: da-DK\n"
@@ -23,7 +23,7 @@ msgstr "URN"
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#RoleURN
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "LTI Uniform Resource Name(deprecated)"
-msgstr ""
+msgstr "LTI-uniform-ressource-navn (forældet)"
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiBaseRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -33,7 +33,7 @@ msgstr "LTI Base Role"
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiBaseRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "The LTI Base Role"
-msgstr ""
+msgstr "LTI-basis-rollen"
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#RoleURN
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
