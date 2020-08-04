@@ -20,22 +20,56 @@
 
 namespace oat\taoLti\models\classes\Security\DataAccess\Repository;
 
+use OAT\Library\Lti1p3Core\Security\Jwks\Exporter\Jwk\JwkExporterInterface;
+use OAT\Library\Lti1p3Core\Security\Jwks\Exporter\Jwk\JwkRS256Exporter;
+use OAT\Library\Lti1p3Core\Security\Key\KeyChain;
 use oat\oatbox\service\ConfigurableService;
 use oat\tao\model\security\Business\Contract\JwksRepositoryInterface;
+use oat\tao\model\security\Business\Contract\KeyChainRepositoryInterface;
 use oat\tao\model\security\Business\Domain\Key\Jwk;
 use oat\tao\model\security\Business\Domain\Key\Jwks;
+use oat\tao\model\security\Business\Domain\Key\KeyChainQuery;
 
 class PlatformJwksRepository extends ConfigurableService implements JwksRepositoryInterface
 {
     public function find(): Jwks
     {
-        #
-        # @TODO Create keys using third library
-        #
-        return new Jwks(
-            ...[
-                new Jwk('', '', '', '', '', '')
-            ]
-        );
+        $collection = $this->getKeyChainRepository()
+            ->findAll(new KeyChainQuery())
+            ->getKeyChains();
+
+        $jwkList = [];
+
+        foreach ($collection as $key) {
+            $keyChain = new KeyChain(
+                $key->getIdentifier(),
+                $key->getName(),
+                $key->getPublicKey()->getValue()
+            );
+
+            $exported = $this->getJwkRS256Exporter()
+                ->export($keyChain);
+
+            $jwkList[] = new Jwk(
+                $exported['kty'],
+                $exported['e'],
+                $exported['n'],
+                $exported['kid'],
+                $exported['alg'],
+                $exported['use']
+            );
+        }
+
+        return new Jwks(...$jwkList);
+    }
+
+    private function getJwkRS256Exporter(): JwkExporterInterface
+    {
+        return new JwkRS256Exporter();
+    }
+
+    private function getKeyChainRepository(): KeyChainRepositoryInterface
+    {
+        return $this->getServiceLocator()->get(PlatformKeyChainRepository::class);
     }
 }

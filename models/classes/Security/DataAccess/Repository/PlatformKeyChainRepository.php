@@ -18,7 +18,7 @@
  * Copyright (c) 2020 (original work) Open Assessment Technologies SA;
  */
 
-namespace oat\taoLti\models\classes\Security\Business\Service;
+namespace oat\taoLti\models\classes\Security\DataAccess\Repository;
 
 use oat\oatbox\service\ConfigurableService;
 use oat\tao\model\security\Business\Contract\KeyChainRepositoryInterface;
