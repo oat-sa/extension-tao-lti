@@ -21,6 +21,7 @@
 namespace oat\taoLti\test\unit\models\classes\Security\DataAccess\Repository;
 
 use oat\generis\test\TestCase;
+use oat\tao\model\security\Business\Domain\Key\Key;
 use oat\tao\model\security\Business\Domain\Key\KeyChain;
 use oat\tao\model\security\Business\Domain\Key\KeyChainCollection;
 use oat\tao\model\security\Business\Domain\Key\KeyChainQuery;
@@ -45,6 +46,10 @@ class PlatformKeyChainRepositoryTest extends TestCase
     public function testSave(): void
     {
         //@TODO Improve test after refactor
-        $this->assertNull($this->subject->save(new KeyChain()));
+        $this->assertNull(
+            $this->subject->save(
+                new KeyChain('', '', new Key(''), new Key(''))
+            )
+        );
     }
 }
