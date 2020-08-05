@@ -348,6 +348,25 @@
                     }
                 }
             }
+        },
+        "/taoLti/Security/jwks": {
+            "get": {
+                "description": "Display the public JWKS used on LTI 1.3 communication",
+                "tags": [
+                    "security"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Display JWKS.",
+                        "schema": {
+                            "$ref": "#/definitions/jwks"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal error (should not occur)"
+                    }
+                }
+            }
         }
     },
     "externalDocs": {
@@ -429,6 +448,40 @@
                     "items": {
                         "type": "string"
                     }
+                }
+            }
+        },
+        "jwks": {
+            "type": "object",
+            "properties": {
+                "keys": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/definitions/jwk"
+                    }
+                }
+            }
+        },
+        "jwk": {
+            "type": "object",
+            "properties": {
+                "kty": {
+                    "type": "string"
+                },
+                "e": {
+                    "type": "string"
+                },
+                "n": {
+                    "type": "string"
+                },
+                "kid": {
+                    "type": "string"
+                },
+                "alg": {
+                    "type": "string"
+                },
+                "use": {
+                    "type": "string"
                 }
             }
         }
