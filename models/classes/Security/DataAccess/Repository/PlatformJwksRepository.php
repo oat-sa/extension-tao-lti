@@ -32,6 +32,9 @@ use oat\tao\model\security\Business\Domain\Key\KeyChainQuery;
 
 class PlatformJwksRepository extends ConfigurableService implements JwksRepositoryInterface
 {
+    /** @var JwkExporterInterface */
+    private $jwksExporter;
+
     public function find(): Jwks
     {
         $collection = $this->getKeyChainRepository()
@@ -39,6 +42,7 @@ class PlatformJwksRepository extends ConfigurableService implements JwksReposito
             ->getKeyChains();
 
         $jwkList = [];
+        $exporter = $this->getJwksExporter();
 
         foreach ($collection as $key) {
             $keyChain = new KeyChain(
@@ -47,8 +51,7 @@ class PlatformJwksRepository extends ConfigurableService implements JwksReposito
                 $key->getPublicKey()->getValue()
             );
 
-            $exported = $this->getJwkRS256Exporter()
-                ->export($keyChain);
+            $exported = $exporter->export($keyChain);
 
             $jwkList[] = new Jwk(
                 $exported['kty'],
@@ -63,9 +66,16 @@ class PlatformJwksRepository extends ConfigurableService implements JwksReposito
         return new Jwks(...$jwkList);
     }
 
-    private function getJwkRS256Exporter(): JwkExporterInterface
+    public function withJwksExporter(JwkExporterInterface $jwksExporter): self
     {
-        return new JwkRS256Exporter();
+        $this->jwksExporter = $jwksExporter;
+
+        return $this;
+    }
+
+    private function getJwksExporter(): JwkExporterInterface
+    {
+        return $this->jwksExporter ?? new JwkRS256Exporter();
     }
 
     private function getKeyChainRepository(): KeyChainRepositoryInterface
