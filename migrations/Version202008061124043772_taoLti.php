@@ -11,9 +11,6 @@ use oat\oatbox\service\exception\InvalidServiceManagerException;
 use oat\tao\scripts\tools\migrations\AbstractMigration;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\PlatformKeyChainRepository;
 
-/**
- * Auto-generated Migration: Please modify to your needs!
- */
 final class Version202008061124043772_taoLti extends AbstractMigration
 {
     public function getDescription(): string
