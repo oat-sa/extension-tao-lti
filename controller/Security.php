@@ -20,10 +20,13 @@
 namespace oat\taoLti\controller;
 
 use oat\tao\model\http\Controller;
+use oat\tao\model\security\Business\Contract\JwksRepositoryInterface;
+use oat\taoLti\models\classes\Security\DataAccess\Repository\PlatformJwksRepository;
+use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorAwareTrait;
 use function GuzzleHttp\Psr7\stream_for;
 
-class Security extends Controller
+class Security extends Controller implements ServiceLocatorAwareInterface
 {
     use ServiceLocatorAwareTrait;
 
@@ -31,27 +34,13 @@ class Security extends Controller
     {
         $response = $this->getPsrResponse()
             ->withHeader('ContentType', 'application/json')
-            ->withBody(
-                #
-                # @TODO This data must come from a normalization from a Domain KeySet object
-                #
-                stream_for(
-                '{
-                          "keys": [
-                            {
-                              "kty": "RSA",
-                              "e": "AQAB",
-                              "n": "4PKmGnI1-voe4M8hgEn9oFdMZkDZwJuZuVUy6oPM4EhvmYhnFbYsUgUHsVjxJTxNPMLdMYZ4cNqVgJHCxxRvSppIDMwn7qvhouqSRjNGHMGe1xxaeb9DFWwyRc3v4m-RFXEWdDmaxjVENMBkLDLSGphVl7Bwl7q628juJ1SMansIoSKx9VtYIAvqfslMjmjBKrqFnIq4V1F3DLgTJhXXmvu-jYuaHMV04K7u_w3n7aiBi_W0iiHsnvKpAyUqNIK4lKNrmyHevLPR8BaKyNGb7N2GmxFY9647Jd7bNH_TpUvuwwH3KaZw9D_dL5-h0k_6NN9cuZyNE9ErJNiAT7KLjQ",
-                              "kid": "I-need-to-be-unique",
-                              "alg": "RS256",
-                              "use": "sig"
-                            }
-                          ]
-                        }
-                '
-            )
-        );
+            ->withBody(stream_for(json_encode($this->getJwksRepository()->find())));
 
         $this->setResponse($response);
+    }
+
+    private function getJwksRepository(): JwksRepositoryInterface
+    {
+        return $this->getServiceLocator()->get(PlatformJwksRepository::class);
     }
 }
