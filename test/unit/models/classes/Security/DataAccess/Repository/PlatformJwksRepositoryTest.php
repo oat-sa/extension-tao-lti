@@ -52,7 +52,7 @@ class PlatformJwksRepositoryTest extends TestCase
         $this->subject->setServiceLocator(
             $this->getServiceLocatorMock(
                 [
-                    PlatformKeyChainRepository::class => $this->keyChainRepository
+                    PlatformKeyChainRepository::SERVICE_ID => $this->keyChainRepository
                 ]
             )
         );

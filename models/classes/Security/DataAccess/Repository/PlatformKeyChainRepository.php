@@ -68,7 +68,7 @@ class PlatformKeyChainRepository extends ConfigurableService implements KeyChain
         $privateKey = $this->getFileSystem()
             ->read($this->getOption(self::OPTION_DEFAULT_PRIVATE_KEY_PATH));
 
-        if (!$publicKey || !$privateKey) {
+        if ($publicKey === false || $privateKey === false) {
             throw new ErrorException('Impossible to read LTI keys');
         }
 
