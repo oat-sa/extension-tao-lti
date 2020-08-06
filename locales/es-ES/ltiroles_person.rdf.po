@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 3.4.0-sprint112\n"
-"PO-Revision-Date: 2019-10-11T08:34:47\n"
+"Project-Id-Version: TAO 3.4.0-sprint121\n"
+"PO-Revision-Date: 2020-08-03T09:16:57\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: es-ES\n"
@@ -13,7 +13,7 @@ msgstr ""
 # http://www.imsglobal.org/imspurl/lis/v1/vocab/person#Learner
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "LTI Learner (Institution)"
-msgstr ""
+msgstr "Aprendiz LTI (Institución)"
 
 # http://www.imsglobal.org/imspurl/lis/v1/vocab/person#Learner
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
@@ -23,7 +23,7 @@ msgstr "El LTI Institución de Rol de Aprendiz"
 # http://www.imsglobal.org/imspurl/lis/v1/vocab/person#Instructor
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "LTI Instructor (Institution)"
-msgstr ""
+msgstr "Instructor LTI (Institución)"
 
 # http://www.imsglobal.org/imspurl/lis/v1/vocab/person#Instructor
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
@@ -33,7 +33,7 @@ msgstr "El LTI Institución de Rol de Instructor"
 # http://www.imsglobal.org/imspurl/lis/v1/vocab/person#Student
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "LTI Student (Institution)"
-msgstr ""
+msgstr "Estudiante LTI (Institución)"
 
 # http://www.imsglobal.org/imspurl/lis/v1/vocab/person#Student
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
@@ -43,7 +43,7 @@ msgstr "El LTI Rol de Estudiante"
 # http://www.imsglobal.org/imspurl/lis/v1/vocab/person#Administrator
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "LTI Administrator (System)"
-msgstr ""
+msgstr "Administrador LTI (Sistema)"
 
 # http://www.imsglobal.org/imspurl/lis/v1/vocab/person#Administrator
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
@@ -73,20 +73,20 @@ msgstr "LTI Administrador"
 # http://www.imsglobal.org/imspurl/lis/v1/vocab/person#Learner
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "LTI Learner"
-msgstr "The LTI Learner Role"
+msgstr "Aprendiz LTI"
 
 # http://www.imsglobal.org/imspurl/lis/v1/vocab/person#Instructor
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "LTI Instructor"
-msgstr "The LTI Instructor Role"
+msgstr "Instructor LTI"
 
 # http://www.imsglobal.org/imspurl/lis/v1/vocab/person#Student
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "LTI Institution Student"
-msgstr "The LTI Student Role"
+msgstr "Estudiante de institución LTI"
 
 # http://www.imsglobal.org/imspurl/lis/v1/vocab/person#Administrator
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "LTI Administrator"
-msgstr "The LTI Administrator Role"
+msgstr "Administrador LTI"
 

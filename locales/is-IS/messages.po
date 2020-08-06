@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 3.4.0-sprint112\n"
-"PO-Revision-Date: 2019-10-11T08:34:47\n"
+"Project-Id-Version: TAO 3.4.0-sprint121\n"
+"PO-Revision-Date: 2020-08-03T09:17:03\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: is-IS\n"
@@ -21,6 +21,9 @@ msgstr "Bæta við Neytanda"
 msgid "Add Provider"
 msgstr ""
 
+msgid "Authorization failed"
+msgstr ""
+
 msgid "Back"
 msgstr "Til baka"
 
@@ -32,13 +35,13 @@ msgid "Error"
 msgstr "Villa"
 
 msgid "Error (%s): "
-msgstr ""
+msgstr "Villa (%s):"
 
 msgid "Error(%s): [key %s] %s \"%s"
 msgstr ""
 
 msgid "Error: "
-msgstr ""
+msgstr "Villa:"
 
 msgid "Error: [key %s] \"%s"
 msgstr ""
