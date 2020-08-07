@@ -19,8 +19,16 @@
 
 namespace oat\taoLti\controller;
 
+use OAT\Library\Lti1p3Core\Launch\Builder\LtiLaunchRequestBuilder;
+use OAT\Library\Lti1p3Core\Launch\Builder\OidcLaunchRequestBuilder;
+use OAT\Library\Lti1p3Core\Link\ResourceLink\ResourceLink;
+use OAT\Library\Lti1p3Core\Message\Claim\ContextClaim;
+use OAT\Library\Lti1p3Core\User\UserIdentity;
 use oat\tao\model\http\Controller;
 use oat\tao\model\security\Business\Contract\JwksRepositoryInterface;
+use oat\taoLti\models\classes\Platform\Repository\RegistrationRepository;
+use oat\taoLti\models\classes\Platform\Service\OidcLoginAuthenticator;
+use oat\taoLti\models\classes\Platform\Service\OidcLoginAuthenticatorInterface;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\PlatformJwksRepository;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorAwareTrait;
@@ -39,8 +47,74 @@ class Security extends Controller implements ServiceLocatorAwareInterface
         $this->setResponse($response);
     }
 
+    #
+    # @TODO Test method, will be removed...
+    #
+    public function launch(): void
+    {
+        /** @var RegistrationRepository $registrationRepository */
+        $registrationRepository = $this->getServiceLocator()->get(RegistrationRepository::class);
+        $registration = $registrationRepository->find('registrationIdentifier');
+
+        # @TODO Provide a real userId here
+        $userIdentity = 'https://test-tao-deploy.docker.localhost/ontologies/tao.rdf#i5ef9f69837ace6f100dc57beb1439e';
+
+        $user = new UserIdentity(
+            $userIdentity,
+            'gabriel',
+            'gabriel@gabriel.com'
+        );
+
+        $ltiLaunchRequest = (new LtiLaunchRequestBuilder())->buildUserResourceLinkLtiLaunchRequest(
+            new ResourceLink('identifier'),
+            $registration, // $this->repository->find('local'),
+            $user,
+            null,
+            [
+                'http://purl.imsglobal.org/vocab/lis/v2/membership#Learner'
+            ],
+            [
+                new ContextClaim('contextId'),
+                'myCustomClaim' => 'myCustomValue'
+            ]
+        );
+
+        $oidcLtiLaunchRequest = (new OidcLaunchRequestBuilder())->buildResourceLinkOidcLaunchRequest(
+            new ResourceLink('identifier'),
+            $registration, // $this->repository->find('local'),
+            $userIdentity,
+            null,
+            [
+                'http://purl.imsglobal.org/vocab/lis/v2/membership#Learner' // role
+            ],
+            [
+                new ContextClaim('contextId'),  // LTI claim representing the context
+                'myCustomClaim' => 'myCustomValue' // custom claim
+            ]
+        );
+
+        $this->getPsrResponse()->getBody()->write(
+            $ltiLaunchRequest->toHtmlLink('Direct Launch', ['target' => '_blank'])
+            . ' or '
+            . $oidcLtiLaunchRequest->toHtmlLink('Oidc Launch', ['target' => '_blank'])
+        );
+    }
+
+    public function oidc(): void
+    {
+        $response = $this->getOidcLoginAuthenticator()
+            ->authenticate($this->getPsrRequest(), $this->getPsrResponse());
+
+        $this->setResponse($response);
+    }
+
     private function getJwksRepository(): JwksRepositoryInterface
     {
         return $this->getServiceLocator()->get(PlatformJwksRepository::class);
+    }
+
+    private function getOidcLoginAuthenticator(): OidcLoginAuthenticatorInterface
+    {
+        return $this->getServiceLocator()->get(OidcLoginAuthenticator::class);
     }
 }
