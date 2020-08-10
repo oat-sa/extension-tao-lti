@@ -44,11 +44,28 @@ class Lti1p3RegistrationRepositoryTest extends TestCase
     /** @var KeyChainRepositoryInterface|MockObject */
     private $platformKeyChainRepository;
 
+    /** @var KeyChain */
+    private $platformKeyChain;
+
+    /** @var KeyChain */
+    private $toolKeyChain;
+
     public function setUp(): void
     {
+        $this->platformKeyChain = new KeyChain(
+            'id_platform',
+            'name_platform',
+            new Key(''),
+            new Key('')
+        );
+        $this->toolKeyChain = new KeyChain(
+            'id_tool',
+            'name_tool',
+            new Key(''),
+            new Key('')
+        );
         $this->toolKeyChainRepository = $this->createMock(KeyChainRepositoryInterface::class);
         $this->platformKeyChainRepository = $this->createMock(KeyChainRepositoryInterface::class);
-
         $this->subject = new Lti1p3RegistrationRepository();
         $this->subject->setServiceLocator(
             $this->getServiceLocatorMock(
@@ -62,28 +79,62 @@ class Lti1p3RegistrationRepositoryTest extends TestCase
 
     public function testFindWillReturnRegistrationForTool(): void
     {
-        $this->expectToolAndPlatformKeys();
+        $this->expectToolAndPlatformKeys([$this->toolKeyChain], [$this->platformKeyChain]);
 
         $registration = $this->subject->find('registrationId');
 
         $this->assertInstanceOf(Registration::class, $registration);
+
+        $this->assertSame('tao', $registration->getPlatform()->getIdentifier());
+        $this->assertSame('tao', $registration->getPlatform()->getName());
+        $this->assertSame(rtrim(ROOT_URL, '/'), $registration->getPlatform()->getAudience());
+        $this->assertSame(ROOT_URL . 'taoLti/Security/oidc', $registration->getPlatform()->getOidcAuthenticationUrl());
+
+        $this->assertSame($this->platformKeyChain->getIdentifier(), $registration->getPlatformKeyChain()->getIdentifier());
+        $this->assertSame($this->platformKeyChain->getName(), $registration->getPlatformKeyChain()->getKeySetName());
+        $this->assertSame($this->platformKeyChain->getPublicKey()->getValue(), $registration->getPlatformKeyChain()->getPublicKey()->getContent());
+        $this->assertSame($this->platformKeyChain->getPrivateKey()->getValue(), $registration->getPlatformKeyChain()->getPrivateKey()->getContent());
+
+        $this->assertSame($this->toolKeyChain->getIdentifier(), $registration->getToolKeyChain()->getIdentifier());
+        $this->assertSame($this->toolKeyChain->getName(), $registration->getToolKeyChain()->getKeySetName());
+        $this->assertSame($this->toolKeyChain->getPublicKey()->getValue(), $registration->getToolKeyChain()->getPublicKey()->getContent());
+        $this->assertSame($this->toolKeyChain->getPrivateKey()->getValue(), $registration->getToolKeyChain()->getPrivateKey()->getContent());
+
+        #
+        # @TODO Assert as soon as we have these values coming from provider
+        #
+        $this->assertSame('client_id', $registration->getClientId());
+        $this->assertSame('registrationIdentifier', $registration->getIdentifier());
+        $this->assertSame(['1'], $registration->getDeploymentIds());
+        $this->assertSame('1', $registration->getDefaultDeploymentId());
+        $this->assertSame('http://test-tao-deploy-nginx/taoLti/Security/jwks', $registration->getPlatformJwksUrl());
+        $this->assertSame(null, $registration->getToolJwksUrl());
+
+        #
+        # @TODO Assert as soon as we have these values coming from provider
+        #
+        $this->assertSame('local_demo', $registration->getTool()->getIdentifier());
+        $this->assertSame('local_demo', $registration->getTool()->getName());
+        $this->assertSame('http://localhost:8888/tool', $registration->getTool()->getAudience());
+        $this->assertSame('http://localhost:8888/tool/launch', $registration->getTool()->getLaunchUrl());
+        $this->assertSame('http://localhost:8888/lti1p3/oidc/login-initiation', $registration->getTool()->getOidcLoginInitiationUrl());
     }
 
-    private function expectToolAndPlatformKeys(): void
+    public function testFindWillReturnNullIfNoKeysFound(): void
     {
-        $key = new KeyChain(
-            'id',
-            'name',
-            new Key(''),
-            new Key('')
-        );
+        $this->expectToolAndPlatformKeys([], []);
 
+        $this->assertNull($this->subject->find('registrationId'));
+    }
+
+    private function expectToolAndPlatformKeys(array $toolKeyChains, array $platformKeyChains): void
+    {
         $this->toolKeyChainRepository
             ->method('findAll')
-            ->willReturn(new KeyChainCollection(...[$key]));
+            ->willReturn(new KeyChainCollection(...$toolKeyChains));
 
         $this->platformKeyChainRepository
             ->method('findAll')
-            ->willReturn(new KeyChainCollection(...[$key]));
+            ->willReturn(new KeyChainCollection(...$platformKeyChains));
     }
 }
