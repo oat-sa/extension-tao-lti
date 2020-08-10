@@ -2,7 +2,7 @@
 
 namespace oat\taoLti\models\classes\Platform\Service\Oidc;
 
-use OAT\Library\Lti1p3Core\Security\Oidc\Endpoint\OidcLoginAuthenticator as ExternalOidcLoginAuthenticator;
+use OAT\Library\Lti1p3Core\Security\Oidc\Endpoint\OidcLoginAuthenticator;
 use oat\oatbox\service\ConfigurableService;
 use oat\taoLti\models\classes\Platform\Repository\Lti1p3RegistrationRepository;
 use Psr\Http\Message\ResponseInterface;
@@ -10,10 +10,10 @@ use Psr\Http\Message\ServerRequestInterface;
 
 class Lti1p3OidcLoginAuthenticator extends ConfigurableService implements OidcLoginAuthenticatorInterface
 {
-    /** @var ExternalOidcLoginAuthenticator */
+    /** @var OidcLoginAuthenticator */
     private $loginAuthenticator;
 
-    public function withLoginAuthenticator(ExternalOidcLoginAuthenticator $loginAuthenticator)
+    public function withLoginAuthenticator(OidcLoginAuthenticator $loginAuthenticator)
     {
         $this->loginAuthenticator = $loginAuthenticator;
     }
@@ -29,10 +29,10 @@ class Lti1p3OidcLoginAuthenticator extends ConfigurableService implements OidcLo
         return $response;
     }
 
-    private function getExternalOidcLoginAuthenticator(): ExternalOidcLoginAuthenticator
+    private function getExternalOidcLoginAuthenticator(): OidcLoginAuthenticator
     {
         if (!$this->loginAuthenticator) {
-            $this->loginAuthenticator = new ExternalOidcLoginAuthenticator(
+            $this->loginAuthenticator = new OidcLoginAuthenticator(
                 $this->getRegistrationRepository(),
                 $this->getUserAuthenticator()
             );
