@@ -25,40 +25,42 @@ namespace oat\taoLti\test\unit\models\classes\Platform\Service\Oidc;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\ServerRequest;
 use oat\generis\test\TestCase;
-use OAT\Library\Lti1p3Core\Launch\Request\LtiLaunchRequest;
-use OAT\Library\Lti1p3Core\Security\Oidc\Endpoint\OidcLoginAuthenticator;
 use oat\taoLti\models\classes\Platform\Service\Oidc\Lti1p3OidcLoginAuthenticator;
+use oat\taoLti\models\classes\Platform\Service\Oidc\OidcLoginAuthenticatorProxy;
 use PHPUnit\Framework\MockObject\MockObject;
 
-class Lti1p3OidcLoginAuthenticatorTest extends TestCase
+class OidcLoginAuthenticatorProxyTest extends TestCase
 {
-    /** @var Lti1p3OidcLoginAuthenticator */
+    /** @var OidcLoginAuthenticatorProxy */
     private $subject;
 
-    /** @var OidcLoginAuthenticator|MockObject */
+    /** @var Lti1p3OidcLoginAuthenticator|MockObject */
     private $oidcLoginAuthenticator;
 
     public function setUp(): void
     {
-        $this->oidcLoginAuthenticator = $this->createMock(OidcLoginAuthenticator::class);
-        $this->subject = new Lti1p3OidcLoginAuthenticator();
-        $this->subject->withLoginAuthenticator($this->oidcLoginAuthenticator);
+        $this->oidcLoginAuthenticator = $this->createMock(Lti1p3OidcLoginAuthenticator::class);
+        $this->subject = new OidcLoginAuthenticatorProxy();
+        $this->subject->setServiceLocator(
+            $this->getServiceLocatorMock(
+                [
+                    Lti1p3OidcLoginAuthenticator::class => $this->oidcLoginAuthenticator
+                ]
+            )
+        );
     }
 
-    public function testAuthenticate(): void
+    public function testAuthenticateWillProxyRequest(): void
     {
-        $launch = new LtiLaunchRequest('');
+        $expectedResponse = new Response();
 
         $this->oidcLoginAuthenticator
             ->method('authenticate')
-            ->willReturn($launch);
-
-        $request = new ServerRequest('GET', '');
-        $response = new Response();
+            ->willReturn($expectedResponse);
 
         $this->assertSame(
-            $launch->toHtmlRedirectForm(),
-            (string)$this->subject->authenticate($request, $response)->getBody()
+            $expectedResponse,
+            $this->subject->authenticate(new ServerRequest('GET', ''), new Response())
         );
     }
 }
