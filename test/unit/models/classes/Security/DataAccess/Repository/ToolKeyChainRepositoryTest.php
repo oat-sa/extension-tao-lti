@@ -36,6 +36,20 @@ class ToolKeyChainRepositoryTest extends TestCase
 
     public function setUp(): void
     {
+        #
+        # @TODO Remove after get info from provider
+        #
+        if (!defined('ROOT_PATH')) {
+            define('ROOT_PATH', '');
+        }
+
+        #
+        # @TODO Remove after get info from provider
+        #
+        if (!defined('ROOT_URL')) {
+            define('ROOT_URL', '');
+        }
+
         $this->subject = new ToolKeyChainRepository();
     }
 
