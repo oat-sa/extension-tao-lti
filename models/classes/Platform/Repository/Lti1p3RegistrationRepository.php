@@ -25,11 +25,11 @@ class Lti1p3RegistrationRepository extends ConfigurableService implements Regist
     public function find(string $identifier): ?RegistrationInterface
     {
         $toolKeyChain = $this->getToolKeyChainRepository()
-                ->findAll(new KeyChainQuery($identifier))
+                ->findAll(new KeyChainQuery())
                 ->getKeyChains()[0] ?? null;
 
         $platformKeyChain = $this->getPlatformKeyChainRepository()
-                ->findAll(new KeyChainQuery($identifier))
+                ->findAll(new KeyChainQuery())
                 ->getKeyChains()[0] ?? null;
 
         if ($toolKeyChain === null || $platformKeyChain === null) {
