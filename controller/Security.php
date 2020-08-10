@@ -24,11 +24,12 @@ use OAT\Library\Lti1p3Core\Launch\Builder\OidcLaunchRequestBuilder;
 use OAT\Library\Lti1p3Core\Link\ResourceLink\ResourceLink;
 use OAT\Library\Lti1p3Core\Message\Claim\ContextClaim;
 use OAT\Library\Lti1p3Core\User\UserIdentity;
+use oat\oatbox\user\UserService;
 use oat\tao\model\http\Controller;
 use oat\tao\model\security\Business\Contract\JwksRepositoryInterface;
-use oat\taoLti\models\classes\Platform\Repository\RegistrationRepository;
-use oat\taoLti\models\classes\Platform\Service\OidcLoginAuthenticator;
-use oat\taoLti\models\classes\Platform\Service\OidcLoginAuthenticatorInterface;
+use oat\taoLti\models\classes\Platform\Repository\Lti1p3RegistrationRepository;
+use oat\taoLti\models\classes\Platform\Service\Oidc\Lti1p3OidcLoginAuthenticator;
+use oat\taoLti\models\classes\Platform\Service\Oidc\OidcLoginAuthenticatorInterface;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\PlatformJwksRepository;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorAwareTrait;
@@ -52,8 +53,8 @@ class Security extends Controller implements ServiceLocatorAwareInterface
     #
     public function launch(): void
     {
-        /** @var RegistrationRepository $registrationRepository */
-        $registrationRepository = $this->getServiceLocator()->get(RegistrationRepository::class);
+        /** @var Lti1p3RegistrationRepository $registrationRepository */
+        $registrationRepository = $this->getServiceLocator()->get(Lti1p3RegistrationRepository::class);
         $registration = $registrationRepository->find('registrationIdentifier');
 
         # @TODO Provide a real userId here
@@ -81,15 +82,15 @@ class Security extends Controller implements ServiceLocatorAwareInterface
 
         $oidcLtiLaunchRequest = (new OidcLaunchRequestBuilder())->buildResourceLinkOidcLaunchRequest(
             new ResourceLink('identifier'),
-            $registration, // $this->repository->find('local'),
+            $registration,
             $userIdentity,
             null,
             [
-                'http://purl.imsglobal.org/vocab/lis/v2/membership#Learner' // role
+                'http://purl.imsglobal.org/vocab/lis/v2/membership#Learner'
             ],
             [
-                new ContextClaim('contextId'),  // LTI claim representing the context
-                'myCustomClaim' => 'myCustomValue' // custom claim
+                new ContextClaim('contextId'),
+                'myCustomClaim' => 'myCustomValue'
             ]
         );
 
@@ -115,6 +116,6 @@ class Security extends Controller implements ServiceLocatorAwareInterface
 
     private function getOidcLoginAuthenticator(): OidcLoginAuthenticatorInterface
     {
-        return $this->getServiceLocator()->get(OidcLoginAuthenticator::class);
+        return $this->getServiceLocator()->get(Lti1p3OidcLoginAuthenticator::class);
     }
 }

@@ -41,12 +41,12 @@ class ToolKeyChainRepository extends ConfigurableService implements KeyChainRepo
         /**
          * @TODO This config must come for LTIProvider configuration
          */
-        $publicKey = file_get_contents(ROOT_PATH . 'tool.key');
+        $publicKey = file_get_contents(ROOT_PATH . 'tool.key') ?? '';
 
         $keyChain = new KeyChain(
             '1',
             'myToolKeySetName',
-            new Key($publicKey),
+            new Key($publicKey ? $publicKey : ''),
             new Key('')
         );
 

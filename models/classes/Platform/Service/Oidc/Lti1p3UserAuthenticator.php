@@ -1,6 +1,6 @@
 <?php
 
-namespace oat\taoLti\models\classes\Platform\Service;
+namespace oat\taoLti\models\classes\Platform\Service\Oidc;
 
 use ErrorException;
 use oat\generis\model\GenerisRdf;
@@ -13,7 +13,7 @@ use oat\oatbox\user\User;
 use oat\oatbox\user\UserService;
 use Throwable;
 
-class UserAuthenticator extends ConfigurableService implements UserAuthenticatorInterface
+class Lti1p3UserAuthenticator extends ConfigurableService implements UserAuthenticatorInterface
 {
     private const ANONYMOUS = '';
 

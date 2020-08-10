@@ -2,7 +2,6 @@
 
 namespace oat\taoLti\models\classes\Platform\Repository;
 
-use ErrorException;
 use LogicException;
 use OAT\Library\Lti1p3Core\Platform\Platform;
 use OAT\Library\Lti1p3Core\Registration\Registration;
@@ -11,14 +10,17 @@ use OAT\Library\Lti1p3Core\Registration\RegistrationRepositoryInterface;
 use OAT\Library\Lti1p3Core\Security\Key\KeyChain;
 use OAT\Library\Lti1p3Core\Tool\Tool;
 use oat\oatbox\service\ConfigurableService;
+use oat\tao\model\security\Business\Contract\KeyChainRepositoryInterface;
 use oat\tao\model\security\Business\Domain\Key\KeyChain as TaoKeyChain;
 use oat\tao\model\security\Business\Domain\Key\KeyChainQuery;
+use oat\taoLti\models\classes\LtiProvider\LtiProvider;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\PlatformKeyChainRepository;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\ToolKeyChainRepository;
 
-class RegistrationRepository extends ConfigurableService implements RegistrationRepositoryInterface
+class Lti1p3RegistrationRepository extends ConfigurableService implements RegistrationRepositoryInterface
 {
     private const OIDC_URL = ROOT_URL . 'taoLti/Security/oidc';
+    private const PLATFORM_ID = 'tao';
 
     public function find(string $identifier): ?RegistrationInterface
     {
@@ -31,43 +33,20 @@ class RegistrationRepository extends ConfigurableService implements Registration
                 ->getKeyChains()[0] ?? null;
 
         if ($toolKeyChain === null || $platformKeyChain === null) {
-            throw new ErrorException('Platform or Tool key missing');
+            return null;
         }
 
-        $platform = new Platform(
-            'tao',
-            'tao',
-            rtrim(ROOT_URL, '/'),
-            self::OIDC_URL
-        );
-
         /**
-         * @TODO Must come from proper provider configuration...
-         */
-        $tool = new Tool(
-            'local_demo',
-            'local_demo',
-            'http://localhost:8888/tool',
-            'http://localhost:8888/lti1p3/oidc/login-initiation',
-            'http://localhost:8888/tool/launch'
-        );
-
-        /**
-         * @TODO Must come from proper provider configuration...
-         */
-        $deploymentIds = ['1'];
-
-        /**
-         * @TODO Must come from proper provider configuration...
+         * @TODO Parameters must come from proper provider configuration (future task)
          */
         return new Registration(
             'registrationIdentifier',
             'client_id',
-            $platform,
-            $tool,
-            $deploymentIds,
-            $this->translateKeyChain($platformKeyChain),
-            $this->translateKeyChain($toolKeyChain),
+            $this->getDefaultPlatform(),
+            $this->getTool(),
+            $this->getDeploymentIds(),
+            $this->translateKeyChain($platformKeyChain, false),
+            $this->translateKeyChain($toolKeyChain, true),
             'http://test-tao-deploy-nginx/taoLti/Security/jwks'
         );
     }
@@ -97,23 +76,55 @@ class RegistrationRepository extends ConfigurableService implements Registration
         throw new LogicException('Method ' . $method . ' was not required at needs to be implemented');
     }
 
-    private function getToolKeyChainRepository(): ToolKeyChainRepository
+    private function getToolKeyChainRepository(): KeyChainRepositoryInterface
     {
         return $this->getServiceLocator()->get(ToolKeyChainRepository::class);
     }
 
-    private function getPlatformKeyChainRepository(): PlatformKeyChainRepository
+    private function getPlatformKeyChainRepository(): KeyChainRepositoryInterface
     {
         return $this->getServiceLocator()->get(PlatformKeyChainRepository::SERVICE_ID);
     }
 
-    private function translateKeyChain(TaoKeyChain $keyChain): KeyChain
+    private function translateKeyChain(TaoKeyChain $keyChain, bool $omitPrivateKey): KeyChain
     {
         return new KeyChain(
             $keyChain->getIdentifier(),
             $keyChain->getName(),
             $keyChain->getPublicKey()->getValue(),
-            $keyChain->getPrivateKey()->getValue()
+            $omitPrivateKey ? '' : $keyChain->getPrivateKey()->getValue()
+        );
+    }
+
+    /**
+     * @TODO Parameter must come from proper provider configuration (future task)
+     */
+    private function getDeploymentIds(): array
+    {
+        return ['1'];
+    }
+
+    /**
+     * @TODO Parameter must come from provider configuration (future task)
+     */
+    private function getTool(LtiProvider $ltiProvider = null): Tool
+    {
+        return new Tool(
+            'local_demo',
+            'local_demo',
+            'http://localhost:8888/tool',
+            'http://localhost:8888/lti1p3/oidc/login-initiation',
+            'http://localhost:8888/tool/launch'
+        );
+    }
+
+    private function getDefaultPlatform(): Platform
+    {
+        return new Platform(
+            self::PLATFORM_ID,
+            self::PLATFORM_ID,
+            rtrim(ROOT_URL, '/'),
+            self::OIDC_URL
         );
     }
 }
