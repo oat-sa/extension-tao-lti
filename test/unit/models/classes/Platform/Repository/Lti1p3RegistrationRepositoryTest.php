@@ -107,7 +107,6 @@ class Lti1p3RegistrationRepositoryTest extends TestCase
         $this->assertSame('registrationIdentifier', $registration->getIdentifier());
         $this->assertSame(['1'], $registration->getDeploymentIds());
         $this->assertSame('1', $registration->getDefaultDeploymentId());
-        $this->assertSame('http://test-tao-deploy-nginx/taoLti/Security/jwks', $registration->getPlatformJwksUrl());
         $this->assertSame(null, $registration->getToolJwksUrl());
 
         #

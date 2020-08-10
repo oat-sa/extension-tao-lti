@@ -46,8 +46,7 @@ class Lti1p3RegistrationRepository extends ConfigurableService implements Regist
             $this->getTool(),
             $this->getDeploymentIds(),
             $this->translateKeyChain($platformKeyChain),
-            $this->translateKeyChain($toolKeyChain),
-            'http://test-tao-deploy-nginx/taoLti/Security/jwks'
+            $this->translateKeyChain($toolKeyChain)
         );
     }
 
