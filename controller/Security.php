@@ -24,12 +24,11 @@ use OAT\Library\Lti1p3Core\Launch\Builder\OidcLaunchRequestBuilder;
 use OAT\Library\Lti1p3Core\Link\ResourceLink\ResourceLink;
 use OAT\Library\Lti1p3Core\Message\Claim\ContextClaim;
 use OAT\Library\Lti1p3Core\User\UserIdentity;
-use oat\oatbox\user\UserService;
 use oat\tao\model\http\Controller;
 use oat\tao\model\security\Business\Contract\JwksRepositoryInterface;
 use oat\taoLti\models\classes\Platform\Repository\Lti1p3RegistrationRepository;
-use oat\taoLti\models\classes\Platform\Service\Oidc\Lti1p3OidcLoginAuthenticator;
 use oat\taoLti\models\classes\Platform\Service\Oidc\OidcLoginAuthenticatorInterface;
+use oat\taoLti\models\classes\Platform\Service\Oidc\OidcLoginAuthenticatorProxy;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\PlatformJwksRepository;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorAwareTrait;
@@ -116,6 +115,6 @@ class Security extends Controller implements ServiceLocatorAwareInterface
 
     private function getOidcLoginAuthenticator(): OidcLoginAuthenticatorInterface
     {
-        return $this->getServiceLocator()->get(Lti1p3OidcLoginAuthenticator::class);
+        return $this->getServiceLocator()->get(OidcLoginAuthenticatorProxy::class);
     }
 }
