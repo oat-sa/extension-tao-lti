@@ -58,7 +58,8 @@ class ToolKeyChainRepositoryTest extends TestCase
         #
         # @TODO Assert as soon as we have these values coming from provider
         #
-        $publicKey = file_get_contents(ROOT_PATH . 'tool.key') ?? '';
+        $keyFile = ROOT_PATH . 'tool.key';
+        $publicKey = file_exists($keyFile) ? file_get_contents($keyFile) : '';
 
         #
         # @TODO Assert as soon as we have these values coming from provider
