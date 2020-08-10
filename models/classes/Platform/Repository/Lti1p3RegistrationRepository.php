@@ -45,8 +45,8 @@ class Lti1p3RegistrationRepository extends ConfigurableService implements Regist
             $this->getDefaultPlatform(),
             $this->getTool(),
             $this->getDeploymentIds(),
-            $this->translateKeyChain($platformKeyChain, false),
-            $this->translateKeyChain($toolKeyChain, true),
+            $this->translateKeyChain($platformKeyChain),
+            $this->translateKeyChain($toolKeyChain),
             'http://test-tao-deploy-nginx/taoLti/Security/jwks'
         );
     }
@@ -86,13 +86,13 @@ class Lti1p3RegistrationRepository extends ConfigurableService implements Regist
         return $this->getServiceLocator()->get(PlatformKeyChainRepository::SERVICE_ID);
     }
 
-    private function translateKeyChain(TaoKeyChain $keyChain, bool $omitPrivateKey): KeyChain
+    private function translateKeyChain(TaoKeyChain $keyChain): KeyChain
     {
         return new KeyChain(
             $keyChain->getIdentifier(),
             $keyChain->getName(),
             $keyChain->getPublicKey()->getValue(),
-            $omitPrivateKey ? '' : $keyChain->getPrivateKey()->getValue()
+            $keyChain->getPrivateKey()->getValue()
         );
     }
 

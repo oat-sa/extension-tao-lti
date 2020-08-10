@@ -55,14 +55,14 @@ class Lti1p3RegistrationRepositoryTest extends TestCase
         $this->platformKeyChain = new KeyChain(
             'id_platform',
             'name_platform',
-            new Key(''),
-            new Key('')
+            new Key('platform_public_key'),
+            new Key('platform_private_key')
         );
         $this->toolKeyChain = new KeyChain(
             'id_tool',
             'name_tool',
-            new Key(''),
-            new Key('')
+            new Key('tool_public_key'),
+            new Key('tool_private_key')
         );
         $this->toolKeyChainRepository = $this->createMock(KeyChainRepositoryInterface::class);
         $this->platformKeyChainRepository = $this->createMock(KeyChainRepositoryInterface::class);
