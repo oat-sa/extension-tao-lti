@@ -41,6 +41,7 @@ class CacheKeyChainRepository extends ConfigurableService implements KeyChainRep
     public function save(KeyChain $keyChain): void
     {
         $this->saveKeys($keyChain);
+        $this->getPlatformKeyChainRepository()->save($keyChain);
     }
 
     public function findAll(KeyChainQuery $query): KeyChainCollection
@@ -80,5 +81,10 @@ class CacheKeyChainRepository extends ConfigurableService implements KeyChainRep
     private function getKeyChainGenerator(): KeyChainGenerator
     {
         return $this->getServiceLocator()->get(KeyChainGenerator::class);
+    }
+
+    private function getPlatformKeyChainRepository(): KeyChainRepositoryInterface
+    {
+        return $this->getServiceLocator()->get(PlatformKeyChainRepository::SERVICE_ID);
     }
 }

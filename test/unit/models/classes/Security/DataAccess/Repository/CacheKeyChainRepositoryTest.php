@@ -37,6 +37,7 @@ use oat\tao\model\security\Business\Domain\Key\KeyChain;
 use oat\tao\model\security\Business\Domain\Key\KeyChainQuery;
 use oat\taoLti\models\classes\Platform\Service\KeyChainGenerator;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\CacheKeyChainRepository;
+use oat\taoLti\models\classes\Security\DataAccess\Repository\PlatformKeyChainRepository;
 
 class CacheKeyChainRepositoryTest extends TestCase
 {
@@ -50,16 +51,21 @@ class CacheKeyChainRepositoryTest extends TestCase
     /** @var KeyChainGenerator|MockObject */
     private $keyChainGeneratorMock;
 
+    /** @var PlatformKeyChainRepository|MockObject */
+    private $platformKeyChainRepositoryMock;
+
     public function setUp(): void
     {
         $this->subject = new CacheKeyChainRepository();
         $this->simpleCacheMock = $this->createMock(SimpleCache::class);
         $this->keyChainGeneratorMock = $this->createMock(KeyChainGenerator::class);
+        $this->platformKeyChainRepositoryMock = $this->createMock(PlatformKeyChainRepository::class);
 
         $this->subject->setServiceLocator($this->getServiceLocatorMock(
             [
                 SimpleCache::SERVICE_ID => $this->simpleCacheMock,
                 KeyChainGenerator::class => $this->keyChainGeneratorMock,
+                PlatformKeyChainRepository::SERVICE_ID => $this->platformKeyChainRepositoryMock
             ]
         ));
     }
@@ -75,6 +81,10 @@ class CacheKeyChainRepositoryTest extends TestCase
                 [CacheKeyChainRepository::PRIVATE_PREFIX . self::IDENTIFIER, $keyChain->getPrivateKey()],
                 [CacheKeyChainRepository::PUBLIC_PREFIX . self::IDENTIFIER, $keyChain->getPublicKey()]
             );
+
+        $this->platformKeyChainRepositoryMock
+            ->expects($this->once())
+            ->method('save');
 
         $this->subject->save($keyChain);
     }
