@@ -33,6 +33,8 @@ interface LtiLaunchCommandInterface
 
     public function getClaims(): array;
 
+    public function getResourceIdentifier(): string;
+
     public function getUser(): ?User;
 
     public function getOpenIdLoginHint(): ?string;

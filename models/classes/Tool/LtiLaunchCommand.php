@@ -43,12 +43,16 @@ class LtiLaunchCommand implements LtiLaunchCommandInterface
     private $claims;
 
     /** @var string */
+    private $resourceIdentifier;
+
+    /** @var string */
     private $launchUrl;
 
     public function __construct(
         LtiProvider $ltiProvider,
         array $roles,
         array $claims,
+        string $resourceIdentifier,
         User $user = null,
         string $openIdLoginHint = null,
         string $launchUrl = null
@@ -57,6 +61,7 @@ class LtiLaunchCommand implements LtiLaunchCommandInterface
         $this->ltiProvider = $ltiProvider;
         $this->roles = $roles;
         $this->claims = $claims;
+        $this->resourceIdentifier = $resourceIdentifier;
         $this->user = $user;
         $this->openIdLoginHint = $openIdLoginHint;
         $this->launchUrl = $launchUrl;
@@ -75,6 +80,11 @@ class LtiLaunchCommand implements LtiLaunchCommandInterface
     public function getClaims(): array
     {
         return $this->claims;
+    }
+
+    public function getResourceIdentifier(): string
+    {
+        return $this->resourceIdentifier;
     }
 
     public function getUser(): ?User

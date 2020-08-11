@@ -46,7 +46,7 @@ class Lti1p3LaunchRequestFactory extends ConfigurableService
             $builder = new LtiLaunchRequestBuilder();
 
             return $builder->buildResourceLinkLtiLaunchRequest(
-                new ResourceLink('identifier'),
+                new ResourceLink($command->getResourceIdentifier()),
                 $registration,
                 $command->getLtiProvider()->getDeploymentId(),
                 $command->getRoles(),
@@ -58,7 +58,7 @@ class Lti1p3LaunchRequestFactory extends ConfigurableService
             $builder = new OidcLaunchRequestBuilder();
 
             return $builder->buildResourceLinkOidcLaunchRequest(
-                new ResourceLink('identifier'),
+                new ResourceLink($command->getResourceIdentifier()),
                 $registration,
                 $command->getOpenIdLoginHint(),
                 $command->getLtiProvider()->getDeploymentId(),
@@ -70,7 +70,7 @@ class Lti1p3LaunchRequestFactory extends ConfigurableService
         $builder = new LtiLaunchRequestBuilder();
 
         return $builder->buildUserResourceLinkLtiLaunchRequest(
-            new ResourceLink('identifier'),
+            new ResourceLink($command->getResourceIdentifier()),
             $registration,
             $this->getUserIdentity($command),
             $command->getLtiProvider()->getDeploymentId(),
