@@ -63,7 +63,6 @@ class CacheKeyChainRepository extends ConfigurableService implements KeyChainRep
         return new KeyChainCollection($keyChain);
     }
 
-
     /**
      * @throws InvalidArgumentException
      */
