@@ -103,6 +103,16 @@ class LtiProvider implements JsonSerializable
         return $this->callbackUrl;
     }
 
+    public function getLtiVersion(): string
+    {
+        return '1.3'; //@TODO Will retrieve this info from DB
+    }
+
+    public function getDeploymentId(): string
+    {
+        return '1'; //@TODO Will retrieve this info from DB
+    }
+
     /**
      * @inheritdoc
      */
