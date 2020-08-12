@@ -22,6 +22,7 @@ declare(strict_types=1);
 
 namespace oat\taoLti\models\classes\Tool\Factory;
 
+use oat\generis\model\GenerisRdf;
 use OAT\Library\Lti1p3Core\Launch\Builder\LtiLaunchRequestBuilder;
 use OAT\Library\Lti1p3Core\Launch\Builder\OidcLaunchRequestBuilder;
 use OAT\Library\Lti1p3Core\Launch\LaunchRequestInterface;
@@ -35,48 +36,70 @@ use oat\taoLti\models\classes\Tool\LtiLaunchCommandInterface;
 
 class Lti1p3LaunchRequestFactory extends ConfigurableService
 {
+    /** @var LtiLaunchRequestBuilder */
+    private $ltiLaunchRequestBuilder;
+
+    /** @var OidcLaunchRequestBuilder */
+    private $oidcLaunchRequestBuilder;
+
+    public function withLtiLaunchRequestBuilder(LtiLaunchRequestBuilder $ltiLaunchRequestBuilder): self
+    {
+        $this->ltiLaunchRequestBuilder = $ltiLaunchRequestBuilder;
+
+        return $this;
+    }
+
+    public function withOidcLaunchRequestBuilder(OidcLaunchRequestBuilder $oidcLaunchRequestBuilder): self
+    {
+        $this->oidcLaunchRequestBuilder = $oidcLaunchRequestBuilder;
+
+        return $this;
+    }
+
     public function create(LtiLaunchCommandInterface $command): LaunchRequestInterface
     {
-        #
-        # @TODO We need to build the identifier as a combination of ids and so on, so we can build proper launch URL
-        #
-        $registration = $this->getRegistrationRepository()->find('TODO - Not mapped in the provider yet');
+        $registration = $this->getRegistrationRepository()
+            ->find($command->getResourceIdentifier());
 
         if ($command->isAnonymousLaunch()) {
-            $builder = new LtiLaunchRequestBuilder();
-
-            return $builder->buildResourceLinkLtiLaunchRequest(
+            return $this->getLtiLaunchRequestBuilder()->buildResourceLinkLtiLaunchRequest(
                 new ResourceLink($command->getResourceIdentifier()),
                 $registration,
-                $command->getLtiProvider()->getDeploymentId(),
+                $registration->getDefaultDeploymentId(),
                 $command->getRoles(),
                 $command->getClaims()
             );
         }
 
         if ($command->isOpenIdConnectLaunch()) {
-            $builder = new OidcLaunchRequestBuilder();
-
-            return $builder->buildResourceLinkOidcLaunchRequest(
+            return $this->getOidcLaunchRequestBuilder()->buildResourceLinkOidcLaunchRequest(
                 new ResourceLink($command->getResourceIdentifier()),
                 $registration,
                 $command->getOpenIdLoginHint(),
-                $command->getLtiProvider()->getDeploymentId(),
+                $registration->getDefaultDeploymentId(),
                 $command->getRoles(),
                 $command->getClaims()
             );
         }
 
-        $builder = new LtiLaunchRequestBuilder();
-
-        return $builder->buildUserResourceLinkLtiLaunchRequest(
+        return $this->getLtiLaunchRequestBuilder()->buildUserResourceLinkLtiLaunchRequest(
             new ResourceLink($command->getResourceIdentifier()),
             $registration,
             $this->getUserIdentity($command),
-            $command->getLtiProvider()->getDeploymentId(),
+            $registration->getDefaultDeploymentId(),
             $command->getRoles(),
             $command->getClaims()
         );
+    }
+
+    private function getLtiLaunchRequestBuilder(): LtiLaunchRequestBuilder
+    {
+        return $this->ltiLaunchRequestBuilder ?? new LtiLaunchRequestBuilder();
+    }
+
+    private function getOidcLaunchRequestBuilder(): OidcLaunchRequestBuilder
+    {
+        return $this->oidcLaunchRequestBuilder ?? new OidcLaunchRequestBuilder();
     }
 
     private function getRegistrationRepository(): RegistrationRepositoryInterface
@@ -86,11 +109,17 @@ class Lti1p3LaunchRequestFactory extends ConfigurableService
 
     private function getUserIdentity(LtiLaunchCommandInterface $command): UserIdentityInterface
     {
-        //@TODO Get proper user identity...
+        $user = $command->getUser();
+
+        $fullName = (string)($user->getPropertyValues(GenerisRdf::PROPERTY_USER_FIRSTNAME)[0] ?? null)
+            . ' ' . (string)($user->getPropertyValues(GenerisRdf::PROPERTY_USER_LASTNAME)[0] ?? null);
+
+        $email = (string)($user->getPropertyValues(GenerisRdf::PROPERTY_USER_MAIL)[0] ?? null);
+
         return new UserIdentity(
-            $command->getUser()->getIdentifier(),
-            'Test',
-            'test@test.com'
+            $user->getIdentifier(),
+            $fullName,
+            $email
         );
     }
 }
