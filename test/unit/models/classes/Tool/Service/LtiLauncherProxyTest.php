@@ -18,7 +18,9 @@
  * Copyright (c) 2020 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
  */
 
-namespace oat\taoLti\test\unit\models\classes\Tool;
+declare(strict_types=1);
+
+namespace oat\taoLti\test\unit\models\classes\Tool\Service;
 
 use LogicException;
 use oat\generis\test\TestCase;
