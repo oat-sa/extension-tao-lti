@@ -50,13 +50,6 @@ class Lti1p1LauncherTest extends TestCase
     {
         $this->launchRequestFactory = $this->createMock(Lti1p3LaunchRequestFactory::class);
         $this->subject = new Lti1p1Launcher();
-        $this->subject->setServiceLocator(
-            $this->getServiceLocatorMock(
-                [
-                    Lti1p1LaunchRequestFactory::class => $this->launchRequestFactory
-                ]
-            )
-        );
     }
 
     public function testLaunch(): void
