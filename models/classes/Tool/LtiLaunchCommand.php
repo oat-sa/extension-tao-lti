@@ -109,6 +109,6 @@ class LtiLaunchCommand implements LtiLaunchCommandInterface
 
     public function isOpenIdConnectLaunch(): bool
     {
-        return $this->openIdLoginHint === null;
+        return $this->openIdLoginHint !== null;
     }
 }
