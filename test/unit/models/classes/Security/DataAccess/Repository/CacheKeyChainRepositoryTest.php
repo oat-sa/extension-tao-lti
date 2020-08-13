@@ -35,6 +35,7 @@ use oat\taoLti\models\classes\Security\DataAccess\Repository\PlatformKeyChainRep
 class CacheKeyChainRepositoryTest extends TestCase
 {
     public const IDENTIFIER = 'id';
+
     /** @var CachedPlatformKeyChainRepository */
     private $subject;
 
@@ -143,6 +144,7 @@ class CacheKeyChainRepositoryTest extends TestCase
         $result = $this->subject->findAll($keyChainQuery);
 
         $keyChainCollection = $result->getKeyChains();
+
         $this->assertSame(self::IDENTIFIER, $keyChainCollection[0]->getIdentifier());
         $this->assertSame('privateKey', $keyChainCollection[0]->getPrivateKey()->getValue());
         $this->assertSame('publicKey', $keyChainCollection[0]->getPublicKey()->getValue());
