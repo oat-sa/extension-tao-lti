@@ -36,13 +36,13 @@ use oat\tao\model\security\Business\Domain\Key\Key;
 use oat\tao\model\security\Business\Domain\Key\KeyChain;
 use oat\tao\model\security\Business\Domain\Key\KeyChainQuery;
 use oat\taoLti\models\classes\Platform\Service\KeyChainGenerator;
-use oat\taoLti\models\classes\Security\DataAccess\Repository\CacheKeyChainRepository;
+use oat\taoLti\models\classes\Security\DataAccess\Repository\CachedPlatformKeyChainRepository;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\PlatformKeyChainRepository;
 
 class CacheKeyChainRepositoryTest extends TestCase
 {
     public const IDENTIFIER = 'id';
-    /** @var CacheKeyChainRepository */
+    /** @var CachedPlatformKeyChainRepository */
     private $subject;
 
     /** @var SimpleCache|MockObject */
@@ -56,7 +56,7 @@ class CacheKeyChainRepositoryTest extends TestCase
 
     public function setUp(): void
     {
-        $this->subject = new CacheKeyChainRepository();
+        $this->subject = new CachedPlatformKeyChainRepository();
         $this->simpleCacheMock = $this->createMock(SimpleCache::class);
         $this->keyChainGeneratorMock = $this->createMock(KeyChainGenerator::class);
         $this->platformKeyChainRepositoryMock = $this->createMock(PlatformKeyChainRepository::class);
@@ -78,8 +78,8 @@ class CacheKeyChainRepositoryTest extends TestCase
             ->expects($this->exactly(2))
             ->method('set')
             ->withConsecutive(
-                [CacheKeyChainRepository::PRIVATE_PREFIX . self::IDENTIFIER, $keyChain->getPrivateKey()],
-                [CacheKeyChainRepository::PUBLIC_PREFIX . self::IDENTIFIER, $keyChain->getPublicKey()]
+                [CachedPlatformKeyChainRepository::PRIVATE_PREFIX . self::IDENTIFIER, $keyChain->getPrivateKey()],
+                [CachedPlatformKeyChainRepository::PUBLIC_PREFIX . self::IDENTIFIER, $keyChain->getPublicKey()]
             );
 
         $this->platformKeyChainRepositoryMock
@@ -98,8 +98,8 @@ class CacheKeyChainRepositoryTest extends TestCase
         $this->simpleCacheMock
             ->method('has')
             ->withConsecutive(
-                [CacheKeyChainRepository::PRIVATE_PREFIX . self::IDENTIFIER],
-                [CacheKeyChainRepository::PUBLIC_PREFIX . self::IDENTIFIER]
+                [CachedPlatformKeyChainRepository::PRIVATE_PREFIX . self::IDENTIFIER],
+                [CachedPlatformKeyChainRepository::PUBLIC_PREFIX . self::IDENTIFIER]
             )
             ->willReturnOnConsecutiveCalls(
                 false,
@@ -115,8 +115,8 @@ class CacheKeyChainRepositoryTest extends TestCase
             ->expects($this->exactly(2))
             ->method('set')
             ->withConsecutive(
-                [CacheKeyChainRepository::PRIVATE_PREFIX . self::IDENTIFIER, $keyChain->getPrivateKey()],
-                [CacheKeyChainRepository::PUBLIC_PREFIX . self::IDENTIFIER, $keyChain->getPublicKey()]
+                [CachedPlatformKeyChainRepository::PRIVATE_PREFIX . self::IDENTIFIER, $keyChain->getPrivateKey()],
+                [CachedPlatformKeyChainRepository::PUBLIC_PREFIX . self::IDENTIFIER, $keyChain->getPublicKey()]
             );
 
 
@@ -124,8 +124,8 @@ class CacheKeyChainRepositoryTest extends TestCase
             ->expects($this->exactly(2))
             ->method('get')
             ->withConsecutive(
-                [CacheKeyChainRepository::PUBLIC_PREFIX . self::IDENTIFIER],
-                [CacheKeyChainRepository::PRIVATE_PREFIX . self::IDENTIFIER]
+                [CachedPlatformKeyChainRepository::PUBLIC_PREFIX . self::IDENTIFIER],
+                [CachedPlatformKeyChainRepository::PRIVATE_PREFIX . self::IDENTIFIER]
             )->willReturnOnConsecutiveCalls(
                 'publicKey',
                 'privateKey'
@@ -141,8 +141,8 @@ class CacheKeyChainRepositoryTest extends TestCase
         $this->simpleCacheMock
             ->method('has')
             ->withConsecutive(
-                [CacheKeyChainRepository::PRIVATE_PREFIX . self::IDENTIFIER],
-                [CacheKeyChainRepository::PUBLIC_PREFIX . self::IDENTIFIER]
+                [CachedPlatformKeyChainRepository::PRIVATE_PREFIX . self::IDENTIFIER],
+                [CachedPlatformKeyChainRepository::PUBLIC_PREFIX . self::IDENTIFIER]
             )
             ->willReturnOnConsecutiveCalls(
                 true,
@@ -153,8 +153,8 @@ class CacheKeyChainRepositoryTest extends TestCase
             ->expects($this->exactly(2))
             ->method('get')
             ->withConsecutive(
-                [CacheKeyChainRepository::PUBLIC_PREFIX . self::IDENTIFIER],
-                [CacheKeyChainRepository::PRIVATE_PREFIX . self::IDENTIFIER]
+                [CachedPlatformKeyChainRepository::PUBLIC_PREFIX . self::IDENTIFIER],
+                [CachedPlatformKeyChainRepository::PRIVATE_PREFIX . self::IDENTIFIER]
             )->willReturnOnConsecutiveCalls(
                 'publicKey',
                 'privateKey'

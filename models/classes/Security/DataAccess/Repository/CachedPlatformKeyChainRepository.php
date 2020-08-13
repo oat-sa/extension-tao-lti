@@ -32,9 +32,9 @@ use oat\tao\model\security\Business\Domain\Key\KeyChainQuery;
 use oat\taoLti\models\classes\Platform\Service\KeyChainGenerator;
 use Psr\SimpleCache\InvalidArgumentException;
 
-class CacheKeyChainRepository extends ConfigurableService implements KeyChainRepositoryInterface
+class CachedPlatformKeyChainRepository extends ConfigurableService implements KeyChainRepositoryInterface
 {
-    public const PRIVATE_PREFIX = 'PLATFORM_LTI_PRIVATE_KEY';
+    public const PRIVATE_PREFIX = 'PLATFORM_LTI_PRIVATE_KEY_';
     public const PUBLIC_PREFIX = 'PLATFORM_LTI_PUBLIC_KEY_';
     private const OPTION_DEFAULT_KEY_NAME = 'defaultKeyName';
 
