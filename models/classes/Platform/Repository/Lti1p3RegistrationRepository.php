@@ -90,7 +90,7 @@ class Lti1p3RegistrationRepository extends ConfigurableService implements Regist
         $this->throwMissingImplementation(__METHOD__);
     }
 
-    private function throwMissingImplementation(string $method)
+    private function throwMissingImplementation(string $method): void
     {
         throw new LogicException('Method ' . $method . ' was not required at needs to be implemented');
     }
