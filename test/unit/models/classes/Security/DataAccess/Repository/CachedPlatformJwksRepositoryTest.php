@@ -120,7 +120,8 @@ class CachedPlatformJwksRepositoryTest extends TestCase
             ->expects($this->once())
             ->method('set')
             ->with(
-                'PLATFORM_JWKS', $this->jwks->jsonSerialize()
+                'PLATFORM_JWKS',
+                $this->jwks->jsonSerialize()
             );
 
         $this->subject->find();
