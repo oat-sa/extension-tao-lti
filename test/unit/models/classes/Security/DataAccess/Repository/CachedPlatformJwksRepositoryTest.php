@@ -40,8 +40,11 @@ class CachedPlatformJwksRepositoryTest extends TestCase
     /** @var PlatformJwksRepository */
     private $platformJwksRepositoryMock;
 
-    /** @var Jwks  */
+    /** @var Jwks */
     private $jwks;
+
+    /** @var Jwk */
+    private $jwk;
 
     public function setUp(): void
     {
@@ -55,7 +58,7 @@ class CachedPlatformJwksRepositoryTest extends TestCase
             ]
         ));
 
-        $jwk = new Jwk(
+        $this->jwk = new Jwk(
             'kty',
             'e',
             'n',
@@ -64,56 +67,52 @@ class CachedPlatformJwksRepositoryTest extends TestCase
             'use'
         );
 
-        $this->jwks = new Jwks($jwk);
-
+        $this->jwks = new Jwks($this->jwk);
     }
 
     public function testCachedFind(): void
     {
-        $this->platformJwksRepositoryMock
-            ->method('find')
-            ->willReturn($this->jwks);
-
+        $jwksArray = [
+            'keys' => [
+                $this->jwk
+            ],
+        ];
         $this->cacheMock
             ->expects($this->once())
             ->method('has')
             ->with('PLATFORM_JWKS')
             ->willReturn(true);
 
+        $this->platformJwksRepositoryMock
+            ->expects($this->never())
+            ->method('find');
 
         $this->cacheMock
-            ->expects($this->once())
-            ->method('delete')
-            ->with('PLATFORM_JWKS');
-
-        $this->cacheMock
-            ->expects($this->once())
+            ->expects($this->never())
             ->method('set')
-            ->with(
-                'PLATFORM_JWKS', $this->jwks->jsonSerialize()
-            );
+            ->with('PLATFORM_JWKS', $this->jwks->jsonSerialize());
+
+        $this->cacheMock
+            ->expects($this->once())
+            ->method('get')
+            ->with('PLATFORM_JWKS')
+            ->willReturn($jwksArray);
 
         $this->subject->find();
     }
 
     public function testNotCachedFind(): void
     {
-
-        $this->platformJwksRepositoryMock
-            ->method('find')
-            ->willReturn($this->jwks);
-
         $this->cacheMock
             ->expects($this->once())
             ->method('has')
             ->with('PLATFORM_JWKS')
             ->willReturn(false);
 
-
-        $this->cacheMock
-            ->expects($this->never())
-            ->method('delete')
-            ->with('PLATFORM_JWKS');
+        $this->platformJwksRepositoryMock
+            ->expects($this->once())
+            ->method('find')
+            ->willReturn($this->jwks);
 
         $this->cacheMock
             ->expects($this->once())

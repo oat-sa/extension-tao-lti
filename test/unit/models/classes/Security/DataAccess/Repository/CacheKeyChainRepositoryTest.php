@@ -34,8 +34,8 @@ use oat\generis\test\TestCase;
 use oat\oatbox\cache\SimpleCache;
 use oat\tao\model\security\Business\Domain\Key\Key;
 use oat\tao\model\security\Business\Domain\Key\KeyChain;
+use oat\tao\model\security\Business\Domain\Key\KeyChainCollection;
 use oat\tao\model\security\Business\Domain\Key\KeyChainQuery;
-use oat\taoLti\models\classes\Platform\Service\KeyChainGenerator;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\CachedPlatformKeyChainRepository;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\PlatformKeyChainRepository;
 
@@ -48,9 +48,6 @@ class CacheKeyChainRepositoryTest extends TestCase
     /** @var SimpleCache|MockObject */
     private $simpleCacheMock;
 
-    /** @var KeyChainGenerator|MockObject */
-    private $keyChainGeneratorMock;
-
     /** @var PlatformKeyChainRepository|MockObject */
     private $platformKeyChainRepositoryMock;
 
@@ -58,14 +55,12 @@ class CacheKeyChainRepositoryTest extends TestCase
     {
         $this->subject = new CachedPlatformKeyChainRepository();
         $this->simpleCacheMock = $this->createMock(SimpleCache::class);
-        $this->keyChainGeneratorMock = $this->createMock(KeyChainGenerator::class);
         $this->platformKeyChainRepositoryMock = $this->createMock(PlatformKeyChainRepository::class);
 
         $this->subject->setServiceLocator($this->getServiceLocatorMock(
             [
                 SimpleCache::SERVICE_ID => $this->simpleCacheMock,
-                KeyChainGenerator::class => $this->keyChainGeneratorMock,
-                PlatformKeyChainRepository::SERVICE_ID => $this->platformKeyChainRepositoryMock
+                PlatformKeyChainRepository::SERVICE_ID => $this->platformKeyChainRepositoryMock,
             ]
         ));
     }
@@ -78,8 +73,8 @@ class CacheKeyChainRepositoryTest extends TestCase
             ->expects($this->exactly(2))
             ->method('set')
             ->withConsecutive(
-                [CachedPlatformKeyChainRepository::PRIVATE_PREFIX . self::IDENTIFIER, $keyChain->getPrivateKey()],
-                [CachedPlatformKeyChainRepository::PUBLIC_PREFIX . self::IDENTIFIER, $keyChain->getPublicKey()]
+                [sprintf(CachedPlatformKeyChainRepository::PRIVATE_PATTERN, self::IDENTIFIER), $keyChain->getPrivateKey()],
+                [sprintf(CachedPlatformKeyChainRepository::PUBLIC_PATTERN, self::IDENTIFIER), $keyChain->getPublicKey()]
             );
 
         $this->platformKeyChainRepositoryMock
@@ -98,38 +93,26 @@ class CacheKeyChainRepositoryTest extends TestCase
         $this->simpleCacheMock
             ->method('has')
             ->withConsecutive(
-                [CachedPlatformKeyChainRepository::PRIVATE_PREFIX . self::IDENTIFIER],
-                [CachedPlatformKeyChainRepository::PUBLIC_PREFIX . self::IDENTIFIER]
+                [sprintf(CachedPlatformKeyChainRepository::PRIVATE_PATTERN, self::IDENTIFIER)],
+                [sprintf(CachedPlatformKeyChainRepository::PUBLIC_PATTERN, self::IDENTIFIER)]
             )
             ->willReturnOnConsecutiveCalls(
                 false,
                 false
             );
 
-        $this->keyChainGeneratorMock
-            ->expects($this->once())
-            ->method('getKeyChain')
-            ->willReturn($this->getKeyChain());
-
         $this->simpleCacheMock
             ->expects($this->exactly(2))
             ->method('set')
             ->withConsecutive(
-                [CachedPlatformKeyChainRepository::PRIVATE_PREFIX . self::IDENTIFIER, $keyChain->getPrivateKey()],
-                [CachedPlatformKeyChainRepository::PUBLIC_PREFIX . self::IDENTIFIER, $keyChain->getPublicKey()]
+                [sprintf(CachedPlatformKeyChainRepository::PRIVATE_PATTERN, self::IDENTIFIER), $keyChain->getPrivateKey()],
+                [sprintf(CachedPlatformKeyChainRepository::PUBLIC_PATTERN, self::IDENTIFIER), $keyChain->getPublicKey()]
             );
 
-
-        $this->simpleCacheMock
-            ->expects($this->exactly(2))
-            ->method('get')
-            ->withConsecutive(
-                [CachedPlatformKeyChainRepository::PUBLIC_PREFIX . self::IDENTIFIER],
-                [CachedPlatformKeyChainRepository::PRIVATE_PREFIX . self::IDENTIFIER]
-            )->willReturnOnConsecutiveCalls(
-                'publicKey',
-                'privateKey'
-            );
+        $this->platformKeyChainRepositoryMock
+            ->expects($this->once())
+            ->method('findAll')
+            ->willReturn(new KeyChainCollection($this->getKeyChain()));
 
         $this->subject->findAll($keyChainQuery);
     }
@@ -141,8 +124,8 @@ class CacheKeyChainRepositoryTest extends TestCase
         $this->simpleCacheMock
             ->method('has')
             ->withConsecutive(
-                [CachedPlatformKeyChainRepository::PRIVATE_PREFIX . self::IDENTIFIER],
-                [CachedPlatformKeyChainRepository::PUBLIC_PREFIX . self::IDENTIFIER]
+                [sprintf(CachedPlatformKeyChainRepository::PRIVATE_PATTERN, self::IDENTIFIER)],
+                [sprintf(CachedPlatformKeyChainRepository::PUBLIC_PATTERN, self::IDENTIFIER)]
             )
             ->willReturnOnConsecutiveCalls(
                 true,
@@ -150,14 +133,18 @@ class CacheKeyChainRepositoryTest extends TestCase
             );
 
         $this->simpleCacheMock
-            ->expects($this->exactly(2))
-            ->method('get')
-            ->withConsecutive(
-                [CachedPlatformKeyChainRepository::PUBLIC_PREFIX . self::IDENTIFIER],
-                [CachedPlatformKeyChainRepository::PRIVATE_PREFIX . self::IDENTIFIER]
-            )->willReturnOnConsecutiveCalls(
-                'publicKey',
-                'privateKey'
+            ->expects($this->once())
+            ->method('getMultiple')
+            ->with(
+                [
+                    sprintf(CachedPlatformKeyChainRepository::PRIVATE_PATTERN, self::IDENTIFIER),
+                    sprintf(CachedPlatformKeyChainRepository::PUBLIC_PATTERN, self::IDENTIFIER),
+                ]
+            )->willReturn(
+                [
+                    'publicKey',
+                    'privateKey',
+                ]
             );
 
         $result = $this->subject->findAll($keyChainQuery);

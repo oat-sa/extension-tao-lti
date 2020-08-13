@@ -32,22 +32,20 @@ class CachedPlatformJwksRepository extends ConfigurableService implements JwksRe
 {
     use MultipleCacheTrait;
 
-    private const JWKS_KEY = 'PLATFORM_JWKS';
+    public const JWKS_KEY = 'PLATFORM_JWKS';
 
     public function find(): Jwks
     {
+        if ($this->getCacheService()->has(self::JWKS_KEY)) {
+            $jwks = $this->getCacheService()->get(self::JWKS_KEY);
+
+            return new Jwks(...$jwks['keys']);
+        }
+
         $jwks = $this->getJwksRepository()->find();
-        $this->invalidateCache($jwks);
+        $this->getCacheService()->set(self::JWKS_KEY, $jwks->jsonSerialize());
 
         return $jwks;
-    }
-
-    private function invalidateCache(Jwks $jwks): void
-    {
-        if ($this->getCacheService()->has(self::JWKS_KEY)) {
-            $this->getCacheService()->delete(self::JWKS_KEY);
-        }
-        $this->getCacheService()->set(self::JWKS_KEY, $jwks->jsonSerialize());
     }
 
     private function getJwksRepository(): JwksRepositoryInterface

@@ -29,13 +29,12 @@ use oat\tao\model\security\Business\Domain\Key\Key;
 use oat\tao\model\security\Business\Domain\Key\KeyChain;
 use oat\tao\model\security\Business\Domain\Key\KeyChainCollection;
 use oat\tao\model\security\Business\Domain\Key\KeyChainQuery;
-use oat\taoLti\models\classes\Platform\Service\KeyChainGenerator;
 use Psr\SimpleCache\InvalidArgumentException;
 
 class CachedPlatformKeyChainRepository extends ConfigurableService implements KeyChainRepositoryInterface
 {
-    public const PRIVATE_PREFIX = 'PLATFORM_LTI_PRIVATE_KEY_';
-    public const PUBLIC_PREFIX = 'PLATFORM_LTI_PUBLIC_KEY_';
+    public const PRIVATE_PATTERN = 'PLATFORM_LTI_PRIVATE_KEY_%s';
+    public const PUBLIC_PATTERN = 'PLATFORM_LTI_PUBLIC_KEY_%s';
     private const OPTION_DEFAULT_KEY_NAME = 'defaultKeyName';
 
     public function save(KeyChain $keyChain): void
@@ -46,21 +45,32 @@ class CachedPlatformKeyChainRepository extends ConfigurableService implements Ke
 
     public function findAll(KeyChainQuery $query): KeyChainCollection
     {
-        if (!(
-            $this->getCacheService()->has(self::PRIVATE_PREFIX . $query->getIdentifier()) ||
-            $this->getCacheService()->has(self::PUBLIC_PREFIX . $query->getIdentifier())
-        )) {
-            $this->setKeys($this->getKeyChainGenerator()->getKeyChain());
+        if ($this->isCacheAvailable($query)) {
+            //TODO: Needs to be refactor if we have multiple key chains
+            $rawKeys = $this->getCacheService()->getMultiple(
+                [
+                    sprintf(self::PRIVATE_PATTERN, $query->getIdentifier()),
+                    sprintf(self::PUBLIC_PATTERN, $query->getIdentifier()),
+                ]
+            );
+
+            return new KeyChainCollection(
+                new KeyChain(
+                    $query->getIdentifier(),
+                    self::OPTION_DEFAULT_KEY_NAME,
+                    new Key($rawKeys[0]),
+                    new Key($rawKeys[1])
+                )
+            );
         }
 
-        $keyChain = new KeyChain(
-            $query->getIdentifier(),
-            self::OPTION_DEFAULT_KEY_NAME,
-            new Key($this->getCacheService()->get(self::PUBLIC_PREFIX . $query->getIdentifier())),
-            new Key($this->getCacheService()->get(self::PRIVATE_PREFIX . $query->getIdentifier()))
-        );
+        $keyChainCollection = $this->getPlatformKeyChainRepository()->findAll($query);
 
-        return new KeyChainCollection($keyChain);
+        foreach ($keyChainCollection->getKeyChains() as $keyChain) {
+            $this->setKeys($keyChain);
+        }
+
+        return $keyChainCollection;
     }
 
     /**
@@ -68,18 +78,26 @@ class CachedPlatformKeyChainRepository extends ConfigurableService implements Ke
      */
     private function setKeys(KeyChain $keyChain): void
     {
-        $this->getCacheService()->set(self::PRIVATE_PREFIX . $keyChain->getIdentifier(), $keyChain->getPrivateKey());
-        $this->getCacheService()->set(self::PUBLIC_PREFIX . $keyChain->getIdentifier(), $keyChain->getPublicKey());
+        $this->getCacheService()->set(
+            sprintf(self::PRIVATE_PATTERN, $keyChain->getIdentifier()),
+            $keyChain->getPrivateKey()
+        );
+
+        $this->getCacheService()->set(
+            sprintf(self::PUBLIC_PATTERN, $keyChain->getIdentifier()),
+            $keyChain->getPublicKey()
+        );
+    }
+
+    private function isCacheAvailable(KeyChainQuery $query): bool
+    {
+        return $this->getCacheService()->has(sprintf(self::PRIVATE_PATTERN, $query->getIdentifier())) &&
+            $this->getCacheService()->has(sprintf(self::PUBLIC_PATTERN, $query->getIdentifier()));
     }
 
     private function getCacheService(): SimpleCache
     {
         return $this->getServiceLocator()->get(SimpleCache::SERVICE_ID);
-    }
-
-    private function getKeyChainGenerator(): KeyChainGenerator
-    {
-        return $this->getServiceLocator()->get(KeyChainGenerator::class);
     }
 
     private function getPlatformKeyChainRepository(): KeyChainRepositoryInterface
