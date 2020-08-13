@@ -20,13 +20,6 @@
 
 declare(strict_types=1);
 
-/**
- * Created by PhpStorm.
- * User: bartlomiejmarszal
- * Date: 2020-08-11
- * Time: 13:50
- */
-
 namespace oat\taoLti\test\unit\models\classes\Security\DataAccess\Repository;
 
 use oat\generis\test\MockObject;
