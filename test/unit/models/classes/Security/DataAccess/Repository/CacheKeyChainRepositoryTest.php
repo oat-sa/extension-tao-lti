@@ -51,12 +51,14 @@ class CacheKeyChainRepositoryTest extends TestCase
         $this->simpleCacheMock = $this->createMock(SimpleCache::class);
         $this->platformKeyChainRepositoryMock = $this->createMock(PlatformKeyChainRepository::class);
 
-        $this->subject->setServiceLocator($this->getServiceLocatorMock(
-            [
-                SimpleCache::SERVICE_ID => $this->simpleCacheMock,
-                PlatformKeyChainRepository::SERVICE_ID => $this->platformKeyChainRepositoryMock,
-            ]
-        ));
+        $this->subject->setServiceLocator(
+            $this->getServiceLocatorMock(
+                [
+                    SimpleCache::SERVICE_ID => $this->simpleCacheMock,
+                    PlatformKeyChainRepository::SERVICE_ID => $this->platformKeyChainRepositoryMock,
+                ]
+            )
+        );
     }
 
     public function testSave(): void

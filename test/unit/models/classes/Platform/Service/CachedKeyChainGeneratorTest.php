@@ -45,13 +45,15 @@ class CachedKeyChainGeneratorTest extends TestCase
             new Key('private key')
         );
 
-        $this->subject->setServiceLocator($this->getServiceLocatorMock(
-            [
-                KeyChainGenerator::class => $this->keyChainGeneratorMock,
-                PlatformKeyChainRepository::class => $this->platformKeyChainRepositoryMock,
-                SimpleCache::SERVICE_ID => $this->simpleCacheMock,
-            ]
-        ));
+        $this->subject->setServiceLocator(
+            $this->getServiceLocatorMock(
+                [
+                    KeyChainGenerator::class => $this->keyChainGeneratorMock,
+                    PlatformKeyChainRepository::class => $this->platformKeyChainRepositoryMock,
+                    SimpleCache::SERVICE_ID => $this->simpleCacheMock,
+                ]
+            )
+        );
     }
 
     public function testGenerate(): void

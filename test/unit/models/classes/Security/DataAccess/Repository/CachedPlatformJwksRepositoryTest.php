@@ -51,12 +51,14 @@ class CachedPlatformJwksRepositoryTest extends TestCase
         $this->platformJwksRepositoryMock = $this->createMock(PlatformJwksRepository::class);
         $this->cacheMock = $this->createMock(SimpleCache::class);
         $this->subject = new CachedPlatformJwksRepository();
-        $this->subject->setServiceLocator($this->getServiceLocatorMock(
-            [
-                PlatformJwksRepository::class => $this->platformJwksRepositoryMock,
-                SimpleCache::SERVICE_ID => $this->cacheMock,
-            ]
-        ));
+        $this->subject->setServiceLocator(
+            $this->getServiceLocatorMock(
+                [
+                    PlatformJwksRepository::class => $this->platformJwksRepositoryMock,
+                    SimpleCache::SERVICE_ID => $this->cacheMock,
+                ]
+            )
+        );
 
         $this->jwk = new Jwk(
             'kty',
