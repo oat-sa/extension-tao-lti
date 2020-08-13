@@ -40,7 +40,7 @@ class CachedPlatformKeyChainRepository extends ConfigurableService implements Ke
 
     public function save(KeyChain $keyChain): void
     {
-        $this->saveKeys($keyChain);
+        $this->setKeys($keyChain);
         $this->getPlatformKeyChainRepository()->save($keyChain);
     }
 
@@ -50,7 +50,7 @@ class CachedPlatformKeyChainRepository extends ConfigurableService implements Ke
             $this->getCacheService()->has(self::PRIVATE_PREFIX . $query->getIdentifier()) ||
             $this->getCacheService()->has(self::PUBLIC_PREFIX . $query->getIdentifier())
         )) {
-            $this->saveKeys($this->getKeyChainGenerator()->getKeyChain());
+            $this->setKeys($this->getKeyChainGenerator()->getKeyChain());
         }
 
         $keyChain = new KeyChain(
@@ -66,7 +66,7 @@ class CachedPlatformKeyChainRepository extends ConfigurableService implements Ke
     /**
      * @throws InvalidArgumentException
      */
-    private function saveKeys(KeyChain $keyChain): void
+    private function setKeys(KeyChain $keyChain): void
     {
         $this->getCacheService()->set(self::PRIVATE_PREFIX . $keyChain->getIdentifier(), $keyChain->getPrivateKey());
         $this->getCacheService()->set(self::PUBLIC_PREFIX . $keyChain->getIdentifier(), $keyChain->getPublicKey());
