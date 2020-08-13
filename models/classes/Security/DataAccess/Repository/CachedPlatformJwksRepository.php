@@ -30,8 +30,6 @@ use oat\tao\model\security\Business\Domain\Key\Jwks;
 
 class CachedPlatformJwksRepository extends ConfigurableService implements JwksRepositoryInterface
 {
-    use MultipleCacheTrait;
-
     public const JWKS_KEY = 'PLATFORM_JWKS';
 
     public function find(): Jwks
