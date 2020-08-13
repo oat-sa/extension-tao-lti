@@ -160,13 +160,11 @@ class CacheKeyChainRepositoryTest extends TestCase
         $publicKey = new Key('publicKey');
         $privateKey = new Key('privateKey');
 
-        $keyChain = new KeyChain(
+        return new KeyChain(
             self::IDENTIFIER,
             'name',
             $publicKey,
             $privateKey
         );
-
-        return $keyChain;
     }
 }
