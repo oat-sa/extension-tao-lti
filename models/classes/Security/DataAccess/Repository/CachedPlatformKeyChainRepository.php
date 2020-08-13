@@ -29,6 +29,7 @@ use oat\tao\model\security\Business\Domain\Key\Key;
 use oat\tao\model\security\Business\Domain\Key\KeyChain;
 use oat\tao\model\security\Business\Domain\Key\KeyChainCollection;
 use oat\tao\model\security\Business\Domain\Key\KeyChainQuery;
+use Psr\SimpleCache\CacheInterface;
 use Psr\SimpleCache\InvalidArgumentException;
 
 class CachedPlatformKeyChainRepository extends ConfigurableService implements KeyChainRepositoryInterface
@@ -95,7 +96,7 @@ class CachedPlatformKeyChainRepository extends ConfigurableService implements Ke
             $this->getCacheService()->has(sprintf(self::PUBLIC_PATTERN, $query->getIdentifier()));
     }
 
-    private function getCacheService(): SimpleCache
+    private function getCacheService(): CacheInterface
     {
         return $this->getServiceLocator()->get(SimpleCache::SERVICE_ID);
     }

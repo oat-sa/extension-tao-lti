@@ -26,6 +26,7 @@ use oat\oatbox\cache\SimpleCache;
 use oat\oatbox\service\ConfigurableService;
 use oat\tao\model\security\Business\Contract\JwksRepositoryInterface;
 use oat\tao\model\security\Business\Domain\Key\Jwks;
+use Psr\SimpleCache\CacheInterface;
 
 class CachedPlatformJwksRepository extends ConfigurableService implements JwksRepositoryInterface
 {
@@ -40,6 +41,7 @@ class CachedPlatformJwksRepository extends ConfigurableService implements JwksRe
         }
 
         $jwks = $this->getJwksRepository()->find();
+
         $this->getCacheService()->set(self::JWKS_KEY, $jwks->jsonSerialize());
 
         return $jwks;
@@ -50,7 +52,7 @@ class CachedPlatformJwksRepository extends ConfigurableService implements JwksRe
         return $this->getServiceLocator()->get(PlatformJwksRepository::class);
     }
 
-    private function getCacheService(): SimpleCache
+    private function getCacheService(): CacheInterface
     {
         return $this->getServiceLocator()->get(SimpleCache::SERVICE_ID);
     }
