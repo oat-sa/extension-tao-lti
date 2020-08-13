@@ -22,7 +22,6 @@ declare(strict_types=1);
 
 namespace oat\taoLti\models\classes\Security\DataAccess\Repository;
 
-use oat\oatbox\cache\MultipleCacheTrait;
 use oat\oatbox\cache\SimpleCache;
 use oat\oatbox\service\ConfigurableService;
 use oat\tao\model\security\Business\Contract\JwksRepositoryInterface;
