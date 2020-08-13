@@ -13,7 +13,7 @@ class Lti1p3OidcLoginAuthenticator extends ConfigurableService implements OidcLo
     /** @var OidcLoginAuthenticator */
     private $loginAuthenticator;
 
-    public function withLoginAuthenticator(OidcLoginAuthenticator $loginAuthenticator)
+    public function withLoginAuthenticator(OidcLoginAuthenticator $loginAuthenticator): void
     {
         $this->loginAuthenticator = $loginAuthenticator;
     }
