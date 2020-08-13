@@ -35,7 +35,7 @@ class KeyChainGeneratorTest extends TestCase
         $this->subject = new KeyChainGenerator();
     }
 
-    public function testGetPublicKey(): void
+    public function testGenerate(): void
     {
         $result = $this->subject->generate();
 
