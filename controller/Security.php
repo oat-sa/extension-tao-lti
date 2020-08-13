@@ -21,6 +21,8 @@ namespace oat\taoLti\controller;
 
 use oat\tao\model\http\Controller;
 use oat\tao\model\security\Business\Contract\JwksRepositoryInterface;
+use oat\taoLti\models\classes\Platform\Service\Oidc\OidcLoginAuthenticatorInterface;
+use oat\taoLti\models\classes\Platform\Service\Oidc\OidcLoginAuthenticatorProxy;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\PlatformJwksRepository;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorAwareTrait;
@@ -39,8 +41,21 @@ class Security extends Controller implements ServiceLocatorAwareInterface
         $this->setResponse($response);
     }
 
+    public function oidc(): void
+    {
+        $response = $this->getOidcLoginAuthenticator()
+            ->authenticate($this->getPsrRequest(), $this->getPsrResponse());
+
+        $this->setResponse($response);
+    }
+
     private function getJwksRepository(): JwksRepositoryInterface
     {
         return $this->getServiceLocator()->get(PlatformJwksRepository::class);
+    }
+
+    private function getOidcLoginAuthenticator(): OidcLoginAuthenticatorInterface
+    {
+        return $this->getServiceLocator()->get(OidcLoginAuthenticatorProxy::class);
     }
 }
