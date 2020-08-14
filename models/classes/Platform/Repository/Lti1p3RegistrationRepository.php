@@ -120,7 +120,7 @@ class Lti1p3RegistrationRepository extends ConfigurableService implements Regist
      */
     private function getDeploymentIds(): array
     {
-        return ['1'];
+        return ['42'];
     }
 
     /**
@@ -132,8 +132,7 @@ class Lti1p3RegistrationRepository extends ConfigurableService implements Regist
             'local_demo',
             'local_demo',
             'http://localhost:8888/tool',
-            'http://localhost:8888/lti1p3/oidc/login-initiation',
-            'http://localhost:8888/tool/launch'
+            'http://localhost:8888/lti1p3/oidc/login-initiation'
         );
     }
 
