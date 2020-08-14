@@ -152,8 +152,13 @@ class Lti1p3LaunchRequestFactoryTest extends TestCase
 
     private function createCommand(User $user = null, string $openIdLoginHint = null): LtiLaunchCommand
     {
+        $ltiProvider = $this->createMock(LtiProvider::class);
+
+        $ltiProvider->method('getId')
+            ->willReturn('ltiId');
+
         return new LtiLaunchCommand(
-            $this->createMock(LtiProvider::class),
+            $ltiProvider,
             [
                 'Learner'
             ],
