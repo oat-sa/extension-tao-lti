@@ -20,13 +20,15 @@
 
 declare(strict_types=1);
 
-namespace oat\taoLti\models\classes\Platform\Service;
+namespace oat\taoLti\scripts\install;
 
-use oat\tao\model\security\Business\Domain\Key\KeyChain;
+use oat\oatbox\extension\AbstractAction;
+use oat\taoLti\models\classes\Platform\Service\CachedKeyChainGenerator;
 
-interface KeyChainGeneratorInterface
+class GenerateKeys extends AbstractAction
 {
-    public const OPTION_DATA_STORE = 'sslConfig';
-
-    public function generate(): KeyChain;
+    public function __invoke($params)
+    {
+        $this->getServiceLocator()->get(CachedKeyChainGenerator::class)->generate();
+    }
 }

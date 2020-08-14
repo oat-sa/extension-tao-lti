@@ -29,15 +29,9 @@ use oat\taoLti\models\classes\Security\DataAccess\Repository\PlatformKeyChainRep
 
 class KeyChainGenerator extends ConfigurableService implements KeyChainGeneratorInterface
 {
-    private const SSL_CONFIG = [
-        'digest_alg' => 'sha256',
-        'private_key_bits' => 4096,
-        'private_key_type' => OPENSSL_KEYTYPE_RSA,
-    ];
-
     public function generate(): KeyChain
     {
-        $resource = openssl_pkey_new(self::SSL_CONFIG);
+        $resource = openssl_pkey_new($this->getOption(self::OPTION_DATA_STORE));
         openssl_pkey_export($resource, $privateKey);
         $publicKey = openssl_pkey_get_details($resource);
 
