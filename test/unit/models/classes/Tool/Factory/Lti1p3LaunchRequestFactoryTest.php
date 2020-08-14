@@ -79,7 +79,7 @@ class Lti1p3LaunchRequestFactoryTest extends TestCase
         $this->ltiLaunchRequestBuilder
             ->method('buildUserResourceLinkLtiLaunchRequest')
             ->with(
-                new ResourceLink('deliveryExecutionIdentifier'),
+                new ResourceLink('deliveryExecutionIdentifier', $command->getLaunchUrl()),
                 $registration,
                 new UserIdentity(
                     'userIdentifier',
@@ -109,7 +109,7 @@ class Lti1p3LaunchRequestFactoryTest extends TestCase
         $this->ltiLaunchRequestBuilder
             ->method('buildResourceLinkLtiLaunchRequest')
             ->with(
-                new ResourceLink('deliveryExecutionIdentifier'),
+                new ResourceLink('deliveryExecutionIdentifier', $command->getLaunchUrl()),
                 $registration,
                 '1',
                 [
@@ -134,7 +134,7 @@ class Lti1p3LaunchRequestFactoryTest extends TestCase
         $this->oidcLaunchRequestBuilder
             ->method('buildResourceLinkOidcLaunchRequest')
             ->with(
-                new ResourceLink('deliveryExecutionIdentifier'),
+                new ResourceLink('deliveryExecutionIdentifier', $command->getLaunchUrl()),
                 $registration,
                 'userIdentifier',
                 '1',

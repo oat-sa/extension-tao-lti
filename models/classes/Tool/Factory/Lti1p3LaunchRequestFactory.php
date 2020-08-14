@@ -63,7 +63,7 @@ class Lti1p3LaunchRequestFactory extends ConfigurableService
 
         if ($command->isAnonymousLaunch()) {
             return $this->getLtiLaunchRequestBuilder()->buildResourceLinkLtiLaunchRequest(
-                new ResourceLink($command->getResourceIdentifier()),
+                new ResourceLink($command->getResourceIdentifier(), $command->getLaunchUrl()),
                 $registration,
                 $registration->getDefaultDeploymentId(),
                 $command->getRoles(),
@@ -73,7 +73,7 @@ class Lti1p3LaunchRequestFactory extends ConfigurableService
 
         if ($command->isOpenIdConnectLaunch()) {
             return $this->getOidcLaunchRequestBuilder()->buildResourceLinkOidcLaunchRequest(
-                new ResourceLink($command->getResourceIdentifier()),
+                new ResourceLink($command->getResourceIdentifier(), $command->getLaunchUrl()),
                 $registration,
                 $command->getOpenIdLoginHint(),
                 $registration->getDefaultDeploymentId(),
@@ -83,7 +83,7 @@ class Lti1p3LaunchRequestFactory extends ConfigurableService
         }
 
         return $this->getLtiLaunchRequestBuilder()->buildUserResourceLinkLtiLaunchRequest(
-            new ResourceLink($command->getResourceIdentifier()),
+            new ResourceLink($command->getResourceIdentifier(), $command->getLaunchUrl()),
             $registration,
             $this->getUserIdentity($command),
             $registration->getDefaultDeploymentId(),
