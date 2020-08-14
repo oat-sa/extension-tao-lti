@@ -26,9 +26,6 @@ final class Version202008131228163772_taoLti extends AbstractMigration
     {
     }
 
-    /**
-     * @return KeyChainGeneratorInterface
-     */
     private function getKeyChainGenerator(): KeyChainGeneratorInterface
     {
         return $this->getServiceLocator()->get(CachedKeyChainGenerator::class);
