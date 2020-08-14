@@ -40,7 +40,13 @@ class CachedPlatformKeyChainRepository extends ConfigurableService implements Ke
 
     public function save(KeyChain $keyChain): void
     {
-        $this->setKeys($keyChain);
+        new KeyChainQuery($keyChain->getIdentifier());
+
+        $this->setKeys(
+            $keyChain,
+            new KeyChainQuery($keyChain->getIdentifier())
+        );
+
         $this->getPlatformKeyChainRepository()->save($keyChain);
     }
 
@@ -59,8 +65,8 @@ class CachedPlatformKeyChainRepository extends ConfigurableService implements Ke
                 new KeyChain(
                     $query->getIdentifier(),
                     self::OPTION_DEFAULT_KEY_NAME,
-                    new Key($rawKeys[0]),
-                    new Key($rawKeys[1])
+                    new Key($rawKeys[sprintf(self::PUBLIC_PATTERN, $query->getIdentifier())]),
+                    new Key($rawKeys[sprintf(self::PRIVATE_PATTERN, $query->getIdentifier())])
                 )
             );
         }
@@ -68,7 +74,7 @@ class CachedPlatformKeyChainRepository extends ConfigurableService implements Ke
         $keyChainCollection = $this->getPlatformKeyChainRepository()->findAll($query);
 
         foreach ($keyChainCollection->getKeyChains() as $keyChain) {
-            $this->setKeys($keyChain);
+            $this->setKeys($keyChain, $query);
         }
 
         return $keyChainCollection;
@@ -77,16 +83,16 @@ class CachedPlatformKeyChainRepository extends ConfigurableService implements Ke
     /**
      * @throws InvalidArgumentException
      */
-    private function setKeys(KeyChain $keyChain): void
+    private function setKeys(KeyChain $keyChain, KeyChainQuery $query): void
     {
         $this->getCacheService()->set(
-            sprintf(self::PRIVATE_PATTERN, $keyChain->getIdentifier()),
-            $keyChain->getPrivateKey()
+            sprintf(self::PRIVATE_PATTERN, $query->getIdentifier()),
+            $keyChain->getPrivateKey()->getValue()
         );
 
         $this->getCacheService()->set(
-            sprintf(self::PUBLIC_PATTERN, $keyChain->getIdentifier()),
-            $keyChain->getPublicKey()
+            sprintf(self::PUBLIC_PATTERN, $query->getIdentifier()),
+            $keyChain->getPublicKey()->getValue()
         );
     }
 
