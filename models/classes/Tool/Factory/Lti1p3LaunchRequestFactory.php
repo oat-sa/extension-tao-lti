@@ -59,7 +59,7 @@ class Lti1p3LaunchRequestFactory extends ConfigurableService
     public function create(LtiLaunchCommandInterface $command): LaunchRequestInterface
     {
         $registration = $this->getRegistrationRepository()
-            ->find($command->getResourceIdentifier());
+            ->find($command->getLtiProvider()->getId());
 
         if ($command->isAnonymousLaunch()) {
             return $this->getLtiLaunchRequestBuilder()->buildResourceLinkLtiLaunchRequest(

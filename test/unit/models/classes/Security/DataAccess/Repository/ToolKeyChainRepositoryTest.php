@@ -27,47 +27,50 @@ use oat\tao\model\security\Business\Domain\Key\Key;
 use oat\tao\model\security\Business\Domain\Key\KeyChain;
 use oat\tao\model\security\Business\Domain\Key\KeyChainCollection;
 use oat\tao\model\security\Business\Domain\Key\KeyChainQuery;
+use oat\taoLti\models\classes\LtiProvider\LtiProvider;
+use oat\taoLti\models\classes\LtiProvider\LtiProviderService;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\ToolKeyChainRepository;
+use PHPUnit\Framework\MockObject\MockObject;
 
 class ToolKeyChainRepositoryTest extends TestCase
 {
     /** @var ToolKeyChainRepository */
     private $subject;
 
+    /** @var LtiProviderService|MockObject */
+    private $ltiProviderService;
+
     public function setUp(): void
     {
-        #
-        # @TODO Remove after get info from provider
-        #
-        if (!defined('ROOT_PATH')) {
-            define('ROOT_PATH', '');
-        }
-
-        #
-        # @TODO Remove after get info from provider
-        #
-        if (!defined('ROOT_URL')) {
-            define('ROOT_URL', '');
-        }
-
+        $this->ltiProviderService = $this->createMock(LtiProviderService::class);
         $this->subject = new ToolKeyChainRepository();
+        $this->subject->setServiceLocator(
+            $this->getServiceLocatorMock(
+                [
+                    LtiProviderService::SERVICE_ID => $this->ltiProviderService
+                ]
+            )
+        );
     }
 
     public function testFindAll(): void
     {
-        #
-        # @TODO Assert as soon as we have these values coming from provider
-        #
-        $keyFile = ROOT_PATH . 'tool.key';
-        $publicKey = file_exists($keyFile) ? file_get_contents($keyFile) : '';
+        $ltiProvider = $this->createMock(LtiProvider::class);
 
-        #
-        # @TODO Assert as soon as we have these values coming from provider
-        #
+        $ltiProvider->method('getId')
+            ->willReturn('ltiId');
+
+        $ltiProvider->method('getToolPublicKey')
+            ->willReturn('key');
+
+        $this->ltiProviderService
+            ->method('searchById')
+            ->willReturn($ltiProvider);
+
         $keyChain = new KeyChain(
-            '1',
-            'myToolKeySetName',
-            new Key($publicKey),
+            'ltiId',
+            'ltiId',
+            new Key('key'),
             new Key('')
         );
 

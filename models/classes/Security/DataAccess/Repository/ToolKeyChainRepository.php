@@ -28,29 +28,31 @@ use oat\tao\model\security\Business\Domain\Key\Key;
 use oat\tao\model\security\Business\Domain\Key\KeyChain;
 use oat\tao\model\security\Business\Domain\Key\KeyChainCollection;
 use oat\tao\model\security\Business\Domain\Key\KeyChainQuery;
+use oat\taoLti\models\classes\LtiProvider\LtiProviderService;
 
 class ToolKeyChainRepository extends ConfigurableService implements KeyChainRepositoryInterface
 {
     public function save(KeyChain $keyChain): void
     {
-        //@TODO Implement when Provider is ready
     }
 
     public function findAll(KeyChainQuery $query): KeyChainCollection
     {
-        /**
-         * @TODO This config must come for LTIProvider configuration
-         */
-        $keyFile = ROOT_PATH . 'tool.key';
-        $publicKey = file_exists($keyFile) ? file_get_contents($keyFile) : '';
+        $ltiProvider = $this->getLtiProviderService()
+            ->searchById($query->getIdentifier());
 
         $keyChain = new KeyChain(
-            '1',
-            'myToolKeySetName',
-            new Key($publicKey ? $publicKey : ''),
+            $ltiProvider->getId(),
+            $ltiProvider->getId(),
+            new Key($ltiProvider->getToolPublicKey()),
             new Key('')
         );
 
         return new KeyChainCollection(...[$keyChain]);
+    }
+
+    private function getLtiProviderService(): LtiProviderService
+    {
+        return $this->getServiceLocator()->get(LtiProviderService::SERVICE_ID);
     }
 }

@@ -34,6 +34,7 @@ use oat\tao\model\security\Business\Contract\KeyChainRepositoryInterface;
 use oat\tao\model\security\Business\Domain\Key\KeyChain as TaoKeyChain;
 use oat\tao\model\security\Business\Domain\Key\KeyChainQuery;
 use oat\taoLti\models\classes\LtiProvider\LtiProvider;
+use oat\taoLti\models\classes\LtiProvider\LtiProviderService;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\PlatformKeyChainRepository;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\ToolKeyChainRepository;
 
@@ -44,8 +45,11 @@ class Lti1p3RegistrationRepository extends ConfigurableService implements Regist
 
     public function find(string $identifier): ?RegistrationInterface
     {
+        $ltiProvider = $this->getLtiProviderService()
+            ->searchById($identifier);
+
         $toolKeyChain = $this->getToolKeyChainRepository()
-                ->findAll(new KeyChainQuery())
+                ->findAll(new KeyChainQuery($ltiProvider->getId()))
                 ->getKeyChains()[0] ?? null;
 
         $platformKeyChain = $this->getPlatformKeyChainRepository()
@@ -56,15 +60,12 @@ class Lti1p3RegistrationRepository extends ConfigurableService implements Regist
             return null;
         }
 
-        /**
-         * @TODO Parameters must come from proper provider configuration (future task)
-         */
         return new Registration(
-            'registrationIdentifier',
-            'client_id',
+            $ltiProvider->getId(),
+            $ltiProvider->getToolClientId(),
             $this->getDefaultPlatform(),
-            $this->getTool(),
-            $this->getDeploymentIds(),
+            $this->getTool($ltiProvider),
+            $ltiProvider->getToolDeploymentIds(),
             $this->translateKeyChain($platformKeyChain),
             $this->translateKeyChain($toolKeyChain)
         );
@@ -115,24 +116,14 @@ class Lti1p3RegistrationRepository extends ConfigurableService implements Regist
         );
     }
 
-    /**
-     * @TODO Parameter must come from proper provider configuration (future task)
-     */
-    private function getDeploymentIds(): array
-    {
-        return ['42'];
-    }
-
-    /**
-     * @TODO Parameter must come from provider configuration (future task)
-     */
-    private function getTool(LtiProvider $ltiProvider = null): Tool
+    private function getTool(LtiProvider $ltiProvider): Tool
     {
         return new Tool(
-            'local_demo',
-            'local_demo',
-            'http://localhost:8888/tool',
-            'http://localhost:8888/lti1p3/oidc/login-initiation'
+            $ltiProvider->getId(),
+            $ltiProvider->getId(),
+            $ltiProvider->getToolAudience(),
+            $ltiProvider->getToolOidcLoginInitiationUrl(),
+            $ltiProvider->getToolLaunchUrl()
         );
     }
 
@@ -144,5 +135,10 @@ class Lti1p3RegistrationRepository extends ConfigurableService implements Regist
             rtrim(ROOT_URL, '/'),
             self::OIDC_URL
         );
+    }
+
+    private function getLtiProviderService(): LtiProviderService
+    {
+        return $this->getServiceLocator()->get(LtiProviderService::SERVICE_ID);
     }
 }
