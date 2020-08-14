@@ -11,7 +11,6 @@ use oat\taoLti\models\classes\Platform\Service\KeyChainGeneratorInterface;
 
 final class Version202008131228163772_taoLti extends AbstractMigration
 {
-
     public function getDescription(): string
     {
         return 'Will generate keyChain and store in persistence';
