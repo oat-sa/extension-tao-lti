@@ -6,7 +6,7 @@ namespace oat\taoLti\migrations;
 
 use Doctrine\DBAL\Schema\Schema;
 use oat\tao\scripts\tools\migrations\AbstractMigration;
-use oat\taoLti\models\classes\Platform\Service\KeyChainGenerator;
+use oat\taoLti\models\classes\Platform\Service\CachedKeyChainGenerator;
 use oat\taoLti\models\classes\Platform\Service\KeyChainGeneratorInterface;
 
 final class Version202008131228163772_taoLti extends AbstractMigration
@@ -31,6 +31,6 @@ final class Version202008131228163772_taoLti extends AbstractMigration
      */
     private function getKeyChainGenerator(): KeyChainGeneratorInterface
     {
-        return $this->getServiceLocator()->get(KeyChainGenerator::class);
+        return $this->getServiceLocator()->get(CachedKeyChainGenerator::class);
     }
 }
