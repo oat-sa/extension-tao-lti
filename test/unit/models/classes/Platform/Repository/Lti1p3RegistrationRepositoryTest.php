@@ -29,7 +29,7 @@ use oat\tao\model\security\Business\Domain\Key\Key;
 use oat\tao\model\security\Business\Domain\Key\KeyChain;
 use oat\tao\model\security\Business\Domain\Key\KeyChainCollection;
 use oat\taoLti\models\classes\Platform\Repository\Lti1p3RegistrationRepository;
-use oat\taoLti\models\classes\Security\DataAccess\Repository\CachedPlatformKeyChainRepository;
+use oat\taoLti\models\classes\Security\DataAccess\Repository\PlatformKeyChainRepository;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\ToolKeyChainRepository;
 use PHPUnit\Framework\MockObject\MockObject;
 
@@ -65,13 +65,13 @@ class Lti1p3RegistrationRepositoryTest extends TestCase
             new Key('tool_private_key')
         );
         $this->toolKeyChainRepository = $this->createMock(KeyChainRepositoryInterface::class);
-        $this->platformKeyChainRepository = $this->createMock(CachedPlatformKeyChainRepository::class);
+        $this->platformKeyChainRepository = $this->createMock(KeyChainRepositoryInterface::class);
         $this->subject = new Lti1p3RegistrationRepository();
         $this->subject->setServiceLocator(
             $this->getServiceLocatorMock(
                 [
                     ToolKeyChainRepository::class => $this->toolKeyChainRepository,
-                    CachedPlatformKeyChainRepository::class => $this->platformKeyChainRepository
+                    PlatformKeyChainRepository::SERVICE_ID => $this->platformKeyChainRepository,
                 ]
             )
         );

@@ -56,7 +56,6 @@
     },
     "require": {
         "oat-sa/oatbox-extension-installer": "~1.1||dev-master",
-        "ext-openssl": "*",
         "oat-sa/lib-lti1p3-core": "^2.0"
     },
     "autoload" : {
