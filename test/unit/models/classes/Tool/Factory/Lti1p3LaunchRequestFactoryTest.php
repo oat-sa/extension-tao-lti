@@ -22,6 +22,7 @@ declare(strict_types=1);
 
 namespace oat\taoLti\test\unit\models\classes\Tool\Factory;
 
+use ErrorException;
 use oat\generis\test\TestCase;
 use OAT\Library\Lti1p3Core\Launch\Builder\LtiLaunchRequestBuilder;
 use OAT\Library\Lti1p3Core\Launch\Builder\OidcLaunchRequestBuilder;
@@ -67,6 +68,18 @@ class Lti1p3LaunchRequestFactoryTest extends TestCase
                 ]
             )
         );
+    }
+
+    public function testWillThrowExceptionIfRegistrationNotFound(): void
+    {
+        $this->registrationRepository
+            ->method('find')
+            ->willReturn(null);
+
+        $this->expectException(ErrorException::class);
+        $this->expectExceptionMessage('Registration for provider ltiId not found');
+
+        $this->subject->create($this->createCommand($this->expectUser()));
     }
 
     public function testCreateDirectRequest(): void

@@ -22,6 +22,7 @@ declare(strict_types=1);
 
 namespace oat\taoLti\models\classes\Tool\Factory;
 
+use ErrorException;
 use oat\generis\model\GenerisRdf;
 use OAT\Library\Lti1p3Core\Launch\Builder\LtiLaunchRequestBuilder;
 use OAT\Library\Lti1p3Core\Launch\Builder\OidcLaunchRequestBuilder;
@@ -60,6 +61,15 @@ class Lti1p3LaunchRequestFactory extends ConfigurableService
     {
         $registration = $this->getRegistrationRepository()
             ->find($command->getLtiProvider()->getId());
+
+        if (!$registration) {
+            throw new ErrorException(
+                sprintf(
+                    'Registration for provider %s not found',
+                    $command->getLtiProvider()->getId()
+                )
+            );
+        }
 
         if ($command->isAnonymousLaunch()) {
             return $this->getLtiLaunchRequestBuilder()->buildResourceLinkLtiLaunchRequest(

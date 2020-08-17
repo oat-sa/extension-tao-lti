@@ -36,7 +36,6 @@ class CachedPlatformKeyChainRepository extends ConfigurableService implements Ke
 {
     public const PRIVATE_PATTERN = 'PLATFORM_LTI_PRIVATE_KEY_%s';
     public const PUBLIC_PATTERN = 'PLATFORM_LTI_PUBLIC_KEY_%s';
-    private const OPTION_DEFAULT_KEY_NAME = 'defaultKeyName';
 
     public function save(KeyChain $keyChain): void
     {

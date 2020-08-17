@@ -50,6 +50,10 @@ class LtiLaunch implements LtiLaunchInterface
 
     public function getToolLaunchUrlWithParams(): string
     {
-        return sprintf('%s?%s', $this->launchUrl, http_build_query(array_filter($this->launchParams)));
+        return sprintf(
+            '%s?%s',
+            $this->launchUrl,
+            http_build_query(array_filter($this->launchParams))
+        );
     }
 }
