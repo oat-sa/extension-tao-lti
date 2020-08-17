@@ -23,6 +23,7 @@ use oat\tao\model\accessControl\func\AccessRule;
 use oat\tao\model\user\TaoRoles;
 use oat\taoLti\controller\CookieUtils;
 use oat\taoLti\controller\Security;
+use oat\taoLti\scripts\install\GenerateKeys;
 use oat\taoLti\scripts\install\InstallServices;
 use oat\taoLti\scripts\update\Updater;
 
@@ -37,7 +38,7 @@ return [
     'label' => 'LTI library',
     'description' => 'TAO LTI library and helpers',
     'license' => 'GPL-2.0',
-    'version' => '11.14.0',
+    'version' => '11.15.0',
       'author' => 'Open Assessment Technologies SA',
       'requires' => [
         'generis' => '>=12.15.0',
@@ -59,7 +60,8 @@ return [
             $extpath . 'install/ontology/ltiroles_membership.rdf'
         ],
         'php' => [
-            InstallServices::class
+            InstallServices::class,
+            GenerateKeys::class
         ]
     ],
     'update' => Updater::class,
