@@ -23,7 +23,7 @@ use oat\tao\model\http\Controller;
 use oat\tao\model\security\Business\Contract\JwksRepositoryInterface;
 use oat\taoLti\models\classes\Platform\Service\Oidc\OidcLoginAuthenticatorInterface;
 use oat\taoLti\models\classes\Platform\Service\Oidc\OidcLoginAuthenticatorProxy;
-use oat\taoLti\models\classes\Security\DataAccess\Repository\PlatformJwksRepository;
+use oat\taoLti\models\classes\Security\DataAccess\Repository\CachedPlatformJwksRepository;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorAwareTrait;
 use function GuzzleHttp\Psr7\stream_for;
@@ -51,7 +51,7 @@ class Security extends Controller implements ServiceLocatorAwareInterface
 
     private function getJwksRepository(): JwksRepositoryInterface
     {
-        return $this->getServiceLocator()->get(PlatformJwksRepository::class);
+        return $this->getServiceLocator()->get(CachedPlatformJwksRepository::class);
     }
 
     private function getOidcLoginAuthenticator(): OidcLoginAuthenticatorInterface
