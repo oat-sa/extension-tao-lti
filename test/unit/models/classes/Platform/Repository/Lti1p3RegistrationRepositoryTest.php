@@ -31,7 +31,7 @@ use oat\tao\model\security\Business\Domain\Key\KeyChainCollection;
 use oat\taoLti\models\classes\LtiProvider\LtiProvider;
 use oat\taoLti\models\classes\LtiProvider\LtiProviderService;
 use oat\taoLti\models\classes\Platform\Repository\Lti1p3RegistrationRepository;
-use oat\taoLti\models\classes\Security\DataAccess\Repository\PlatformKeyChainRepository;
+use oat\taoLti\models\classes\Security\DataAccess\Repository\CachedPlatformKeyChainRepository;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\ToolKeyChainRepository;
 use PHPUnit\Framework\MockObject\MockObject;
 
@@ -77,7 +77,7 @@ class Lti1p3RegistrationRepositoryTest extends TestCase
             $this->getServiceLocatorMock(
                 [
                     ToolKeyChainRepository::class => $this->toolKeyChainRepository,
-                    PlatformKeyChainRepository::SERVICE_ID => $this->platformKeyChainRepository,
+                    CachedPlatformKeyChainRepository::class => $this->platformKeyChainRepository,
                     LtiProviderService::SERVICE_ID => $this->ltiProviderService
                 ]
             )
@@ -109,18 +109,12 @@ class Lti1p3RegistrationRepositoryTest extends TestCase
         $this->assertSame($this->toolKeyChain->getPublicKey()->getValue(), $registration->getToolKeyChain()->getPublicKey()->getContent());
         $this->assertSame($this->toolKeyChain->getPrivateKey()->getValue(), $registration->getToolKeyChain()->getPrivateKey()->getContent());
 
-        #
-        # @TODO Assert as soon as we have these values coming from provider
-        #
         $this->assertSame('client_id', $registration->getClientId());
         $this->assertSame('ltiId', $registration->getIdentifier());
         $this->assertSame(['1'], $registration->getDeploymentIds());
         $this->assertSame('1', $registration->getDefaultDeploymentId());
         $this->assertSame(null, $registration->getToolJwksUrl());
 
-        #
-        # @TODO Assert as soon as we have these values coming from provider
-        #
         $this->assertSame('ltiId', $registration->getTool()->getIdentifier());
         $this->assertSame('ltiId', $registration->getTool()->getName());
         $this->assertSame('audience', $registration->getTool()->getAudience());

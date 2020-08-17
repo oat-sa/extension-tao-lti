@@ -35,7 +35,7 @@ use oat\tao\model\security\Business\Domain\Key\KeyChain as TaoKeyChain;
 use oat\tao\model\security\Business\Domain\Key\KeyChainQuery;
 use oat\taoLti\models\classes\LtiProvider\LtiProvider;
 use oat\taoLti\models\classes\LtiProvider\LtiProviderService;
-use oat\taoLti\models\classes\Security\DataAccess\Repository\PlatformKeyChainRepository;
+use oat\taoLti\models\classes\Security\DataAccess\Repository\CachedPlatformKeyChainRepository;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\ToolKeyChainRepository;
 
 class Lti1p3RegistrationRepository extends ConfigurableService implements RegistrationRepositoryInterface
@@ -103,7 +103,7 @@ class Lti1p3RegistrationRepository extends ConfigurableService implements Regist
 
     private function getPlatformKeyChainRepository(): KeyChainRepositoryInterface
     {
-        return $this->getServiceLocator()->get(PlatformKeyChainRepository::SERVICE_ID);
+        return $this->getServiceLocator()->get(CachedPlatformKeyChainRepository::class);
     }
 
     private function translateKeyChain(TaoKeyChain $keyChain): KeyChain
