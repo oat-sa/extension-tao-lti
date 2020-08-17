@@ -69,8 +69,8 @@ class CacheKeyChainRepositoryTest extends TestCase
             ->expects($this->exactly(2))
             ->method('set')
             ->withConsecutive(
-                [sprintf(CachedPlatformKeyChainRepository::PRIVATE_PATTERN, self::IDENTIFIER), $keyChain->getPrivateKey()],
-                [sprintf(CachedPlatformKeyChainRepository::PUBLIC_PATTERN, self::IDENTIFIER), $keyChain->getPublicKey()]
+                [sprintf(CachedPlatformKeyChainRepository::PRIVATE_PATTERN, self::IDENTIFIER), $keyChain->getPrivateKey()->getValue()],
+                [sprintf(CachedPlatformKeyChainRepository::PUBLIC_PATTERN, self::IDENTIFIER), $keyChain->getPublicKey()->getValue()]
             );
 
         $this->platformKeyChainRepositoryMock
@@ -101,8 +101,8 @@ class CacheKeyChainRepositoryTest extends TestCase
             ->expects($this->exactly(2))
             ->method('set')
             ->withConsecutive(
-                [sprintf(CachedPlatformKeyChainRepository::PRIVATE_PATTERN, self::IDENTIFIER), $keyChain->getPrivateKey()],
-                [sprintf(CachedPlatformKeyChainRepository::PUBLIC_PATTERN, self::IDENTIFIER), $keyChain->getPublicKey()]
+                [sprintf(CachedPlatformKeyChainRepository::PRIVATE_PATTERN, self::IDENTIFIER), $keyChain->getPrivateKey()->getValue()],
+                [sprintf(CachedPlatformKeyChainRepository::PUBLIC_PATTERN, self::IDENTIFIER), $keyChain->getPublicKey()->getValue()]
             );
 
         $this->platformKeyChainRepositoryMock
@@ -138,8 +138,8 @@ class CacheKeyChainRepositoryTest extends TestCase
                 ]
             )->willReturn(
                 [
-                    'publicKey',
-                    'privateKey',
+                    sprintf(CachedPlatformKeyChainRepository::PRIVATE_PATTERN, self::IDENTIFIER) => 'privateKey',
+                    sprintf(CachedPlatformKeyChainRepository::PUBLIC_PATTERN, self::IDENTIFIER) => 'publicKey',
                 ]
             );
 

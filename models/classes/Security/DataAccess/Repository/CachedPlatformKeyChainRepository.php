@@ -86,12 +86,18 @@ class CachedPlatformKeyChainRepository extends ConfigurableService implements Ke
     private function setKeys(KeyChain $keyChain, KeyChainQuery $query): void
     {
         $this->getCacheService()->set(
-            sprintf(self::PRIVATE_PATTERN, $query->getIdentifier()),
+            sprintf(self::PRIVATE_PATTERN,
+                $query->getIdentifier()
+            ),
+
             $keyChain->getPrivateKey()->getValue()
         );
 
         $this->getCacheService()->set(
-            sprintf(self::PUBLIC_PATTERN, $query->getIdentifier()),
+            sprintf(self::PUBLIC_PATTERN,
+                $query->getIdentifier()
+            ),
+
             $keyChain->getPublicKey()->getValue()
         );
     }
