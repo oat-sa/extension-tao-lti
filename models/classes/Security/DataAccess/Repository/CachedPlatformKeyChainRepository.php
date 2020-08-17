@@ -36,7 +36,6 @@ class CachedPlatformKeyChainRepository extends ConfigurableService implements Ke
 {
     public const PRIVATE_PATTERN = 'PLATFORM_LTI_PRIVATE_KEY_%s';
     public const PUBLIC_PATTERN = 'PLATFORM_LTI_PUBLIC_KEY_%s';
-    private const OPTION_DEFAULT_KEY_NAME = 'defaultKeyName';
 
     public function save(KeyChain $keyChain): void
     {
@@ -61,10 +60,12 @@ class CachedPlatformKeyChainRepository extends ConfigurableService implements Ke
                 ]
             );
 
+            $platformKeyChainRepository = $this->getPlatformKeyChainRepository();
+
             return new KeyChainCollection(
                 new KeyChain(
-                    $query->getIdentifier(),
-                    self::OPTION_DEFAULT_KEY_NAME,
+                    $platformKeyChainRepository->getOption(PlatformKeyChainRepository::OPTION_DEFAULT_KEY_ID),
+                    $platformKeyChainRepository->getOption(PlatformKeyChainRepository::OPTION_DEFAULT_KEY_NAME),
                     new Key($rawKeys[sprintf(self::PUBLIC_PATTERN, $query->getIdentifier())]),
                     new Key($rawKeys[sprintf(self::PRIVATE_PATTERN, $query->getIdentifier())])
                 )
@@ -113,7 +114,7 @@ class CachedPlatformKeyChainRepository extends ConfigurableService implements Ke
         return $this->getServiceLocator()->get(SimpleCache::SERVICE_ID);
     }
 
-    private function getPlatformKeyChainRepository(): KeyChainRepositoryInterface
+    private function getPlatformKeyChainRepository(): PlatformKeyChainRepository
     {
         return $this->getServiceLocator()->get(PlatformKeyChainRepository::SERVICE_ID);
     }

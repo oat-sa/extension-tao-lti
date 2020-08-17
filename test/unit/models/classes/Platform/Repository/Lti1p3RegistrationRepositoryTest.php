@@ -28,6 +28,8 @@ use oat\tao\model\security\Business\Contract\KeyChainRepositoryInterface;
 use oat\tao\model\security\Business\Domain\Key\Key;
 use oat\tao\model\security\Business\Domain\Key\KeyChain;
 use oat\tao\model\security\Business\Domain\Key\KeyChainCollection;
+use oat\taoLti\models\classes\LtiProvider\LtiProvider;
+use oat\taoLti\models\classes\LtiProvider\LtiProviderService;
 use oat\taoLti\models\classes\Platform\Repository\Lti1p3RegistrationRepository;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\CachedPlatformKeyChainRepository;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\ToolKeyChainRepository;
@@ -43,6 +45,9 @@ class Lti1p3RegistrationRepositoryTest extends TestCase
 
     /** @var KeyChainRepositoryInterface|MockObject */
     private $platformKeyChainRepository;
+
+    /** @var LtiProviderService|MockObject */
+    private $ltiProviderService;
 
     /** @var KeyChain */
     private $platformKeyChain;
@@ -64,14 +69,16 @@ class Lti1p3RegistrationRepositoryTest extends TestCase
             new Key('tool_public_key'),
             new Key('tool_private_key')
         );
+        $this->ltiProviderService = $this->createMock(LtiProviderService::class);
         $this->toolKeyChainRepository = $this->createMock(KeyChainRepositoryInterface::class);
-        $this->platformKeyChainRepository = $this->createMock(CachedPlatformKeyChainRepository::class);
+        $this->platformKeyChainRepository = $this->createMock(KeyChainRepositoryInterface::class);
         $this->subject = new Lti1p3RegistrationRepository();
         $this->subject->setServiceLocator(
             $this->getServiceLocatorMock(
                 [
                     ToolKeyChainRepository::class => $this->toolKeyChainRepository,
-                    CachedPlatformKeyChainRepository::class => $this->platformKeyChainRepository
+                    CachedPlatformKeyChainRepository::class => $this->platformKeyChainRepository,
+                    LtiProviderService::SERVICE_ID => $this->ltiProviderService
                 ]
             )
         );
@@ -79,9 +86,11 @@ class Lti1p3RegistrationRepositoryTest extends TestCase
 
     public function testFindWillReturnRegistrationForTool(): void
     {
+        $this->expectsProvider();
+
         $this->expectToolAndPlatformKeys([$this->toolKeyChain], [$this->platformKeyChain]);
 
-        $registration = $this->subject->find('registrationId');
+        $registration = $this->subject->find('ltiId');
 
         $this->assertInstanceOf(Registration::class, $registration);
 
@@ -100,30 +109,57 @@ class Lti1p3RegistrationRepositoryTest extends TestCase
         $this->assertSame($this->toolKeyChain->getPublicKey()->getValue(), $registration->getToolKeyChain()->getPublicKey()->getContent());
         $this->assertSame($this->toolKeyChain->getPrivateKey()->getValue(), $registration->getToolKeyChain()->getPrivateKey()->getContent());
 
-        #
-        # @TODO Assert as soon as we have these values coming from provider
-        #
         $this->assertSame('client_id', $registration->getClientId());
-        $this->assertSame('registrationIdentifier', $registration->getIdentifier());
+        $this->assertSame('ltiId', $registration->getIdentifier());
         $this->assertSame(['1'], $registration->getDeploymentIds());
         $this->assertSame('1', $registration->getDefaultDeploymentId());
         $this->assertSame(null, $registration->getToolJwksUrl());
 
-        #
-        # @TODO Assert as soon as we have these values coming from provider
-        #
-        $this->assertSame('local_demo', $registration->getTool()->getIdentifier());
-        $this->assertSame('local_demo', $registration->getTool()->getName());
-        $this->assertSame('http://localhost:8888/tool', $registration->getTool()->getAudience());
-        $this->assertSame('http://localhost:8888/tool/launch', $registration->getTool()->getLaunchUrl());
-        $this->assertSame('http://localhost:8888/lti1p3/oidc/login-initiation', $registration->getTool()->getOidcLoginInitiationUrl());
+        $this->assertSame('ltiId', $registration->getTool()->getIdentifier());
+        $this->assertSame('ltiId', $registration->getTool()->getName());
+        $this->assertSame('audience', $registration->getTool()->getAudience());
+        $this->assertSame('launch_url', $registration->getTool()->getLaunchUrl());
+        $this->assertSame('oidc_url', $registration->getTool()->getOidcLoginInitiationUrl());
     }
 
     public function testFindWillReturnNullIfNoKeysFound(): void
     {
+        $this->expectsProvider();
         $this->expectToolAndPlatformKeys([], []);
 
         $this->assertNull($this->subject->find('registrationId'));
+    }
+
+    private function expectsProvider(): LtiProvider
+    {
+        $ltiProvider = $this->createMock(LtiProvider::class);
+
+        $ltiProvider->method('getId')
+            ->willReturn('ltiId');
+
+        $ltiProvider->method('getToolPublicKey')
+            ->willReturn('key');
+
+        $ltiProvider->method('getToolAudience')
+            ->willReturn('audience');
+
+        $ltiProvider->method('getToolOidcLoginInitiationUrl')
+            ->willReturn('oidc_url');
+
+        $ltiProvider->method('getToolLaunchUrl')
+            ->willReturn('launch_url');
+
+        $ltiProvider->method('getToolClientId')
+            ->willReturn('client_id');
+
+        $ltiProvider->method('getToolDeploymentIds')
+            ->willReturn(['1']);
+
+        $this->ltiProviderService
+            ->method('searchById')
+            ->willReturn($ltiProvider);
+
+        return $ltiProvider;
     }
 
     private function expectToolAndPlatformKeys(array $toolKeyChains, array $platformKeyChains): void

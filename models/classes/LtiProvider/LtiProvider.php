@@ -103,6 +103,43 @@ class LtiProvider implements JsonSerializable
         return $this->callbackUrl;
     }
 
+    public function getLtiVersion(): string
+    {
+        return '1.3'; //@TODO Will retrieve this info from DB
+    }
+
+    public function getToolClientId(): string
+    {
+        return 'client_id'; //@TODO Will retrieve this info from DB
+    }
+
+    public function getToolDeploymentIds(): array
+    {
+        return ['42']; //@TODO Will retrieve this info from DB
+    }
+
+    public function getToolAudience(): string
+    {
+        return 'http://localhost:8888/tool'; //@TODO Will retrieve this info from DB
+    }
+
+    public function getToolOidcLoginInitiationUrl(): string
+    {
+        return 'http://localhost:8888/lti1p3/oidc/login-initiation'; //@TODO Will retrieve this info from DB
+    }
+
+    public function getToolLaunchUrl(): string
+    {
+        return 'http://localhost:8888/tool/launch'; //@TODO Will retrieve this info from DB
+    }
+
+    public function getToolPublicKey(): string
+    {
+        $keyFile = ROOT_PATH . 'tool.key';
+
+        return file_exists($keyFile) ? file_get_contents($keyFile) : ''; //@TODO Will retrieve this info from DB
+    }
+
     /**
      * @inheritdoc
      */
