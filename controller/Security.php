@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -21,9 +22,11 @@ namespace oat\taoLti\controller;
 
 use oat\tao\model\http\Controller;
 use oat\tao\model\security\Business\Contract\JwksRepositoryInterface;
+use oat\taoLti\models\classes\Platform\Service\CachedKeyChainGenerator;
 use oat\taoLti\models\classes\Platform\Service\Oidc\OidcLoginAuthenticatorInterface;
 use oat\taoLti\models\classes\Platform\Service\Oidc\OidcLoginAuthenticatorProxy;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\CachedPlatformJwksRepository;
+use Psr\Http\Message\ResponseInterface;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorAwareTrait;
 use function GuzzleHttp\Psr7\stream_for;
@@ -34,9 +37,18 @@ class Security extends Controller implements ServiceLocatorAwareInterface
 
     public function jwks(): void
     {
-        $response = $this->getPsrResponse()
-            ->withHeader('ContentType', 'application/json')
-            ->withBody(stream_for(json_encode($this->getJwksRepository()->find())));
+        switch ($this->getRequestMethod()) {
+            case 'GET':
+                $response = $this->getJwks();
+                break;
+
+            case 'POST':
+                $response = $this->postJwks();
+                break;
+
+            default:
+                $response = $this->getPsrResponse()->withStatus(501);
+        }
 
         $this->setResponse($response);
     }
@@ -47,6 +59,25 @@ class Security extends Controller implements ServiceLocatorAwareInterface
             ->authenticate($this->getPsrRequest(), $this->getPsrResponse());
 
         $this->setResponse($response);
+    }
+
+    private function getJwks(): ResponseInterface
+    {
+        return $this->getPsrResponse()
+            ->withHeader('ContentType', 'application/json')
+            ->withBody(stream_for(json_encode($this->getJwksRepository()->find())));
+    }
+
+    private function postJwks(): ResponseInterface
+    {
+        $this->getCachedKeyChainGenerator()->generate();
+
+        return  $this->getPsrResponse()->withStatus(200);
+    }
+
+    private function getCachedKeyChainGenerator(): CachedKeyChainGenerator
+    {
+        return $this->getServiceLocator()->get(CachedKeyChainGenerator::class);
     }
 
     private function getJwksRepository(): JwksRepositoryInterface
