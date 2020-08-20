@@ -64,11 +64,7 @@
 					</action>
 				</actions>
 			</section>
-			<section id="settings_oauth_mng_jwks" name="Manage JWKS" url="/taoLti/Jwks/index">
-				<actions>
-					<action id="jwks-index" name="Index" url="/taoLti/Jwks/index" context="class" group="settings" />
-				</actions>
-			</section>
+			<section id="settings_oauth_mng_jwks" name="Manage JWKS" url="/taoLti/Jwks/view" />
 		</sections>
 	</structure>
 </structures>

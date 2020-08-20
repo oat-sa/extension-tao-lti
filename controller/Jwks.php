@@ -27,13 +27,14 @@ use oat\tao\model\security\Business\Contract\JwksRepositoryInterface;
 use oat\taoLti\models\classes\Platform\Service\CachedKeyChainGenerator;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\CachedPlatformJwksRepository;
 use \tao_actions_CommonModule as CommonModule;
+use function GuzzleHttp\Psr7\stream_for;
 
 class Jwks extends CommonModule
 {
     public function view(): void
     {
         $this->setData('jwks-key', json_encode($this->getJwksRepository()->find()));
-        $this->setData('jwks-generate-url', $this->getUrlGenerator()->buildUrl('jwks', 'Security'));
+        $this->setData('jwks-generate-url', $this->getUrlGenerator()->buildUrl('index'));
         $this->setView('jwks/Jwks.tpl');
     }
 
@@ -45,7 +46,11 @@ class Jwks extends CommonModule
                 break;
 
             default:
-                $this->setResponse($this->getPsrResponse()->withStatus(501));
+                $this->setResponse(
+                    $this->getPsrResponse()
+                        ->withStatus(501)
+                        ->withBody(stream_for(__('Not Implemented')))
+                );
         }
     }
 
