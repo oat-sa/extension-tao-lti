@@ -25,6 +25,7 @@ namespace oat\taoLti\controller;
 use oat\tao\helpers\UrlHelper;
 use oat\tao\model\security\Business\Contract\JwksRepositoryInterface;
 use oat\taoLti\models\classes\Platform\Service\CachedKeyChainGenerator;
+use oat\taoLti\models\classes\Platform\Service\KeyChainGenerator;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\CachedPlatformJwksRepository;
 use \tao_actions_CommonModule as CommonModule;
 use function GuzzleHttp\Psr7\stream_for;
@@ -56,7 +57,7 @@ class Jwks extends CommonModule
 
     private function postJwks(): void
     {
-        $this->getCachedKeyChainGenerator()->generate();
+        $this->getKeyChainGenerator()->generate();
     }
 
     private function getJwksRepository(): JwksRepositoryInterface
@@ -69,7 +70,7 @@ class Jwks extends CommonModule
         return $this->getServiceLocator()->get(UrlHelper::class);
     }
 
-    private function getCachedKeyChainGenerator(): CachedKeyChainGenerator
+    private function getKeyChainGenerator(): KeyChainGenerator
     {
         return $this->getServiceLocator()->get(CachedKeyChainGenerator::class);
     }
