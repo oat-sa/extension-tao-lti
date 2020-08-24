@@ -24,19 +24,18 @@ namespace oat\taoLti\controller;
 
 use oat\tao\helpers\UrlHelper;
 use oat\tao\model\security\Business\Contract\JwksRepositoryInterface;
-use oat\taoLti\models\classes\Platform\Service\CachedKeyChainGenerator;
+use oat\tao\model\security\Business\Contract\KeyChainRepositoryInterface;
+use oat\tao\model\security\Business\Domain\Key\KeyChainQuery;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\CachedPlatformJwksRepository;
-use Psr\Http\Message\RequestInterface;
-use Psr\Http\Message\ResponseInterface;
+use oat\taoLti\models\classes\Security\DataAccess\Repository\CachedPlatformKeyChainRepository;
 use \tao_actions_CommonModule as CommonModule;
-use function GuzzleHttp\Psr7\stream_for;
 
-class Jwks extends CommonModule
+class KeyChainView extends CommonModule
 {
     public function handle(/*ServerRequestInterface $request*/)// ResponseInterface
     {
         echo 'toto';
-        $this->setData('jwks-key', json_encode($this->getJwksRepository()->find()));
+        $this->setData('jwks-key', json_encode($this->getJwksRepository()->findAll(new KeyChainQuery())));
         $this->setData('jwks-generate-url', $this->getUrlGenerator()->buildUrl('jwks', 'Security'));
         $this->setView('jwks/Jwks.tpl');
 
@@ -46,40 +45,15 @@ class Jwks extends CommonModule
 
     public function view(): void
     {
-        $this->setData('jwks-key', json_encode($this->getJwksRepository()->find()));
+        $this->setData('jwks-key', json_encode($this->getJwksRepository()->findAll(new KeyChainQuery())));
         $this->setData('jwks-generate-url', $this->getUrlGenerator()->buildUrl('jwks', 'Security'));
         $this->setView('jwks/Jwks.tpl');
     }
 
-    public function __invoke(RequestInterface $request, ResponseInterface $response)
+
+    private function getJwksRepository(): KeyChainRepositoryInterface
     {
-
-    }
-
-    public function index(): void
-    {
-        switch ($this->getRequestMethod()) {
-            case 'POST':
-                $this->postJwks();
-                break;
-
-            default:
-                $this->setResponse(
-                    $this->getPsrResponse()
-                        ->withStatus(501)
-                        ->withBody(stream_for(__('Not Implemented')))
-                );
-        }
-    }
-
-    private function postJwks(): void
-    {
-        $this->getCachedKeyChainGenerator()->generate();
-    }
-
-    private function getJwksRepository(): JwksRepositoryInterface
-    {
-        return $this->getServiceLocator()->get(CachedPlatformJwksRepository::class);
+        return $this->getServiceLocator()->get(CachedPlatformKeyChainRepository::class);
     }
 
     private function getUrlGenerator(): UrlHelper
@@ -87,8 +61,4 @@ class Jwks extends CommonModule
         return $this->getServiceLocator()->get(UrlHelper::class);
     }
 
-    private function getCachedKeyChainGenerator(): CachedKeyChainGenerator
-    {
-        return $this->getServiceLocator()->get(CachedKeyChainGenerator::class);
-    }
 }
