@@ -367,6 +367,25 @@
                     }
                 }
             }
+        },
+        "/taoLti/KeyChainGenerator/generate": {
+            "post": {
+                "description": "Generate the key chain used on LTI 1.3 communication",
+                "tags": [
+                    "security", "KeyChain"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Acknowledge key chain generation has been successful"
+                    },
+                    "404": {
+                        "description": "Not found (Http verb not implemented)"
+                    },
+                    "500": {
+                        "description": "Internal error (should not occur)"
+                    }
+                }
+            }
         }
     },
     "externalDocs": {

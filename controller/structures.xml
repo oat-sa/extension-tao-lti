@@ -64,6 +64,7 @@
 					</action>
 				</actions>
 			</section>
+			<section id="settings_manage_lti_keys" name="LTI Platform key chain" url="/taoLti/KeyChainView/view" />
 		</sections>
 	</structure>
 </structures>
