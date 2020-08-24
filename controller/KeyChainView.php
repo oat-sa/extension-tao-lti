@@ -27,13 +27,13 @@ use oat\tao\model\security\Business\Contract\JwksRepositoryInterface;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\CachedPlatformJwksRepository;
 use tao_actions_CommonModule as CommonModule;
 
-class KeyPairView extends CommonModule
+class KeyChainView extends CommonModule
 {
     public function view(): void
     {
-        $this->setData('lti-key-pair', json_encode($this->getJwksRepository()->find()));
-        $this->setData('lti-key-pair-generate-url', $this->getUrlGenerator()->buildUrl('generate', 'KeyPairGenerator'));
-        $this->setView('ltiKeyPair/ltiKeyPairGenerate.tpl');
+        $this->setData('lti-key-chain', json_encode($this->getJwksRepository()->find()));
+        $this->setData('lti-key-chain-generate-url', $this->getUrlGenerator()->buildUrl('generate', 'KeyChainGenerator'));
+        $this->setView('ltiKeyChain/ltiKeyChainGenerate.tpl');
     }
 
     private function getJwksRepository(): JwksRepositoryInterface

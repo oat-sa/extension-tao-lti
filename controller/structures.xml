@@ -64,7 +64,7 @@
 					</action>
 				</actions>
 			</section>
-			<section id="settings_oauth_mng_jwks" name="LTI Platform key pair" url="/taoLti/KeyPairView/view" />
+			<section id="settings_oauth_mng_jwks" name="LTI Platform key chain" url="/taoLti/KeyChainView/view" />
 		</sections>
 	</structure>
 </structures>

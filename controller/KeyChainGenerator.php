@@ -29,7 +29,7 @@ use oat\taoLti\models\classes\Platform\Service\KeyChainGeneratorInterface;
 use tao_actions_CommonModule as CommonModule;
 use Throwable;
 
-class KeyPairGenerator extends CommonModule
+class KeyChainGenerator extends CommonModule
 {
     use HttpJsonResponseTrait;
 

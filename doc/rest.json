@@ -368,15 +368,15 @@
                 }
             }
         },
-        "/taoLti/KeyPairGenerator/generate": {
+        "/taoLti/KeyChainGenerator/generate": {
             "post": {
-                "description": "Generate the key pair used on LTI 1.3 communication",
+                "description": "Generate the key chain used on LTI 1.3 communication",
                 "tags": [
-                    "security", "KeyPair"
+                    "security", "KeyChain"
                 ],
                 "responses": {
                     "200": {
-                        "description": "Acknowledge key pair generation has been successful"
+                        "description": "Acknowledge key chain generation has been successful"
                     },
                     "404": {
                         "description": "Not found (Http verb not implemented)"
