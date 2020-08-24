@@ -24,21 +24,54 @@ namespace oat\taoLti\controller;
 
 use oat\tao\helpers\UrlHelper;
 use oat\tao\model\security\Business\Contract\JwksRepositoryInterface;
+use oat\tao\model\security\Business\Contract\KeyChainRepositoryInterface;
+use oat\tao\model\security\Business\Domain\Key\KeyChain;
+use oat\tao\model\security\Business\Domain\Key\KeyChainQuery;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\CachedPlatformJwksRepository;
+use oat\taoLti\models\classes\Security\DataAccess\Repository\CachedPlatformKeyChainRepository;
 use tao_actions_CommonModule as CommonModule;
 
 class KeyChainView extends CommonModule
 {
     public function view(): void
     {
-        $this->setData('lti-key-chain', json_encode($this->getJwksRepository()->find()));
-        $this->setData('lti-key-chain-generate-url', $this->getUrlGenerator()->buildUrl('generate', 'KeyChainGenerator'));
+        $this->setData('lti-jwks', json_encode($this->getJwksRepository()->find()));
+
+        $this->setData('lti-key-chains', json_encode($this->getSafeKeyChains()));
+
+        $this->setData(
+            'lti-key-chain-generate-url',
+            $this->getUrlGenerator()->buildUrl('generate', 'KeyChainGenerator')
+        );
+
         $this->setView('ltiKeyChain/ltiKeyChainGenerate.tpl');
+    }
+
+    /**
+     * @todo Remove or move this method once UX is validated
+     */
+    private function getSafeKeyChains(): array
+    {
+        $keyChains = $this->getKeyChainRepository()->findAll(new KeyChainQuery())->getKeyChains();
+        $safeKeyChains = array_map(function (KeyChain $keyChain) {
+            return [
+                'identifier' => $keyChain->getIdentifier(),
+                'name' => $keyChain->getName(),
+                'public' => $keyChain->getPublicKey()->getValue(),
+            ];
+        }, $keyChains);
+
+        return $safeKeyChains;
     }
 
     private function getJwksRepository(): JwksRepositoryInterface
     {
         return $this->getServiceLocator()->get(CachedPlatformJwksRepository::class);
+    }
+
+    private function getKeyChainRepository(): KeyChainRepositoryInterface
+    {
+        return $this->getServiceLocator()->get(CachedPlatformKeyChainRepository::class);
     }
 
     private function getUrlGenerator(): UrlHelper

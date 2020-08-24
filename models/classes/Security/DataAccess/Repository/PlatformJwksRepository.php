@@ -55,6 +55,7 @@ class PlatformJwksRepository extends ConfigurableService implements JwksReposito
 
             $exported = $exporter->export($keyChain);
 
+            \common_Logger::w(print_r($key->getPublicKey()->getValue(), true));
             $jwkList[] = new Jwk(
                 $exported['kty'],
                 $exported['e'],
