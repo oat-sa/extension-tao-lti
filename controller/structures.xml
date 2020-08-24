@@ -64,7 +64,7 @@
 					</action>
 				</actions>
 			</section>
-			<section id="settings_oauth_mng_jwks" name="Manage JWKS" url="/taoLti/Jwks/view" />
+			<section id="settings_oauth_mng_jwks" name="LTI Platform key pair" url="/taoLti/KeyPairView/view" />
 		</sections>
 	</structure>
 </structures>
