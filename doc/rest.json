@@ -378,7 +378,7 @@
                     "200": {
                         "description": "Acknowledge key pair generation has been successful"
                     },
-                    "404": {,
+                    "404": {
                         "description": "Not found (Http verb not implemented)"
                     },
                     "500": {
