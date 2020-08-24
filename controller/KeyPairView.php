@@ -25,7 +25,7 @@ namespace oat\taoLti\controller;
 use oat\tao\helpers\UrlHelper;
 use oat\tao\model\security\Business\Contract\JwksRepositoryInterface;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\CachedPlatformJwksRepository;
-use \tao_actions_CommonModule as CommonModule;
+use tao_actions_CommonModule as CommonModule;
 
 class KeyPairView extends CommonModule
 {
