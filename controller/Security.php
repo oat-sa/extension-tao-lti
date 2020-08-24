@@ -19,11 +19,15 @@
 
 namespace oat\taoLti\controller;
 
+use League\OAuth2\Server\Exception\OAuthServerException;
 use oat\tao\model\http\Controller;
 use oat\tao\model\security\Business\Contract\JwksRepositoryInterface;
 use oat\taoLti\models\classes\Platform\Service\Oidc\OidcLoginAuthenticatorInterface;
 use oat\taoLti\models\classes\Platform\Service\Oidc\OidcLoginAuthenticatorProxy;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\CachedPlatformJwksRepository;
+use oat\taoLti\models\classes\Security\DataAccess\Repository\PlatformKeyChainRepository;
+use oat\taoLti\models\classes\Security\DataAccess\Service\AccessTokenGeneratorInterface;
+use oat\taoLti\models\classes\Security\DataAccess\Service\AccessTokenGeneratorService;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorAwareTrait;
 use function GuzzleHttp\Psr7\stream_for;
@@ -31,6 +35,28 @@ use function GuzzleHttp\Psr7\stream_for;
 class Security extends Controller implements ServiceLocatorAwareInterface
 {
     use ServiceLocatorAwareTrait;
+
+    public function oauth(): void
+    {
+        //todo: Validate req contains supported scope (BasiCOutcome)
+        //todo: Req was done by registered tool
+        //todo:  double check keychaanin indentifier
+        //todo: put correct scope (basic outcome)
+        //todo proper search for a tool
+        //todo:  check proper tool is using this endpoint (trustable tool)
+        try {
+            // Validate assertion, generate and sign access token response, using the key chain private key
+            $this->setResponse(
+                $this->getAccessTokenGenerator()->generate(
+                    $this->getPsrRequest(),
+                    $this->getPsrResponse(),
+                    PlatformKeyChainRepository::OPTION_DEFAULT_KEY_ID
+                )
+            );
+        } catch (OAuthServerException $exception) {
+            $this->setResponse($exception->generateHttpResponse($this->getPsrResponse()));
+        }
+    }
 
     public function jwks(): void
     {
@@ -57,5 +83,10 @@ class Security extends Controller implements ServiceLocatorAwareInterface
     private function getOidcLoginAuthenticator(): OidcLoginAuthenticatorInterface
     {
         return $this->getServiceLocator()->get(OidcLoginAuthenticatorProxy::class);
+    }
+
+    private function getAccessTokenGenerator(): AccessTokenGeneratorInterface
+    {
+        return $this->getServiceLocator()->get(AccessTokenGeneratorService::class);
     }
 }
