@@ -41,24 +41,30 @@ use oat\taoLti\models\classes\Security\DataAccess\Repository\ToolKeyChainReposit
 class Lti1p3RegistrationRepository extends ConfigurableService implements RegistrationRepositoryInterface
 {
     private const OIDC_URL = ROOT_URL . 'taoLti/Security/oidc';
+    private const OAUTH_URL = 'http://tao-nginx/taoLti/Security/oauth';
     private const PLATFORM_ID = 'tao';
 
     public function find(string $identifier): ?RegistrationInterface
     {
-        $ltiProvider = $this->getLtiProviderService()
-            ->searchById($identifier);
-
         $toolKeyChain = $this->getToolKeyChainRepository()
-                ->findAll(new KeyChainQuery($ltiProvider->getId()))
+                ->findAll(new KeyChainQuery($identifier))
                 ->getKeyChains()[0] ?? null;
 
         $platformKeyChain = $this->getPlatformKeyChainRepository()
-                ->findAll(new KeyChainQuery())
+                ->findAll(new KeyChainQuery($identifier))
                 ->getKeyChains()[0] ?? null;
 
         if ($toolKeyChain === null || $platformKeyChain === null) {
             return null;
         }
+
+        $ltiProvider = new LtiProvider(
+            "https://tao.docker.localhost/ontologies/tao.rdf#i5f3eda4fe2a0f661240caa0f338d2e",
+            "Label Client",
+            'key',
+            'secret',
+            'http://localhost:8888/tool/service/client'
+        );
 
         return new Registration(
             $ltiProvider->getId(),
@@ -78,7 +84,7 @@ class Lti1p3RegistrationRepository extends ConfigurableService implements Regist
 
     public function findByClientId(string $clientId): ?RegistrationInterface
     {
-        $this->throwMissingImplementation(__METHOD__);
+        return $this->find($clientId);
     }
 
     public function findByPlatformIssuer(string $issuer, string $clientId = null): ?RegistrationInterface
@@ -133,7 +139,8 @@ class Lti1p3RegistrationRepository extends ConfigurableService implements Regist
             self::PLATFORM_ID,
             self::PLATFORM_ID,
             rtrim(ROOT_URL, '/'),
-            self::OIDC_URL
+            self::OIDC_URL,
+            self::OAUTH_URL
         );
     }
 
