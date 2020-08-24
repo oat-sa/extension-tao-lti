@@ -36,7 +36,7 @@ class KeyPairGenerator extends CommonModule
     public function generate(): void
     {
         try {
-            if ($this->isRequestPost()) {
+            if (!$this->isRequestPost()) {
                 throw new MethodNotAllowed();
             }
             $this->getKeyChainGenerator()->generate();
