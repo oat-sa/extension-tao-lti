@@ -22,6 +22,8 @@
 use oat\tao\model\accessControl\func\AccessRule;
 use oat\tao\model\user\TaoRoles;
 use oat\taoLti\controller\CookieUtils;
+use oat\taoLti\controller\JwksGet;
+use oat\taoLti\controller\MiddlewareRoute;
 use oat\taoLti\controller\Security;
 use oat\taoLti\scripts\install\GenerateKeys;
 use oat\taoLti\scripts\install\InstallServices;
@@ -38,14 +40,29 @@ return [
     'label' => 'LTI library',
     'description' => 'TAO LTI library and helpers',
     'license' => 'GPL-2.0',
-    'version' => '11.16.0',
+    'version' => '11.15.0',
       'author' => 'Open Assessment Technologies SA',
       'requires' => [
         'generis' => '>=12.15.0',
         'tao' => '>=41.8.0'
     ],
     'routes' => [
-        '/taoLti' => 'oat\\taoLti\\controller'
+        '/taoLti/Jwks' => [
+            'class' => MiddlewareRoute::class,
+            'config' => [
+                 'view' => [
+                    'handler' => JwksView::class,
+                    'method' => ['get'],
+                    'headers' => ['text/html'],
+                 ],
+                'generate' => [
+                    'handler' => JwksGenerate::class,
+                    'method' => ['post'],
+                    'headers' => ['application/json']
+                 ]
+            ]
+        ],
+        '/taoLti' => 'oat\\taoLti\\controller',
     ],
     'models' => [
         'http://www.tao.lu/Ontologies/TAOLTI.rdf',

@@ -23,37 +23,43 @@ declare(strict_types=1);
 namespace oat\taoLti\controller;
 
 use oat\tao\helpers\UrlHelper;
+use Psr\Http\Message\ResponseInterface;
 use oat\tao\model\security\Business\Contract\JwksRepositoryInterface;
 use oat\taoLti\models\classes\Platform\Service\CachedKeyChainGenerator;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\CachedPlatformJwksRepository;
 use Psr\Http\Message\RequestInterface;
-use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 use \tao_actions_CommonModule as CommonModule;
 use function GuzzleHttp\Psr7\stream_for;
 
-class Jwks extends CommonModule
+class JwksGet extends CommonModule //implements RequestHandlerInterface
 {
-    public function handle(/*ServerRequestInterface $request*/)// ResponseInterface
+    public function handle(/*ServerRequestInterface $request*/): ResponseInterface
     {
-        echo 'toto';
         $this->setData('jwks-key', json_encode($this->getJwksRepository()->find()));
         $this->setData('jwks-generate-url', $this->getUrlGenerator()->buildUrl('jwks', 'Security'));
         $this->setView('jwks/Jwks.tpl');
 
-
-//        return $this->getPsrResponse();
+        return $this->getPsrResponse();
     }
 
     public function view(): void
     {
+        \common_Logger::w(print_r($this->getPsrRequest()->getHeaders(), true));
         $this->setData('jwks-key', json_encode($this->getJwksRepository()->find()));
         $this->setData('jwks-generate-url', $this->getUrlGenerator()->buildUrl('jwks', 'Security'));
         $this->setView('jwks/Jwks.tpl');
     }
 
-    public function __invoke(RequestInterface $request, ResponseInterface $response)
+    public function __invoke(RequestInterface $request, ResponseInterface $response, callable $next)
     {
+        \common_Logger::w(print_r($this->getPsrRequest()->getHeaders(), true));
+        $this->setData('jwks-key', json_encode($this->getJwksRepository()->find()));
+        $this->setData('jwks-generate-url', $this->getUrlGenerator()->buildUrl('jwks', 'Security'));
+        $this->setView('jwks/Jwks.tpl');
 
+        return $next($request, $response);
     }
 
     public function index(): void
