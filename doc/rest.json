@@ -368,21 +368,21 @@
                 }
             }
         },
-        "/taoLti/Jwks/index": {
+        "/taoLti/KeyPairGenerator/generate": {
             "post": {
-                "description": "Generate the public JWKS used on LTI 1.3 communication",
+                "description": "Generate the key pair used on LTI 1.3 communication",
                 "tags": [
-                    "security", "jwks"
+                    "security", "KeyPair"
                 ],
                 "responses": {
                     "200": {
-                        "description": "Acknowledge JWKS generation has been successful"
+                        "description": "Acknowledge key pair generation has been successful"
+                    },
+                    "404": {,
+                        "description": "Not found (Http verb not implemented)"
                     },
                     "500": {
                         "description": "Internal error (should not occur)"
-                    },
-                    "501": {
-                        "description": "Internal error (Http method not implemented)"
                     }
                 }
             }
