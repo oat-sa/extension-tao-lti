@@ -46,14 +46,16 @@ class LtiProvider implements JsonSerializable
     private $roles;
 
     /**
-     * @param string $id
-     * @param string $label
-     * @param string $key
-     * @param string $secret
-     * @param string $callbackUrl
      * @param string[] $roles
      */
-    public function __construct($id, $label, $key, $secret, $callbackUrl, array $roles = [])
+    public function __construct(
+        string $id,
+        string $label,
+        string $key,
+        string $secret,
+        string $callbackUrl,
+        array $roles = []
+    )
     {
         $this->id = $id;
         $this->label = $label;
@@ -63,42 +65,27 @@ class LtiProvider implements JsonSerializable
         $this->roles = $roles;
     }
 
-    /**
-     * @return string
-     */
-    public function getId()
+    public function getId(): string
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
-    public function getLabel()
+    public function getLabel(): string
     {
         return $this->label;
     }
 
-    /**
-     * @return string
-     */
-    public function getKey()
+    public function getKey(): string
     {
         return $this->key;
     }
 
-    /**
-     * @return string
-     */
-    public function getSecret()
+    public function getSecret(): string
     {
         return $this->secret;
     }
 
-    /**
-     * @return string
-     */
-    public function getCallbackUrl()
+    public function getCallbackUrl(): string
     {
         return $this->callbackUrl;
     }
@@ -110,6 +97,8 @@ class LtiProvider implements JsonSerializable
 
     public function getToolClientId(): string
     {
+        //My instance to properly work has to have this equal to any lti providers
+        //https://tao.docker.localhost/ontologies/tao.rdf#i5f43ae0284bc1103e6b0027e8219cb4
         return 'client_id'; //@TODO Will retrieve this info from DB
     }
 

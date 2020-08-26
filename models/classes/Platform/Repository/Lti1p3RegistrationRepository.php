@@ -58,13 +58,9 @@ class Lti1p3RegistrationRepository extends ConfigurableService implements Regist
             return null;
         }
 
-        $ltiProvider = new LtiProvider(
-            "https://tao.docker.localhost/ontologies/tao.rdf#i5f3eda4fe2a0f661240caa0f338d2e",
-            "Label Client",
-            'key',
-            'secret',
-            'http://localhost:8888/tool/service/client'
-        );
+        //TODO: We need to decide how we want to get right LTI Provider
+        $ltiProviders = $this->getLtiProviderService()->findAll();
+        $ltiProvider = reset($ltiProviders);
 
         return new Registration(
             $ltiProvider->getId(),
