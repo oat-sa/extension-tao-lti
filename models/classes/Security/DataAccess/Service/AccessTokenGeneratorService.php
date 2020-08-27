@@ -24,6 +24,7 @@ namespace oat\taoLti\models\classes\Security\DataAccess\Service;
 
 use OAT\Library\Lti1p3Core\Security\Key\KeyChain;
 use OAT\Library\Lti1p3Core\Security\Key\KeyChainRepository;
+use OAT\Library\Lti1p3Core\Service\Server\Entity\Scope;
 use OAT\Library\Lti1p3Core\Service\Server\Factory\AuthorizationServerFactory as Lti1p3AuthorizationServerFactory;
 use OAT\Library\Lti1p3Core\Service\Server\Generator\AccessTokenResponseGenerator;
 use OAT\Library\Lti1p3Core\Service\Server\Repository\AccessTokenRepository;
@@ -58,7 +59,6 @@ class AccessTokenGeneratorService extends ConfigurableService implements AccessT
         return $generator->generate($request, $response, 'defaultPlatformKeyId');
     }
 
-
     private function getAuthorizationServerFactory(): Lti1p3AuthorizationServerFactory
     {
         return new Lti1p3AuthorizationServerFactory(
@@ -68,7 +68,11 @@ class AccessTokenGeneratorService extends ConfigurableService implements AccessT
             new AccessTokenRepository(
                 $this->getCacheItemPool()
             ),
-            new ScopeRepository(),
+            new ScopeRepository(
+                [
+                    new Scope('https://purl.imsglobal.org/spec/lti-bo/scope/basicoutcome'),
+                ]
+            ),
             'superSecretEncryptionKey' // TODO: You obviously have to add more entropy, this is an example
         );
     }
