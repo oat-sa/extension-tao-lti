@@ -43,8 +43,7 @@ class AccessTokenGeneratorService extends ConfigurableService implements AccessT
 {
     public function generate(
         ServerRequestInterface $request,
-        ResponseInterface $response,
-        string $identifier
+        ResponseInterface $response
     ): ResponseInterface
     {
         //Hack behaviour we should search for  tool

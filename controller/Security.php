@@ -25,7 +25,6 @@ use oat\tao\model\security\Business\Contract\JwksRepositoryInterface;
 use oat\taoLti\models\classes\Platform\Service\Oidc\OidcLoginAuthenticatorInterface;
 use oat\taoLti\models\classes\Platform\Service\Oidc\OidcLoginAuthenticatorProxy;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\CachedPlatformJwksRepository;
-use oat\taoLti\models\classes\Security\DataAccess\Repository\PlatformKeyChainRepository;
 use oat\taoLti\models\classes\Security\DataAccess\Service\AccessTokenGeneratorInterface;
 use oat\taoLti\models\classes\Security\DataAccess\Service\AccessTokenGeneratorService;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
@@ -49,8 +48,7 @@ class Security extends Controller implements ServiceLocatorAwareInterface
             $this->setResponse(
                 $this->getAccessTokenGenerator()->generate(
                     $this->getPsrRequest(),
-                    $this->getPsrResponse(),
-                    PlatformKeyChainRepository::OPTION_DEFAULT_KEY_ID
+                    $this->getPsrResponse()
                 )
             );
         } catch (OAuthServerException $exception) {
