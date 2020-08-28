@@ -20,7 +20,7 @@
 
 declare(strict_types=1);
 
-namespace oat\taoLti\models\classes\Security\DataAccess\Service;
+namespace oat\taoLti\models\classes\Platform\Service;
 
 use OAT\Library\Lti1p3Core\Security\Key\KeyChain;
 use OAT\Library\Lti1p3Core\Security\Key\KeyChainRepository;
@@ -44,8 +44,7 @@ class AccessTokenGeneratorService extends ConfigurableService implements AccessT
     public function generate(
         ServerRequestInterface $request,
         ResponseInterface $response
-    ): ResponseInterface
-    {
+    ): ResponseInterface {
         //Hack behaviour we should search for  tool
         $platformKeyChain = $this->getTranslatedPlatformKeyChain();
         $repository = new KeyChainRepository([$platformKeyChain]);
