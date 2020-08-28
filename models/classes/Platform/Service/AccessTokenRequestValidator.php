@@ -20,7 +20,7 @@
 
 declare(strict_types=1);
 
-namespace oat\taoLti\models\classes\Security\DataAccess\Service;
+namespace oat\taoLti\models\classes\Platform\Service;
 
 use OAT\Library\Lti1p3Core\Registration\RegistrationRepositoryInterface;
 use OAT\Library\Lti1p3Core\Service\Server\Validator\AccessTokenRequestValidationResult;
