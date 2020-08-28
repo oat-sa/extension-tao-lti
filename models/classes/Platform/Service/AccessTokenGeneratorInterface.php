@@ -27,8 +27,5 @@ use Psr\Http\Message\ServerRequestInterface;
 
 interface AccessTokenGeneratorInterface
 {
-    public function generate(
-        ServerRequestInterface $request,
-        ResponseInterface $response
-    ): ResponseInterface;
+    public function generate(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface;
 }
