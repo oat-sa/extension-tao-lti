@@ -31,9 +31,15 @@ use Psr\Http\Message\ServerRequestInterface;
 
 class AccessTokenRequestValidator extends ConfigurableService
 {
-    public function validate(ServerRequestInterface $request): AccessTokenRequestValidationResult
+    public function validate(ServerRequestInterface $request, string $role): AccessTokenRequestValidationResult
     {
-        return $this->getAccessTokenRequestValidator()->validate($request);
+        $result = $this->getAccessTokenRequestValidator()->validate($request);
+
+        if (!in_array($role, $result->getScopes(), true)) {
+            $result->setError(sprintf('User missing %s role', $role));
+        }
+
+        return $result;
     }
 
     private function getAccessTokenRequestValidator(): Lti1p3AccessTokenRequestValidator
@@ -45,5 +51,4 @@ class AccessTokenRequestValidator extends ConfigurableService
     {
         return $this->getServiceLocator()->get(Lti1p3RegistrationRepository::class);
     }
-
 }
