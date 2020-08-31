@@ -23,7 +23,7 @@ use oat\tao\model\accessControl\func\AccessRule;
 use oat\tao\model\user\TaoRoles;
 use oat\taoLti\controller\CookieUtils;
 use oat\taoLti\controller\JwksGet;
-use oat\taoLti\controller\MiddlewareRoute;
+use oat\taoLti\controller\RequestHandlerRoute;
 use oat\taoLti\controller\Security;
 use oat\taoLti\scripts\install\GenerateKeys;
 use oat\taoLti\scripts\install\InstallServices;
@@ -47,19 +47,19 @@ return [
         'tao' => '>=41.8.0'
     ],
     'routes' => [
-        '/taoLti/Jwks' => [
-            'class' => MiddlewareRoute::class,
-            'config' => [
+        'Jwks' => [
+            'class' => RequestHandlerRoute::class,
+            'definitions' => [
                  'view' => [
-                    'handler' => JwksView::class,
-                    'method' => ['get'],
-                    'headers' => ['text/html'],
+                     'pattern' => 'taoLti/Jwks/toto',
+                     'httpMethod' => 'get',
+                     'handler' => JwksGet::class,
                  ],
-                'generate' => [
-                    'handler' => JwksGenerate::class,
-                    'method' => ['post'],
-                    'headers' => ['application/json']
-                 ]
+//                'generate' => [
+//                    'handler' => JwksGenerate::class,
+//                    'method' => ['post'],
+//                    'pattern' => '',
+//                 ]
             ]
         ],
         '/taoLti' => 'oat\\taoLti\\controller',

@@ -22,79 +22,25 @@ declare(strict_types=1);
 
 namespace oat\taoLti\controller;
 
-use oat\tao\helpers\UrlHelper;
+use GuzzleHttp\Psr7\Response;
+use oat\tao\model\http\HttpJsonResponseTrait;
 use Psr\Http\Message\ResponseInterface;
-use oat\tao\model\security\Business\Contract\JwksRepositoryInterface;
-use oat\taoLti\models\classes\Platform\Service\CachedKeyChainGenerator;
-use oat\taoLti\models\classes\Security\DataAccess\Repository\CachedPlatformJwksRepository;
-use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use \tao_actions_CommonModule as CommonModule;
-use function GuzzleHttp\Psr7\stream_for;
+use Zend\ServiceManager\ServiceLocatorAwareInterface;
+use Zend\ServiceManager\ServiceLocatorAwareTrait;
 
-class JwksGet extends CommonModule //implements RequestHandlerInterface
+class JwksGet implements ServiceLocatorAwareInterface, RequestHandlerInterface
 {
-    public function handle(/*ServerRequestInterface $request*/): ResponseInterface
+    use ServiceLocatorAwareTrait;
+    use HttpJsonResponseTrait;
+
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $this->setData('jwks-key', json_encode($this->getJwksRepository()->find()));
-        $this->setData('jwks-generate-url', $this->getUrlGenerator()->buildUrl('jwks', 'Security'));
-        $this->setView('jwks/Jwks.tpl');
+        $this->response = new Response();
 
-        return $this->getPsrResponse();
-    }
+        $this->setSuccessJsonResponse(['content' => 'success'], 200);
 
-    public function view(): void
-    {
-        \common_Logger::w(print_r($this->getPsrRequest()->getHeaders(), true));
-        $this->setData('jwks-key', json_encode($this->getJwksRepository()->find()));
-        $this->setData('jwks-generate-url', $this->getUrlGenerator()->buildUrl('jwks', 'Security'));
-        $this->setView('jwks/Jwks.tpl');
-    }
-
-    public function __invoke(RequestInterface $request, ResponseInterface $response, callable $next)
-    {
-        \common_Logger::w(print_r($this->getPsrRequest()->getHeaders(), true));
-        $this->setData('jwks-key', json_encode($this->getJwksRepository()->find()));
-        $this->setData('jwks-generate-url', $this->getUrlGenerator()->buildUrl('jwks', 'Security'));
-        $this->setView('jwks/Jwks.tpl');
-
-        return $next($request, $response);
-    }
-
-    public function index(): void
-    {
-        switch ($this->getRequestMethod()) {
-            case 'POST':
-                $this->postJwks();
-                break;
-
-            default:
-                $this->setResponse(
-                    $this->getPsrResponse()
-                        ->withStatus(501)
-                        ->withBody(stream_for(__('Not Implemented')))
-                );
-        }
-    }
-
-    private function postJwks(): void
-    {
-        $this->getCachedKeyChainGenerator()->generate();
-    }
-
-    private function getJwksRepository(): JwksRepositoryInterface
-    {
-        return $this->getServiceLocator()->get(CachedPlatformJwksRepository::class);
-    }
-
-    private function getUrlGenerator(): UrlHelper
-    {
-        return $this->getServiceLocator()->get(UrlHelper::class);
-    }
-
-    private function getCachedKeyChainGenerator(): CachedKeyChainGenerator
-    {
-        return $this->getServiceLocator()->get(CachedKeyChainGenerator::class);
+        return $this->response;
     }
 }
