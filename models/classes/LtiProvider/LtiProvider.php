@@ -97,8 +97,6 @@ class LtiProvider implements JsonSerializable
 
     public function getToolClientId(): string
     {
-        //My instance to properly work has to have this equal to any lti providers
-        //https://tao.docker.localhost/ontologies/tao.rdf#i5f43ae0284bc1103e6b0027e8219cb4
         return 'client_id'; //@TODO Will retrieve this info from DB
     }
 
