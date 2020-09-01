@@ -15,17 +15,19 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2014 (original work) Open Assessment Technologies SA;
- *
- *
+ * Copyright (c) 2014-2020 (original work) Open Assessment Technologies SA;
  */
+
+declare(strict_types=1);
 
 namespace oat\taoLti\scripts\update;
 
 use common_Exception;
 use common_ext_ExtensionsManager;
 use oat\tao\model\mvc\error\ExceptionInterpreterService;
+use oat\tao\model\oauth\lockout\NoLockout;
 use oat\tao\model\oauth\nonce\NoNonce;
+use oat\tao\model\oauth\OauthService;
 use oat\tao\scripts\update\OntologyUpdater;
 use oat\taoLti\models\classes\ConsumerService;
 use oat\taoLti\models\classes\CookieVerifyService;
@@ -52,6 +54,7 @@ use oat\taoLti\models\classes\user\UserService;
 /**
  *
  * @author Joel Bout <joel@taotesting.com>
+ * @deprecated use migrations instead. See https://github.com/oat-sa/generis/wiki/Tao-Update-Process
  */
 class Updater extends \common_ext_ExtensionUpdater
 {
@@ -278,6 +281,24 @@ class Updater extends \common_ext_ExtensionUpdater
             $this->setVersion('11.6.0');
         }
 
-        $this->skip('11.6.0', '11.7.3');
+        $this->skip('11.6.0', '11.8.0');
+
+        if ($this->isVersion('11.8.0')) {
+            $lisOauthService = $this->getServiceManager()->get(LisOauthService::SERVICE_ID);
+
+            if (!$lisOauthService->hasOption(OauthService::OPTION_LOCKOUT_SERVICE)) {
+                $lisOauthService->setOption(OauthService::OPTION_LOCKOUT_SERVICE, new NoLockout());
+                $this->getServiceManager()->register(LisOauthService::SERVICE_ID, $lisOauthService);
+            }
+
+            $this->setVersion('11.8.1');
+        }
+
+        $this->skip('11.8.1', '11.9.0');
+        
+        //Updater files are deprecated. Please use migrations.
+        //See: https://github.com/oat-sa/generis/wiki/Tao-Update-Process
+
+        $this->setVersion($this->getExtension()->getManifest()->getVersion());
     }
 }
