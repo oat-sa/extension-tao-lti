@@ -22,6 +22,7 @@ namespace oat\taoLti\models\classes\LtiProvider;
 
 use oat\generis\model\OntologyAwareTrait;
 use oat\oatbox\service\ConfigurableService;
+use oat\taoDelivery\model\execution\DeliveryExecutionService;
 use oat\taoDeliveryRdf\model\ContainerRuntime;
 use oat\taoLti\models\classes\LtiException;
 
@@ -32,13 +33,11 @@ class LtiProviderService extends ConfigurableService implements LtiProviderRepos
 {
     use OntologyAwareTrait;
 
-    const SERVICE_ID = 'taoLti/LtiProviderService';
-    const LTI_PROVIDER_LIST_IMPLEMENTATIONS = 'ltiProviderListImplementations';
+    public const SERVICE_ID = 'taoLti/LtiProviderService';
+    public const LTI_PROVIDER_LIST_IMPLEMENTATIONS = 'ltiProviderListImplementations';
 
     /**
      * Counts the number of LTI providers found from all implementations configured.
-     *
-     * @return int
      */
     public function count(): int
     {
@@ -133,10 +132,13 @@ class LtiProviderService extends ConfigurableService implements LtiProviderRepos
             : null;
     }
 
-    public function findByDeliveryId(string $deliveryId): LtiProvider
+    public function searchByDeliveryExecutionId(string $deliveryExecutionId): LtiProvider
     {
-        $delivery = $this->getResource($deliveryId);
-        $containerJson = json_decode(
+        $delivery = $this->getDeliveryExecutionService()
+            ->getDeliveryExecution($deliveryExecutionId)
+            ->getDelivery();
+
+        $containerJson = $containerJson = json_decode(
             (string)$delivery->getOnePropertyValue(
                 $this->getProperty(ContainerRuntime::PROPERTY_CONTAINER)
             ),
@@ -148,5 +150,10 @@ class LtiProviderService extends ConfigurableService implements LtiProviderRepos
         }
 
         return $this->searchById($containerJson['params']['ltiProvider']);
+    }
+
+    private function getDeliveryExecutionService(): DeliveryExecutionService
+    {
+        return $this->getServiceLocator()->get(DeliveryExecutionService::SERVICE_ID);
     }
 }

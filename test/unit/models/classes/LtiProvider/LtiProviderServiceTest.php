@@ -26,35 +26,42 @@ use core_kernel_classes_Resource;
 use oat\generis\model\data\Ontology;
 use oat\generis\test\MockObject;
 use oat\generis\test\TestCase;
+use oat\taoDelivery\model\execution\DeliveryExecutionInterface;
+use oat\taoDelivery\model\execution\DeliveryExecutionService;
 use oat\taoLti\models\classes\LtiProvider\LtiProvider;
 use oat\taoLti\models\classes\LtiProvider\LtiProviderRepositoryInterface;
 use oat\taoLti\models\classes\LtiProvider\LtiProviderService;
 
 class LtiProviderServiceTest extends TestCase
 {
-    const COUNT_1 = 10;
-    const COUNT_2 = 12;
-    const FIND_ALL_1 = ['key1' => 'value1'];
-    const FIND_ALL_2 = ['key2' => 'value2'];
-    const LABEL = 'the sought label';
-    const ID = 'uri';
-    const OAUTH_KEY = 'okey1';
-    const SEARCH_1 = ['key3' => 'value3'];
-    const SEARCH_2 = ['key4' => 'value4'];
-    const SEARCH_ID_RESULT = ['uri' => 'v4'];
-    const SEARCH_OAUTH_KEY_RESULT = ['uri' => 'v5'];
+    public const COUNT_1 = 10;
+    public const COUNT_2 = 12;
+    public const FIND_ALL_1 = ['key1' => 'value1'];
+    public const FIND_ALL_2 = ['key2' => 'value2'];
+    public const LABEL = 'the sought label';
+    public const ID = 'uri';
+    public const OAUTH_KEY = 'okey1';
+    public const SEARCH_1 = ['key3' => 'value3'];
+    public const SEARCH_2 = ['key4' => 'value4'];
+    public const SEARCH_ID_RESULT = ['uri' => 'v4'];
+    public const SEARCH_OAUTH_KEY_RESULT = ['uri' => 'v5'];
 
     private const LTI_PROVIDER_PATH = 'path/to/lti/provider';
 
     /** @var LtiProviderService */
     private $subject;
 
-    /** @var LtiProvider|MockObject*/
+    /** @var LtiProvider|MockObject */
     private $ltiProviderMock;
+
+    /** @var DeliveryExecutionService|MockObject */
+    private $deliveryExecutionServiceMock;
 
     public function setUp(): void
     {
         $this->ltiProviderMock = $this->createMock(LtiProvider::class);
+        $this->deliveryExecutionServiceMock = $this->createMock(DeliveryExecutionService::class);
+
         $repository1 = $this->createRepositoryMock(
             self::COUNT_1,
             self::FIND_ALL_1,
@@ -79,6 +86,14 @@ class LtiProviderServiceTest extends TestCase
         $this->subject = new LtiProviderService([
             LtiProviderService::LTI_PROVIDER_LIST_IMPLEMENTATIONS => [$repository1, $repository2],
         ]);
+
+        $this->subject->setServiceLocator(
+            $this->getServiceLocatorMock(
+                [
+                    DeliveryExecutionService::SERVICE_ID => $this->deliveryExecutionServiceMock,
+                ]
+            )
+        );
     }
 
     public function testCount()
@@ -129,17 +144,21 @@ class LtiProviderServiceTest extends TestCase
         return $repository;
     }
 
-    public function testFindByDeliveryId(): void
+    public function testSearchByDeliveryExecutionId(): void
     {
         $modelMock = $this->createMock(Ontology::class);
         $this->subject->setModel($modelMock);
         $deliveryResourceMock = $this->createMock(core_kernel_classes_Resource::class);
         $deliveryPropertyMock = $this->createMock(core_kernel_classes_Property::class);
+        $deliveryExecutionMock = $this->createMock(DeliveryExecutionInterface::class);
 
-        $modelMock
+        $this->deliveryExecutionServiceMock
             ->expects($this->once())
-            ->method('getResource')
-            ->with('someId')
+            ->method('getDeliveryExecution')
+            ->willReturn($deliveryExecutionMock);
+
+        $deliveryExecutionMock
+            ->method('getDelivery')
             ->willReturn($deliveryResourceMock);
 
         $modelMock
@@ -156,7 +175,7 @@ class LtiProviderServiceTest extends TestCase
                 self::LTI_PROVIDER_PATH
             ));
 
-        $this->subject->findByDeliveryId('someId');
+        $this->subject->searchByDeliveryExecutionId('deliveryExecutionId');
     }
 
     private function getDeliveryContainerProperty(string $ltiProvider, string $ltiProviderPath): string
