@@ -20,13 +20,18 @@
 
 namespace oat\taoLti\models\classes\LtiProvider;
 
+use oat\generis\model\OntologyAwareTrait;
 use oat\oatbox\service\ConfigurableService;
+use oat\taoDeliveryRdf\model\ContainerRuntime;
+use oat\taoLti\models\classes\LtiException;
 
 /**
  * Service methods to manage the LTI provider business objects.
  */
 class LtiProviderService extends ConfigurableService implements LtiProviderRepositoryInterface
 {
+    use OntologyAwareTrait;
+
     const SERVICE_ID = 'taoLti/LtiProviderService';
     const LTI_PROVIDER_LIST_IMPLEMENTATIONS = 'ltiProviderListImplementations';
 
@@ -35,7 +40,7 @@ class LtiProviderService extends ConfigurableService implements LtiProviderRepos
      *
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         return $this->aggregate(
             0,
@@ -50,7 +55,7 @@ class LtiProviderService extends ConfigurableService implements LtiProviderRepos
      *
      * @return LtiProvider[]
      */
-    public function findAll()
+    public function findAll(): array
     {
         return $this->aggregate(
             [],
@@ -67,7 +72,7 @@ class LtiProviderService extends ConfigurableService implements LtiProviderRepos
      *
      * @return LtiProvider[]
      */
-    public function searchByLabel($label)
+    public function searchByLabel($label): array
     {
         return $this->aggregate(
             [],
@@ -97,9 +102,10 @@ class LtiProviderService extends ConfigurableService implements LtiProviderRepos
 
     /**
      * @param string $id
+     *
      * @return LtiProvider
      */
-    public function searchById($id)
+    public function searchById($id): LtiProvider
     {
         return current(array_filter($this->aggregate(
             [],
@@ -111,6 +117,7 @@ class LtiProviderService extends ConfigurableService implements LtiProviderRepos
 
     /**
      * @param string $oauthKey
+     *
      * @return LtiProvider|null
      */
     public function searchByOauthKey($oauthKey)
@@ -124,5 +131,22 @@ class LtiProviderService extends ConfigurableService implements LtiProviderRepos
         return count($found) > 0
             ? reset($found)
             : null;
+    }
+
+    public function findByDeliveryId(string $deliveryId): LtiProvider
+    {
+        $delivery = $this->getResource($deliveryId);
+        $containerJson = json_decode(
+            (string)$delivery->getOnePropertyValue(
+                $this->getProperty(ContainerRuntime::PROPERTY_CONTAINER)
+            ),
+            true
+        );
+
+        if (!isset($containerJson['params']) && !isset($containerJson['params']['ltiProvider'])) {
+            throw new LtiException('lti provider is not set'); //todo: Proper message and exception
+        }
+
+        return $this->searchById($containerJson['params']['ltiProvider']);
     }
 }

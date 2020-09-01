@@ -21,7 +21,12 @@
 
 namespace oat\taoLti\test\unit\models\classes\LtiProvider;
 
+use core_kernel_classes_Property;
+use core_kernel_classes_Resource;
+use oat\generis\model\data\Ontology;
+use oat\generis\test\MockObject;
 use oat\generis\test\TestCase;
+use oat\taoLti\models\classes\LtiProvider\LtiProvider;
 use oat\taoLti\models\classes\LtiProvider\LtiProviderRepositoryInterface;
 use oat\taoLti\models\classes\LtiProvider\LtiProviderService;
 
@@ -39,11 +44,17 @@ class LtiProviderServiceTest extends TestCase
     const SEARCH_ID_RESULT = ['uri' => 'v4'];
     const SEARCH_OAUTH_KEY_RESULT = ['uri' => 'v5'];
 
+    private const LTI_PROVIDER_PATH = 'path/to/lti/provider';
+
     /** @var LtiProviderService */
     private $subject;
 
+    /** @var LtiProvider|MockObject*/
+    private $ltiProviderMock;
+
     public function setUp(): void
     {
+        $this->ltiProviderMock = $this->createMock(LtiProvider::class);
         $repository1 = $this->createRepositoryMock(
             self::COUNT_1,
             self::FIND_ALL_1,
@@ -51,7 +62,7 @@ class LtiProviderServiceTest extends TestCase
             self::SEARCH_1,
             self::ID,
             self::OAUTH_KEY,
-            self::SEARCH_ID_RESULT,
+            $this->ltiProviderMock,
             null
         );
         $repository2 = $this->createRepositoryMock(
@@ -87,7 +98,7 @@ class LtiProviderServiceTest extends TestCase
 
     public function testSearchById()
     {
-        $this->assertEquals(self::SEARCH_ID_RESULT, $this->subject->searchById(self::ID));
+        $this->assertEquals($this->ltiProviderMock, $this->subject->searchById(self::ID));
     }
 
     public function testSearchByOauthKey()
@@ -116,5 +127,44 @@ class LtiProviderServiceTest extends TestCase
         $repository->method('searchByOauthKey')->with($searchOauthKey)->willReturn($searchByOauthKeyResult);
 
         return $repository;
+    }
+
+    public function testFindByDeliveryId(): void
+    {
+        $modelMock = $this->createMock(Ontology::class);
+        $this->subject->setModel($modelMock);
+        $deliveryResourceMock = $this->createMock(core_kernel_classes_Resource::class);
+        $deliveryPropertyMock = $this->createMock(core_kernel_classes_Property::class);
+
+        $modelMock
+            ->expects($this->once())
+            ->method('getResource')
+            ->with('someId')
+            ->willReturn($deliveryResourceMock);
+
+        $modelMock
+            ->expects($this->once())
+            ->method('getProperty')
+            ->with('http://www.tao.lu/Ontologies/TAODelivery.rdf#AssembledDeliveryContainer')
+            ->willReturn($deliveryPropertyMock);
+
+        $deliveryResourceMock
+            ->expects($this->once())
+            ->method('getOnePropertyValue')
+            ->willReturn($this->getDeliveryContainerProperty(
+                self::ID,
+                self::LTI_PROVIDER_PATH
+            ));
+
+        $this->subject->findByDeliveryId('someId');
+    }
+
+    private function getDeliveryContainerProperty(string $ltiProvider, string $ltiProviderPath): string
+    {
+        return sprintf(
+            '{"container":"lti","params":{"ltiProvider":"%s","ltiPath":"%s"}}',
+            $ltiProvider,
+            $ltiProviderPath
+        );
     }
 }
