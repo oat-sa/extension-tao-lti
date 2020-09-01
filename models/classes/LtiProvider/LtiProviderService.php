@@ -146,7 +146,7 @@ class LtiProviderService extends ConfigurableService implements LtiProviderRepos
         );
 
         if (!isset($containerJson['params']) && !isset($containerJson['params']['ltiProvider'])) {
-            throw new LtiException('lti provider is not set'); //todo: Proper message and exception
+            throw new LtiException('This delivery does not contain required lti provider defined');
         }
 
         return $this->searchById($containerJson['params']['ltiProvider']);
