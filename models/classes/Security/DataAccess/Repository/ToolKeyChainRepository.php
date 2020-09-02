@@ -39,11 +39,7 @@ class ToolKeyChainRepository extends ConfigurableService implements KeyChainRepo
 
     public function findAll(KeyChainQuery $query): KeyChainCollection
     {
-
-        if (
-        !$ltiProvider = $this->getLtiProviderService()
-            ->searchById($query->getIdentifier())
-        ) {
+        if (!$ltiProvider = $this->getLtiProviderService()->searchById($query->getIdentifier())) {
             throw new NoLtiProviderException('Lti Provider is not found');
         }
 

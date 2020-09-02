@@ -20,28 +20,16 @@
 
 declare(strict_types=1);
 
-namespace oat\taoLti\models\classes\Platform\Service;
+namespace oat\taoLti\models\classes\Security;
 
-use oat\oatbox\service\ConfigurableService;
-use oat\taoLti\models\classes\Security\AccessTokenResponseGenerator;
-use oat\taoLti\models\classes\Security\AccessTokenResponseGeneratorInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
-class AccessTokenGeneratorService extends ConfigurableService implements AccessTokenGeneratorInterface
+interface AccessTokenResponseGeneratorInterface
 {
     public function generate(
         ServerRequestInterface $request,
-        ResponseInterface $response
-    ): ResponseInterface
-    {
-
-        return $this->getAccessTokenResponseGenerator()
-            ->generate($request, $response, 'defaultPlatformKeyId');
-    }
-
-    public function getAccessTokenResponseGenerator(): AccessTokenResponseGeneratorInterface
-    {
-        return $this->getServiceLocator()->get(AccessTokenResponseGenerator::class);
-    }
+        ResponseInterface $response,
+        string $keyChainIdentifier
+    ): ResponseInterface;
 }

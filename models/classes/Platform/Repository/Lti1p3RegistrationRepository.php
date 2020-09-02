@@ -59,8 +59,7 @@ class Lti1p3RegistrationRepository extends ConfigurableService implements Regist
         }
 
         //TODO: We need to decide how we want to get right LTI Provider
-        $ltiProviders = $this->getLtiProviderService()->findAll();
-        $ltiProvider = reset($ltiProviders);
+        $ltiProvider = $this->getLtiProviderService()->searchById($identifier);
 
         return new Registration(
             $ltiProvider->getId(),
