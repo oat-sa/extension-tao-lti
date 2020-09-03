@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -15,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2019 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
+ * Copyright (c) 2019-2020 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
  */
 
 namespace oat\taoLti\models\classes\LtiProvider;
@@ -46,15 +48,16 @@ class LtiProvider implements JsonSerializable
     private $roles;
 
     /**
-     * @param string $id
-     * @param string $label
-     * @param string $key
-     * @param string $secret
-     * @param string $callbackUrl
      * @param string[] $roles
      */
-    public function __construct($id, $label, $key, $secret, $callbackUrl, array $roles = [])
-    {
+    public function __construct(
+        string $id,
+        string $label,
+        string $key,
+        string $secret,
+        string $callbackUrl,
+        array $roles = []
+    ) {
         $this->id = $id;
         $this->label = $label;
         $this->key = $key;
@@ -63,42 +66,27 @@ class LtiProvider implements JsonSerializable
         $this->roles = $roles;
     }
 
-    /**
-     * @return string
-     */
-    public function getId()
+    public function getId(): string
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
-    public function getLabel()
+    public function getLabel(): string
     {
         return $this->label;
     }
 
-    /**
-     * @return string
-     */
-    public function getKey()
+    public function getKey(): string
     {
         return $this->key;
     }
 
-    /**
-     * @return string
-     */
-    public function getSecret()
+    public function getSecret(): string
     {
         return $this->secret;
     }
 
-    /**
-     * @return string
-     */
-    public function getCallbackUrl()
+    public function getCallbackUrl(): string
     {
         return $this->callbackUrl;
     }
@@ -156,10 +144,7 @@ class LtiProvider implements JsonSerializable
         ];
     }
 
-    /**
-     * @return string[]
-     */
-    public function getRoles()
+    public function getRoles(): array
     {
         return $this->roles;
     }
