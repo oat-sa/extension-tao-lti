@@ -66,7 +66,7 @@ class LtiOutcomeXmlFactoryTest extends TestCase
         );
     }
 
-    public function provideOutcomeXML()
+    public function provideOutcomeXML(): array
     {
         $sourcedId = 'sourcedId';
         $messageIdentifier = uniqid('', true);
