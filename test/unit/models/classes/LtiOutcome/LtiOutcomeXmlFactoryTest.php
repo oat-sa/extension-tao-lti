@@ -53,7 +53,6 @@ class LtiOutcomeXmlFactoryTest extends TestCase
     /**
      * @dataProvider provideOutcomeXML
      */
-
     public function testBuildWithDefault(string $expected, array $data): void
     {
         $this->assertEquals(
