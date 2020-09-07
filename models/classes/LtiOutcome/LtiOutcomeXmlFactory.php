@@ -24,7 +24,6 @@ use oat\oatbox\service\ConfigurableService;
 
 class LtiOutcomeXmlFactory extends ConfigurableService
 {
-
     private const REPLACE_RESULT_REQUEST = 'replaceResultRequest';
     private const OUTCOME_DEFAULT_LANG = 'en-us';
 
