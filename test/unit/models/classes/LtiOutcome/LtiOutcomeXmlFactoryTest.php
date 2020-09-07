@@ -44,7 +44,6 @@ class LtiOutcomeXmlFactoryTest extends TestCase
                 $data['sourcedId'],
                 $data['grade'],
                 $data['messageIdentifier'],
-                $data['operation'],
                 $data['language']
             )
         );
@@ -103,7 +102,6 @@ class LtiOutcomeXmlFactoryTest extends TestCase
                     'sourcedId' => $sourcedId,
                     'grade' => $grade,
                     'messageIdentifier' => $messageIdentifier,
-                    'operation' => $operation,
                     'language' => $language
                 ]
             ],
