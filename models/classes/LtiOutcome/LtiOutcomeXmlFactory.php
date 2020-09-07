@@ -28,12 +28,11 @@ class LtiOutcomeXmlFactory extends ConfigurableService
     private const REPLACE_RESULT_REQUEST = 'replaceResultRequest';
     private const OUTCOME_DEFAULT_LANG = 'en-us';
 
-    public function build(
+    public function buildReplaceResultRequest(
         string $sourcedId,
-        float $grade,
+        string $grade,
         string $messageIdentifier,
-        string $operation = self::REPLACE_RESULT_REQUEST,
-        $language = self::OUTCOME_DEFAULT_LANG): string
+        string $language = self::OUTCOME_DEFAULT_LANG): string
     {
         $language = $language ?? $this->getDefaultLang();
         return '<?xml version = "1.0" encoding = "UTF-8"?>
@@ -45,7 +44,7 @@ class LtiOutcomeXmlFactory extends ConfigurableService
                         </imsx_POXRequestHeaderInfo>
                     </imsx_POXHeader>
                     <imsx_POXBody>
-                        <' . $operation . '>
+                        <' . self::REPLACE_RESULT_REQUEST . '>
                             <resultRecord>
                                 <sourcedGUID>
                                     <sourcedId>' . $sourcedId . '</sourcedId>
@@ -57,7 +56,7 @@ class LtiOutcomeXmlFactory extends ConfigurableService
                                     </resultScore>
                                 </result>
                             </resultRecord>
-                        </' . $operation . '>
+                        </' . self::REPLACE_RESULT_REQUEST . '>
                     </imsx_POXBody>
                 </imsx_POXEnvelopeRequest>';
     }

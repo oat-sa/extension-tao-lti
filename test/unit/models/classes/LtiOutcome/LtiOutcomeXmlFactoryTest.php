@@ -40,7 +40,7 @@ class LtiOutcomeXmlFactoryTest extends TestCase
     {
         $this->assertEquals(
             $expected,
-            $this->subject->build(
+            $this->subject->buildReplaceResultRequest(
                 $data['sourcedId'],
                 $data['grade'],
                 $data['messageIdentifier'],
@@ -58,7 +58,7 @@ class LtiOutcomeXmlFactoryTest extends TestCase
     {
         $this->assertEquals(
             $expected,
-            $this->subject->build(
+            $this->subject->buildReplaceResultRequest(
                 $data['sourcedId'],
                 $data['grade'],
                 $data['messageIdentifier']
@@ -66,7 +66,7 @@ class LtiOutcomeXmlFactoryTest extends TestCase
         );
     }
 
-    public function provideOutcomeXML()
+    public function provideOutcomeXML(): array
     {
         $sourcedId = 'sourcedId';
         $messageIdentifier = uniqid('', true);
