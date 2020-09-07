@@ -37,14 +37,7 @@ class Security extends Controller implements ServiceLocatorAwareInterface
 
     public function oauth(): void
     {
-        //todo: Validate req contains supported scope (BasiCOutcome)
-        //todo: Req was done by registered tool
-        //todo:  double check keychaanin indentifier
-        //todo: put correct scope (basic outcome)
-        //todo proper search for a tool
-        //todo:  check proper tool is using this endpoint (trustable tool)
         try {
-            // Validate assertion, generate and sign access token response, using the key chain private key
             $this->setResponse(
                 $this->getAccessTokenGenerator()->generate(
                     $this->getPsrRequest(),
