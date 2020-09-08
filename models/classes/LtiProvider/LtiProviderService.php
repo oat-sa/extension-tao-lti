@@ -25,6 +25,7 @@ use oat\oatbox\service\ConfigurableService;
 use oat\taoDelivery\model\execution\DeliveryExecutionService;
 use oat\taoDeliveryRdf\model\ContainerRuntime;
 use oat\taoLti\models\classes\LtiException;
+use oat\taoLtiConsumer\model\delivery\form\NoLtiProviderException;
 
 /**
  * Service methods to manage the LTI provider business objects.
@@ -47,6 +48,17 @@ class LtiProviderService extends ConfigurableService implements LtiProviderRepos
                 return $count + $implementation->count();
             }
         );
+    }
+
+    public function searchByToolClientId(string $clientId): LtiProvider
+    {
+        foreach ($this->findAll() as $provider) {
+            if ($provider instanceof LtiProvider && $clientId === $provider->getToolClientId()) {
+                return $provider;
+            }
+        }
+
+        throw new NoLtiProviderException(sprintf('Lti provider with client id %s does not exist', $clientId));
     }
 
     /**

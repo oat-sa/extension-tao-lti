@@ -31,6 +31,7 @@ use oat\taoDelivery\model\execution\DeliveryExecutionService;
 use oat\taoLti\models\classes\LtiProvider\LtiProvider;
 use oat\taoLti\models\classes\LtiProvider\LtiProviderRepositoryInterface;
 use oat\taoLti\models\classes\LtiProvider\LtiProviderService;
+use oat\taoLtiConsumer\model\delivery\form\NoLtiProviderException;
 
 class LtiProviderServiceTest extends TestCase
 {
@@ -83,8 +84,19 @@ class LtiProviderServiceTest extends TestCase
             self::SEARCH_OAUTH_KEY_RESULT
         );
 
+        $repository3 = $this->createRepositoryMock(
+            self::COUNT_2,
+            [$this->ltiProviderMock],
+            self::LABEL,
+            self::SEARCH_2,
+            self::ID,
+            self::OAUTH_KEY,
+            null,
+            self::SEARCH_OAUTH_KEY_RESULT
+        );
+
         $this->subject = new LtiProviderService([
-            LtiProviderService::LTI_PROVIDER_LIST_IMPLEMENTATIONS => [$repository1, $repository2],
+            LtiProviderService::LTI_PROVIDER_LIST_IMPLEMENTATIONS => [$repository1, $repository2, $repository3],
         ]);
 
         $this->subject->setServiceLocator(
@@ -130,7 +142,8 @@ class LtiProviderServiceTest extends TestCase
         $searchOauthKey,
         $searchByIdhResult,
         $searchByOauthKeyResult
-    ) {
+    )
+    {
         $repository = $this->getMockBuilder(LtiProviderRepositoryInterface::class)
             ->disableOriginalConstructor()
             ->setMethods(['count', 'findAll', 'searchByLabel', 'searchById'])
@@ -185,5 +198,25 @@ class LtiProviderServiceTest extends TestCase
             $ltiProvider,
             $ltiProviderPath
         );
+    }
+
+    public function testFindByToolClientId(): void
+    {
+        $this->ltiProviderMock
+            ->method('getToolClientId')
+            ->willReturn('client_id');
+
+        $this->assertSame($this->ltiProviderMock, $this->subject->searchByToolClientId('client_id'));
+    }
+
+    public function testFindByDifferentToolClientId(): void
+    {
+        $this->expectException(NoLtiProviderException::class);
+
+        $this->ltiProviderMock
+            ->method('getToolClientId')
+            ->willReturn('another_client_id');
+
+        $this->assertSame($this->ltiProviderMock, $this->subject->searchByToolClientId('client_id'));
     }
 }
