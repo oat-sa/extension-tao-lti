@@ -23,32 +23,64 @@ declare(strict_types=1);
 namespace oat\taoLti\models\classes\Platform\Service;
 
 use OAT\Library\Lti1p3Core\Registration\RegistrationRepositoryInterface;
-use OAT\Library\Lti1p3Core\Service\Server\Validator\AccessTokenRequestValidationResult;
 use OAT\Library\Lti1p3Core\Service\Server\Validator\AccessTokenRequestValidator as Lti1p3AccessTokenRequestValidator;
 use oat\oatbox\service\ConfigurableService;
+use oat\taoLti\models\classes\LtiProvider\LtiProviderService;
 use oat\taoLti\models\classes\Platform\Repository\Lti1p3RegistrationRepository;
 use Psr\Http\Message\ServerRequestInterface;
+use tao_models_classes_UserException;
 
 class AccessTokenRequestValidator extends ConfigurableService
 {
-    public function validate(ServerRequestInterface $request, string $role): AccessTokenRequestValidationResult
+    /** @var Lti1p3AccessTokenRequestValidator */
+    private $validator;
+
+    public function validate(ServerRequestInterface $request, string $role, string $deliveryExecutionId): void
     {
         $result = $this->getAccessTokenRequestValidator()->validate($request);
 
         if (!in_array($role, $result->getScopes(), true)) {
-            $result->setError(sprintf('User missing %s role', $role));
+            throw new MissingScopeException(sprintf('Scope %s is not allowed', $role));
         }
 
-        return $result;
+        if ($result->hasError() || $result->getRegistration() === null) {
+            throw new tao_models_classes_UserException(
+                sprintf('Access Token Validation failed. %s', $result->getError())
+            );
+        }
+
+        $ltiProvider = $this->getLtiProviderService()->searchByDeliveryExecutionId(
+            $deliveryExecutionId
+        );
+
+        if ($result->getRegistration()->getClientId() !== $ltiProvider->getToolClientId()) {
+            throw new InvalidLtiProviderException(
+                'LtiProvider for registration is not corresponding to Delivery LtiProvider'
+            );
+        }
+    }
+
+    public function withValidator(Lti1p3AccessTokenRequestValidator $validator): void
+    {
+        $this->validator = $validator;
     }
 
     private function getAccessTokenRequestValidator(): Lti1p3AccessTokenRequestValidator
     {
-        return new Lti1p3AccessTokenRequestValidator($this->getRegistrationRepository());
+        if (!$this->validator) {
+            $this->validator = new Lti1p3AccessTokenRequestValidator($this->getRegistrationRepository());
+        }
+
+        return $this->validator;
     }
 
     private function getRegistrationRepository(): RegistrationRepositoryInterface
     {
         return $this->getServiceLocator()->get(Lti1p3RegistrationRepository::class);
+    }
+
+    private function getLtiProviderService(): LtiProviderService
+    {
+        return $this->getServiceLocator()->get(LtiProviderService::SERVICE_ID);
     }
 }
