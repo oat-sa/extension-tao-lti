@@ -42,6 +42,7 @@ use Psr\Cache\CacheItemPoolInterface;
 
 class AuthorizationServerFactory extends ConfigurableService
 {
+    public const SERVICE_ID = 'taoLti/AuthorizationServerFactory';
     public const OPTION_ENCRYPTION_KEY = 'encryptionKey';
 
     public function create(KeyChain $keyChain): AuthorizationServer
