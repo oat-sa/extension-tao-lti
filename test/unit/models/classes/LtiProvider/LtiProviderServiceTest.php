@@ -31,7 +31,7 @@ use oat\taoDelivery\model\execution\DeliveryExecutionService;
 use oat\taoLti\models\classes\LtiProvider\LtiProvider;
 use oat\taoLti\models\classes\LtiProvider\LtiProviderRepositoryInterface;
 use oat\taoLti\models\classes\LtiProvider\LtiProviderService;
-use oat\taoLtiConsumer\model\delivery\form\NoLtiProviderException;
+use oat\taoLti\models\classes\Platform\Service\InvalidLtiProviderException;
 
 class LtiProviderServiceTest extends TestCase
 {
@@ -210,7 +210,7 @@ class LtiProviderServiceTest extends TestCase
 
     public function testFindByDifferentToolClientId(): void
     {
-        $this->expectException(NoLtiProviderException::class);
+        $this->expectException(InvalidLtiProviderException::class);
 
         $this->ltiProviderMock
             ->method('getToolClientId')
