@@ -23,9 +23,9 @@ use League\OAuth2\Server\Exception\OAuthServerException;
 use oat\tao\model\http\Controller;
 use oat\tao\model\security\Business\Contract\JwksRepositoryInterface;
 use oat\taoLti\models\classes\Platform\Service\AccessTokenGeneratorInterface;
-use oat\taoLti\models\classes\Platform\Service\AccessTokenGeneratorService;
 use oat\taoLti\models\classes\Platform\Service\Oidc\OidcLoginAuthenticatorInterface;
 use oat\taoLti\models\classes\Platform\Service\Oidc\OidcLoginAuthenticatorProxy;
+use oat\taoLti\models\classes\Security\AccessTokenResponseGenerator;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\CachedPlatformJwksRepository;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorAwareTrait;
@@ -78,6 +78,6 @@ class Security extends Controller implements ServiceLocatorAwareInterface
 
     private function getAccessTokenGenerator(): AccessTokenGeneratorInterface
     {
-        return $this->getServiceLocator()->get(AccessTokenGeneratorService::class);
+        return $this->getServiceLocator()->get(AccessTokenResponseGenerator::class);
     }
 }

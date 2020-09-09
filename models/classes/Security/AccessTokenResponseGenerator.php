@@ -41,8 +41,7 @@ class AccessTokenResponseGenerator extends ConfigurableService implements Access
     public function generate(
         ServerRequestInterface $request,
         ResponseInterface $response
-    ): ResponseInterface
-    {
+    ): ResponseInterface {
         $query = new KeyChainQuery(self::DEFAULT_PLATFORM_KEY);
 
         $keyChainCollection = $this->getKeyChainRepository()
