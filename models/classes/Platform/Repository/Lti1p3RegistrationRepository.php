@@ -41,35 +41,14 @@ use oat\taoLti\models\classes\Security\DataAccess\Repository\ToolKeyChainReposit
 class Lti1p3RegistrationRepository extends ConfigurableService implements RegistrationRepositoryInterface
 {
     private const OIDC_URL = ROOT_URL . 'taoLti/Security/oidc';
-    private const OAUTH_URL = 'http://tao-nginx/taoLti/Security/oauth';
+    private const OAUTH_URL = ROOT_URL . 'taoLti/Security/oauth';
     private const PLATFORM_ID = 'tao';
 
     public function find(string $identifier): ?RegistrationInterface
     {
-        $toolKeyChain = $this->getToolKeyChainRepository()
-                ->findAll(new KeyChainQuery($identifier))
-                ->getKeyChains()[0] ?? null;
-
-        $platformKeyChain = $this->getPlatformKeyChainRepository()
-                ->findAll(new KeyChainQuery($identifier))
-                ->getKeyChains()[0] ?? null;
-
-        if ($toolKeyChain === null || $platformKeyChain === null) {
-            return null;
-        }
-
-        //TODO: We need to decide how we want to get right LTI Provider
         $ltiProvider = $this->getLtiProviderService()->searchById($identifier);
 
-        return new Registration(
-            $ltiProvider->getId(),
-            $ltiProvider->getToolClientId(),
-            $this->getDefaultPlatform(),
-            $this->getTool($ltiProvider),
-            $ltiProvider->getToolDeploymentIds(),
-            $this->translateKeyChain($platformKeyChain),
-            $this->translateKeyChain($toolKeyChain)
-        );
+        return $this->createRegistrationByProvider($ltiProvider);
     }
 
     public function findAll(): array
@@ -79,7 +58,9 @@ class Lti1p3RegistrationRepository extends ConfigurableService implements Regist
 
     public function findByClientId(string $clientId): ?RegistrationInterface
     {
-        return $this->find($clientId);
+        $ltiProvider = $this->getLtiProviderService()->searchByToolClientId($clientId);
+
+        return $this->createRegistrationByProvider($ltiProvider);
     }
 
     public function findByPlatformIssuer(string $issuer, string $clientId = null): ?RegistrationInterface
@@ -142,5 +123,30 @@ class Lti1p3RegistrationRepository extends ConfigurableService implements Regist
     private function getLtiProviderService(): LtiProviderService
     {
         return $this->getServiceLocator()->get(LtiProviderService::SERVICE_ID);
+    }
+
+    private function createRegistrationByProvider(LtiProvider $ltiProvider): ?Registration
+    {
+        $toolKeyChain = $this->getToolKeyChainRepository()
+                ->findAll(new KeyChainQuery($ltiProvider->getId()))
+                ->getKeyChains()[0] ?? null;
+
+        $platformKeyChain = $this->getPlatformKeyChainRepository()
+                ->findAll(new KeyChainQuery())
+                ->getKeyChains()[0] ?? null;
+
+        if ($toolKeyChain === null || $platformKeyChain === null) {
+            return null;
+        }
+
+        return new Registration(
+            $ltiProvider->getId(),
+            $ltiProvider->getToolClientId(),
+            $this->getDefaultPlatform(),
+            $this->getTool($ltiProvider),
+            $ltiProvider->getToolDeploymentIds(),
+            $this->translateKeyChain($platformKeyChain),
+            $this->translateKeyChain($toolKeyChain)
+        );
     }
 }
