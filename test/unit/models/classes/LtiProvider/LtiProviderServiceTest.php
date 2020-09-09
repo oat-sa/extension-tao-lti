@@ -108,27 +108,27 @@ class LtiProviderServiceTest extends TestCase
         );
     }
 
-    public function testCount()
+    public function testCount(): void
     {
-        $this->assertEquals(self::COUNT_1 + self::COUNT_2, $this->subject->count());
+        $this->assertEquals(self::COUNT_1 + self::COUNT_2 + self::COUNT_2, $this->subject->count());
     }
 
-    public function testFindAll()
+    public function testFindAll(): void
     {
-        $this->assertEquals(array_merge(self::FIND_ALL_1, self::FIND_ALL_2), $this->subject->findAll());
+        $this->assertEquals(array_merge(self::FIND_ALL_1, self::FIND_ALL_2, [$this->ltiProviderMock]), $this->subject->findAll());
     }
 
-    public function testSearchByLabel()
+    public function testSearchByLabel(): void
     {
         $this->assertEquals(array_merge(self::SEARCH_1, self::SEARCH_2), $this->subject->searchByLabel(self::LABEL));
     }
 
-    public function testSearchById()
+    public function testSearchById(): void
     {
         $this->assertEquals($this->ltiProviderMock, $this->subject->searchById(self::ID));
     }
 
-    public function testSearchByOauthKey()
+    public function testSearchByOauthKey(): void
     {
         $this->assertEquals(self::SEARCH_OAUTH_KEY_RESULT, $this->subject->searchByOauthKey(self::OAUTH_KEY));
     }
@@ -142,8 +142,7 @@ class LtiProviderServiceTest extends TestCase
         $searchOauthKey,
         $searchByIdhResult,
         $searchByOauthKeyResult
-    )
-    {
+    ) {
         $repository = $this->getMockBuilder(LtiProviderRepositoryInterface::class)
             ->disableOriginalConstructor()
             ->setMethods(['count', 'findAll', 'searchByLabel', 'searchById'])
