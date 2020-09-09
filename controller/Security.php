@@ -22,7 +22,6 @@ namespace oat\taoLti\controller;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use oat\tao\model\http\Controller;
 use oat\tao\model\security\Business\Contract\JwksRepositoryInterface;
-use oat\taoLti\models\classes\Platform\Service\AccessTokenGeneratorInterface;
 use oat\taoLti\models\classes\Platform\Service\Oidc\OidcLoginAuthenticatorInterface;
 use oat\taoLti\models\classes\Platform\Service\Oidc\OidcLoginAuthenticatorProxy;
 use oat\taoLti\models\classes\Security\AccessTokenResponseGenerator;
@@ -76,7 +75,7 @@ class Security extends Controller implements ServiceLocatorAwareInterface
         return $this->getServiceLocator()->get(OidcLoginAuthenticatorProxy::class);
     }
 
-    private function getAccessTokenGenerator(): AccessTokenGeneratorInterface
+    private function getAccessTokenGenerator(): AccessTokenResponseGenerator
     {
         return $this->getServiceLocator()->get(AccessTokenResponseGenerator::class);
     }
