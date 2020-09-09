@@ -33,7 +33,24 @@ use oat\tao\model\OntologyClassService;
  */
 class RdfLtiProviderRepository extends OntologyClassService implements LtiProviderRepositoryInterface
 {
-    const CLASS_URI = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIProvider';
+    public const CLASS_URI = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIProvider';
+
+    public const LTI_VERSION = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#ltiVersion';
+    public const LTI_TOOL_CLIENT_ID = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#toolClientId';
+    public const LTI_TOOL_CLIENT_NAME = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#toolClientName';
+    public const LTI_TOOL_NAME = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#toolName';
+    public const LTI_TOOL_DEPLOYMENT_IDS = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#toolDeploymentId';
+    public const LTI_TOOL_AUDIENCE = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#toolAudience';
+    public const LTI_TOOL_OIDC_LOGIN_INITATION_URL = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#toolOidcLoginInitiationUrl';
+    public const LTI_TOOL_LAUNCH_URL = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#toolLaunchUrl';
+
+    public const LTI_TOOL_ACCESS_TOKEN_REQUEST_URL = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#accessTokenRequestUrl';
+
+    public const LTI_TOOL_JWKS_URL = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#JWKSUrl';
+    public const LTI_TOOL_PUBLIC_KEY = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#toolPublicKey';
+
+    public const LTI_V_11 = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#lti1p1';
+    public const LTI_V_13 = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#lti1p3';
 
     /**
      * @inheritdoc
@@ -56,7 +73,7 @@ class RdfLtiProviderRepository extends OntologyClassService implements LtiProvid
     /**
      * @inheritdoc
      */
-    public function findAll()
+    public function findAll(): array
     {
         return $this->getProviders();
     }
@@ -64,7 +81,7 @@ class RdfLtiProviderRepository extends OntologyClassService implements LtiProvid
     /**
      * @inheritdoc
      */
-    public function searchByLabel($queryString)
+    public function searchByLabel(string $queryString): array
     {
         return $this->getProviders([OntologyRdfs::RDFS_LABEL => $queryString]);
     }
@@ -72,11 +89,9 @@ class RdfLtiProviderRepository extends OntologyClassService implements LtiProvid
     /**
      * Retrieves providers from rdf store corresponding to the given criteria.
      *
-     * @param array $criteria
-     *
      * @return LtiProvider[]
      */
-    private function getProviders(array $criteria = [])
+    private function getProviders(array $criteria = []): array
     {
         $resources = $this->queryResources($criteria, 'search', []);
         $ltiProviders = [];
@@ -99,9 +114,9 @@ class RdfLtiProviderRepository extends OntologyClassService implements LtiProvid
      * hydrate the result with the $hydration method
      * or returns $default on failure
      *
-     * @param array     $criteria
-     * @param string    $hydration Hydration method ("search" for actual results, "count" for counting results)
-     * @param array|int $default   default value to return on failure
+     * @param array $criteria
+     * @param string $hydration Hydration method ("search" for actual results, "count" for counting results)
+     * @param array|int $default default value to return on failure
      *
      * @return mixed
      */
@@ -127,37 +142,12 @@ class RdfLtiProviderRepository extends OntologyClassService implements LtiProvid
         }
     }
 
-    /**
-     * Completes the RdfResource by adding the key, secret and callbackUrl properties.
-     *
-     * @param RdfResource $resource Base RdfResource providing Uri and Label.
-     *
-     * @return LtiProvider
-     * @throws InvalidArgumentTypeException
-     */
-    private function getLtiProviderFromResource(RdfResource $resource)
+    private function getLtiProviderFromResource(RdfResource $resource): LtiProvider
     {
-        $propertiesValues = $resource->getPropertiesValues([
-            DataStore::PROPERTY_OAUTH_KEY,
-            DataStore::PROPERTY_OAUTH_SECRET,
-            DataStore::PROPERTY_OAUTH_CALLBACK,
-        ]);
-
-        return new LtiProvider(
-            $resource->getUri(),
-            $resource->getLabel(),
-            (string)reset($propertiesValues[DataStore::PROPERTY_OAUTH_KEY]),
-            (string)reset($propertiesValues[DataStore::PROPERTY_OAUTH_SECRET]),
-            (string)reset($propertiesValues[DataStore::PROPERTY_OAUTH_CALLBACK])
-        );
+        $this->getLtiProviderFactory()->createFromResource($resource);
     }
 
-    /**
-     * @param string $id
-     * @return LtiProvider|null
-     * @throws InvalidArgumentTypeException
-     */
-    public function searchById($id)
+    public function searchById(string $id): ?LtiProvider
     {
         if ($this->getResource($id)->exists()) {
             return $this->getLtiProviderFromResource($this->getResource($id));
@@ -165,11 +155,7 @@ class RdfLtiProviderRepository extends OntologyClassService implements LtiProvid
         return null;
     }
 
-    /**
-     * @param string $oauthKey
-     * @return LtiProvider|null
-     */
-    public function searchByOauthKey($oauthKey)
+    public function searchByOauthKey(string $oauthKey): ?LtiProvider
     {
         $providers = $this->getProviders([DataStore::PROPERTY_OAUTH_KEY => $oauthKey]);
         $count = count($providers);
@@ -180,5 +166,10 @@ class RdfLtiProviderRepository extends OntologyClassService implements LtiProvid
             $this->logWarning("Found $count LTI providers with the same oauthKey: '$oauthKey'");
         }
         return reset($providers);
+    }
+
+    private function getLtiProviderFactory(): LtiProviderFactory
+    {
+        return $this->getServiceLocator()->get(LtiProviderFactory::class);
     }
 }

@@ -42,7 +42,7 @@ class ConfigurableLtiProviderRepository extends ConfigurableService implements L
     /**
      * @inheritdoc
      */
-    public function findAll()
+    public function findAll(): array
     {
         return $this->getProviders();
     }
@@ -50,11 +50,11 @@ class ConfigurableLtiProviderRepository extends ConfigurableService implements L
     /**
      * @inheritdoc
      */
-    public function searchByLabel($label)
+    public function searchByLabel(string $label): array
     {
         return array_filter(
             $this->getProviders(),
-            function (LtiProvider $provider) use ($label) {
+            static function (LtiProvider $provider) use ($label) {
                 return stripos($provider->getLabel(), $label) !== false;
             }
         );
@@ -65,42 +65,26 @@ class ConfigurableLtiProviderRepository extends ConfigurableService implements L
      *
      * @return LtiProvider[]
      */
-    private function getProviders()
+    private function getProviders(): array
     {
-        $keys = ['uri', 'label', 'key', 'secret', 'callback_url'];
 
         if ($this->providers === null) {
             $providerList = $this->getOption(self::OPTION_LTI_PROVIDER_LIST);
             if ($providerList === null) {
-                throw new \InvalidArgumentException('LTI provider list is not valid.');
+                throw new InvalidArgumentException('LTI provider list is not valid.');
             }
 
             $this->providers = [];
+
             foreach ($providerList as $provider) {
-                foreach ($keys as $key) {
-                    if (!isset($provider[$key])) {
-                        throw new \InvalidArgumentException(sprintf('Missing key \'%s\' in LTI provider list.', $key));
-                    }
-                }
-                $this->providers[] = new LtiProvider(
-                    $provider['uri'],
-                    $provider['label'],
-                    $provider['key'],
-                    $provider['secret'],
-                    $provider['callback_url'],
-                    $provider['roles'] ?? []
-                );
+                $this->providers[] = $this->getLtiProviderFactory()->createFromArray($provider);
             }
         }
 
         return $this->providers;
     }
 
-    /**
-     * @param string $id
-     * @return LtiProvider|null
-     */
-    public function searchById($id)
+    public function searchById(string $id): ?LtiProvider
     {
         foreach ($this->getProviders() as $provider) {
             if ($provider->getId() === $id) {
@@ -110,11 +94,7 @@ class ConfigurableLtiProviderRepository extends ConfigurableService implements L
         return null;
     }
 
-    /**
-     * @param string $oauthKey
-     * @return mixed|LtiProvider|null
-     */
-    public function searchByOauthKey($oauthKey)
+    public function searchByOauthKey(string $oauthKey): ?LtiProvider
     {
         foreach ($this->getProviders() as $provider) {
             if ($provider->getKey() === $oauthKey) {
@@ -122,5 +102,10 @@ class ConfigurableLtiProviderRepository extends ConfigurableService implements L
             }
         }
         return null;
+    }
+
+    private function getLtiProviderFactory(): LtiProviderFactory
+    {
+        return $this->getServiceLocator()->get(LtiProviderFactory::class);
     }
 }

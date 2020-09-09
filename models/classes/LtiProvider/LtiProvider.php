@@ -47,6 +47,27 @@ class LtiProvider implements JsonSerializable
     /** @var array */
     private $roles;
 
+    /** @var string */
+    private $ltiVersion;
+
+    /** @var string */
+    private $toolClientId;
+
+    /** @var string */
+    private $toolAudience;
+
+    /** @var string[] */
+    private $toolDeploymentIds = [];
+
+    /** @var string */
+    private $toolOidcLoginInitiationUrl;
+
+    /** @var string */
+    private $toolLaunchUrl;
+
+    /** @var string */
+    private $toolPublicKey;
+
     /**
      * @param string[] $roles
      */
@@ -56,7 +77,14 @@ class LtiProvider implements JsonSerializable
         string $key,
         string $secret,
         string $callbackUrl,
-        array $roles = []
+        array $roles = [],
+        string $ltiVersion = null,
+        string $toolClientId = null,
+        array $toolDeploymentIds = [],
+        string $toolAudience = null,
+        string $toolOidcLoginInitiationUrl = null,
+        string $toolLaunchUrl = null,
+        string $toolPublicKey = null
     ) {
         $this->id = $id;
         $this->label = $label;
@@ -64,6 +92,13 @@ class LtiProvider implements JsonSerializable
         $this->secret = $secret;
         $this->callbackUrl = $callbackUrl;
         $this->roles = $roles;
+        $this->ltiVersion = $ltiVersion;
+        $this->toolClientId = $toolClientId;
+        $this->toolDeploymentIds = $toolDeploymentIds;
+        $this->toolAudience = $toolAudience;
+        $this->toolOidcLoginInitiationUrl = $toolOidcLoginInitiationUrl;
+        $this->toolLaunchUrl = $toolLaunchUrl;
+        $this->toolPublicKey = $toolPublicKey;
     }
 
     public function getId(): string
@@ -93,39 +128,37 @@ class LtiProvider implements JsonSerializable
 
     public function getLtiVersion(): string
     {
-        return '1.3'; //@TODO Will retrieve this info from DB
+        return $this->ltiVersion;
     }
 
     public function getToolClientId(): string
     {
-        return 'client_id'; //@TODO Will retrieve this info from DB
+        return $this->toolClientId;
     }
 
     public function getToolDeploymentIds(): array
     {
-        return ['42']; //@TODO Will retrieve this info from DB
+        return $this->toolDeploymentIds;
     }
 
     public function getToolAudience(): string
     {
-        return 'http://localhost:8888/tool'; //@TODO Will retrieve this info from DB
+        return $this->toolAudience;
     }
 
     public function getToolOidcLoginInitiationUrl(): string
     {
-        return 'http://localhost:8888/lti1p3/oidc/login-initiation'; //@TODO Will retrieve this info from DB
+        return $this->toolOidcLoginInitiationUrl;
     }
 
     public function getToolLaunchUrl(): string
     {
-        return 'http://localhost:8888/tool/launch'; //@TODO Will retrieve this info from DB
+        return $this->toolLaunchUrl;
     }
 
     public function getToolPublicKey(): string
     {
-        $keyFile = ROOT_PATH . 'tool.key';
-
-        return file_exists($keyFile) ? file_get_contents($keyFile) : ''; //@TODO Will retrieve this info from DB
+        return $this->toolPublicKey;
     }
 
     /**

@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2019 (original work) Open Assessment Technologies SA
+ * Copyright (c) 2019-2020 (original work) Open Assessment Technologies SA
  */
 
 namespace oat\taoLti\models\classes\LtiProvider;
@@ -50,7 +50,7 @@ class LtiProviderService extends ConfigurableService implements LtiProviderRepos
      *
      * @return LtiProvider[]
      */
-    public function findAll()
+    public function findAll(): array
     {
         return $this->aggregate(
             [],
@@ -63,11 +63,9 @@ class LtiProviderService extends ConfigurableService implements LtiProviderRepos
     /**
      * Gathers LTI providers found from all implementations configured and filters them by a string contained in label.
      *
-     * @param string $label
-     *
      * @return LtiProvider[]
      */
-    public function searchByLabel($label)
+    public function searchByLabel(string $label): array
     {
         return $this->aggregate(
             [],
@@ -95,11 +93,7 @@ class LtiProviderService extends ConfigurableService implements LtiProviderRepos
         return $result;
     }
 
-    /**
-     * @param string $id
-     * @return LtiProvider
-     */
-    public function searchById($id)
+    public function searchById(string $id): ?LtiProvider
     {
         return current(array_filter($this->aggregate(
             [],
@@ -109,11 +103,7 @@ class LtiProviderService extends ConfigurableService implements LtiProviderRepos
         )));
     }
 
-    /**
-     * @param string $oauthKey
-     * @return LtiProvider|null
-     */
-    public function searchByOauthKey($oauthKey)
+    public function searchByOauthKey(string $oauthKey): ?LtiProvider
     {
         $found = array_filter($this->aggregate(
             [],

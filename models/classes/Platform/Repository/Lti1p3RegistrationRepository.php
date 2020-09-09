@@ -17,7 +17,6 @@
  *
  * Copyright (c) 2020 (original work) Open Assessment Technologies SA;
  */
-
 declare(strict_types=1);
 
 namespace oat\taoLti\models\classes\Platform\Repository;
@@ -40,7 +39,7 @@ use oat\taoLti\models\classes\Security\DataAccess\Repository\ToolKeyChainReposit
 
 class Lti1p3RegistrationRepository extends ConfigurableService implements RegistrationRepositoryInterface
 {
-    private const OIDC_URL = ROOT_URL . 'taoLti/Security/oidc';
+    public const OPTION_ROOT_URL = 'rootUrl';
     private const PLATFORM_ID = 'tao';
 
     public function find(string $identifier): ?RegistrationInterface
@@ -132,8 +131,8 @@ class Lti1p3RegistrationRepository extends ConfigurableService implements Regist
         return new Platform(
             self::PLATFORM_ID,
             self::PLATFORM_ID,
-            rtrim(ROOT_URL, '/'),
-            self::OIDC_URL
+            rtrim($this->getOption(self::OPTION_ROOT_URL), '/'),
+            $this->getOption(self::OPTION_ROOT_URL) . 'taoLti/Security/oidc'
         );
     }
 
