@@ -29,7 +29,6 @@ interface AccessTokenResponseGeneratorInterface
 {
     public function generate(
         ServerRequestInterface $request,
-        ResponseInterface $response,
-        string $keyChainIdentifier
+        ResponseInterface $response
     ): ResponseInterface;
 }

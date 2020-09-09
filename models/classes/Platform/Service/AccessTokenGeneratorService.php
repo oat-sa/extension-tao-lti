@@ -37,7 +37,7 @@ class AccessTokenGeneratorService extends ConfigurableService implements AccessT
     {
 
         return $this->getAccessTokenResponseGenerator()
-            ->generate($request, $response, 'defaultPlatformKeyId');
+            ->generate($request, $response);
     }
 
     public function getAccessTokenResponseGenerator(): AccessTokenResponseGeneratorInterface

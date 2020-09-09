@@ -33,24 +33,32 @@ use Psr\Http\Message\ServerRequestInterface;
 
 class AccessTokenResponseGenerator extends ConfigurableService implements AccessTokenResponseGeneratorInterface
 {
+    private const DEFAULT_PLATFORM_KEY = 'defaultPlatformKeyId';
+
+    /**
+     * @throws \League\OAuth2\Server\Exception\OAuthServerException
+     */
     public function generate(
         ServerRequestInterface $request,
-        ResponseInterface $response,
-        string $keyChainIdentifier
+        ResponseInterface $response
     ): ResponseInterface
     {
-        $query = new KeyChainQuery($keyChainIdentifier);
+        $query = new KeyChainQuery(self::DEFAULT_PLATFORM_KEY);
+
         $keyChainCollection = $this->getKeyChainRepository()
             ->findAll($query)
             ->getKeyChains();
 
-        //Todo how to choose correct keychain
         $keyChain = reset($keyChainCollection);
 
-        if (null === $keyChain) {
-            throw new OAuthServerException('Invalid key chain identifier', 11, 'key_chain_not_found', 404);
+        if (false === $keyChain) {
+            throw new OAuthServerException(
+                'Invalid key chain identifier',
+                11,
+                'key_chain_not_found',
+                404
+            );
         }
-
 
         return $this->getAuthorizationServerFactory()
             ->create($keyChain)
