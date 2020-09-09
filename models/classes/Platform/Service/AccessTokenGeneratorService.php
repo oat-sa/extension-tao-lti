@@ -33,9 +33,7 @@ class AccessTokenGeneratorService extends ConfigurableService implements AccessT
     public function generate(
         ServerRequestInterface $request,
         ResponseInterface $response
-    ): ResponseInterface
-    {
-
+    ): ResponseInterface {
         return $this->getAccessTokenResponseGenerator()
             ->generate($request, $response);
     }
