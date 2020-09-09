@@ -34,10 +34,11 @@ use OAT\Library\Lti1p3Core\Service\Server\Repository\AccessTokenRepository;
 use OAT\Library\Lti1p3Core\Service\Server\Repository\ClientRepository;
 use OAT\Library\Lti1p3Core\Service\Server\Repository\ScopeRepository;
 use OAT\Library\Lti1p3Core\Service\Server\ResponseType\ScopedBearerTokenResponse;
+use oat\oatbox\cache\ItemPoolSimpleCacheAdapter;
 use oat\oatbox\service\ConfigurableService;
 use oat\tao\model\security\Business\Domain\Key\KeyChain;
-use oat\taoLti\models\classes\Cache\CacheItemPool;
 use oat\taoLti\models\classes\Platform\Repository\Lti1p3RegistrationRepository;
+use Psr\Cache\CacheItemPoolInterface;
 
 class AuthorizationServerFactory extends ConfigurableService
 {
@@ -74,9 +75,9 @@ class AuthorizationServerFactory extends ConfigurableService
         return $this->getServiceLocator()->get(Lti1p3RegistrationRepository::class);
     }
 
-    private function getCacheItemPool(): CacheItemPool
+    private function getCacheItemPool(): CacheItemPoolInterface
     {
-        return $this->getServiceLocator()->get(CacheItemPool::class);
+        return $this->getServiceLocator()->get(ItemPoolSimpleCacheAdapter::class);
     }
 
     private function getClientRepository(): ClientRepositoryInterface
