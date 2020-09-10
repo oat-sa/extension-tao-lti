@@ -25,22 +25,43 @@ namespace oat\taoLti\models\classes\Platform\Service;
 use OAT\Library\Lti1p3Core\Registration\RegistrationRepositoryInterface;
 use OAT\Library\Lti1p3Core\Service\Server\Validator\AccessTokenRequestValidator as Lti1p3AccessTokenRequestValidator;
 use oat\oatbox\service\ConfigurableService;
+use oat\taoLti\models\classes\LtiProvider\LtiProvider;
 use oat\taoLti\models\classes\LtiProvider\LtiProviderService;
 use oat\taoLti\models\classes\Platform\Repository\Lti1p3RegistrationRepository;
 use Psr\Http\Message\ServerRequestInterface;
 use tao_models_classes_UserException;
 
-class AccessTokenRequestValidator extends ConfigurableService
+class AccessTokenRequestValidator extends ConfigurableService implements AccessTokenRequestValidatorInterface
 {
     /** @var Lti1p3AccessTokenRequestValidator */
     private $validator;
 
-    public function validate(ServerRequestInterface $request, string $role, string $deliveryExecutionId): void
+    /** @var LtiProvider */
+    private $ltiProvider;
+
+    /** @var string */
+    private $role;
+
+    public function withLtiProvider(LtiProvider $ltiProvider): self
+    {
+        $this->ltiProvider = $ltiProvider;
+
+        return $this;
+    }
+
+    public function withRole(string $role): self
+    {
+        $this->role = $role;
+
+        return $this;
+    }
+
+    public function validate(ServerRequestInterface $request): void
     {
         $result = $this->getAccessTokenRequestValidator()->validate($request);
 
-        if (!in_array($role, $result->getScopes(), true)) {
-            throw new MissingScopeException(sprintf('Scope %s is not allowed', $role));
+        if ($this->role !== null && !in_array($this->role, $result->getScopes(), true)) {
+            throw new MissingScopeException(sprintf('Scope %s is not allowed', $this->role));
         }
 
         if ($result->hasError() || $result->getRegistration() === null) {
@@ -49,14 +70,14 @@ class AccessTokenRequestValidator extends ConfigurableService
             );
         }
 
-        $ltiProvider = $this->getLtiProviderService()->searchByDeliveryExecutionId(
-            $deliveryExecutionId
-        );
-
-        if ($result->getRegistration()->getClientId() !== $ltiProvider->getToolClientId()) {
-            throw new InvalidLtiProviderException(
-                'LtiProvider for registration is not corresponding to Delivery LtiProvider'
+        if ($this->ltiProvider !== null) {
+            $ltiProvider = $this->getLtiProviderService()->searchByToolClientId(
+                $result->getRegistration()->getClientId()
             );
+
+            if (!$this->isLtiProviderThisSame($ltiProvider)) {
+                throw new InvalidLtiProviderException('Lti provider from registration is not matching delivery');
+            }
         }
     }
 
@@ -82,5 +103,10 @@ class AccessTokenRequestValidator extends ConfigurableService
     private function getLtiProviderService(): LtiProviderService
     {
         return $this->getServiceLocator()->get(LtiProviderService::SERVICE_ID);
+    }
+
+    private function isLtiProviderThisSame(LtiProvider $ltiProvider): bool
+    {
+        return $this->ltiProvider->getId() === $ltiProvider->getId();
     }
 }

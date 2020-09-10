@@ -15,19 +15,15 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2016 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
- *
+ * Copyright (c) 2016-2020 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
  */
+
+declare(strict_types=1);
 
 namespace oat\taoLti\test\unit\models\classes\LtiProvider;
 
-use core_kernel_classes_Property;
-use core_kernel_classes_Resource;
-use oat\generis\model\data\Ontology;
 use oat\generis\test\MockObject;
 use oat\generis\test\TestCase;
-use oat\taoDelivery\model\execution\DeliveryExecutionInterface;
-use oat\taoDelivery\model\execution\DeliveryExecutionService;
 use oat\taoLti\models\classes\LtiProvider\LtiProvider;
 use oat\taoLti\models\classes\LtiProvider\LtiProviderRepositoryInterface;
 use oat\taoLti\models\classes\LtiProvider\LtiProviderService;
@@ -35,187 +31,159 @@ use oat\taoLti\models\classes\Platform\Service\InvalidLtiProviderException;
 
 class LtiProviderServiceTest extends TestCase
 {
-    public const COUNT_1 = 10;
-    public const COUNT_2 = 12;
-    public const FIND_ALL_1 = ['key1' => 'value1'];
-    public const FIND_ALL_2 = ['key2' => 'value2'];
-    public const LABEL = 'the sought label';
-    public const ID = 'uri';
-    public const OAUTH_KEY = 'okey1';
-    public const SEARCH_1 = ['key3' => 'value3'];
-    public const SEARCH_2 = ['key4' => 'value4'];
-    public const SEARCH_ID_RESULT = ['uri' => 'v4'];
-    public const SEARCH_OAUTH_KEY_RESULT = ['uri' => 'v5'];
-
-    private const LTI_PROVIDER_PATH = 'path/to/lti/provider';
-
     /** @var LtiProviderService */
     private $subject;
 
-    /** @var LtiProvider|MockObject */
-    private $ltiProviderMock;
+    /** @var LtiProviderRepositoryInterface */
+    private $repository1;
 
-    /** @var DeliveryExecutionService|MockObject */
-    private $deliveryExecutionServiceMock;
+    /** @var LtiProviderRepositoryInterface */
+    private $repository2;
 
     public function setUp(): void
     {
-        $this->ltiProviderMock = $this->createMock(LtiProvider::class);
-        $this->deliveryExecutionServiceMock = $this->createMock(DeliveryExecutionService::class);
+        $this->repository1 = $this->createMock(LtiProviderRepositoryInterface::class);
+        $this->repository2 = $this->createMock(LtiProviderRepositoryInterface::class);
 
-        $repository1 = $this->createRepositoryMock(
-            self::COUNT_1,
-            self::FIND_ALL_1,
-            self::LABEL,
-            self::SEARCH_1,
-            self::ID,
-            self::OAUTH_KEY,
-            $this->ltiProviderMock,
-            null
-        );
-        $repository2 = $this->createRepositoryMock(
-            self::COUNT_2,
-            self::FIND_ALL_2,
-            self::LABEL,
-            self::SEARCH_2,
-            self::ID,
-            self::OAUTH_KEY,
-            null,
-            self::SEARCH_OAUTH_KEY_RESULT
-        );
-
-        $repository3 = $this->createRepositoryMock(
-            self::COUNT_2,
-            [$this->ltiProviderMock],
-            self::LABEL,
-            self::SEARCH_2,
-            self::ID,
-            self::OAUTH_KEY,
-            null,
-            self::SEARCH_OAUTH_KEY_RESULT
-        );
-
-        $this->subject = new LtiProviderService([
-            LtiProviderService::LTI_PROVIDER_LIST_IMPLEMENTATIONS => [$repository1, $repository2, $repository3],
-        ]);
-
-        $this->subject->setServiceLocator(
-            $this->getServiceLocatorMock(
-                [
-                    DeliveryExecutionService::SERVICE_ID => $this->deliveryExecutionServiceMock,
-                ]
-            )
+        $this->subject = new LtiProviderService(
+            [
+                LtiProviderService::LTI_PROVIDER_LIST_IMPLEMENTATIONS => [
+                    $this->repository1,
+                    $this->repository2,
+                ],
+            ]
         );
     }
-
     public function testCount(): void
     {
-        $this->assertEquals(self::COUNT_1 + self::COUNT_2 + self::COUNT_2, $this->subject->count());
-    }
+        $this->expectsCount($this->repository1, 2);
+        $this->expectsCount($this->repository2, 3);
 
+        $this->assertSame(5, $this->subject->count());
+    }
     public function testFindAll(): void
     {
-        $this->assertEquals(array_merge(self::FIND_ALL_1, self::FIND_ALL_2, [$this->ltiProviderMock]), $this->subject->findAll());
+        $provider1 = $this->createLtiProvider();
+        $provider2 = $this->createLtiProvider();
+        $this->expectsFindAll($this->repository1, [$provider1]);
+        $this->expectsFindAll($this->repository2, [$provider2]);
+        $this->assertSame([$provider1, $provider2], $this->subject->findAll());
     }
-
     public function testSearchByLabel(): void
     {
-        $this->assertEquals(array_merge(self::SEARCH_1, self::SEARCH_2), $this->subject->searchByLabel(self::LABEL));
+        $provider = $this->createLtiProvider();
+        $this->expectsSearchByLabel($this->repository1, 'label1', [$provider]);
+        $this->expectsSearchByLabel($this->repository2, 'label1', []);
+        $this->assertSame([$provider], $this->subject->searchByLabel('label1'));
     }
-
     public function testSearchById(): void
     {
-        $this->assertEquals($this->ltiProviderMock, $this->subject->searchById(self::ID));
+        $provider = $this->createLtiProvider();
+        $this->expectsSearchById($this->repository1, 'id', null);
+        $this->expectsSearchById($this->repository2, 'id', $provider);
+        $this->assertSame($provider, $this->subject->searchById('id'));
     }
-
     public function testSearchByOauthKey(): void
     {
-        $this->assertEquals(self::SEARCH_OAUTH_KEY_RESULT, $this->subject->searchByOauthKey(self::OAUTH_KEY));
+        $provider = $this->createLtiProvider();
+        $this->expectsSearchByOauthKey($this->repository1, 'key', null);
+        $this->expectsSearchByOauthKey($this->repository2, 'key', $provider);
+        $this->assertSame($provider, $this->subject->searchByOauthKey('key'));
     }
 
-    private function createRepositoryMock(
-        $count,
-        array $findAllResult,
-        $label,
-        array $searchResult,
-        $searchId,
-        $searchOauthKey,
-        $searchByIdhResult,
-        $searchByOauthKeyResult
-    ) {
-        $repository = $this->getMockBuilder(LtiProviderRepositoryInterface::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['count', 'findAll', 'searchByLabel', 'searchById'])
-            ->getMockForAbstractClass();
-        $repository->method('count')->willReturn($count);
-        $repository->method('findAll')->willReturn($findAllResult);
-        $repository->method('searchByLabel')->with($label)->willReturn($searchResult);
-        $repository->method('searchById')->with($searchId)->willReturn($searchByIdhResult);
-        $repository->method('searchByOauthKey')->with($searchOauthKey)->willReturn($searchByOauthKeyResult);
-
-        return $repository;
-    }
-
-    public function testSearchByDeliveryExecutionId(): void
+    public function testSearchByToolClientId(): void
     {
-        $modelMock = $this->createMock(Ontology::class);
-        $this->subject->setModel($modelMock);
-        $deliveryResourceMock = $this->createMock(core_kernel_classes_Resource::class);
-        $deliveryPropertyMock = $this->createMock(core_kernel_classes_Property::class);
-        $deliveryExecutionMock = $this->createMock(DeliveryExecutionInterface::class);
+        $provider = $this->createLtiProvider();
+        $provider2 = $this->createLtiProvider();
 
-        $this->deliveryExecutionServiceMock
+        $this->expectsFindAll($this->repository1, [$provider]);
+        $this->expectsFindAll($this->repository2, [$provider2]);
+        
+        $provider
             ->expects($this->once())
-            ->method('getDeliveryExecution')
-            ->willReturn($deliveryExecutionMock);
-
-        $deliveryExecutionMock
-            ->method('getDelivery')
-            ->willReturn($deliveryResourceMock);
-
-        $modelMock
-            ->expects($this->once())
-            ->method('getProperty')
-            ->with('http://www.tao.lu/Ontologies/TAODelivery.rdf#AssembledDeliveryContainer')
-            ->willReturn($deliveryPropertyMock);
-
-        $deliveryResourceMock
-            ->expects($this->once())
-            ->method('getOnePropertyValue')
-            ->willReturn($this->getDeliveryContainerProperty(
-                self::ID,
-                self::LTI_PROVIDER_PATH
-            ));
-
-        $this->subject->searchByDeliveryExecutionId('deliveryExecutionId');
-    }
-
-    private function getDeliveryContainerProperty(string $ltiProvider, string $ltiProviderPath): string
-    {
-        return sprintf(
-            '{"container":"lti","params":{"ltiProvider":"%s","ltiPath":"%s"}}',
-            $ltiProvider,
-            $ltiProviderPath
-        );
-    }
-
-    public function testFindByToolClientId(): void
-    {
-        $this->ltiProviderMock
             ->method('getToolClientId')
             ->willReturn('client_id');
-
-        $this->assertSame($this->ltiProviderMock, $this->subject->searchByToolClientId('client_id'));
+        
+        $this->subject->searchByToolClientId('client_id');
     }
 
-    public function testFindByDifferentToolClientId(): void
+    public function testFailingSearchByToolClientId(): void
     {
         $this->expectException(InvalidLtiProviderException::class);
 
-        $this->ltiProviderMock
-            ->method('getToolClientId')
-            ->willReturn('another_client_id');
+        $provider = $this->createLtiProvider();
+        $provider2 = $this->createLtiProvider();
 
-        $this->assertSame($this->ltiProviderMock, $this->subject->searchByToolClientId('client_id'));
+        $this->expectsFindAll($this->repository1, [$provider]);
+        $this->expectsFindAll($this->repository2, [$provider2]);
+
+        $provider
+            ->expects($this->once())
+            ->method('getToolClientId')
+            ->willReturn('not_this');
+
+        $provider2
+            ->expects($this->once())
+            ->method('getToolClientId')
+            ->willReturn('also_not_this');
+
+        $this->subject->searchByToolClientId('client_id');
+    }
+
+    /**
+     * @return LtiProvider|MockObject
+     */
+    private function createLtiProvider(): LtiProvider
+    {
+        return $this->createMock(LtiProvider::class);
+    }
+
+    /**
+     * @param LtiProviderRepositoryInterface|MockObject $repository
+     */
+    private function expectsFindAll(LtiProviderRepositoryInterface $repository, array $result): void
+    {
+        $repository->method('findAll')
+            ->willReturn($result);
+    }
+    /**
+     * @param LtiProviderRepositoryInterface|MockObject $repository
+     */
+    private function expectsCount(LtiProviderRepositoryInterface $repository, int $count): void
+    {
+        $repository->method('count')
+            ->willReturn($count);
+    }
+
+    /**
+     * @param LtiProviderRepositoryInterface|MockObject $repository
+     */
+    private function expectsSearchByLabel(LtiProviderRepositoryInterface $repository, string $label, array $result): void
+    {
+        $repository->method('searchByLabel')
+            ->with($label)
+            ->willReturn($result);
+    }
+
+    /**
+     * @param LtiProviderRepositoryInterface|MockObject $repository
+     */
+    private function expectsSearchById(LtiProviderRepositoryInterface $repository, string $id, ?LtiProvider $result): void
+    {
+        $repository
+            ->method('searchById')
+            ->with($id)
+            ->willReturn($result);
+    }
+
+    /**
+     * @param LtiProviderRepositoryInterface|MockObject $repository
+     */
+    private function expectsSearchByOauthKey(LtiProviderRepositoryInterface $repository, string $oauthKey, ?LtiProvider $result): void
+    {
+        $repository
+            ->method('searchByOauthKey')
+            ->with($oauthKey)
+            ->willReturn($result);
     }
 }

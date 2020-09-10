@@ -18,13 +18,12 @@
  * Copyright (c) 2019 (original work) Open Assessment Technologies SA
  */
 
+declare(strict_types=1);
+
 namespace oat\taoLti\models\classes\LtiProvider;
 
 use oat\generis\model\OntologyAwareTrait;
 use oat\oatbox\service\ConfigurableService;
-use oat\taoDelivery\model\execution\DeliveryExecutionService;
-use oat\taoDeliveryRdf\model\ContainerRuntime;
-use oat\taoLti\models\classes\LtiException;
 use oat\taoLti\models\classes\Platform\Service\InvalidLtiProviderException;
 
 /**
@@ -142,30 +141,5 @@ class LtiProviderService extends ConfigurableService implements LtiProviderRepos
         return count($found) > 0
             ? reset($found)
             : null;
-    }
-
-    public function searchByDeliveryExecutionId(string $deliveryExecutionId): LtiProvider
-    {
-        $delivery = $this->getDeliveryExecutionService()
-            ->getDeliveryExecution($deliveryExecutionId)
-            ->getDelivery();
-
-        $containerJson = $containerJson = json_decode(
-            (string)$delivery->getOnePropertyValue(
-                $this->getProperty(ContainerRuntime::PROPERTY_CONTAINER)
-            ),
-            true
-        );
-
-        if (!isset($containerJson['params']) && !isset($containerJson['params']['ltiProvider'])) {
-            throw new LtiException('This delivery does not contain required lti provider defined');
-        }
-
-        return $this->searchById($containerJson['params']['ltiProvider']);
-    }
-
-    private function getDeliveryExecutionService(): DeliveryExecutionService
-    {
-        return $this->getServiceLocator()->get(DeliveryExecutionService::SERVICE_ID);
     }
 }
