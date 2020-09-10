@@ -42,14 +42,14 @@ class AccessTokenRequestValidator extends ConfigurableService implements AccessT
     /** @var string */
     private $role;
 
-    public function withLtiProvider(LtiProvider $ltiProvider): self
+    public function withLtiProvider(LtiProvider $ltiProvider): AccessTokenRequestValidatorInterface
     {
         $this->ltiProvider = $ltiProvider;
 
         return $this;
     }
 
-    public function withRole(string $role): self
+    public function withRole(string $role): AccessTokenRequestValidatorInterface
     {
         $this->role = $role;
 
