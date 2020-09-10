@@ -52,7 +52,7 @@ class LtiProviderService extends ConfigurableService implements LtiProviderRepos
     public function searchByToolClientId(string $clientId): LtiProvider
     {
         foreach ($this->findAll() as $provider) {
-            if ($provider instanceof LtiProvider && $clientId === $provider->getToolClientId()) {
+            if ($clientId === $provider->getToolClientId()) {
                 return $provider;
             }
         }
