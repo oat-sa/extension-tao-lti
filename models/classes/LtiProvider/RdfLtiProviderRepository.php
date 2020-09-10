@@ -144,7 +144,7 @@ class RdfLtiProviderRepository extends OntologyClassService implements LtiProvid
 
     private function getLtiProviderFromResource(RdfResource $resource): LtiProvider
     {
-        $this->getLtiProviderFactory()->createFromResource($resource);
+        return $this->getLtiProviderFactory()->createFromResource($resource);
     }
 
     public function searchById(string $id): ?LtiProvider
