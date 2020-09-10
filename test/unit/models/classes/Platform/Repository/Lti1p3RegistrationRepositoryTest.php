@@ -72,7 +72,7 @@ class Lti1p3RegistrationRepositoryTest extends TestCase
         $this->ltiProviderService = $this->createMock(LtiProviderService::class);
         $this->toolKeyChainRepository = $this->createMock(KeyChainRepositoryInterface::class);
         $this->platformKeyChainRepository = $this->createMock(KeyChainRepositoryInterface::class);
-        $this->subject = new Lti1p3RegistrationRepository();
+        $this->subject = new Lti1p3RegistrationRepository([Lti1p3RegistrationRepository::OPTION_ROOT_URL => 'ROOT_URL']);
         $this->subject->setServiceLocator(
             $this->getServiceLocatorMock(
                 [
@@ -96,8 +96,8 @@ class Lti1p3RegistrationRepositoryTest extends TestCase
 
         $this->assertSame('tao', $registration->getPlatform()->getIdentifier());
         $this->assertSame('tao', $registration->getPlatform()->getName());
-        $this->assertSame(rtrim(ROOT_URL, '/'), $registration->getPlatform()->getAudience());
-        $this->assertSame(ROOT_URL . 'taoLti/Security/oidc', $registration->getPlatform()->getOidcAuthenticationUrl());
+        $this->assertSame(rtrim('ROOT_URL', '/'), $registration->getPlatform()->getAudience());
+        $this->assertSame('ROOT_URL' . 'taoLti/Security/oidc', $registration->getPlatform()->getOidcAuthenticationUrl());
 
         $this->assertSame($this->platformKeyChain->getIdentifier(), $registration->getPlatformKeyChain()->getIdentifier());
         $this->assertSame($this->platformKeyChain->getName(), $registration->getPlatformKeyChain()->getKeySetName());
