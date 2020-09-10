@@ -27,8 +27,8 @@ use oat\oatbox\service\ConfigurableService;
  */
 class LtiProviderService extends ConfigurableService implements LtiProviderRepositoryInterface
 {
-    const SERVICE_ID = 'taoLti/LtiProviderService';
-    const LTI_PROVIDER_LIST_IMPLEMENTATIONS = 'ltiProviderListImplementations';
+    public const SERVICE_ID = 'taoLti/LtiProviderService';
+    public const LTI_PROVIDER_LIST_IMPLEMENTATIONS = 'ltiProviderListImplementations';
 
     /**
      * Counts the number of LTI providers found from all implementations configured.
@@ -95,12 +95,16 @@ class LtiProviderService extends ConfigurableService implements LtiProviderRepos
 
     public function searchById(string $id): ?LtiProvider
     {
-        return current(array_filter($this->aggregate(
-            [],
-            static function ($providers, LtiProviderRepositoryInterface $implementation) use ($id) {
-                return array_merge($providers, [$implementation->searchById($id)]);
-            }
-        )));
+        return current(
+            array_filter(
+                $this->aggregate(
+                    [],
+                    static function ($providers, LtiProviderRepositoryInterface $implementation) use ($id) {
+                        return array_merge($providers, [$implementation->searchById($id)]);
+                    }
+                )
+            )
+        ) ?: null;
     }
 
     public function searchByOauthKey(string $oauthKey): ?LtiProvider
