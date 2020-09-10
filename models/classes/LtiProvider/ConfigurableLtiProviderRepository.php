@@ -20,6 +20,7 @@
 
 namespace oat\taoLti\models\classes\LtiProvider;
 
+use InvalidArgumentException;
 use oat\oatbox\service\ConfigurableService;
 
 /**
