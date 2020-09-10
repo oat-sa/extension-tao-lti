@@ -33,8 +33,6 @@ use Psr\Http\Message\ServerRequestInterface;
 
 class AccessTokenResponseGenerator extends ConfigurableService implements AccessTokenResponseGeneratorInterface
 {
-    private const DEFAULT_PLATFORM_KEY = 'defaultPlatformKeyId';
-
     /**
      * @throws \League\OAuth2\Server\Exception\OAuthServerException
      */
@@ -42,7 +40,7 @@ class AccessTokenResponseGenerator extends ConfigurableService implements Access
         ServerRequestInterface $request,
         ResponseInterface $response
     ): ResponseInterface {
-        $query = new KeyChainQuery(self::DEFAULT_PLATFORM_KEY);
+        $query = new KeyChainQuery();
 
         $keyChainCollection = $this->getKeyChainRepository()
             ->findAll($query)

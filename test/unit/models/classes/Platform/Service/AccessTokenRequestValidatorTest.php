@@ -27,11 +27,11 @@ use oat\generis\test\TestCase;
 use OAT\Library\Lti1p3Core\Registration\RegistrationInterface;
 use OAT\Library\Lti1p3Core\Service\Server\Validator\AccessTokenRequestValidationResult;
 use OAT\Library\Lti1p3Core\Service\Server\Validator\AccessTokenRequestValidator as Lti1p3AccessTokenRequestValidator;
+use oat\taoLti\models\classes\LtiProvider\InvalidLtiProviderException;
 use oat\taoLti\models\classes\LtiProvider\LtiProvider;
 use oat\taoLti\models\classes\LtiProvider\LtiProviderService;
-use oat\taoLti\models\classes\Platform\Service\AccessTokenRequestValidator;
-use oat\taoLti\models\classes\Platform\Service\InvalidLtiProviderException;
-use oat\taoLti\models\classes\Platform\Service\MissingScopeException;
+use oat\taoLti\models\classes\Security\AccessTokenRequestValidator;
+use oat\taoLti\models\classes\Security\MissingScopeException;
 use Psr\Http\Message\ServerRequestInterface;
 use tao_models_classes_UserException;
 
@@ -69,7 +69,9 @@ class AccessTokenRequestValidatorTest extends TestCase
     {
         $this->expectException(MissingScopeException::class);
 
-        $this->subject->validate($this->request, 'NonExistingScope', 'deliveryExecutionId');
+        $this->subject
+            ->withRole('NonExistingScope')
+            ->validate($this->request);
     }
 
     public function testResultHasErrors(): void
@@ -87,7 +89,9 @@ class AccessTokenRequestValidatorTest extends TestCase
             ->method('getError')
             ->willReturn('error');
 
-        $this->subject->validate($this->request, 'learner', 'deliveryExecutionId');
+        $this->subject
+            ->withRole('learner')
+            ->validate($this->request);
     }
 
     public function testResultRegistrationEmpty(): void
@@ -104,7 +108,7 @@ class AccessTokenRequestValidatorTest extends TestCase
             ->method('getRegistration')
             ->willReturn(null);
 
-        $this->subject->validate($this->request, 'learner', 'deliveryExecutionId');
+        $this->subject->validate($this->request);
     }
 
     public function testRegistrationClientNotMatchingDelivery(): void
@@ -133,17 +137,15 @@ class AccessTokenRequestValidatorTest extends TestCase
             ->method('getClientId')
             ->willReturn('client_id');
 
-        $ltiProviderService
-            ->expects($this->once())
-            ->method('searchByDeliveryExecutionId')
-            ->with('deliveryExecutionId')
-            ->willReturn($ltiProvider);
 
         $ltiProvider
             ->expects($this->once())
-            ->method('getToolClientId')
-            ->willReturn('another_client_id');
+            ->method('getId')
+            ->willReturn('id');
 
-        $this->subject->validate($this->request, 'learner', 'deliveryExecutionId');
+        $this->subject
+            ->withRole('learner')
+            ->withLtiProvider($ltiProvider)
+            ->validate($this->request);
     }
 }

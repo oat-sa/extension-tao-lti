@@ -24,10 +24,10 @@ namespace oat\taoLti\test\unit\models\classes\LtiProvider;
 
 use oat\generis\test\MockObject;
 use oat\generis\test\TestCase;
+use oat\taoLti\models\classes\LtiProvider\InvalidLtiProviderException;
 use oat\taoLti\models\classes\LtiProvider\LtiProvider;
 use oat\taoLti\models\classes\LtiProvider\LtiProviderRepositoryInterface;
 use oat\taoLti\models\classes\LtiProvider\LtiProviderService;
-use oat\taoLti\models\classes\Platform\Service\InvalidLtiProviderException;
 
 class LtiProviderServiceTest extends TestCase
 {

@@ -20,10 +20,10 @@
 
 declare(strict_types=1);
 
-namespace oat\taoLti\models\classes\Platform\Service;
+namespace oat\taoLti\models\classes\LtiProvider;
 
 use Exception;
 
-class MissingScopeException extends Exception
+class InvalidLtiProviderException extends Exception
 {
 }

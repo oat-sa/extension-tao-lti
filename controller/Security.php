@@ -25,6 +25,7 @@ use oat\tao\model\security\Business\Contract\JwksRepositoryInterface;
 use oat\taoLti\models\classes\Platform\Service\Oidc\OidcLoginAuthenticatorInterface;
 use oat\taoLti\models\classes\Platform\Service\Oidc\OidcLoginAuthenticatorProxy;
 use oat\taoLti\models\classes\Security\AccessTokenResponseGenerator;
+use oat\taoLti\models\classes\Security\AccessTokenResponseGeneratorInterface;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\CachedPlatformJwksRepository;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorAwareTrait;
@@ -75,7 +76,7 @@ class Security extends Controller implements ServiceLocatorAwareInterface
         return $this->getServiceLocator()->get(OidcLoginAuthenticatorProxy::class);
     }
 
-    private function getAccessTokenGenerator(): AccessTokenResponseGenerator
+    private function getAccessTokenGenerator(): AccessTokenResponseGeneratorInterface
     {
         return $this->getServiceLocator()->get(AccessTokenResponseGenerator::class);
     }

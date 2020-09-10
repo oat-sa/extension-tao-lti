@@ -24,7 +24,6 @@ namespace oat\taoLti\models\classes\LtiProvider;
 
 use oat\generis\model\OntologyAwareTrait;
 use oat\oatbox\service\ConfigurableService;
-use oat\taoLti\models\classes\Platform\Service\InvalidLtiProviderException;
 
 /**
  * Service methods to manage the LTI provider business objects.

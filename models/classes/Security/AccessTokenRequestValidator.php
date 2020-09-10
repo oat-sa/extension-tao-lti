@@ -20,14 +20,16 @@
 
 declare(strict_types=1);
 
-namespace oat\taoLti\models\classes\Platform\Service;
+namespace oat\taoLti\models\classes\Security;
 
 use OAT\Library\Lti1p3Core\Registration\RegistrationRepositoryInterface;
 use OAT\Library\Lti1p3Core\Service\Server\Validator\AccessTokenRequestValidator as Lti1p3AccessTokenRequestValidator;
 use oat\oatbox\service\ConfigurableService;
+use oat\taoLti\models\classes\LtiProvider\InvalidLtiProviderException;
 use oat\taoLti\models\classes\LtiProvider\LtiProvider;
 use oat\taoLti\models\classes\LtiProvider\LtiProviderService;
 use oat\taoLti\models\classes\Platform\Repository\Lti1p3RegistrationRepository;
+use oat\taoLti\models\classes\Platform\Service\AccessTokenRequestValidatorInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use tao_models_classes_UserException;
 

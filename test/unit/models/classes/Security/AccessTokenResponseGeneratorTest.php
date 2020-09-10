@@ -59,6 +59,7 @@ class AccessTokenResponseGeneratorTest extends TestCase
 
     /** @var KeyChain */
     private $keyChain;
+
     /** @var KeyChainQuery */
     private $keyChainQuery;
 
@@ -69,7 +70,7 @@ class AccessTokenResponseGeneratorTest extends TestCase
         $this->keyChainRepositoryMock = $this->createMock(CachedPlatformKeyChainRepository::class);
         $this->authorizationServerFactoryMock = $this->createMock(AuthorizationServerFactory::class);
 
-        $this->keyChainQuery = new KeyChainQuery('defaultPlatformKeyId');
+        $this->keyChainQuery = new KeyChainQuery();
 
         $this->keyChain = new KeyChain(
             'defaultPlatformKeyId',
