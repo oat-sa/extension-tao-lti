@@ -8,9 +8,6 @@ use Doctrine\DBAL\Schema\Schema;
 use oat\tao\scripts\tools\migrations\AbstractMigration;
 use oat\tao\scripts\update\OntologyUpdater;
 
-/**
- * Auto-generated Migration: Please modify to your needs!
- */
 final class Version202009071343243772_taoLti extends AbstractMigration
 {
 
@@ -26,6 +23,5 @@ final class Version202009071343243772_taoLti extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        OntologyUpdater::syncModels();
     }
 }
