@@ -28,8 +28,8 @@ use oat\tao\model\security\Business\Domain\Key\Key;
 use oat\tao\model\security\Business\Domain\Key\KeyChain;
 use oat\tao\model\security\Business\Domain\Key\KeyChainCollection;
 use oat\tao\model\security\Business\Domain\Key\KeyChainQuery;
+use oat\taoLti\models\classes\LtiProvider\InvalidLtiProviderException;
 use oat\taoLti\models\classes\LtiProvider\LtiProviderService;
-use oat\taoLtiConsumer\model\delivery\form\NoLtiProviderException;
 
 class ToolKeyChainRepository extends ConfigurableService implements KeyChainRepositoryInterface
 {
@@ -40,7 +40,7 @@ class ToolKeyChainRepository extends ConfigurableService implements KeyChainRepo
     public function findAll(KeyChainQuery $query): KeyChainCollection
     {
         if (!$ltiProvider = $this->getLtiProviderService()->searchById($query->getIdentifier())) {
-            throw new NoLtiProviderException('Lti Provider is not found');
+            throw new InvalidLtiProviderException('Lti Provider is not found');
         }
 
         $keyChain = new KeyChain(
