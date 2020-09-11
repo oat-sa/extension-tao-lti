@@ -115,8 +115,8 @@ class Lti1p3RegistrationRepositoryTest extends TestCase
         $this->assertSame('1', $registration->getDefaultDeploymentId());
         $this->assertSame(null, $registration->getToolJwksUrl());
 
-        $this->assertSame('ltiId', $registration->getTool()->getIdentifier());
-        $this->assertSame('ltiId', $registration->getTool()->getName());
+        $this->assertSame('toolIdentifier', $registration->getTool()->getIdentifier());
+        $this->assertSame('toolName', $registration->getTool()->getName());
         $this->assertSame('audience', $registration->getTool()->getAudience());
         $this->assertSame('launch_url', $registration->getTool()->getLaunchUrl());
         $this->assertSame('oidc_url', $registration->getTool()->getOidcLoginInitiationUrl());
@@ -136,6 +136,12 @@ class Lti1p3RegistrationRepositoryTest extends TestCase
 
         $ltiProvider->method('getId')
             ->willReturn('ltiId');
+
+        $ltiProvider->method('getToolName')
+            ->willReturn('toolName');
+
+        $ltiProvider->method('getToolIdentifier')
+            ->willReturn('toolIdentifier');
 
         $ltiProvider->method('getToolPublicKey')
             ->willReturn('key');

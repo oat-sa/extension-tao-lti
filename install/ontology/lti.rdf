@@ -132,10 +132,19 @@
     <widget:widget rdf:resource="http://www.tao.lu/datatypes/WidgetDefinitions.rdf#RadioBox"/>
   </rdf:Description>
 
-  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOLTI.rdf#toolClientName">
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOLTI.rdf#toolIdentifier">
     <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
-    <rdfs:label xml:lang="en-US"><![CDATA[Client Tool Name]]></rdfs:label>
-    <rdfs:comment xml:lang="en-US"><![CDATA[Client Tool Name]]></rdfs:comment>
+    <rdfs:label xml:lang="en-US"><![CDATA[Tool identifier]]></rdfs:label>
+    <rdfs:comment xml:lang="en-US"><![CDATA[Tool identifier]]></rdfs:comment>
+    <rdfs:domain rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIProvider"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <widget:widget rdf:resource="http://www.tao.lu/datatypes/WidgetDefinitions.rdf#TextBox"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOLTI.rdf#toolName">
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+    <rdfs:label xml:lang="en-US"><![CDATA[Tool name]]></rdfs:label>
+    <rdfs:comment xml:lang="en-US"><![CDATA[Tool name]]></rdfs:comment>
     <rdfs:domain rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIProvider"/>
     <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
     <widget:widget rdf:resource="http://www.tao.lu/datatypes/WidgetDefinitions.rdf#TextBox"/>
@@ -143,8 +152,8 @@
 
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOLTI.rdf#toolClientId">
     <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
-    <rdfs:label xml:lang="en-US"><![CDATA[Client Tool Id]]></rdfs:label>
-    <rdfs:comment xml:lang="en-US"><![CDATA[Client Tool Id]]></rdfs:comment>
+    <rdfs:label xml:lang="en-US"><![CDATA[Tool client id]]></rdfs:label>
+    <rdfs:comment xml:lang="en-US"><![CDATA[Tool client id]]></rdfs:comment>
     <rdfs:domain rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIProvider"/>
     <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
     <widget:widget rdf:resource="http://www.tao.lu/datatypes/WidgetDefinitions.rdf#TextBox"/>
@@ -152,36 +161,26 @@
 
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOLTI.rdf#toolAudience">
     <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
-    <rdfs:label xml:lang="en-US"><![CDATA[Tool Audience]]></rdfs:label>
-    <rdfs:comment xml:lang="en-US"><![CDATA[Tool Audience]]></rdfs:comment>
+    <rdfs:label xml:lang="en-US"><![CDATA[Tool audience]]></rdfs:label>
+    <rdfs:comment xml:lang="en-US"><![CDATA[Tool audience]]></rdfs:comment>
     <rdfs:domain rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIProvider"/>
     <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
     <widget:widget rdf:resource="http://www.tao.lu/datatypes/WidgetDefinitions.rdf#TextBox"/>
   </rdf:Description>
 
-  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOLTI.rdf#toolDeploymentId">
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOLTI.rdf#toolDeploymentIds">
     <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
-    <rdfs:label xml:lang="en-US"><![CDATA[Tool Deployment Ids]]></rdfs:label>
-    <rdfs:comment xml:lang="en-US"><![CDATA[Tool Deployment Ids]]></rdfs:comment>
+    <rdfs:label xml:lang="en-US"><![CDATA[Tool deployment ids]]></rdfs:label>
+    <rdfs:comment xml:lang="en-US"><![CDATA[Tool deployment ids]]></rdfs:comment>
     <rdfs:domain rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIProvider"/>
     <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
     <widget:widget rdf:resource="http://www.tao.lu/datatypes/WidgetDefinitions.rdf#TextBox"/>
   </rdf:Description>
-
 
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOLTI.rdf#toolOidcLoginInitiationUrl">
     <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
-    <rdfs:label xml:lang="en-US"><![CDATA[Tool Oidc Login Initiation Url]]></rdfs:label>
-    <rdfs:comment xml:lang="en-US"><![CDATA[Tool Oidc Login Initiation Url]]></rdfs:comment>
-    <rdfs:domain rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIProvider"/>
-    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
-    <widget:widget rdf:resource="http://www.tao.lu/datatypes/WidgetDefinitions.rdf#TextBox"/>
-  </rdf:Description>
-
-  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOLTI.rdf#accessTokenRequestUrl">
-    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
-    <rdfs:label xml:lang="en-US"><![CDATA[Access Token Request Url]]></rdfs:label>
-    <rdfs:comment xml:lang="en-US"><![CDATA[Access Token Request Url]]></rdfs:comment>
+    <rdfs:label xml:lang="en-US"><![CDATA[Tool OIDC Login Initiation Url]]></rdfs:label>
+    <rdfs:comment xml:lang="en-US"><![CDATA[Tool OIDC Login Initiation Url]]></rdfs:comment>
     <rdfs:domain rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIProvider"/>
     <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
     <widget:widget rdf:resource="http://www.tao.lu/datatypes/WidgetDefinitions.rdf#TextBox"/>
@@ -189,17 +188,17 @@
 
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOLTI.rdf#toolLaunchUrl">
     <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
-    <rdfs:label xml:lang="en-US"><![CDATA[Tool Launch Url]]></rdfs:label>
-    <rdfs:comment xml:lang="en-US"><![CDATA[Tool Launch Url]]></rdfs:comment>
+    <rdfs:label xml:lang="en-US"><![CDATA[Tool launch url]]></rdfs:label>
+    <rdfs:comment xml:lang="en-US"><![CDATA[Tool launch url]]></rdfs:comment>
     <rdfs:domain rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIProvider"/>
     <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
     <widget:widget rdf:resource="http://www.tao.lu/datatypes/WidgetDefinitions.rdf#TextBox"/>
   </rdf:Description>
 
-  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOLTI.rdf#JWKSUrl">
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOLTI.rdf#ToolJwksUrl">
     <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
-    <rdfs:label xml:lang="en-US"><![CDATA[JWKS Url]]></rdfs:label>
-    <rdfs:comment xml:lang="en-US"><![CDATA[JWKS Url]]></rdfs:comment>
+    <rdfs:label xml:lang="en-US"><![CDATA[Tool JWKS url]]></rdfs:label>
+    <rdfs:comment xml:lang="en-US"><![CDATA[Tool JWKS url]]></rdfs:comment>
     <rdfs:domain rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIProvider"/>
     <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
     <widget:widget rdf:resource="http://www.tao.lu/datatypes/WidgetDefinitions.rdf#TextBox"/>
@@ -207,8 +206,8 @@
 
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOLTI.rdf#toolPublicKey">
     <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
-    <rdfs:label xml:lang="en-US"><![CDATA[Tool PublicKey]]></rdfs:label>
-    <rdfs:comment xml:lang="en-US"><![CDATA[Tool PublicKey]]></rdfs:comment>
+    <rdfs:label xml:lang="en-US"><![CDATA[Tool public key]]></rdfs:label>
+    <rdfs:comment xml:lang="en-US"><![CDATA[Tool public key]]></rdfs:comment>
     <rdfs:domain rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIProvider"/>
     <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
     <widget:widget rdf:resource="http://www.tao.lu/datatypes/WidgetDefinitions.rdf#TextArea"/>

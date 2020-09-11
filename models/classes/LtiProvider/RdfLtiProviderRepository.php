@@ -37,16 +37,14 @@ class RdfLtiProviderRepository extends OntologyClassService implements LtiProvid
 
     public const LTI_VERSION = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#ltiVersion';
     public const LTI_TOOL_CLIENT_ID = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#toolClientId';
-    public const LTI_TOOL_CLIENT_NAME = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#toolClientName';
+    public const LTI_TOOL_IDENTIFIER = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#toolIdentifier';
     public const LTI_TOOL_NAME = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#toolName';
-    public const LTI_TOOL_DEPLOYMENT_IDS = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#toolDeploymentId';
+    public const LTI_TOOL_DEPLOYMENT_IDS = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#toolDeploymentIds';
     public const LTI_TOOL_AUDIENCE = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#toolAudience';
     public const LTI_TOOL_OIDC_LOGIN_INITATION_URL = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#toolOidcLoginInitiationUrl';
     public const LTI_TOOL_LAUNCH_URL = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#toolLaunchUrl';
 
-    public const LTI_TOOL_ACCESS_TOKEN_REQUEST_URL = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#accessTokenRequestUrl';
-
-    public const LTI_TOOL_JWKS_URL = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#JWKSUrl';
+    public const LTI_TOOL_JWKS_URL = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#ToolJwksUrl';
     public const LTI_TOOL_PUBLIC_KEY = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#toolPublicKey';
 
     public const LTI_V_11 = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#lti1p1';

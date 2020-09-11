@@ -68,9 +68,15 @@ class LtiProvider implements JsonSerializable
     /** @var string */
     private $toolPublicKey;
 
-    /**
-     * @param string[] $roles
-     */
+    /** @var string */
+    private $toolIdentifier;
+
+    /** @var string */
+    private $toolName;
+
+    /** @var string */
+    private $toolJwksUrl;
+
     public function __construct(
         string $id,
         string $label,
@@ -79,12 +85,15 @@ class LtiProvider implements JsonSerializable
         string $callbackUrl,
         array $roles = [],
         string $ltiVersion = null,
+        string $toolIdentifier = null,
+        string $toolName = null,
         string $toolClientId = null,
         array $toolDeploymentIds = [],
         string $toolAudience = null,
         string $toolOidcLoginInitiationUrl = null,
         string $toolLaunchUrl = null,
-        string $toolPublicKey = null
+        string $toolPublicKey = null,
+        string $toolJwksUrl = null
     ) {
         $this->id = $id;
         $this->label = $label;
@@ -99,6 +108,9 @@ class LtiProvider implements JsonSerializable
         $this->toolOidcLoginInitiationUrl = $toolOidcLoginInitiationUrl;
         $this->toolLaunchUrl = $toolLaunchUrl;
         $this->toolPublicKey = $toolPublicKey;
+        $this->toolIdentifier = $toolIdentifier;
+        $this->toolName = $toolName;
+        $this->toolJwksUrl = $toolJwksUrl;
     }
 
     public function getId(): string
@@ -129,6 +141,21 @@ class LtiProvider implements JsonSerializable
     public function getLtiVersion(): string
     {
         return $this->ltiVersion;
+    }
+
+    public function getToolIdentifier(): string
+    {
+        return $this->toolIdentifier;
+    }
+
+    public function getToolName(): string
+    {
+        return $this->toolName;
+    }
+
+    public function getToolJwksUrl(): ?string
+    {
+        return $this->toolJwksUrl;
     }
 
     public function getToolClientId(): string

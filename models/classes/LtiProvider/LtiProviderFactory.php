@@ -37,21 +37,16 @@ class LtiProviderFactory extends ConfigurableService
                 DataStore::PROPERTY_OAUTH_SECRET,
                 DataStore::PROPERTY_OAUTH_CALLBACK,
                 RdfLtiProviderRepository::LTI_VERSION,
+                RdfLtiProviderRepository::LTI_TOOL_IDENTIFIER,
+                RdfLtiProviderRepository::LTI_TOOL_NAME,
                 RdfLtiProviderRepository::LTI_TOOL_CLIENT_ID,
+                RdfLtiProviderRepository::LTI_TOOL_DEPLOYMENT_IDS,
                 RdfLtiProviderRepository::LTI_TOOL_AUDIENCE,
-                RdfLtiProviderRepository::LTI_TOOL_OIDC_LOGIN_INITATION_URL,
                 RdfLtiProviderRepository::LTI_TOOL_LAUNCH_URL,
+                RdfLtiProviderRepository::LTI_TOOL_OIDC_LOGIN_INITATION_URL,
+                RdfLtiProviderRepository::LTI_TOOL_JWKS_URL,
                 RdfLtiProviderRepository::LTI_TOOL_PUBLIC_KEY,
             ]
-        );
-
-        $version = (string)reset(
-            $propertiesValues[RdfLtiProviderRepository::LTI_VERSION]
-        ) === RdfLtiProviderRepository::LTI_V_11 ? '1.1' : '1.3';
-
-        $toolDeploymentIds = explode(
-            ',',
-            (string)reset($propertiesValues[RdfLtiProviderRepository::LTI_TOOL_DEPLOYMENT_IDS])
         );
 
         return new LtiProvider(
@@ -61,16 +56,18 @@ class LtiProviderFactory extends ConfigurableService
             (string)reset($propertiesValues[DataStore::PROPERTY_OAUTH_SECRET]),
             (string)reset($propertiesValues[DataStore::PROPERTY_OAUTH_CALLBACK]),
             [],
-            $version,
+            $this->getLtiVersion($propertiesValues),
+            (string)reset($propertiesValues[RdfLtiProviderRepository::LTI_TOOL_IDENTIFIER]),
+            (string)reset($propertiesValues[RdfLtiProviderRepository::LTI_TOOL_NAME]),
             (string)reset($propertiesValues[RdfLtiProviderRepository::LTI_TOOL_CLIENT_ID]),
-            is_array($toolDeploymentIds) ?: [],
+            $this->getDeploymentIds($propertiesValues),
             (string)reset($propertiesValues[RdfLtiProviderRepository::LTI_TOOL_AUDIENCE]),
             (string)reset($propertiesValues[RdfLtiProviderRepository::LTI_TOOL_OIDC_LOGIN_INITATION_URL]),
             (string)reset($propertiesValues[RdfLtiProviderRepository::LTI_TOOL_LAUNCH_URL]),
-            (string)reset($propertiesValues[RdfLtiProviderRepository::LTI_TOOL_PUBLIC_KEY])
+            (string)reset($propertiesValues[RdfLtiProviderRepository::LTI_TOOL_PUBLIC_KEY]),
+            (string)reset($propertiesValues[RdfLtiProviderRepository::LTI_TOOL_JWKS_URL])
         );
     }
-
 
     public function createFromArray(array $provider): LtiProvider
     {
@@ -89,6 +86,23 @@ class LtiProviderFactory extends ConfigurableService
             $provider['secret'],
             $provider['callback_url'],
             $provider['roles'] ?? []
+        );
+    }
+
+    private function getLtiVersion(array $propertiesValues): string
+    {
+        $version = (string)reset($propertiesValues[RdfLtiProviderRepository::LTI_VERSION]);
+
+        return $version === RdfLtiProviderRepository::LTI_V_13 ? '1.3' : '1.1';
+    }
+
+    private function getDeploymentIds(array $propertiesValues): array
+    {
+        return array_filter(
+            explode(
+                ',',
+                (string)reset($propertiesValues[RdfLtiProviderRepository::LTI_TOOL_DEPLOYMENT_IDS])
+            )
         );
     }
 }
