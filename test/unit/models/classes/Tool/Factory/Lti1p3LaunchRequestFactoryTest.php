@@ -64,7 +64,7 @@ class Lti1p3LaunchRequestFactoryTest extends TestCase
         $this->subject->setServiceLocator(
             $this->getServiceLocatorMock(
                 [
-                    Lti1p3RegistrationRepository::class => $this->registrationRepository
+                    Lti1p3RegistrationRepository::SERVICE_ID => $this->registrationRepository
                 ]
             )
         );

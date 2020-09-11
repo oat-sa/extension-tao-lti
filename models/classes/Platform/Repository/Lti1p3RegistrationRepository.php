@@ -40,8 +40,8 @@ use oat\taoLti\models\classes\Security\DataAccess\Repository\ToolKeyChainReposit
 
 class Lti1p3RegistrationRepository extends ConfigurableService implements RegistrationRepositoryInterface
 {
-    private const OIDC_URL = ROOT_URL . 'taoLti/Security/oidc';
-    private const OAUTH_URL = ROOT_URL . 'taoLti/Security/oauth';
+    public const SERVICE_ID = 'taoLti/Lti1p3RegistrationRepository';
+    public const OPTION_ROOT_URL = 'rootUrl';
     private const PLATFORM_ID = 'tao';
 
     public function find(string $identifier): ?RegistrationInterface
@@ -101,8 +101,8 @@ class Lti1p3RegistrationRepository extends ConfigurableService implements Regist
     private function getTool(LtiProvider $ltiProvider): Tool
     {
         return new Tool(
-            $ltiProvider->getId(),
-            $ltiProvider->getId(),
+            $ltiProvider->getToolIdentifier(),
+            $ltiProvider->getToolName(),
             $ltiProvider->getToolAudience(),
             $ltiProvider->getToolOidcLoginInitiationUrl(),
             $ltiProvider->getToolLaunchUrl()
@@ -114,9 +114,8 @@ class Lti1p3RegistrationRepository extends ConfigurableService implements Regist
         return new Platform(
             self::PLATFORM_ID,
             self::PLATFORM_ID,
-            rtrim(ROOT_URL, '/'),
-            self::OIDC_URL,
-            self::OAUTH_URL
+            rtrim($this->getOption(self::OPTION_ROOT_URL), '/'),
+            $this->getOption(self::OPTION_ROOT_URL) . 'taoLti/Security/oidc'
         );
     }
 

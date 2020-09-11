@@ -114,7 +114,7 @@ class Lti1p3LaunchRequestFactory extends ConfigurableService
 
     private function getRegistrationRepository(): RegistrationRepositoryInterface
     {
-        return $this->getServiceLocator()->get(Lti1p3RegistrationRepository::class);
+        return $this->getServiceLocator()->get(Lti1p3RegistrationRepository::SERVICE_ID);
     }
 
     private function getUserIdentity(LtiLaunchCommandInterface $command): UserIdentityInterface
