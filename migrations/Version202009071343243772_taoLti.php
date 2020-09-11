@@ -32,5 +32,6 @@ final class Version202009071343243772_taoLti extends AbstractMigration
 
     public function down(Schema $schema): void
     {
+        $this->getServiceManager()->unregister(Lti1p3RegistrationRepository::SERVICE_ID);
     }
 }

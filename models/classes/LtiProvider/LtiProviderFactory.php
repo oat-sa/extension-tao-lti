@@ -91,7 +91,7 @@ class LtiProviderFactory extends ConfigurableService
 
     private function getLtiVersion(array $propertiesValues): string
     {
-        $version = (string)reset($propertiesValues[RdfLtiProviderRepository::LTI_VERSION]);
+        $version = (string)reset($propertiesValues[RdfLtiProviderRepository::LTI_VERSION])->getUri();
 
         return $version === RdfLtiProviderRepository::LTI_V_13 ? '1.3' : '1.1';
     }

@@ -124,12 +124,25 @@
   <!-- LTI 1.3 additions -->
 
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOLTI.rdf#ltiVersion">
-    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
-    <rdfs:label xml:lang="en-US"><![CDATA[LTI Version]]></rdfs:label>
-    <rdfs:comment xml:lang="en-US"><![CDATA[LTI Version]]></rdfs:comment>
-    <rdfs:domain rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIProvider"/>
-    <rdfs:range rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#ltiVersionList"/>
-    <widget:widget rdf:resource="http://www.tao.lu/datatypes/WidgetDefinitions.rdf#RadioBox"/>
+      <rdfs:range rdf:resource="http://www.tao.lu/Ontologies/TAO.rdf#ltiVersions"/>
+      <generis:is_language_dependent rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#False"/>
+      <rdfs:comment xml:lang="en-US"><![CDATA[LTI Version]]></rdfs:comment>
+      <rdfs:label xml:lang="en-US"><![CDATA[LTI Version]]></rdfs:label>
+      <widget:widget rdf:resource="http://www.tao.lu/datatypes/WidgetDefinitions.rdf#ComboBox"/>
+      <rdfs:domain rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIProvider"/>
+      <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOLTI.rdf#lti1p1">
+    <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAO.rdf#ltiVersions"/>
+    <rdfs:label xml:lang="en-US"><![CDATA[1.1]]></rdfs:label>
+    <rdf:value><![CDATA[1.1]]></rdf:value>
+  </rdf:Description>
+
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOLTI.rdf#lti1p3">
+    <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAO.rdf#ltiVersions"/>
+    <rdfs:label xml:lang="en-US"><![CDATA[1.3]]></rdfs:label>
+    <rdf:value><![CDATA[1.3]]></rdf:value>
   </rdf:Description>
 
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOLTI.rdf#toolIdentifier">
@@ -212,23 +225,4 @@
     <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
     <widget:widget rdf:resource="http://www.tao.lu/datatypes/WidgetDefinitions.rdf#TextArea"/>
   </rdf:Description>
-
-  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOLTI.rdf#ltiVersionList">
-    <rdfs:subClassOf rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#generis_Ressource"/>
-    <rdfs:label xml:lang="en-US"><![CDATA[LTI Version]]></rdfs:label>
-    <rdfs:comment xml:lang="en-US"><![CDATA[List of LTI Versions]]></rdfs:comment>
-  </rdf:Description>
-
-  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOLTI.rdf#lti1p1">
-    <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#ltiVersionList"/>
-    <rdfs:label xml:lang="en-US"><![CDATA[1.1]]></rdfs:label>
-    <rdfs:comment xml:lang="en-US"><![CDATA[1.1]]></rdfs:comment>
-  </rdf:Description>
-
-  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOLTI.rdf#lti1p3">
-    <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#ltiVersionList"/>
-    <rdfs:label xml:lang="en-US"><![CDATA[1.3]]></rdfs:label>
-    <rdfs:comment xml:lang="en-US"><![CDATA[1.3]]></rdfs:comment>
-  </rdf:Description>
-
 </rdf:RDF>
