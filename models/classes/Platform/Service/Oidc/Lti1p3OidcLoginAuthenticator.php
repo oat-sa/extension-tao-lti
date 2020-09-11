@@ -63,7 +63,7 @@ class Lti1p3OidcLoginAuthenticator extends ConfigurableService implements OidcLo
 
     private function getRegistrationRepository(): Lti1p3RegistrationRepository
     {
-        return $this->getServiceLocator()->get(Lti1p3RegistrationRepository::class);
+        return $this->getServiceLocator()->get(Lti1p3RegistrationRepository::SERVICE_ID);
     }
 
     private function getUserAuthenticator(): Lti1p3UserAuthenticator

@@ -22,22 +22,23 @@
 namespace oat\taoLti\test\unit\models\classes\LtiProvider;
 
 use oat\generis\test\TestCase;
+use oat\taoLti\models\classes\LtiProvider\LtiProvider;
 use oat\taoLti\models\classes\LtiProvider\LtiProviderRepositoryInterface;
 use oat\taoLti\models\classes\LtiProvider\LtiProviderService;
 
 class LtiProviderServiceTest extends TestCase
 {
-    const COUNT_1 = 10;
-    const COUNT_2 = 12;
-    const FIND_ALL_1 = ['key1' => 'value1'];
-    const FIND_ALL_2 = ['key2' => 'value2'];
-    const LABEL = 'the sought label';
-    const ID = 'uri';
-    const OAUTH_KEY = 'okey1';
-    const SEARCH_1 = ['key3' => 'value3'];
-    const SEARCH_2 = ['key4' => 'value4'];
-    const SEARCH_ID_RESULT = ['uri' => 'v4'];
-    const SEARCH_OAUTH_KEY_RESULT = ['uri' => 'v5'];
+    private const COUNT_1 = 10;
+    private const COUNT_2 = 12;
+    private const FIND_ALL_1 = ['key1' => 'value1'];
+    private const FIND_ALL_2 = ['key2' => 'value2'];
+    private const LABEL = 'the sought label';
+    private const ID = 'uri';
+    private const OAUTH_KEY = 'okey1';
+    private const SEARCH_1 = ['key3' => 'value3'];
+    private const SEARCH_2 = ['key4' => 'value4'];
+    private const SEARCH_ID_RESULT = ['uri' => 'v4'];
+    private const SEARCH_OAUTH_KEY_RESULT = ['uri' => 'v5'];
 
     /** @var LtiProviderService */
     private $subject;
@@ -65,9 +66,11 @@ class LtiProviderServiceTest extends TestCase
             self::SEARCH_OAUTH_KEY_RESULT
         );
 
-        $this->subject = new LtiProviderService([
-            LtiProviderService::LTI_PROVIDER_LIST_IMPLEMENTATIONS => [$repository1, $repository2],
-        ]);
+        $this->subject = new LtiProviderService(
+            [
+                LtiProviderService::LTI_PROVIDER_LIST_IMPLEMENTATIONS => [$repository1, $repository2],
+            ]
+        );
     }
 
     public function testCount()
@@ -87,12 +90,15 @@ class LtiProviderServiceTest extends TestCase
 
     public function testSearchById()
     {
-        $this->assertEquals(self::SEARCH_ID_RESULT, $this->subject->searchById(self::ID));
+        $this->assertEquals($this->getProviderMock(self::SEARCH_ID_RESULT), $this->subject->searchById(self::ID));
     }
 
     public function testSearchByOauthKey()
     {
-        $this->assertEquals(self::SEARCH_OAUTH_KEY_RESULT, $this->subject->searchByOauthKey(self::OAUTH_KEY));
+        $this->assertEquals(
+            $this->getProviderMock(self::SEARCH_OAUTH_KEY_RESULT),
+            $this->subject->searchByOauthKey(self::OAUTH_KEY)
+        );
     }
 
     private function createRepositoryMock(
@@ -104,7 +110,7 @@ class LtiProviderServiceTest extends TestCase
         $searchOauthKey,
         $searchByIdhResult,
         $searchByOauthKeyResult
-    ) {
+    ): LtiProviderRepositoryInterface {
         $repository = $this->getMockBuilder(LtiProviderRepositoryInterface::class)
             ->disableOriginalConstructor()
             ->setMethods(['count', 'findAll', 'searchByLabel', 'searchById'])
@@ -112,9 +118,20 @@ class LtiProviderServiceTest extends TestCase
         $repository->method('count')->willReturn($count);
         $repository->method('findAll')->willReturn($findAllResult);
         $repository->method('searchByLabel')->with($label)->willReturn($searchResult);
-        $repository->method('searchById')->with($searchId)->willReturn($searchByIdhResult);
-        $repository->method('searchByOauthKey')->with($searchOauthKey)->willReturn($searchByOauthKeyResult);
+        $repository->method('searchById')->with($searchId)->willReturn($this->getProviderMock($searchByIdhResult));
+        $repository->method('searchByOauthKey')->with($searchOauthKey)->willReturn(
+            $this->getProviderMock($searchByOauthKeyResult)
+        );
 
         return $repository;
+    }
+
+    private function getProviderMock($id): LtiProvider
+    {
+        return $this->createConfiguredMock(
+            LtiProvider::class,
+            [
+            ]
+        );
     }
 }

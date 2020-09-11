@@ -74,6 +74,9 @@ class ToolKeyChainRepositoryTest extends TestCase
             new Key('')
         );
 
-        $this->assertEquals(new KeyChainCollection(...[$keyChain]), $this->subject->findAll(new KeyChainQuery()));
+        $this->assertEquals(
+            new KeyChainCollection(...[$keyChain]),
+            $this->subject->findAll(new KeyChainQuery('ltiId'))
+        );
     }
 }
