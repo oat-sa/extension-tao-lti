@@ -11,11 +11,6 @@ use oat\taoLti\models\classes\Platform\Repository\Lti1p3RegistrationRepository;
 
 final class Version202009071343243772_taoLti extends AbstractMigration
 {
-    public function getDescription(): string
-    {
-        return '';
-    }
-
     public function up(Schema $schema): void
     {
         $this->getServiceManager()->register(

@@ -18,6 +18,8 @@
  * Copyright (c) 2019-2020 (original work) Open Assessment Technologies SA
  */
 
+declare(strict_types=1);
+
 namespace oat\taoLti\models\classes\LtiProvider;
 
 use InvalidArgumentException;
@@ -25,9 +27,9 @@ use oat\generis\test\TestCase;
 
 class ConfigurableLtiProviderRepositoryTest extends TestCase
 {
-    public function testConstructorCountFindAll()
+    public function testConstructorCountFindAll(): void
     {
-        $subject = $this->createSubject(__DIR__ . '/_resources/lti_provider_list.json');
+        $subject = $this->createSubject('lti_provider_list.json');
 
         $this->assertEquals(2, $subject->count());
 
@@ -50,9 +52,9 @@ class ConfigurableLtiProviderRepositoryTest extends TestCase
         $this->assertEquals([], $providers[1]->getRoles());
     }
 
-    public function testSearchByLabel()
+    public function testSearchByLabel(): void
     {
-        $subject = $this->createSubject(__DIR__ . '/_resources/lti_provider_list.json');
+        $subject = $this->createSubject('lti_provider_list.json');
 
         $providers = $subject->searchByLabel('provider1');
         $this->assertEquals(1, count($providers));
@@ -64,9 +66,9 @@ class ConfigurableLtiProviderRepositoryTest extends TestCase
         $this->assertEquals('provider1_callback_url', $providers[0]->getCallbackUrl());
     }
 
-    public function testSearchByOauthKey()
+    public function testSearchByOauthKey(): void
     {
-        $subject = $this->createSubject(__DIR__ . '/_resources/lti_provider_list.json');
+        $subject = $this->createSubject('lti_provider_list.json');
 
         $provider = $subject->searchByOauthKey('provider2_key');
         $this->assertInstanceOf(LtiProvider::class, $provider);
@@ -79,7 +81,7 @@ class ConfigurableLtiProviderRepositoryTest extends TestCase
         $this->assertNull($subject->searchByOauthKey('not_existing'));
     }
 
-    public function testConstructorWithNullProviderListThrowsException()
+    public function testConstructorWithNullProviderListThrowsException(): void
     {
         $subject = $this->createSubject(null);
 
@@ -88,9 +90,9 @@ class ConfigurableLtiProviderRepositoryTest extends TestCase
         $subject->count();
     }
 
-    public function testConstructorWithInvalidProviderListThrowsException()
+    public function testConstructorWithInvalidProviderListThrowsException(): void
     {
-        $subject = $this->createSubject(__DIR__ . '/_resources/incomplete_lti_provider_list.json');
+        $subject = $this->createSubject('incomplete_lti_provider_list.json');
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Missing key \'callback_url\' in LTI provider list.');
@@ -98,12 +100,18 @@ class ConfigurableLtiProviderRepositoryTest extends TestCase
         $subject->count();
     }
 
-    private function createSubject(string $providerListPath = null)
+    private function createSubject(string $providerListPath = null): ConfigurableLtiProviderRepository
     {
         $subject = new ConfigurableLtiProviderRepository(
             [
                 ConfigurableLtiProviderRepository::OPTION_LTI_PROVIDER_LIST => $providerListPath ? json_decode(
-                    file_get_contents($providerListPath),
+                    file_get_contents(
+                        __DIR__
+                        . DIRECTORY_SEPARATOR
+                        . '_resources'
+                        . DIRECTORY_SEPARATOR
+                        . $providerListPath
+                    ),
                     true
                 ) : null
             ]
