@@ -35,14 +35,8 @@ use Throwable;
 
 class Lti1p3UserAuthenticator extends ConfigurableService implements UserAuthenticatorInterface
 {
-    private const ANONYMOUS = '';
-
     public function authenticate(string $loginHint): UserAuthenticationResultInterface
     {
-        if ($loginHint === self::ANONYMOUS) {
-            return new UserAuthenticationResult(true);
-        }
-
         try {
             return new UserAuthenticationResult(true, $this->getUserIdentity($loginHint));
         } catch (Throwable $exception) {
@@ -58,7 +52,7 @@ class Lti1p3UserAuthenticator extends ConfigurableService implements UserAuthent
         $user = $this->getUserService()
             ->getUser($userId);
 
-        if (!$user instanceof User || empty($user->getRoles())) {
+        if (!$user instanceof User) {
             throw new ErrorException(sprintf('User [%s] not found', $userId));
         }
 

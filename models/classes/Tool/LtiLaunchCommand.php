@@ -53,8 +53,8 @@ class LtiLaunchCommand implements LtiLaunchCommandInterface
         array $roles,
         array $claims,
         string $resourceIdentifier,
-        User $user = null,
-        string $openIdLoginHint = null,
+        User $user, //@TODO @FIXME Check guest user will be passed here...
+        string $openIdLoginHint,
         string $launchUrl = null
     )
     {
@@ -87,12 +87,12 @@ class LtiLaunchCommand implements LtiLaunchCommandInterface
         return $this->resourceIdentifier;
     }
 
-    public function getUser(): ?User
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    public function getOpenIdLoginHint(): ?string
+    public function getOpenIdLoginHint(): string
     {
         return $this->openIdLoginHint;
     }
@@ -100,15 +100,5 @@ class LtiLaunchCommand implements LtiLaunchCommandInterface
     public function getLaunchUrl(): ?string
     {
         return $this->launchUrl;
-    }
-
-    public function isAnonymousLaunch(): bool
-    {
-        return $this->user === null;
-    }
-
-    public function isOpenIdConnectLaunch(): bool
-    {
-        return $this->openIdLoginHint !== null;
     }
 }
