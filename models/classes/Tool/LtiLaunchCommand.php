@@ -53,7 +53,7 @@ class LtiLaunchCommand implements LtiLaunchCommandInterface
         array $roles,
         array $claims,
         string $resourceIdentifier,
-        User $user, //@TODO @FIXME Check guest user will be passed here...
+        User $user,
         string $openIdLoginHint,
         string $launchUrl = null
     )
