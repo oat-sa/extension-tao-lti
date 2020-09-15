@@ -25,10 +25,22 @@ final class Version202008061124043772_taoLti extends AbstractMigration
     public function up(Schema $schema): void
     {
         $this->createFileSystem();
+        $this->getServiceManager()->register(
+            PlatformKeyChainRepository::SERVICE_ID,
+            new PlatformKeyChainRepository(
+                [
+                    PlatformKeyChainRepository::OPTION_DEFAULT_KEY_ID => 'defaultPlatformKeyId',
+                    PlatformKeyChainRepository::OPTION_DEFAULT_KEY_NAME => 'defaultPlatformKeyName',
+                    PlatformKeyChainRepository::OPTION_DEFAULT_PUBLIC_KEY_PATH => '/platform/default/public.key',
+                    PlatformKeyChainRepository::OPTION_DEFAULT_PRIVATE_KEY_PATH => '/platform/default/private.key',
+                ]
+            )
+        );
     }
 
     public function down(Schema $schema): void
     {
+        $this->getServiceManager()->unregister(PlatformKeyChainRepository::SERVICE_ID);
     }
 
     /**
