@@ -119,7 +119,8 @@ class Lti1p3RegistrationRepository extends ConfigurableService implements Regist
             self::PLATFORM_ID,
             self::PLATFORM_ID,
             rtrim($this->getOption(self::OPTION_ROOT_URL), '/'),
-            $this->getOption(self::OPTION_ROOT_URL) . 'taoLti/Security/oidc'
+            $this->getOption(self::OPTION_ROOT_URL) . 'taoLti/Security/oidc',
+            $this->getOption(self::OPTION_ROOT_URL) . 'taoLti/Security/oauth'
         );
     }
 
