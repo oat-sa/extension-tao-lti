@@ -84,6 +84,15 @@ class Lti1p3RegistrationRepositoryTest extends TestCase
         );
     }
 
+    public function testFindWithNoLtiProvider(): void
+    {
+        $this->ltiProviderService
+            ->method('searchById')
+            ->willReturn(null);
+        
+        $this->assertNull($this->subject->find('id'));
+    }
+
     public function testFindWillReturnRegistrationForTool(): void
     {
         $this->expectsProvider();

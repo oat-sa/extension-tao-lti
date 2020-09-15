@@ -48,6 +48,10 @@ class Lti1p3RegistrationRepository extends ConfigurableService implements Regist
     {
         $ltiProvider = $this->getLtiProviderService()->searchById($identifier);
 
+        if (!$ltiProvider) {
+            return null;
+        }
+
         return $this->createRegistrationByProvider($ltiProvider);
     }
 
@@ -126,15 +130,15 @@ class Lti1p3RegistrationRepository extends ConfigurableService implements Regist
 
     private function createRegistrationByProvider(LtiProvider $ltiProvider): ?Registration
     {
-        $toolKeyChain = $this->getToolKeyChainRepository()
-                ->findAll(new KeyChainQuery($ltiProvider->getId()))
-                ->getKeyChains()[0] ?? null;
+        $toolKeyChain = current($this->getToolKeyChainRepository()
+            ->findAll(new KeyChainQuery($ltiProvider->getId()))
+            ->getKeyChains());
 
-        $platformKeyChain = $this->getPlatformKeyChainRepository()
-                ->findAll(new KeyChainQuery())
-                ->getKeyChains()[0] ?? null;
+        $platformKeyChain = current($this->getPlatformKeyChainRepository()
+            ->findAll(new KeyChainQuery())
+            ->getKeyChains());
 
-        if ($toolKeyChain === null || $platformKeyChain === null) {
+        if ($toolKeyChain === false || $platformKeyChain === false) {
             return null;
         }
 
