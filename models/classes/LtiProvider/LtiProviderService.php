@@ -18,8 +18,11 @@
  * Copyright (c) 2019-2020 (original work) Open Assessment Technologies SA
  */
 
+declare(strict_types=1);
+
 namespace oat\taoLti\models\classes\LtiProvider;
 
+use oat\generis\model\OntologyAwareTrait;
 use oat\oatbox\service\ConfigurableService;
 
 /**
@@ -27,15 +30,15 @@ use oat\oatbox\service\ConfigurableService;
  */
 class LtiProviderService extends ConfigurableService implements LtiProviderRepositoryInterface
 {
+    use OntologyAwareTrait;
+
     public const SERVICE_ID = 'taoLti/LtiProviderService';
     public const LTI_PROVIDER_LIST_IMPLEMENTATIONS = 'ltiProviderListImplementations';
 
     /**
      * Counts the number of LTI providers found from all implementations configured.
-     *
-     * @return int
      */
-    public function count()
+    public function count(): int
     {
         return $this->aggregate(
             0,
@@ -43,6 +46,17 @@ class LtiProviderService extends ConfigurableService implements LtiProviderRepos
                 return $count + $implementation->count();
             }
         );
+    }
+
+    public function searchByToolClientId(string $clientId): LtiProvider
+    {
+        foreach ($this->findAll() as $provider) {
+            if ($clientId === $provider->getToolClientId()) {
+                return $provider;
+            }
+        }
+
+        throw new InvalidLtiProviderException(sprintf('Lti provider with client id %s does not exist', $clientId));
     }
 
     /**

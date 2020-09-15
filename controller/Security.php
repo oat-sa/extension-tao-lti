@@ -19,10 +19,13 @@
 
 namespace oat\taoLti\controller;
 
+use League\OAuth2\Server\Exception\OAuthServerException;
 use oat\tao\model\http\Controller;
 use oat\tao\model\security\Business\Contract\JwksRepositoryInterface;
 use oat\taoLti\models\classes\Platform\Service\Oidc\OidcLoginAuthenticatorInterface;
 use oat\taoLti\models\classes\Platform\Service\Oidc\OidcLoginAuthenticatorProxy;
+use oat\taoLti\models\classes\Security\AccessTokenResponseGenerator;
+use oat\taoLti\models\classes\Security\AccessTokenResponseGeneratorInterface;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\CachedPlatformJwksRepository;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorAwareTrait;
@@ -31,6 +34,20 @@ use function GuzzleHttp\Psr7\stream_for;
 class Security extends Controller implements ServiceLocatorAwareInterface
 {
     use ServiceLocatorAwareTrait;
+
+    public function oauth(): void
+    {
+        try {
+            $this->setResponse(
+                $this->getAccessTokenGenerator()->generate(
+                    $this->getPsrRequest(),
+                    $this->getPsrResponse()
+                )
+            );
+        } catch (OAuthServerException $exception) {
+            $this->setResponse($exception->generateHttpResponse($this->getPsrResponse()));
+        }
+    }
 
     public function jwks(): void
     {
@@ -57,5 +74,10 @@ class Security extends Controller implements ServiceLocatorAwareInterface
     private function getOidcLoginAuthenticator(): OidcLoginAuthenticatorInterface
     {
         return $this->getServiceLocator()->get(OidcLoginAuthenticatorProxy::class);
+    }
+
+    private function getAccessTokenGenerator(): AccessTokenResponseGeneratorInterface
+    {
+        return $this->getServiceLocator()->get(AccessTokenResponseGenerator::class);
     }
 }
