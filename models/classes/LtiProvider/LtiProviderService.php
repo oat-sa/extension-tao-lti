@@ -107,11 +107,6 @@ class LtiProviderService extends ConfigurableService implements LtiProviderRepos
         return $result;
     }
 
-    /**
-     * @param string $id
-     *
-     * @return LtiProvider
-     */
     public function searchById(string $id): ?LtiProvider
     {
         return current(
