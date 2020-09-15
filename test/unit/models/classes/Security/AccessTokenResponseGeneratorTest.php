@@ -117,7 +117,7 @@ class AccessTokenResponseGeneratorTest extends TestCase
             ->method('respondToAccessTokenRequest')
             ->willReturn($this->responseMock);
 
-        $this->subject->generate($this->requestMock, $this->responseMock);
+        $this->assertSame($this->responseMock, $this->subject->generate($this->requestMock, $this->responseMock));
     }
 
     public function testGenerateWithoutKey(): void
