@@ -37,11 +37,12 @@ use tao_models_classes_UserException;
 
 class AccessTokenRequestValidatorTest extends TestCase
 {
-
     /** @var AccessTokenRequestValidator */
     private $subject;
+
     /** @var Lti1p3AccessTokenRequestValidator|MockObject */
     private $validator;
+
     /** @var AccessTokenRequestValidationResult|MockObject */
     private $validatorResult;
 
