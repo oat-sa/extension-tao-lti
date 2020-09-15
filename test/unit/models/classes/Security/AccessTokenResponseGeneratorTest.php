@@ -132,6 +132,4 @@ class AccessTokenResponseGeneratorTest extends TestCase
 
         $this->subject->generate($this->requestMock, $this->responseMock);
     }
-
-
 }
