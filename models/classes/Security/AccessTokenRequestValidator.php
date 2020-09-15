@@ -82,7 +82,7 @@ class AccessTokenRequestValidator extends ConfigurableService implements AccessT
                 $result->getRegistration()->getClientId()
             );
 
-            if (!$this->isLtiProviderThisSame($ltiProvider)) {
+            if (!$this->isSameLtiProvider($ltiProvider)) {
                 throw new InvalidLtiProviderException('Lti provider from registration is not matching delivery');
             }
         }
@@ -112,7 +112,7 @@ class AccessTokenRequestValidator extends ConfigurableService implements AccessT
         return $this->getServiceLocator()->get(LtiProviderService::SERVICE_ID);
     }
 
-    private function isLtiProviderThisSame(LtiProvider $ltiProvider): bool
+    private function isSameLtiProvider(LtiProvider $ltiProvider): bool
     {
         return $this->ltiProvider->getId() === $ltiProvider->getId();
     }
