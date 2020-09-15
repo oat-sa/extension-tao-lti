@@ -46,6 +46,7 @@ class AccessTokenRequestValidatorTest extends TestCase
     /** @var AccessTokenRequestValidationResult|MockObject */
     private $validatorResult;
 
+    /** @var MockObject|ServerRequestInterface  */
     private $request;
 
     public function setUp(): void
