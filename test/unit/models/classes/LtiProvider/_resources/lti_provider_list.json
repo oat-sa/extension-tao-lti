@@ -7,7 +7,8 @@
         "callback_url": "provider1_callback_url",
         "roles": [
             "Learner"
-        ]
+        ],
+        "toolJwksUrl": "jwksUrl"
     },
     {
         "uri": "provider2_uri",

@@ -20,8 +20,14 @@
 
 namespace oat\taoLti\controller;
 
+use core_kernel_classes_Class;
+use core_kernel_classes_Resource;
+use oat\taoLti\models\classes\LtiProvider\Form\LtiProviderForm;
 use oat\taoLti\models\classes\LtiProvider\RdfLtiProviderRepository;
+use tao_actions_form_CreateInstance;
+use tao_actions_form_Instance;
 use tao_actions_SaSModule;
+use tao_models_classes_dataBinding_GenerisFormDataBinder;
 
 /**
  * This controller allows the adding and deletion of LTI Oauth Providers
@@ -40,5 +46,39 @@ class ProviderAdmin extends tao_actions_SaSModule
     public function getClassService()
     {
         return $this->getServiceLocator()->get(RdfLtiProviderRepository::class);
+    }
+
+    public function editInstance()
+    {
+        $class = $this->getCurrentClass();
+        $instance = $this->getCurrentInstance();
+        $myFormContainer = $this->createForm($class, $instance);
+
+        $myForm = $myFormContainer->getForm();
+
+        if ($myForm->isSubmited() && $myForm->isValid()) {
+            $values = $myForm->getValues();
+            $binder = new tao_models_classes_dataBinding_GenerisFormDataBinder($instance);
+            $binder->bind($values);
+            $message = __('Instance saved');
+
+            $this->setData('message', $message);
+            $this->setData('reload', true);
+        }
+
+        $this->setData('formTitle', __('Edit Instance'));
+        $this->setData('myForm', $myForm->render());
+        $this->setView('form.tpl', 'tao');
+    }
+
+    private function createForm(
+        core_kernel_classes_Class $class,
+        core_kernel_classes_Resource $instance
+    ): tao_actions_form_Instance {
+        return new LtiProviderForm(
+            $class,
+            $instance,
+            [tao_actions_form_CreateInstance::CSRF_PROTECTION_OPTION => true]
+        );
     }
 }

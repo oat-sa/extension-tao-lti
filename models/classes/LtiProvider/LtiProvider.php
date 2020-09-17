@@ -80,9 +80,9 @@ class LtiProvider implements JsonSerializable
     public function __construct(
         string $id,
         string $label,
-        string $key,
-        string $secret,
-        string $callbackUrl,
+        string $key = null,
+        string $secret = null,
+        string $callbackUrl = null,
         array $roles = [],
         string $ltiVersion = null,
         string $toolIdentifier = null,

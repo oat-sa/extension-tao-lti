@@ -41,6 +41,7 @@ class ConfigurableLtiProviderRepositoryTest extends TestCase
         $this->assertEquals('provider1_key', $providers[0]->getKey());
         $this->assertEquals('provider1_secret', $providers[0]->getSecret());
         $this->assertEquals('provider1_callback_url', $providers[0]->getCallbackUrl());
+        $this->assertEquals('jwksUrl', $providers[0]->getToolJwksUrl());
         $this->assertEquals(['Learner'], $providers[0]->getRoles());
 
         $this->assertInstanceOf(LtiProvider::class, $providers[1]);
@@ -95,7 +96,7 @@ class ConfigurableLtiProviderRepositoryTest extends TestCase
         $subject = $this->createSubject('incomplete_lti_provider_list.json');
 
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Missing key \'callback_url\' in LTI provider list.');
+        $this->expectExceptionMessage('"key": This field is required');
 
         $subject->count();
     }
@@ -116,10 +117,19 @@ class ConfigurableLtiProviderRepositoryTest extends TestCase
                 ) : null
             ]
         );
+
+        $factory = new LtiProviderFactory();
+        $factory->setServiceLocator(
+            $this->getServiceLocatorMock(
+                [
+                    FieldValidator::class => new FieldValidator(),
+                ]
+            )
+        );
         $subject->setServiceLocator(
             $this->getServiceLocatorMock(
                 [
-                    LtiProviderFactory::class => new LtiProviderFactory(),
+                    LtiProviderFactory::class => $factory
                 ]
             )
         );

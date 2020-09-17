@@ -71,13 +71,9 @@ class LtiProviderFactory extends ConfigurableService
 
     public function createFromArray(array $provider): LtiProvider
     {
-        $keys = ['uri', 'label', 'key', 'secret', 'callback_url'];
+        $ltiVersion = $provider[ConfigurableLtiProviderRepository::LTI_VERSION] ?: '1.1';
 
-        foreach ($keys as $key) {
-            if (!isset($provider[$key])) {
-                throw new InvalidArgumentException(sprintf('Missing key \'%s\' in LTI provider list.', $key));
-            }
-        }
+        $this->getValidationService()->validate($ltiVersion, $provider);
 
         return new LtiProvider(
             $provider['uri'],
@@ -85,7 +81,17 @@ class LtiProviderFactory extends ConfigurableService
             $provider['key'],
             $provider['secret'],
             $provider['callback_url'],
-            $provider['roles'] ?? []
+            $provider['roles'] ?? [],
+            $ltiVersion,
+            $provider[ConfigurableLtiProviderRepository::LTI_TOOL_IDENTIFIER]?:null,
+            $provider[ConfigurableLtiProviderRepository::LTI_TOOL_NAME]?:null,
+            $provider[ConfigurableLtiProviderRepository::LTI_TOOL_CLIENT_ID]?:null,
+            $provider[ConfigurableLtiProviderRepository::LTI_TOOL_DEPLOYMENT_IDS]?:[],
+            $provider[ConfigurableLtiProviderRepository::LTI_TOOL_AUDIENCE]?:null,
+            $provider[ConfigurableLtiProviderRepository::LTI_TOOL_OIDC_LOGIN_INITATION_URL]?:null,
+            $provider[ConfigurableLtiProviderRepository::LTI_TOOL_LAUNCH_URL]?:null,
+            $provider[ConfigurableLtiProviderRepository::LTI_TOOL_PUBLIC_KEY]?:null,
+            $provider[ConfigurableLtiProviderRepository::LTI_TOOL_JWKS_URL]?:null
         );
     }
 
@@ -108,5 +114,10 @@ class LtiProviderFactory extends ConfigurableService
                 (string)reset($propertiesValues[RdfLtiProviderRepository::LTI_TOOL_DEPLOYMENT_IDS])
             )
         );
+    }
+
+    private function getValidationService(): FieldValidator
+    {
+        return $this->getServiceLocator()->get(FieldValidator::class);
     }
 }
