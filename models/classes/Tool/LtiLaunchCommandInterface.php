@@ -35,13 +35,9 @@ interface LtiLaunchCommandInterface
 
     public function getResourceIdentifier(): string;
 
-    public function getUser(): ?User;
+    public function getUser(): User;
 
-    public function getOpenIdLoginHint(): ?string;
+    public function getOpenIdLoginHint(): string;
 
     public function getLaunchUrl(): ?string;
-
-    public function isAnonymousLaunch(): bool;
-
-    public function isOpenIdConnectLaunch(): bool;
 }

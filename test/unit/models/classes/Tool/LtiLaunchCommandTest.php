@@ -73,7 +73,5 @@ class LtiLaunchCommandTest extends TestCase
         $this->assertSame(self::LOGIN_HINT, $this->subject->getOpenIdLoginHint());
         $this->assertSame($this->ltiProvider, $this->subject->getLtiProvider());
         $this->assertSame($this->user, $this->subject->getUser());
-        $this->assertSame(false, $this->subject->isAnonymousLaunch());
-        $this->assertSame(true, $this->subject->isOpenIdConnectLaunch());
     }
 }

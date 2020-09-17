@@ -75,29 +75,6 @@ class Lti1p3UserAuthenticatorTest extends TestCase
         );
     }
 
-    public function testAuthenticateUserAnonymous(): void
-    {
-        $this->assertEquals(
-            new UserAuthenticationResult(true),
-            $this->subject->authenticate('')
-        );
-    }
-
-    public function testAuthenticateUserWithoutRolesIsNotAllowed(): void
-    {
-        $this->expectUser(
-            [],
-            'first name',
-            'last name',
-            'email'
-        );
-
-        $this->assertEquals(
-            new UserAuthenticationResult(false),
-            $this->subject->authenticate('login')
-        );
-    }
-
     private function expectUser(array $roles, string $firstName, string $lastName, string $email): void
     {
         $user = $this->createMock(User::class);

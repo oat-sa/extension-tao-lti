@@ -26,12 +26,10 @@ use ErrorException;
 use oat\generis\test\TestCase;
 use OAT\Library\Lti1p3Core\Launch\Builder\LtiLaunchRequestBuilder;
 use OAT\Library\Lti1p3Core\Launch\Builder\OidcLaunchRequestBuilder;
-use OAT\Library\Lti1p3Core\Launch\Request\LtiLaunchRequest;
 use OAT\Library\Lti1p3Core\Launch\Request\OidcLaunchRequest;
 use OAT\Library\Lti1p3Core\Link\ResourceLink\ResourceLink;
 use OAT\Library\Lti1p3Core\Registration\RegistrationInterface;
 use OAT\Library\Lti1p3Core\Registration\RegistrationRepositoryInterface;
-use OAT\Library\Lti1p3Core\User\UserIdentity;
 use oat\oatbox\user\User;
 use oat\taoLti\models\classes\LtiProvider\LtiProvider;
 use oat\taoLti\models\classes\Platform\Repository\Lti1p3RegistrationRepository;
@@ -79,68 +77,13 @@ class Lti1p3LaunchRequestFactoryTest extends TestCase
         $this->expectException(ErrorException::class);
         $this->expectExceptionMessage('Registration for provider ltiId not found');
 
-        $this->subject->create($this->createCommand($this->expectUser()));
-    }
-
-    public function testCreateDirectRequest(): void
-    {
-        $registration = $this->expectRegistration();
-        $command = $this->createCommand($this->expectUser());
-
-        $launchRequest = $this->createMock(LtiLaunchRequest::class);
-
-        $this->ltiLaunchRequestBuilder
-            ->method('buildUserResourceLinkLtiLaunchRequest')
-            ->with(
-                new ResourceLink('deliveryExecutionIdentifier', $command->getLaunchUrl()),
-                $registration,
-                new UserIdentity(
-                    'userIdentifier',
-                    'user name',
-                    'user@email.com'
-                ),
-                '1',
-                [
-                    'Learner'
-                ],
-                [
-                    'deliveryExecutionId' => 'deliveryExecutionIdentifier'
-                ]
-            )
-            ->willReturn($launchRequest);
-
-        $this->assertEquals($launchRequest, $this->subject->create($command));
-    }
-
-    public function testCreateAnonymousRequest(): void
-    {
-        $registration = $this->expectRegistration();
-        $command = $this->createCommand();
-
-        $launchRequest = $this->createMock(LtiLaunchRequest::class);
-
-        $this->ltiLaunchRequestBuilder
-            ->method('buildResourceLinkLtiLaunchRequest')
-            ->with(
-                new ResourceLink('deliveryExecutionIdentifier', $command->getLaunchUrl()),
-                $registration,
-                '1',
-                [
-                    'Learner'
-                ],
-                [
-                    'deliveryExecutionId' => 'deliveryExecutionIdentifier'
-                ]
-            )
-            ->willReturn($launchRequest);
-
-        $this->assertEquals($launchRequest, $this->subject->create($command));
+        $this->subject->create($this->createCommand());
     }
 
     public function testCreateOidcRequest(): void
     {
         $registration = $this->expectRegistration();
-        $command = $this->createCommand($this->expectUser(), 'userIdentifier');
+        $command = $this->createCommand();
 
         $launchRequest = $this->createMock(OidcLaunchRequest::class);
 
@@ -163,7 +106,7 @@ class Lti1p3LaunchRequestFactoryTest extends TestCase
         $this->assertEquals($launchRequest, $this->subject->create($command));
     }
 
-    private function createCommand(User $user = null, string $openIdLoginHint = null): LtiLaunchCommand
+    private function createCommand(): LtiLaunchCommand
     {
         $ltiProvider = $this->createMock(LtiProvider::class);
 
@@ -179,8 +122,8 @@ class Lti1p3LaunchRequestFactoryTest extends TestCase
                 'deliveryExecutionId' => 'deliveryExecutionIdentifier'
             ],
             'deliveryExecutionIdentifier',
-            $user,
-            $openIdLoginHint,
+            $this->expectUser(),
+            'userIdentifier',
             'launchUrl'
         );
     }
