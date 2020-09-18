@@ -25,6 +25,7 @@ namespace oat\taoLti\models\classes\LtiProvider;
 use core_kernel_classes_Resource;
 use oat\oatbox\service\ConfigurableService;
 use oat\tao\model\oauth\DataStore;
+use oat\taoLti\models\classes\LtiProvider\Validation\LtiProviderValidationService;
 
 class LtiProviderFactory extends ConfigurableService
 {
@@ -117,6 +118,7 @@ class LtiProviderFactory extends ConfigurableService
 
     private function getValidationService(): LtiProviderValidationService
     {
+        /** @noinspection PhpIncompatibleReturnTypeInspection */
         return $this->getServiceLocator()->get(LtiProviderValidationService::class);
     }
 }

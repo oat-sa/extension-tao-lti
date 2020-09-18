@@ -24,6 +24,8 @@ namespace oat\taoLti\models\classes\LtiProvider;
 
 use InvalidArgumentException;
 use oat\generis\test\TestCase;
+use oat\taoLti\models\classes\LtiProvider\Validation\LtiProviderValidationService;
+use oat\taoLti\models\classes\LtiProvider\Validation\ValidationFactory;
 
 class ConfigurableLtiProviderRepositoryTest extends TestCase
 {
@@ -124,6 +126,7 @@ class ConfigurableLtiProviderRepositoryTest extends TestCase
             $this->getServiceLocatorMock(
                 [
                     LtiProviderFieldsMapper::class => new LtiProviderFieldsMapper(),
+                    ValidationFactory::class => new ValidationFactory(),
                 ]
             )
         );

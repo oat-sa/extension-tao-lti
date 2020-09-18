@@ -20,19 +20,16 @@
 
 namespace oat\taoLti\controller;
 
-use core_kernel_classes_Class;
-use core_kernel_classes_Resource;
-use oat\taoLti\models\classes\LtiProvider\Form\LtiProviderForm;
+use oat\taoLti\models\classes\LtiProvider\LtiProviderFieldsMapper;
+use oat\taoLti\models\classes\LtiProvider\Validation\LtiProviderValidationService;
 use oat\taoLti\models\classes\LtiProvider\RdfLtiProviderRepository;
-use tao_actions_form_CreateInstance;
-use tao_actions_form_Instance;
+use oat\taoLti\models\classes\LtiProvider\Validation\ValidationFactory;
 use tao_actions_SaSModule;
-use tao_models_classes_dataBinding_GenerisFormDataBinder;
+use tao_helpers_Uri;
 
 /**
  * This controller allows the adding and deletion of LTI Oauth Providers
  *
- * @package taoLti
  * @license GPLv2 http://www.opensource.org/licenses/gpl-2.0.php
  */
 class ProviderAdmin extends tao_actions_SaSModule
@@ -48,37 +45,31 @@ class ProviderAdmin extends tao_actions_SaSModule
         return $this->getServiceLocator()->get(RdfLtiProviderRepository::class);
     }
 
-    public function editInstance()
+    protected function getExtraValidationRules(): array
     {
-        $class = $this->getCurrentClass();
-        $instance = $this->getCurrentInstance();
-        $myFormContainer = $this->createForm($class, $instance);
-
-        $myForm = $myFormContainer->getForm();
-
-        if ($myForm->isSubmited() && $myForm->isValid()) {
-            $values = $myForm->getValues();
-            $binder = new tao_models_classes_dataBinding_GenerisFormDataBinder($instance);
-            $binder->bind($values);
-            $message = __('Instance saved');
-
-            $this->setData('message', $message);
-            $this->setData('reload', true);
-        }
-
-        $this->setData('formTitle', __('Edit Instance'));
-        $this->setData('myForm', $myForm->render());
-        $this->setView('form.tpl', 'tao');
+        return $this->getValidationFactory()->createFormValidators($this->getLtiVersion());
     }
 
-    private function createForm(
-        core_kernel_classes_Class $class,
-        core_kernel_classes_Resource $instance
-    ): tao_actions_form_Instance {
-        return new LtiProviderForm(
-            $class,
-            $instance,
-            [tao_actions_form_CreateInstance::CSRF_PROTECTION_OPTION => true]
-        );
+    private function getValidationFactory(): ValidationFactory
+    {
+        /** @noinspection PhpIncompatibleReturnTypeInspection */
+        return $this->getServiceLocator()->get(ValidationFactory::SERVICE_ID);
+    }
+
+    private function getConfigurationMapper(): LtiProviderFieldsMapper
+    {
+        /** @noinspection PhpIncompatibleReturnTypeInspection */
+        return $this->getServiceLocator()->get(LtiProviderFieldsMapper::SERVICE_ID);
+    }
+
+    private function getLtiVersion(): string
+    {
+        $body = $this->getPsrRequest()->getParsedBody();
+
+        $rawLtiVersion = $body[tao_helpers_Uri::encode(
+            RdfLtiProviderRepository::LTI_VERSION
+        )] ?? RdfLtiProviderRepository::DEFAULT_LTI_VERSION;
+
+        return $this->getConfigurationMapper()->map(tao_helpers_Uri::decode($rawLtiVersion));
     }
 }

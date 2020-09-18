@@ -123,17 +123,17 @@ class LtiProvider implements JsonSerializable
         return $this->label;
     }
 
-    public function getKey(): string
+    public function getKey(): ?string
     {
         return $this->key;
     }
 
-    public function getSecret(): string
+    public function getSecret(): ?string
     {
         return $this->secret;
     }
 
-    public function getCallbackUrl(): string
+    public function getCallbackUrl(): ?string
     {
         return $this->callbackUrl;
     }
