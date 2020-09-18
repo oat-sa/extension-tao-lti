@@ -70,7 +70,7 @@ class LtiProviderFactory extends ConfigurableService
 
     public function createFromArray(array $provider): LtiProvider
     {
-        $ltiVersion = $provider[ConfigurableLtiProviderRepository::LTI_VERSION] ?: '1.1';
+        $ltiVersion = $provider[ConfigurableLtiProviderRepository::LTI_VERSION] ?? '1.1';
 
         $this->getValidationService()->validateArray($ltiVersion, $provider);
 
