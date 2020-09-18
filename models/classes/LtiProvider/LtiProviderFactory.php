@@ -82,15 +82,15 @@ class LtiProviderFactory extends ConfigurableService
             $provider['callback_url'],
             $provider['roles'] ?? [],
             $ltiVersion,
-            $provider[ConfigurableLtiProviderRepository::LTI_TOOL_IDENTIFIER]?:null,
-            $provider[ConfigurableLtiProviderRepository::LTI_TOOL_NAME]?:null,
-            $provider[ConfigurableLtiProviderRepository::LTI_TOOL_CLIENT_ID]?:null,
-            $provider[ConfigurableLtiProviderRepository::LTI_TOOL_DEPLOYMENT_IDS]?:[],
-            $provider[ConfigurableLtiProviderRepository::LTI_TOOL_AUDIENCE]?:null,
-            $provider[ConfigurableLtiProviderRepository::LTI_TOOL_OIDC_LOGIN_INITATION_URL]?:null,
-            $provider[ConfigurableLtiProviderRepository::LTI_TOOL_LAUNCH_URL]?:null,
-            $provider[ConfigurableLtiProviderRepository::LTI_TOOL_PUBLIC_KEY]?:null,
-            $provider[ConfigurableLtiProviderRepository::LTI_TOOL_JWKS_URL]?:null
+            $provider[ConfigurableLtiProviderRepository::LTI_TOOL_IDENTIFIER] ?? null,
+            $provider[ConfigurableLtiProviderRepository::LTI_TOOL_NAME] ?? null,
+            $provider[ConfigurableLtiProviderRepository::LTI_TOOL_CLIENT_ID] ?? null,
+            $provider[ConfigurableLtiProviderRepository::LTI_TOOL_DEPLOYMENT_IDS] ?? [],
+            $provider[ConfigurableLtiProviderRepository::LTI_TOOL_AUDIENCE] ?? null,
+            $provider[ConfigurableLtiProviderRepository::LTI_TOOL_OIDC_LOGIN_INITATION_URL] ?? null,
+            $provider[ConfigurableLtiProviderRepository::LTI_TOOL_LAUNCH_URL] ?? null,
+            $provider[ConfigurableLtiProviderRepository::LTI_TOOL_PUBLIC_KEY] ?? null,
+            $provider[ConfigurableLtiProviderRepository::LTI_TOOL_JWKS_URL] ?? null
         );
     }
 
