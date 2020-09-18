@@ -54,6 +54,7 @@ class LtiProviderForm extends SignedFormInstance
 
     private function getValidationService(): LtiProviderValidationService
     {
+        /** @noinspection PhpIncompatibleReturnTypeInspection */
         return $this->getServiceLocator()->get(LtiProviderValidationService::class);
     }
 
