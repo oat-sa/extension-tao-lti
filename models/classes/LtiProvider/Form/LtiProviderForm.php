@@ -25,7 +25,7 @@ namespace oat\taoLti\models\classes\LtiProvider\Form;
 use oat\generis\model\OntologyAwareTrait;
 use oat\oatbox\service\ServiceManager;
 use oat\tao\model\controller\SignedFormInstance;
-use oat\taoLti\models\classes\LtiProvider\FieldValidator;
+use oat\taoLti\models\classes\LtiProvider\LtiProviderValidationService;
 use oat\taoLti\models\classes\LtiProvider\RdfLtiProviderRepository;
 use tao_helpers_Uri;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -52,9 +52,9 @@ class LtiProviderForm extends SignedFormInstance
         }
     }
 
-    private function getValidationService(): FieldValidator
+    private function getValidationService(): LtiProviderValidationService
     {
-        return $this->getServiceLocator()->get(FieldValidator::class);
+        return $this->getServiceLocator()->get(LtiProviderValidationService::class);
     }
 
     private function getServiceLocator(): ServiceLocatorInterface

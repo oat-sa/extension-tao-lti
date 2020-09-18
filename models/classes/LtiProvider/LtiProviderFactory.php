@@ -23,7 +23,6 @@ declare(strict_types=1);
 namespace oat\taoLti\models\classes\LtiProvider;
 
 use core_kernel_classes_Resource;
-use InvalidArgumentException;
 use oat\oatbox\service\ConfigurableService;
 use oat\tao\model\oauth\DataStore;
 
@@ -73,7 +72,7 @@ class LtiProviderFactory extends ConfigurableService
     {
         $ltiVersion = $provider[ConfigurableLtiProviderRepository::LTI_VERSION] ?: '1.1';
 
-        $this->getValidationService()->validate($ltiVersion, $provider);
+        $this->getValidationService()->validateArray($ltiVersion, $provider);
 
         return new LtiProvider(
             $provider['uri'],
@@ -116,8 +115,8 @@ class LtiProviderFactory extends ConfigurableService
         );
     }
 
-    private function getValidationService(): FieldValidator
+    private function getValidationService(): LtiProviderValidationService
     {
-        return $this->getServiceLocator()->get(FieldValidator::class);
+        return $this->getServiceLocator()->get(LtiProviderValidationService::class);
     }
 }

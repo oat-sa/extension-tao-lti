@@ -119,10 +119,18 @@ class ConfigurableLtiProviderRepositoryTest extends TestCase
         );
 
         $factory = new LtiProviderFactory();
+        $validator = new LtiProviderValidationService();
+        $validator->setServiceLocator(
+            $this->getServiceLocatorMock(
+                [
+                    LtiProviderFieldsMapper::class => new LtiProviderFieldsMapper(),
+                ]
+            )
+        );
         $factory->setServiceLocator(
             $this->getServiceLocatorMock(
                 [
-                    FieldValidator::class => new FieldValidator(),
+                    LtiProviderValidationService::class => $validator,
                 ]
             )
         );
