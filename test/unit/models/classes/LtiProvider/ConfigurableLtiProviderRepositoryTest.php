@@ -26,7 +26,7 @@ use InvalidArgumentException;
 use oat\generis\test\TestCase;
 use oat\tao\model\oauth\DataStore;
 use oat\taoLti\models\classes\LtiProvider\Validation\LtiProviderValidationService;
-use oat\taoLti\models\classes\LtiProvider\Validation\ValidationFactory;
+use oat\taoLti\models\classes\LtiProvider\Validation\ValidatorsFactory;
 
 class ConfigurableLtiProviderRepositoryTest extends TestCase
 {
@@ -133,9 +133,9 @@ class ConfigurableLtiProviderRepositoryTest extends TestCase
                             ],
                         ]
                     ),
-                    ValidationFactory::SERVICE_ID => new ValidationFactory(
+                    ValidatorsFactory::SERVICE_ID => new ValidatorsFactory(
                         [
-                            ValidationFactory::OPTION_VALIDATORS => [
+                            ValidatorsFactory::OPTION_VALIDATORS => [
                                 '1.1' => [
                                     DataStore::PROPERTY_OAUTH_KEY => [['notEmpty']],
                                 ],

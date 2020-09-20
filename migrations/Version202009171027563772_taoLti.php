@@ -11,7 +11,7 @@ use oat\tao\scripts\update\OntologyUpdater;
 use oat\taoLti\models\classes\LtiProvider\ConfigurableLtiProviderRepository;
 use oat\taoLti\models\classes\LtiProvider\LtiProviderFieldsMapper;
 use oat\taoLti\models\classes\LtiProvider\RdfLtiProviderRepository;
-use oat\taoLti\models\classes\LtiProvider\Validation\ValidationFactory;
+use oat\taoLti\models\classes\LtiProvider\Validation\ValidatorsFactory;
 
 final class Version202009171027563772_taoLti extends AbstractMigration
 {
@@ -44,10 +44,10 @@ final class Version202009171027563772_taoLti extends AbstractMigration
             )
         );
         $this->getServiceLocator()->register(
-            ValidationFactory::SERVICE_ID,
-            new ValidationFactory(
+            ValidatorsFactory::SERVICE_ID,
+            new ValidatorsFactory(
                 [
-                    ValidationFactory::SERVICE_ID => [
+                    ValidatorsFactory::SERVICE_ID => [
                         '1.1' => [
                             DataStore::PROPERTY_OAUTH_KEY => [['notEmpty']],
                             DataStore::PROPERTY_OAUTH_SECRET => [['notEmpty']],

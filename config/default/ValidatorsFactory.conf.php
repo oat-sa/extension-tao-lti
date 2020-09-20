@@ -2,11 +2,11 @@
 
 use oat\tao\model\oauth\DataStore;
 use oat\taoLti\models\classes\LtiProvider\RdfLtiProviderRepository;
-use oat\taoLti\models\classes\LtiProvider\Validation\ValidationFactory;
+use oat\taoLti\models\classes\LtiProvider\Validation\ValidatorsFactory;
 
-return new ValidationFactory(
+return new ValidatorsFactory(
     [
-        ValidationFactory::OPTION_VALIDATORS => [
+        ValidatorsFactory::OPTION_VALIDATORS => [
             [
                 '1.1' => [
                     DataStore::PROPERTY_OAUTH_KEY => [['notEmpty']],

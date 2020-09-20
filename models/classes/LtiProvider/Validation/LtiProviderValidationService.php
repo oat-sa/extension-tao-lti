@@ -29,26 +29,43 @@ use oat\taoLti\models\classes\LtiProvider\LtiProviderFieldsMapper;
 class LtiProviderValidationService extends ConfigurableService
 {
     /**
+     * @var array
+     */
+    private $errors = [];
+
+    /**
      * @throw InvalidArgumentException
      */
     public function validateArray(string $schema, array $data): void
     {
-        $errors = [];
+        $this->errors = [];
+
         foreach (array_keys($this->getValidationFactory()->getValidatorsDefinitions($schema)) as $field) {
             $mappedField = $this->getConfigurationMapper()->map($field);
-            if ($mappedField) {
-                foreach ($this->getValidationFactory()->createFormValidators($schema, $field) as $validators) {
-                    foreach ($validators as $validator) {
-                        if (!$validator->evaluate($data[$mappedField])) {
-                            $errors[] = sprintf('"%s": %s', $mappedField, $validator->getMessage());
-                        }
-                    }
-                }
+
+            if (!$mappedField) {
+                continue;
+            }
+
+            foreach ($this->getValidationFactory()->createFormValidators($schema, $field) as $validators) {
+                $this->validateMappedField($validators, $data, $mappedField);
             }
         }
 
-        if (!empty($errors)) {
+        if (!empty($this->errors)) {
+            $errors = $this->errors;
+            $this->errors = [];
             throw new InvalidArgumentException(implode($errors, PHP_EOL));
+        }
+    }
+
+    private function validateMappedField(array $validators, array $data, string $mappedField): void
+    {
+        foreach ($validators as $validator) {
+            if ($validator->evaluate($data[$mappedField])) {
+                continue;
+            }
+            $this->errors[] = sprintf('"%s": %s', $mappedField, $validator->getMessage());
         }
     }
 
@@ -58,9 +75,9 @@ class LtiProviderValidationService extends ConfigurableService
         return $this->getServiceLocator()->get(LtiProviderFieldsMapper::SERVICE_ID);
     }
 
-    private function getValidationFactory(): ValidationFactory
+    private function getValidationFactory(): ValidatorsFactory
     {
         /** @noinspection PhpIncompatibleReturnTypeInspection */
-        return $this->getServiceLocator()->get(ValidationFactory::SERVICE_ID);
+        return $this->getServiceLocator()->get(ValidatorsFactory::SERVICE_ID);
     }
 }

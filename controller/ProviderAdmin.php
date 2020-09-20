@@ -23,7 +23,7 @@ namespace oat\taoLti\controller;
 use oat\taoLti\models\classes\LtiProvider\LtiProviderFieldsMapper;
 use oat\taoLti\models\classes\LtiProvider\Validation\LtiProviderValidationService;
 use oat\taoLti\models\classes\LtiProvider\RdfLtiProviderRepository;
-use oat\taoLti\models\classes\LtiProvider\Validation\ValidationFactory;
+use oat\taoLti\models\classes\LtiProvider\Validation\ValidatorsFactory;
 use tao_actions_SaSModule;
 use tao_helpers_Uri;
 
@@ -50,10 +50,10 @@ class ProviderAdmin extends tao_actions_SaSModule
         return $this->getValidationFactory()->createFormValidators($this->getLtiVersion());
     }
 
-    private function getValidationFactory(): ValidationFactory
+    private function getValidationFactory(): ValidatorsFactory
     {
         /** @noinspection PhpIncompatibleReturnTypeInspection */
-        return $this->getServiceLocator()->get(ValidationFactory::SERVICE_ID);
+        return $this->getServiceLocator()->get(ValidatorsFactory::SERVICE_ID);
     }
 
     private function getConfigurationMapper(): LtiProviderFieldsMapper

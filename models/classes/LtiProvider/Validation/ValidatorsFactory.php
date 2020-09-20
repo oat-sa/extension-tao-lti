@@ -27,10 +27,10 @@ use oat\oatbox\validator\ValidatorInterface;
 use tao_helpers_form_FormFactory;
 use tao_helpers_Uri;
 
-class ValidationFactory extends ConfigurableService
+class ValidatorsFactory extends ConfigurableService
 {
 
-    public const SERVICE_ID = 'taoLti/ValidationFactory';
+    public const SERVICE_ID = 'taoLti/ValidatorsFactory';
     public const OPTION_VALIDATORS = 'validators';
 
     /**
