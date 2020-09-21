@@ -20,11 +20,15 @@
 
 declare(strict_types=1);
 
-namespace oat\taoLti\models\classes\LtiProvider;
+namespace oat\taoLti\test\integration;
 
 use InvalidArgumentException;
 use oat\generis\test\TestCase;
 use oat\tao\model\oauth\DataStore;
+use oat\taoLti\models\classes\LtiProvider\ConfigurableLtiProviderRepository;
+use oat\taoLti\models\classes\LtiProvider\LtiProvider;
+use oat\taoLti\models\classes\LtiProvider\LtiProviderFactory;
+use oat\taoLti\models\classes\LtiProvider\LtiProviderFieldsMapper;
 use oat\taoLti\models\classes\LtiProvider\Validation\LtiProviderValidationService;
 use oat\taoLti\models\classes\LtiProvider\Validation\ValidatorsFactory;
 
