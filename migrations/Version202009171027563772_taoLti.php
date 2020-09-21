@@ -63,14 +63,25 @@ final class Version202009171027563772_taoLti extends AbstractMigration
                             RdfLtiProviderRepository::LTI_TOOL_OIDC_LOGIN_INITATION_URL => [['notEmpty'], ['url']],
                             RdfLtiProviderRepository::LTI_TOOL_LAUNCH_URL => [['url']],
                             RdfLtiProviderRepository::LTI_TOOL_JWKS_URL => [
-                                ['url']
-//                    'Callback',
-//                    [
-//                        'function' => static function ($x) {
-//                        }
-//                    ]
+                                [
+                                    'OneOf',
+                                    [
+                                        'reference' =>
+                                            [RdfLtiProviderRepository::LTI_TOOL_PUBLIC_KEY,],
+
+                                    ]
+                                ],
                             ],
-//                RdfLtiProviderRepository::LTI_TOOL_PUBLIC_KEY => ['Callback'],
+                            RdfLtiProviderRepository::LTI_TOOL_PUBLIC_KEY => [
+                                [
+                                    'OneOf',
+                                    [
+                                        'reference' =>
+                                            [RdfLtiProviderRepository::LTI_TOOL_JWKS_URL,],
+
+                                    ]
+                                ],
+                            ],
                         ],
                     ]
                 ]
