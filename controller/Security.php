@@ -49,6 +49,9 @@ class Security extends Controller implements ServiceLocatorAwareInterface
         }
     }
 
+    /**
+     * @todo Need to add a ttl to invalidate the remote platform jwks cache
+     */
     public function jwks(): void
     {
         $response = $this->getPsrResponse()

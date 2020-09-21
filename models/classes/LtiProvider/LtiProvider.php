@@ -92,7 +92,7 @@ class LtiProvider implements JsonSerializable
         string $toolAudience = null,
         string $toolOidcLoginInitiationUrl = null,
         string $toolLaunchUrl = null,
-        string $toolPublicKey = null,
+        string $toolPublicKey = '',
         string $toolJwksUrl = null
     ) {
         $this->id = $id;

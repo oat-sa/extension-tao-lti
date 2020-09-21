@@ -39,8 +39,6 @@ class CachedPlatformKeyChainRepository extends ConfigurableService implements Ke
 
     public function save(KeyChain $keyChain): void
     {
-        new KeyChainQuery($keyChain->getIdentifier());
-
         $this->setKeys(
             $keyChain,
             new KeyChainQuery($keyChain->getIdentifier())
@@ -51,6 +49,10 @@ class CachedPlatformKeyChainRepository extends ConfigurableService implements Ke
 
     public function findAll(KeyChainQuery $query): KeyChainCollection
     {
+        if ($query->getIdentifier() == null) {
+            $query = new KeyChainQuery(PlatformKeyChainRepository::OPTION_DEFAULT_KEY_ID);
+        }
+
         if ($this->isCacheAvailable($query)) {
             //TODO: Needs to be refactor if we have multiple key chains
             $rawKeys = $this->getCacheService()->getMultiple(

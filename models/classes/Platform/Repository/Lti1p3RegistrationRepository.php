@@ -143,6 +143,11 @@ class Lti1p3RegistrationRepository extends ConfigurableService implements Regist
             return null;
         }
 
+        $translatedToolKeyChain = null;
+        if ($ltiProvider->getToolPublicKey() !== null && $ltiProvider->getToolJwksUrl() == null) {
+            $translatedToolKeyChain = $this->translateKeyChain($toolKeyChain);
+        }
+
         return new Registration(
             $ltiProvider->getId(),
             $ltiProvider->getToolClientId(),
@@ -150,7 +155,9 @@ class Lti1p3RegistrationRepository extends ConfigurableService implements Regist
             $this->getTool($ltiProvider),
             $ltiProvider->getToolDeploymentIds(),
             $this->translateKeyChain($platformKeyChain),
-            $this->translateKeyChain($toolKeyChain)
+            $translatedToolKeyChain,
+            $this->getOption(self::OPTION_ROOT_URL) . 'taoLti/Security/jwks',
+            $ltiProvider->getToolJwksUrl()
         );
     }
 }
