@@ -31,11 +31,7 @@ class LtiProviderFieldsMapper extends ConfigurableService
 
     public function map(string $rdfUri): ?string
     {
-        return $this->getMap() [$rdfUri] ?? null;
+        return $this->getOption(self::OPTION_MAP) [$rdfUri] ?? null;
     }
 
-    private function getMap(): array
-    {
-        return $this->getOption(self::OPTION_MAP) ?? [];
-    }
 }

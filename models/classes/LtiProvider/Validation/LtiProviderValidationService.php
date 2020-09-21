@@ -40,7 +40,7 @@ class LtiProviderValidationService extends ConfigurableService
     {
         $this->errors = [];
 
-        foreach (array_keys($this->getValidationFactory()->getValidatorsDefinitions($schema)) as $field) {
+        foreach (array_keys($this->getValidationFactory()->getValidators($schema)) as $field) {
             $mappedField = $this->getConfigurationMapper()->map($field);
 
             if (!$mappedField) {

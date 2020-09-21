@@ -39,9 +39,7 @@ class ValidatorsFactory extends ConfigurableService
     public function createFormValidators(string $schema, string $field = null): array
     {
         $result = [];
-        $allValidators = $this->getValidatorsDefinitions($schema);
-        $attachedValidators = $allValidators[$field] ? [$allValidators[$field]] : $allValidators;
-        foreach ($attachedValidators as $name => $validators) {
+        foreach ($this->getValidators($schema, $field) as $name => $validators) {
             foreach ($validators as $validator) {
                 $result[tao_helpers_Uri::encode($name)][] = tao_helpers_form_FormFactory::getValidator(...$validator);
             }
@@ -49,10 +47,10 @@ class ValidatorsFactory extends ConfigurableService
         return $result;
     }
 
-    public function getValidatorsDefinitions(string $schema): array
+    public function getValidators(string $schema, string $field = null): array
     {
-        $schemas = $this->getOption(self::OPTION_VALIDATORS) ?? [];
+        $validators = $this->getOption(self::OPTION_VALIDATORS)[$schema] ?? [];
 
-        return $schemas[$schema] ?? [];
+        return $validators[$field] ? [$validators[$field]] : $validators;
     }
 }
