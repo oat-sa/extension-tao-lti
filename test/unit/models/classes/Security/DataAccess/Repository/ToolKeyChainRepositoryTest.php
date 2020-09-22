@@ -79,4 +79,21 @@ class ToolKeyChainRepositoryTest extends TestCase
             $this->subject->findAll(new KeyChainQuery('ltiId'))
         );
     }
+
+    public function testFindAllWithProviderWithoutToolPublicKey(): void
+    {
+        $ltiProvider = $this->createMock(LtiProvider::class);
+
+        $ltiProvider->method('getToolPublicKey')
+            ->willReturn('');
+
+        $this->ltiProviderService
+            ->method('searchById')
+            ->willReturn($ltiProvider);
+
+        $this->assertEquals(
+            new KeyChainCollection(...[]),
+            $this->subject->findAll(new KeyChainQuery('ltiId'))
+        );
+    }
 }

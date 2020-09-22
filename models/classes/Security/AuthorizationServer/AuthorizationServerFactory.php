@@ -28,6 +28,7 @@ use League\OAuth2\Server\CryptKey;
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
 use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
 use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
+use OAT\Library\Lti1p3Core\Security\Jwks\Fetcher\JwksFetcher;
 use OAT\Library\Lti1p3Core\Service\Server\Entity\Scope;
 use OAT\Library\Lti1p3Core\Service\Server\Grant\ClientAssertionCredentialsGrant;
 use OAT\Library\Lti1p3Core\Service\Server\Repository\AccessTokenRepository;
@@ -84,14 +85,27 @@ class AuthorizationServerFactory extends ConfigurableService
     private function getClientRepository(): ClientRepositoryInterface
     {
         return new ClientRepository(
-            $this->getRegistrationRepository()
+            $this->getRegistrationRepository(),
+            $this->getJwksFetcher(),
+            $this->getLogger()
+        );
+    }
+
+    private function getJwksFetcher(): JwksFetcher
+    {
+        return new JwksFetcher(
+            $this->getCacheItemPool(),
+            null,
+            null,
+            $this->getLogger()
         );
     }
 
     private function getAccessTokenRepository(): AccessTokenRepositoryInterface
     {
         return new AccessTokenRepository(
-            $this->getCacheItemPool()
+            $this->getCacheItemPool(),
+            $this->getLogger()
         );
     }
 

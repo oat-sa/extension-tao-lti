@@ -136,15 +136,15 @@ class Lti1p3RegistrationRepository extends ConfigurableService implements Regist
             ->getKeyChains());
 
         $platformKeyChain = current($this->getPlatformKeyChainRepository()
-            ->findAll(new KeyChainQuery())
+            ->findAll(new KeyChainQuery($ltiProvider->getId()))
             ->getKeyChains());
 
-        if ($toolKeyChain === false || $platformKeyChain === false) {
+        if ($platformKeyChain === false) {
             return null;
         }
 
         $translatedToolKeyChain = null;
-        if ($ltiProvider->getToolPublicKey() !== null && $ltiProvider->getToolJwksUrl() == null) {
+        if ($toolKeyChain !== false && empty($ltiProvider->getToolJwksUrl())) {
             $translatedToolKeyChain = $this->translateKeyChain($toolKeyChain);
         }
 
