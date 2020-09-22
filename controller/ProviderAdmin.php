@@ -20,8 +20,11 @@
 
 namespace oat\taoLti\controller;
 
+use oat\tao\model\featureFlag\Lti1p3FeatureFlag;
 use oat\taoLti\models\classes\LtiProvider\RdfLtiProviderRepository;
+use tao_actions_form_CreateInstance;
 use tao_actions_SaSModule;
+use tao_helpers_form_Form;
 
 /**
  * This controller allows the adding and deletion of LTI Oauth Providers
@@ -31,6 +34,44 @@ use tao_actions_SaSModule;
  */
 class ProviderAdmin extends tao_actions_SaSModule
 {
+    private const FIELDS_EXCLUDED_FROM_LTI_1P3 = [
+        'http://www.tao.lu/Ontologies/TAOLTI.rdf#toolIdentifier',
+        'http://www.tao.lu/Ontologies/TAOLTI.rdf#toolPublicKey',
+        'http://www.tao.lu/Ontologies/TAOLTI.rdf#ToolJwksUrl',
+        'http://www.tao.lu/Ontologies/TAOLTI.rdf#toolLaunchUrl',
+        'http://www.tao.lu/Ontologies/TAOLTI.rdf#toolOidcLoginInitiationUrl',
+        'http://www.tao.lu/Ontologies/TAOLTI.rdf#toolDeploymentIds',
+        'http://www.tao.lu/Ontologies/TAOLTI.rdf#toolAudience',
+        'http://www.tao.lu/Ontologies/TAOLTI.rdf#toolClientId',
+        'http://www.tao.lu/Ontologies/TAOLTI.rdf#toolName',
+        'http://www.tao.lu/Ontologies/TAOLTI.rdf#toolIdentifier',
+        'http://www.tao.lu/Ontologies/TAOLTI.rdf#ltiVersion',
+    ];
+
+    public function addInstanceForm()
+    {
+        if ($this->getFeatureFlag()->isLti1p3Enabled()) {
+            $form = $this->createLti1p1ProviderForm();
+
+            if ($form->isSubmited() && $form->isValid()) {
+                $values = $this->extractValues($form);
+
+                $instance = $this->createInstance([$this->getCurrentClass()], $values);
+
+                $this->setData('message', __('%s created', $instance->getLabel()));
+                $this->setData('reload', true);
+
+            }
+            $this->setData('formTitle', __('Edit Instance'));
+            $this->setData('myForm', $form->render());
+            $this->setView('form.tpl', 'tao');
+
+            return;
+        }
+
+        parent::addInstanceForm();
+    }
+
     /**
      * (non-PHPdoc)
      *
@@ -40,5 +81,31 @@ class ProviderAdmin extends tao_actions_SaSModule
     public function getClassService()
     {
         return $this->getServiceLocator()->get(RdfLtiProviderRepository::class);
+    }
+
+    private function extractValues(tao_helpers_form_Form $form): array
+    {
+        $values = $form->getValues();
+        $values = array_diff_key($values, array_flip(self::FIELDS_EXCLUDED_FROM_LTI_1P3));
+
+        return $values;
+    }
+
+    private function createLti1p1ProviderForm(): tao_helpers_form_Form
+    {
+        $formContainer = new tao_actions_form_CreateInstance(
+            [$this->getCurrentClass()],
+            [
+                tao_actions_form_CreateInstance::CSRF_PROTECTION_OPTION => true,
+                'excludedProperties' => self::FIELDS_EXCLUDED_FROM_LTI_1P3,
+            ]
+        );
+
+        return $formContainer->getForm();
+    }
+
+    private function getFeatureFlag(): Lti1p3FeatureFlag
+    {
+        return $this->getServiceLocator()->get(Lti1p3FeatureFlag::SERVICE_ID);
     }
 }
