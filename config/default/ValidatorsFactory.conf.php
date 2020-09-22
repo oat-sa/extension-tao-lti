@@ -24,7 +24,7 @@ return new ValidatorsFactory(
                     RdfLtiProviderRepository::LTI_TOOL_LAUNCH_URL => [['url']],
                     RdfLtiProviderRepository::LTI_TOOL_JWKS_URL => [
                         [
-                            'OneOf',
+                            'AnyOf',
                             [
                                 'reference' =>
                                     [RdfLtiProviderRepository::LTI_TOOL_PUBLIC_KEY,],
@@ -34,7 +34,7 @@ return new ValidatorsFactory(
                     ],
                     RdfLtiProviderRepository::LTI_TOOL_PUBLIC_KEY => [
                         [
-                            'OneOf',
+                            'AnyOf',
                             [
                                 'reference' =>
                                     [RdfLtiProviderRepository::LTI_TOOL_JWKS_URL,],

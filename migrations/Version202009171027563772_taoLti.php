@@ -64,7 +64,7 @@ final class Version202009171027563772_taoLti extends AbstractMigration
                             RdfLtiProviderRepository::LTI_TOOL_LAUNCH_URL => [['url']],
                             RdfLtiProviderRepository::LTI_TOOL_JWKS_URL => [
                                 [
-                                    'OneOf',
+                                    'AnyOf',
                                     [
                                         'reference' =>
                                             [RdfLtiProviderRepository::LTI_TOOL_PUBLIC_KEY,],
@@ -74,7 +74,7 @@ final class Version202009171027563772_taoLti extends AbstractMigration
                             ],
                             RdfLtiProviderRepository::LTI_TOOL_PUBLIC_KEY => [
                                 [
-                                    'OneOf',
+                                    'AnyOf',
                                     [
                                         'reference' =>
                                             [RdfLtiProviderRepository::LTI_TOOL_JWKS_URL,],
