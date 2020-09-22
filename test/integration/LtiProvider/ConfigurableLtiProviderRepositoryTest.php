@@ -130,22 +130,8 @@ class ConfigurableLtiProviderRepositoryTest extends TestCase
         $validationService->setServiceLocator(
             $this->getServiceLocatorMock(
                 [
-                    LtiProviderFieldsMapper::SERVICE_ID => new LtiProviderFieldsMapper(
-                        [
-                            LtiProviderFieldsMapper::OPTION_MAP => [
-                                DataStore::PROPERTY_OAUTH_KEY => 'key',
-                            ],
-                        ]
-                    ),
-                    ValidatorsFactory::SERVICE_ID => new ValidatorsFactory(
-                        [
-                            ValidatorsFactory::OPTION_VALIDATORS => [
-                                '1.1' => [
-                                    DataStore::PROPERTY_OAUTH_KEY => [['notEmpty']],
-                                ],
-                            ]
-                        ]
-                    ),
+                    LtiProviderFieldsMapper::class => new LtiProviderFieldsMapper(),
+                    ValidatorsFactory::class => new ValidatorsFactory(),
                 ]
             )
         );

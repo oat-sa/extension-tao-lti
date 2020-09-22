@@ -72,12 +72,12 @@ class LtiProviderValidator extends ConfigurableService
     private function getConfigurationMapper(): LtiProviderFieldsMapper
     {
         /** @noinspection PhpIncompatibleReturnTypeInspection */
-        return $this->getServiceLocator()->get(LtiProviderFieldsMapper::SERVICE_ID);
+        return $this->getServiceLocator()->get(LtiProviderFieldsMapper::class);
     }
 
     private function getValidationFactory(): ValidatorsFactory
     {
         /** @noinspection PhpIncompatibleReturnTypeInspection */
-        return $this->getServiceLocator()->get(ValidatorsFactory::SERVICE_ID);
+        return $this->getServiceLocator()->get(ValidatorsFactory::class);
     }
 }

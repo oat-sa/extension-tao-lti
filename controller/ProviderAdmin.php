@@ -64,13 +64,13 @@ class ProviderAdmin extends tao_actions_SaSModule
     private function getValidationFactory(): ValidatorsFactory
     {
         /** @noinspection PhpIncompatibleReturnTypeInspection */
-        return $this->getServiceLocator()->get(ValidatorsFactory::SERVICE_ID);
+        return $this->getServiceLocator()->get(ValidatorsFactory::class);
     }
 
     private function getConfigurationMapper(): LtiProviderFieldsMapper
     {
         /** @noinspection PhpIncompatibleReturnTypeInspection */
-        return $this->getServiceLocator()->get(LtiProviderFieldsMapper::SERVICE_ID);
+        return $this->getServiceLocator()->get(LtiProviderFieldsMapper::class);
     }
 
 }
