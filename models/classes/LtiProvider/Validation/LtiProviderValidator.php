@@ -26,7 +26,7 @@ use InvalidArgumentException;
 use oat\oatbox\service\ConfigurableService;
 use oat\taoLti\models\classes\LtiProvider\LtiProviderFieldsMapper;
 
-class LtiProviderValidationService extends ConfigurableService
+class LtiProviderValidator extends ConfigurableService
 {
     /**
      * @var array

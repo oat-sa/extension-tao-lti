@@ -29,7 +29,7 @@ use oat\taoLti\models\classes\LtiProvider\ConfigurableLtiProviderRepository;
 use oat\taoLti\models\classes\LtiProvider\LtiProvider;
 use oat\taoLti\models\classes\LtiProvider\LtiProviderFactory;
 use oat\taoLti\models\classes\LtiProvider\LtiProviderFieldsMapper;
-use oat\taoLti\models\classes\LtiProvider\Validation\LtiProviderValidationService;
+use oat\taoLti\models\classes\LtiProvider\Validation\LtiProviderValidator;
 use oat\taoLti\models\classes\LtiProvider\Validation\ValidatorsFactory;
 
 class ConfigurableLtiProviderRepositoryTest extends TestCase
@@ -126,7 +126,7 @@ class ConfigurableLtiProviderRepositoryTest extends TestCase
         );
 
         $factory = new LtiProviderFactory();
-        $validationService = new LtiProviderValidationService();
+        $validationService = new LtiProviderValidator();
         $validationService->setServiceLocator(
             $this->getServiceLocatorMock(
                 [
@@ -152,7 +152,7 @@ class ConfigurableLtiProviderRepositoryTest extends TestCase
         $factory->setServiceLocator(
             $this->getServiceLocatorMock(
                 [
-                    LtiProviderValidationService::class => $validationService,
+                    LtiProviderValidator::class => $validationService,
                 ]
             )
         );

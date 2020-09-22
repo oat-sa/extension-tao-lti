@@ -21,7 +21,7 @@
 namespace oat\taoLti\controller;
 
 use oat\taoLti\models\classes\LtiProvider\LtiProviderFieldsMapper;
-use oat\taoLti\models\classes\LtiProvider\Validation\LtiProviderValidationService;
+use oat\taoLti\models\classes\LtiProvider\Validation\LtiProviderValidator;
 use oat\taoLti\models\classes\LtiProvider\RdfLtiProviderRepository;
 use oat\taoLti\models\classes\LtiProvider\Validation\ValidatorsFactory;
 use tao_actions_SaSModule;
@@ -50,6 +50,17 @@ class ProviderAdmin extends tao_actions_SaSModule
         return $this->getValidationFactory()->createFormValidators($this->getLtiVersion());
     }
 
+    private function getLtiVersion(): string
+    {
+        $body = $this->getPsrRequest()->getParsedBody();
+
+        $rawLtiVersion = $body[tao_helpers_Uri::encode(
+                RdfLtiProviderRepository::LTI_VERSION
+            )] ?? RdfLtiProviderRepository::DEFAULT_LTI_VERSION;
+
+        return $this->getConfigurationMapper()->map(tao_helpers_Uri::decode($rawLtiVersion));
+    }
+
     private function getValidationFactory(): ValidatorsFactory
     {
         /** @noinspection PhpIncompatibleReturnTypeInspection */
@@ -62,14 +73,4 @@ class ProviderAdmin extends tao_actions_SaSModule
         return $this->getServiceLocator()->get(LtiProviderFieldsMapper::SERVICE_ID);
     }
 
-    private function getLtiVersion(): string
-    {
-        $body = $this->getPsrRequest()->getParsedBody();
-
-        $rawLtiVersion = $body[tao_helpers_Uri::encode(
-            RdfLtiProviderRepository::LTI_VERSION
-        )] ?? RdfLtiProviderRepository::DEFAULT_LTI_VERSION;
-
-        return $this->getConfigurationMapper()->map(tao_helpers_Uri::decode($rawLtiVersion));
-    }
 }
