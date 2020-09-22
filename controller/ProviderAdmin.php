@@ -50,7 +50,7 @@ class ProviderAdmin extends tao_actions_SaSModule
 
     public function addInstanceForm()
     {
-        if ($this->getFeatureFlag()->isLti1p3Enabled()) {
+        if (!$this->getFeatureFlag()->isLti1p3Enabled()) {
             $form = $this->createLti1p1ProviderForm();
 
             if ($form->isSubmited() && $form->isValid()) {
