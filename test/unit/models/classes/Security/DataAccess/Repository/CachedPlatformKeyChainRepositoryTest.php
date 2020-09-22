@@ -174,6 +174,38 @@ class CachedPlatformKeyChainRepositoryTest extends TestCase
         $this->assertSame('publicKey', $keyChainCollection[0]->getPublicKey()->getValue());
     }
 
+    public function testFindAllWithoutKeyChainQueryIdentifier(): void
+    {
+        $this->cache
+            ->method('has')
+            ->withConsecutive(
+                [sprintf(CachedPlatformKeyChainRepository::PRIVATE_PATTERN, PlatformKeyChainRepository::OPTION_DEFAULT_KEY_ID)],
+                [sprintf(CachedPlatformKeyChainRepository::PUBLIC_PATTERN, PlatformKeyChainRepository::OPTION_DEFAULT_KEY_ID)]
+            )
+            ->willReturnOnConsecutiveCalls(
+                true,
+                true
+            )
+        ;
+
+        $this->cache
+            ->expects($this->once())
+            ->method('getMultiple')
+            ->with(
+                [
+                    sprintf(CachedPlatformKeyChainRepository::PRIVATE_PATTERN, PlatformKeyChainRepository::OPTION_DEFAULT_KEY_ID),
+                    sprintf(CachedPlatformKeyChainRepository::PUBLIC_PATTERN, PlatformKeyChainRepository::OPTION_DEFAULT_KEY_ID),
+                ]
+            )->willReturn(
+                [
+                    sprintf(CachedPlatformKeyChainRepository::PRIVATE_PATTERN, PlatformKeyChainRepository::OPTION_DEFAULT_KEY_ID) => 'privateKey',
+                    sprintf(CachedPlatformKeyChainRepository::PUBLIC_PATTERN, PlatformKeyChainRepository::OPTION_DEFAULT_KEY_ID) => 'publicKey',
+                ]
+            );
+
+        $this->subject->findAll(new KeyChainQuery());
+    }
+
     private function getKeyChain(): KeyChain
     {
         return new KeyChain(
