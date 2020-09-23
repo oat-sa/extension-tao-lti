@@ -49,25 +49,16 @@ class LtiProviderFormFactory extends ConfigurableService
 
     public function create(): tao_helpers_form_Form
     {
+        $excludedProperties = [];
         if (!$this->getFeatureFlagChecker()->isEnabled(LtiFeatures::LTI_1P3)) {
-            return $this->createLti1p1ProviderForm();
+            $excludedProperties = self::LTI_1P3_ONLY_FIELDS;
         }
 
-        return new tao_actions_form_CreateInstance(
-            [$this->getClass(RdfLtiProviderRepository::CLASS_URI)],
-            [
-                tao_actions_form_CreateInstance::CSRF_PROTECTION_OPTION => true,
-            ]
-        );
-    }
-
-    private function createLti1p1ProviderForm(): tao_helpers_form_Form
-    {
         $formContainer = new tao_actions_form_CreateInstance(
             [$this->getClass(RdfLtiProviderRepository::CLASS_URI)],
             [
                 tao_actions_form_CreateInstance::CSRF_PROTECTION_OPTION => true,
-                'excludedProperties' => self::LTI_1P3_ONLY_FIELDS,
+                'excludedProperties' => $excludedProperties,
             ]
         );
 
