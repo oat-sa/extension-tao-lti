@@ -49,14 +49,14 @@ class LtiProviderValidatorTest extends TestCase
         );
     }
 
-    public function testValidateBrokenArrayArray()
+    public function testValidateBrokenArray(): void
     {
         $this->expectExceptionMessage('"key": This field is required');
         $this->expectException(InvalidArgumentException::class);
         $this->assertNull($this->subject->validateArray('1.1', []));
     }
 
-    public function testValidateProperArrayArray()
+    public function testValidateProperArray(): void
     {
         $this->assertNull(
             $this->subject->validateArray(
