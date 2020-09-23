@@ -24,9 +24,9 @@ namespace oat\taoLti\models\classes\FeatureFlag;
 
 use oat\oatbox\service\ConfigurableService;
 use oat\tao\model\featureFlag\FeatureFlagChecker;
-use oat\tao\model\menu\ExcludedSectionListInterface;
+use oat\tao\model\menu\ExcludedSectionListProviderInterface;
 
-class ExcludedSectionList extends ConfigurableService implements ExcludedSectionListInterface
+class ExcludedSectionListProvider extends ConfigurableService implements ExcludedSectionListProviderInterface
 {
     public function getExcludedSections(): array
     {
