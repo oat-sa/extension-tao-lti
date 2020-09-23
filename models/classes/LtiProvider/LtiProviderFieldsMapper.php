@@ -27,7 +27,6 @@ use oat\tao\model\oauth\DataStore;
 
 class LtiProviderFieldsMapper extends ConfigurableService
 {
-
     private const MAP = [
         RdfLtiProviderRepository::LTI_VERSION => ConfigurableLtiProviderRepository::LTI_VERSION,
         RdfLtiProviderRepository::LTI_TOOL_CLIENT_ID => ConfigurableLtiProviderRepository::LTI_TOOL_CLIENT_ID,
@@ -49,5 +48,4 @@ class LtiProviderFieldsMapper extends ConfigurableService
     {
         return self::MAP [$rdfUri] ?? null;
     }
-
 }
