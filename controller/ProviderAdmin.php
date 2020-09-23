@@ -15,13 +15,12 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2019 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
+ * Copyright (c) 2019-2020 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
  */
 
 namespace oat\taoLti\controller;
 
 use oat\taoLti\models\classes\LtiProvider\LtiProviderFieldsMapper;
-use oat\taoLti\models\classes\LtiProvider\Validation\LtiProviderValidator;
 use oat\taoLti\models\classes\LtiProvider\RdfLtiProviderRepository;
 use oat\taoLti\models\classes\LtiProvider\Validation\ValidatorsFactory;
 use tao_actions_SaSModule;
@@ -55,10 +54,10 @@ class ProviderAdmin extends tao_actions_SaSModule
         $body = $this->getPsrRequest()->getParsedBody();
 
         $rawLtiVersion = $body[tao_helpers_Uri::encode(
-                RdfLtiProviderRepository::LTI_VERSION
-            )] ?? RdfLtiProviderRepository::DEFAULT_LTI_VERSION;
+            RdfLtiProviderRepository::LTI_VERSION
+        )] ?? RdfLtiProviderRepository::DEFAULT_LTI_VERSION;
 
-        return $this->getConfigurationMapper()->map(tao_helpers_Uri::decode($rawLtiVersion));
+        return $this->getConfigurationMapper()->map(tao_helpers_Uri::decode($rawLtiVersion)) ?? '1.1';
     }
 
     private function getValidationFactory(): ValidatorsFactory
@@ -72,5 +71,4 @@ class ProviderAdmin extends tao_actions_SaSModule
         /** @noinspection PhpIncompatibleReturnTypeInspection */
         return $this->getServiceLocator()->get(LtiProviderFieldsMapper::class);
     }
-
 }
