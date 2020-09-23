@@ -52,12 +52,10 @@ class ProviderAdmin extends tao_actions_SaSModule
     private function getLtiVersion(): string
     {
         $body = $this->getPsrRequest()->getParsedBody();
+        $rawLtiVersion = trim($body[tao_helpers_Uri::encode(RdfLtiProviderRepository::LTI_VERSION)] ?? '');
+        $ltiVersion = empty($rawLtiVersion) ? RdfLtiProviderRepository::DEFAULT_LTI_VERSION : tao_helpers_Uri::decode($rawLtiVersion);
 
-        $rawLtiVersion = $body[tao_helpers_Uri::encode(
-            RdfLtiProviderRepository::LTI_VERSION
-        )] ?? RdfLtiProviderRepository::DEFAULT_LTI_VERSION;
-
-        return $this->getConfigurationMapper()->map(tao_helpers_Uri::decode($rawLtiVersion)) ?? '1.1';
+        return $this->getConfigurationMapper()->map($ltiVersion);
     }
 
     private function getValidationFactory(): ValidatorsFactory
