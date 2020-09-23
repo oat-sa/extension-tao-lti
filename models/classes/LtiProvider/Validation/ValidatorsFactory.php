@@ -49,6 +49,10 @@ class ValidatorsFactory extends ConfigurableService
             RdfLtiProviderRepository::LTI_TOOL_LAUNCH_URL => [['url']],
             RdfLtiProviderRepository::LTI_TOOL_JWKS_URL => [
                 [
+                    'url',
+                    ['allow_empty' => true],
+                ],
+                [
                     'AnyOf',
                     [
                         'reference' =>
