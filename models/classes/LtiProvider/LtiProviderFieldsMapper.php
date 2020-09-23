@@ -49,5 +49,4 @@ class LtiProviderFieldsMapper extends ConfigurableService
     {
         return self::MAP [$rdfUri] ?? null;
     }
-
 }
