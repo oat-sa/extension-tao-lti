@@ -27,28 +27,22 @@ use oat\tao\model\featureFlag\FeatureFlagChecker;
 
 class FeatureFlagFormPropertyMapper extends ConfigurableService
 {
-    public const LTI_1P3_ONLY_FIELDS = [
-        RdfLtiProviderRepository::LTI_TOOL_IDENTIFIER,
-        RdfLtiProviderRepository::LTI_TOOL_PUBLIC_KEY,
-        RdfLtiProviderRepository::LTI_TOOL_JWKS_URL,
-        RdfLtiProviderRepository::LTI_TOOL_LAUNCH_URL,
-        RdfLtiProviderRepository::LTI_TOOL_OIDC_LOGIN_INITATION_URL,
-        RdfLtiProviderRepository::LTI_TOOL_DEPLOYMENT_IDS,
-        RdfLtiProviderRepository::LTI_TOOL_AUDIENCE,
-        RdfLtiProviderRepository::LTI_TOOL_CLIENT_ID,
-        RdfLtiProviderRepository::LTI_TOOL_NAME,
-        RdfLtiProviderRepository::LTI_TOOL_IDENTIFIER,
-        RdfLtiProviderRepository::LTI_VERSION,
-    ];
+    public const SERVICE_ID = 'taoLti/featureFlagFormPropertyMapper';
+    public const OPTION_FEATURE_FLAG_FORM_FIELDS = 'featureFlagFormFields';
 
     public function getExcludedProperties(): array
     {
-        if (!$this->getFeatureFlagChecker()->isEnabled('LTI1P3'))
-        {
-            return self::LTI_1P3_ONLY_FIELDS;
+        $excludedProperties = [];
+
+        foreach ($this->getOption(self::OPTION_FEATURE_FLAG_FORM_FIELDS) as $field => $featureFlags) {
+            foreach ($featureFlags as $featureFlag) {
+                if (!$this->getFeatureFlagChecker()->isEnabled($featureFlag)) {
+                    $excludedProperties[] = $field;
+                }
+            }
         }
 
-        return [];
+        return $excludedProperties;
     }
 
     private function getFeatureFlagChecker(): FeatureFlagChecker
