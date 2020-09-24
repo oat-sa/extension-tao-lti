@@ -48,7 +48,7 @@ class AuthorizationServerFactory extends ConfigurableService
 
     public function create(KeyChain $keyChain): AuthorizationServer
     {
-        if (null === $keyChain->getPrivateKey()) {
+        if (empty($keyChain->getPrivateKey())) {
             throw new InvalidArgumentException('Missing private key');
         }
 

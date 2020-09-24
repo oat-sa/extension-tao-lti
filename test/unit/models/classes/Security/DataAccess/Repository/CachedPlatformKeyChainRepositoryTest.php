@@ -176,11 +176,13 @@ class CachedPlatformKeyChainRepositoryTest extends TestCase
 
     public function testFindAllWithoutKeyChainQueryIdentifier(): void
     {
+        $defaultKeyId = 'toto';
+
         $this->cache
             ->method('has')
             ->withConsecutive(
-                [sprintf(CachedPlatformKeyChainRepository::PRIVATE_PATTERN, PlatformKeyChainRepository::OPTION_DEFAULT_KEY_ID)],
-                [sprintf(CachedPlatformKeyChainRepository::PUBLIC_PATTERN, PlatformKeyChainRepository::OPTION_DEFAULT_KEY_ID)]
+                [sprintf(CachedPlatformKeyChainRepository::PRIVATE_PATTERN, $defaultKeyId)],
+                [sprintf(CachedPlatformKeyChainRepository::PUBLIC_PATTERN, $defaultKeyId)]
             )
             ->willReturnOnConsecutiveCalls(
                 true,
@@ -193,16 +195,17 @@ class CachedPlatformKeyChainRepositoryTest extends TestCase
             ->method('getMultiple')
             ->with(
                 [
-                    sprintf(CachedPlatformKeyChainRepository::PRIVATE_PATTERN, PlatformKeyChainRepository::OPTION_DEFAULT_KEY_ID),
-                    sprintf(CachedPlatformKeyChainRepository::PUBLIC_PATTERN, PlatformKeyChainRepository::OPTION_DEFAULT_KEY_ID),
+                    sprintf(CachedPlatformKeyChainRepository::PRIVATE_PATTERN, $defaultKeyId),
+                    sprintf(CachedPlatformKeyChainRepository::PUBLIC_PATTERN, $defaultKeyId),
                 ]
             )->willReturn(
                 [
-                    sprintf(CachedPlatformKeyChainRepository::PRIVATE_PATTERN, PlatformKeyChainRepository::OPTION_DEFAULT_KEY_ID) => 'privateKey',
-                    sprintf(CachedPlatformKeyChainRepository::PUBLIC_PATTERN, PlatformKeyChainRepository::OPTION_DEFAULT_KEY_ID) => 'publicKey',
+                    sprintf(CachedPlatformKeyChainRepository::PRIVATE_PATTERN, $defaultKeyId) => 'privateKey',
+                    sprintf(CachedPlatformKeyChainRepository::PUBLIC_PATTERN, $defaultKeyId) => 'publicKey',
                 ]
             );
 
+        $this->subject->setOption(PlatformKeyChainRepository::OPTION_DEFAULT_KEY_ID, $defaultKeyId);
         $this->subject->findAll(new KeyChainQuery());
     }
 

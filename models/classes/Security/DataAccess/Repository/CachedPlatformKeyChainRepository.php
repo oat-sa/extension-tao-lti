@@ -50,7 +50,7 @@ class CachedPlatformKeyChainRepository extends ConfigurableService implements Ke
     public function findAll(KeyChainQuery $query): KeyChainCollection
     {
         if ($query->getIdentifier() == null) {
-            $query = new KeyChainQuery(PlatformKeyChainRepository::OPTION_DEFAULT_KEY_ID);
+            $query = new KeyChainQuery($this->getOption(PlatformKeyChainRepository::OPTION_DEFAULT_KEY_ID));
         }
 
         if ($this->isCacheAvailable($query)) {
