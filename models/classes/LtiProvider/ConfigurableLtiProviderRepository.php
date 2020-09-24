@@ -120,6 +120,7 @@ class ConfigurableLtiProviderRepository extends ConfigurableService implements L
 
     private function getLtiProviderFactory(): LtiProviderFactory
     {
+        /** @noinspection PhpIncompatibleReturnTypeInspection */
         return $this->getServiceLocator()->get(LtiProviderFactory::class);
     }
 }

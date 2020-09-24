@@ -40,7 +40,7 @@ class LtiProviderValidator extends ConfigurableService
     {
         $this->errors = [];
 
-        foreach (array_keys($this->getValidationFactory()->getValidators($schema)) as $field) {
+        foreach (array_keys($this->getValidationRegistry()->getValidators($schema)) as $field) {
             $mappedField = $this->getConfigurationMapper()->map($field);
 
             if (!$mappedField) {
@@ -62,7 +62,7 @@ class LtiProviderValidator extends ConfigurableService
     private function validateMappedField(array $validators, array $data, string $mappedField): void
     {
         foreach ($validators as $validator) {
-            if ($validator->evaluate($data[$mappedField])) {
+            if ($validator->evaluate($data[$mappedField] ?? null)) {
                 continue;
             }
             $this->errors[] = sprintf('"%s": %s', $mappedField, $validator->getMessage());
@@ -80,4 +80,11 @@ class LtiProviderValidator extends ConfigurableService
         /** @noinspection PhpIncompatibleReturnTypeInspection */
         return $this->getServiceLocator()->get(ValidatorsFactory::class);
     }
+
+    private function getValidationRegistry(): ValidationRegistry
+    {
+        /** @noinspection PhpIncompatibleReturnTypeInspection */
+        return $this->getServiceLocator()->get(ValidationRegistry::class);
+    }
+
 }

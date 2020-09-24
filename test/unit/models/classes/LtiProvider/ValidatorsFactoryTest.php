@@ -24,6 +24,7 @@ namespace oat\taoLti\test\unit\models\classes\LtiProvider;
 
 use oat\generis\test\TestCase;
 use oat\tao\model\oauth\DataStore;
+use oat\taoLti\models\classes\LtiProvider\Validation\ValidationRegistry;
 use oat\taoLti\models\classes\LtiProvider\Validation\ValidatorsFactory;
 use tao_helpers_form_validators_NotEmpty;
 
@@ -38,6 +39,14 @@ class ValidatorsFactoryTest extends TestCase
     {
         parent::setUp();
         $this->subject = new ValidatorsFactory();
+        $this->subject->setServiceLocator(
+            $this->getServiceLocatorMock(
+                [
+                    ValidationRegistry::class => new ValidationRegistry()
+
+                ]
+            )
+        );
     }
 
     public function testCreateFormValidators(): void
@@ -47,6 +56,5 @@ class ValidatorsFactoryTest extends TestCase
         $this->assertInstanceOf(tao_helpers_form_validators_NotEmpty::class, $factorizedValue[0][0]);
 
         $this->assertEmpty($this->subject->createFormValidators('1.4', DataStore::PROPERTY_OAUTH_KEY));
-        $this->assertEmpty($this->subject->createFormValidators('1.1', 'oooo')[0]);
     }
 }

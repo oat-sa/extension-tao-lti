@@ -24,12 +24,12 @@ namespace oat\taoLti\test\integration;
 
 use InvalidArgumentException;
 use oat\generis\test\TestCase;
-use oat\tao\model\oauth\DataStore;
 use oat\taoLti\models\classes\LtiProvider\ConfigurableLtiProviderRepository;
 use oat\taoLti\models\classes\LtiProvider\LtiProvider;
 use oat\taoLti\models\classes\LtiProvider\LtiProviderFactory;
 use oat\taoLti\models\classes\LtiProvider\LtiProviderFieldsMapper;
 use oat\taoLti\models\classes\LtiProvider\Validation\LtiProviderValidator;
+use oat\taoLti\models\classes\LtiProvider\Validation\ValidationRegistry;
 use oat\taoLti\models\classes\LtiProvider\Validation\ValidatorsFactory;
 
 class ConfigurableLtiProviderRepositoryTest extends TestCase
@@ -125,13 +125,23 @@ class ConfigurableLtiProviderRepositoryTest extends TestCase
             ]
         );
 
-        $factory = new LtiProviderFactory();
         $validationService = new LtiProviderValidator();
+        $factory = new LtiProviderFactory();
+        $validationFactory = new ValidatorsFactory();
+        $validationFactory->setServiceLocator(
+            $this->getServiceLocatorMock(
+                [
+                    ValidationRegistry::class => new ValidationRegistry(),
+                ]
+            )
+        );
         $validationService->setServiceLocator(
             $this->getServiceLocatorMock(
                 [
                     LtiProviderFieldsMapper::class => new LtiProviderFieldsMapper(),
-                    ValidatorsFactory::class => new ValidatorsFactory(),
+                    ValidationRegistry::class => new ValidationRegistry(),
+                    ValidatorsFactory::class => $validationFactory,
+
                 ]
             )
         );

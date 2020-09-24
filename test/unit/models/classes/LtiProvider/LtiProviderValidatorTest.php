@@ -26,6 +26,7 @@ use InvalidArgumentException;
 use oat\generis\test\TestCase;
 use oat\taoLti\models\classes\LtiProvider\LtiProviderFieldsMapper;
 use oat\taoLti\models\classes\LtiProvider\Validation\LtiProviderValidator;
+use oat\taoLti\models\classes\LtiProvider\Validation\ValidationRegistry;
 use oat\taoLti\models\classes\LtiProvider\Validation\ValidatorsFactory;
 
 class LtiProviderValidatorTest extends TestCase
@@ -39,10 +40,19 @@ class LtiProviderValidatorTest extends TestCase
     {
         parent::setUp();
         $this->subject = new LtiProviderValidator();
+        $factory = new ValidatorsFactory();
+        $factory->setServiceLocator(
+            $this->getServiceLocatorMock(
+                [
+                    ValidationRegistry::class => new ValidationRegistry()
+                ]
+            )
+        );
         $this->subject->setServiceLocator(
             $this->getServiceLocatorMock(
                 [
-                    ValidatorsFactory::class => new ValidatorsFactory(),
+                    ValidationRegistry::class => new ValidationRegistry(),
+                    ValidatorsFactory::class => $factory,
                     LtiProviderFieldsMapper::class => new LtiProviderFieldsMapper(),
                 ]
             )
