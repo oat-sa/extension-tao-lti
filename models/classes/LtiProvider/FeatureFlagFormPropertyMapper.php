@@ -22,16 +22,12 @@ declare(strict_types=1);
 
 namespace oat\taoLti\models\classes\LtiProvider;
 
-use oat\generis\model\OntologyAwareTrait;
 use oat\oatbox\service\ConfigurableService;
 use oat\tao\model\featureFlag\FeatureFlagChecker;
-use oat\taoLti\models\classes\FeatureFlag\LtiFeatures;
-use tao_actions_form_CreateInstance;
-use tao_helpers_form_Form;
 
-class LtiProviderFormFactory extends ConfigurableService
+class FeatureFlagFormPropertyMapper extends ConfigurableService
 {
-    use OntologyAwareTrait;
+    public const LTI_1P3 = 'lti1p3';
 
     public const LTI_1P3_ONLY_FIELDS = [
         RdfLtiProviderRepository::LTI_TOOL_IDENTIFIER,
@@ -47,27 +43,18 @@ class LtiProviderFormFactory extends ConfigurableService
         RdfLtiProviderRepository::LTI_VERSION,
     ];
 
-    public function create(): tao_helpers_form_Form
+    public function getExcludedProperties(): array
     {
-        $excludedProperties = [];
-        if (!$this->getFeatureFlagChecker()->isEnabled(LtiFeatures::LTI_1P3)) {
-            $excludedProperties = self::LTI_1P3_ONLY_FIELDS;
+        if ($this->getFeatureFlagChecker()->isEnabled(self::LTI_1P3))
+        {
+            return self::LTI_1P3_ONLY_FIELDS;
         }
 
-        $formContainer = new tao_actions_form_CreateInstance(
-            [$this->getClass(RdfLtiProviderRepository::CLASS_URI)],
-            [
-                tao_actions_form_CreateInstance::CSRF_PROTECTION_OPTION => true,
-                'excludedProperties' => $excludedProperties,
-            ]
-        );
-
-        return $formContainer->getForm();
+        return [];
     }
 
     private function getFeatureFlagChecker(): FeatureFlagChecker
     {
         return $this->getServiceLocator()->get(FeatureFlagChecker::SERVICE_ID);
     }
-
 }
