@@ -37,7 +37,6 @@ class ValidatorsFactoryTest extends TestCase
 
     protected function setUp(): void
     {
-        parent::setUp();
         $this->subject = new ValidatorsFactory();
         $this->subject->setServiceLocator(
             $this->getServiceLocatorMock(

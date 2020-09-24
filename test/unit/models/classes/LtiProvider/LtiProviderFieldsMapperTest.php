@@ -36,7 +36,6 @@ class LtiProviderFieldsMapperTest extends TestCase
 
     protected function setUp(): void
     {
-        parent::setUp();
         $this->subject = new LtiProviderFieldsMapper();
     }
 
