@@ -76,6 +76,4 @@ class ValidationRegistry extends ConfigurableService
         $validators = self::VALIDATORS[$schema] ?? [];
         return isset($validators[$field]) ? [$validators[$field]] : $validators;
     }
-
 }
-
