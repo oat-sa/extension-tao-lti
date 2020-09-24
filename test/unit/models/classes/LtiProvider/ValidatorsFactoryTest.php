@@ -49,5 +49,4 @@ class ValidatorsFactoryTest extends TestCase
         $this->assertEmpty($this->subject->createFormValidators('1.4', DataStore::PROPERTY_OAUTH_KEY));
         $this->assertEmpty($this->subject->createFormValidators('1.1', 'oooo')[0]);
     }
-
 }
