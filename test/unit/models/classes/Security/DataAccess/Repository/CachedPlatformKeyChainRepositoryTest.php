@@ -177,7 +177,7 @@ class CachedPlatformKeyChainRepositoryTest extends TestCase
     public function testFindAllWithoutKeyChainQueryIdentifier(): void
     {
         $defaultKeyId = 'toto';
-        
+
         $this->platformKeyChainRepository
             ->method('getDefaultKeyId')
             ->willReturn($defaultKeyId);
