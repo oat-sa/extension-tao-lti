@@ -27,8 +27,6 @@ use oat\tao\model\featureFlag\FeatureFlagChecker;
 
 class FeatureFlagFormPropertyMapper extends ConfigurableService
 {
-    public const LTI_1P3 = 'lti1p3';
-
     public const LTI_1P3_ONLY_FIELDS = [
         RdfLtiProviderRepository::LTI_TOOL_IDENTIFIER,
         RdfLtiProviderRepository::LTI_TOOL_PUBLIC_KEY,
@@ -45,7 +43,7 @@ class FeatureFlagFormPropertyMapper extends ConfigurableService
 
     public function getExcludedProperties(): array
     {
-        if ($this->getFeatureFlagChecker()->isEnabled(self::LTI_1P3))
+        if (!$this->getFeatureFlagChecker()->isEnabled('LTI1P3'))
         {
             return self::LTI_1P3_ONLY_FIELDS;
         }
@@ -55,6 +53,6 @@ class FeatureFlagFormPropertyMapper extends ConfigurableService
 
     private function getFeatureFlagChecker(): FeatureFlagChecker
     {
-        return $this->getServiceLocator()->get(FeatureFlagChecker::SERVICE_ID);
+        return $this->getServiceLocator()->get(FeatureFlagChecker::class);
     }
 }

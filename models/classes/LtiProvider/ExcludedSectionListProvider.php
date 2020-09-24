@@ -20,9 +20,29 @@
 
 declare(strict_types=1);
 
-namespace oat\taoLti\models\classes\FeatureFlag;
+namespace oat\taoLti\models\classes\LtiProvider;
 
-class LtiFeatures
+use oat\oatbox\service\ConfigurableService;
+use oat\tao\model\featureFlag\FeatureFlagChecker;
+use oat\tao\model\menu\ExcludedSectionListProviderInterface;
+
+class ExcludedSectionListProvider extends ConfigurableService implements ExcludedSectionListProviderInterface
 {
-    public const LTI_1P3 = 'lti1p3';
+    public const LTI_1P3_SECTIONS = [
+        'settings_manage_lti_keys'
+    ];
+
+    public function getExcludedSections(): array
+    {
+        if (!$this->getFeatureFlagChecker()->isEnabled('LTI1P3')) {
+            return self::LTI_1P3_SECTIONS;
+        }
+
+        return [];
+    }
+
+    private function getFeatureFlagChecker(): FeatureFlagChecker
+    {
+        return $this->getServiceLocator()->get(FeatureFlagChecker::class);
+    }
 }
