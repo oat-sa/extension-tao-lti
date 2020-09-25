@@ -50,6 +50,8 @@ class RdfLtiProviderRepository extends OntologyClassService implements LtiProvid
     public const LTI_V_11 = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#lti1p1';
     public const LTI_V_13 = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#lti1p3';
 
+    public const DEFAULT_LTI_VERSION = self::LTI_V_11;
+
     /**
      * @inheritdoc
      */

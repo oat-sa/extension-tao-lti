@@ -15,8 +15,10 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2019 (original work) Open Assessment Technologies SA
+ * Copyright (c) 2019-2020 (original work) Open Assessment Technologies SA
  */
+
+declare(strict_types=1);
 
 namespace oat\taoLti\models\classes\LtiProvider;
 
@@ -28,7 +30,18 @@ use oat\oatbox\service\ConfigurableService;
  */
 class ConfigurableLtiProviderRepository extends ConfigurableService implements LtiProviderRepositoryInterface
 {
-    const OPTION_LTI_PROVIDER_LIST = 'OPTION_LTI_PROVIDER_LIST';
+    public const OPTION_LTI_PROVIDER_LIST = 'OPTION_LTI_PROVIDER_LIST';
+
+    public const LTI_VERSION = 'ltiVersion';
+    public const LTI_TOOL_CLIENT_ID = 'toolClientId';
+    public const LTI_TOOL_IDENTIFIER = 'toolIdentifier';
+    public const LTI_TOOL_NAME = 'toolName';
+    public const LTI_TOOL_DEPLOYMENT_IDS = 'toolDeploymentIds';
+    public const LTI_TOOL_AUDIENCE = 'toolAudience';
+    public const LTI_TOOL_OIDC_LOGIN_INITATION_URL = 'toolOidcLoginInitiationUrl';
+    public const LTI_TOOL_LAUNCH_URL = 'toolLaunchUrl';
+    public const LTI_TOOL_JWKS_URL = 'toolJwksUrl';
+    public const LTI_TOOL_PUBLIC_KEY = 'toolPublicKey';
 
     /**
      * @var LtiProvider[]
@@ -107,6 +120,7 @@ class ConfigurableLtiProviderRepository extends ConfigurableService implements L
 
     private function getLtiProviderFactory(): LtiProviderFactory
     {
+        /** @noinspection PhpIncompatibleReturnTypeInspection */
         return $this->getServiceLocator()->get(LtiProviderFactory::class);
     }
 }
