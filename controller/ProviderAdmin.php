@@ -18,9 +18,12 @@
  * Copyright (c) 2019-2020 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
  */
 
+declare(strict_types=1);
+
 namespace oat\taoLti\controller;
 
 use oat\taoLti\models\classes\LtiProvider\LtiProviderFieldsMapper;
+use oat\taoLti\models\classes\LtiProvider\FeatureFlagFormPropertyMapper;
 use oat\taoLti\models\classes\LtiProvider\RdfLtiProviderRepository;
 use oat\taoLti\models\classes\LtiProvider\Validation\ValidatorsFactory;
 use tao_actions_SaSModule;
@@ -33,6 +36,16 @@ use tao_helpers_Uri;
  */
 class ProviderAdmin extends tao_actions_SaSModule
 {
+    protected function getExcludedProperties(): array
+    {
+        return $this->getFeatureFlagFormPropertyMapper()->getExcludedProperties();
+    }
+
+    private function getFeatureFlagFormPropertyMapper(): FeatureFlagFormPropertyMapper
+    {
+        return $this->getServiceLocator()->get(FeatureFlagFormPropertyMapper::class);
+    }
+
     /**
      * (non-PHPdoc)
      *
