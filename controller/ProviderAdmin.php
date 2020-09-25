@@ -22,19 +22,16 @@ declare(strict_types=1);
 
 namespace oat\taoLti\controller;
 
-use oat\tao\model\featureFlag\FeatureFlagChecker;
-use oat\tao\model\oauth\DataStore;
-use oat\taoLti\models\classes\FeatureFlag\LtiFeatures;
+use oat\taoLti\models\classes\LtiProvider\LtiProviderFieldsMapper;
 use oat\taoLti\models\classes\LtiProvider\FeatureFlagFormPropertyMapper;
 use oat\taoLti\models\classes\LtiProvider\RdfLtiProviderRepository;
-use tao_actions_form_CreateInstance;
+use oat\taoLti\models\classes\LtiProvider\Validation\ValidatorsFactory;
 use tao_actions_SaSModule;
-use tao_helpers_form_Form;
+use tao_helpers_Uri;
 
 /**
  * This controller allows the adding and deletion of LTI Oauth Providers
  *
- * @package taoLti
  * @license GPLv2 http://www.opensource.org/licenses/gpl-2.0.php
  */
 class ProviderAdmin extends tao_actions_SaSModule
@@ -58,5 +55,31 @@ class ProviderAdmin extends tao_actions_SaSModule
     public function getClassService()
     {
         return $this->getServiceLocator()->get(RdfLtiProviderRepository::class);
+    }
+
+    protected function getExtraValidationRules(): array
+    {
+        return $this->getValidationFactory()->createFormValidators($this->getLtiVersion());
+    }
+
+    private function getLtiVersion(): string
+    {
+        $body = $this->getPsrRequest()->getParsedBody();
+        $rawLtiVersion = trim($body[tao_helpers_Uri::encode(RdfLtiProviderRepository::LTI_VERSION)] ?? '');
+        $ltiVersion = empty($rawLtiVersion) ? RdfLtiProviderRepository::DEFAULT_LTI_VERSION : tao_helpers_Uri::decode($rawLtiVersion);
+
+        return $this->getConfigurationMapper()->map($ltiVersion);
+    }
+
+    private function getValidationFactory(): ValidatorsFactory
+    {
+        /** @noinspection PhpIncompatibleReturnTypeInspection */
+        return $this->getServiceLocator()->get(ValidatorsFactory::class);
+    }
+
+    private function getConfigurationMapper(): LtiProviderFieldsMapper
+    {
+        /** @noinspection PhpIncompatibleReturnTypeInspection */
+        return $this->getServiceLocator()->get(LtiProviderFieldsMapper::class);
     }
 }

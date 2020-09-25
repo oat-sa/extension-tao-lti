@@ -20,10 +20,17 @@
 
 declare(strict_types=1);
 
-namespace oat\taoLti\models\classes\LtiProvider;
+namespace oat\taoLti\test\integration;
 
 use InvalidArgumentException;
 use oat\generis\test\TestCase;
+use oat\taoLti\models\classes\LtiProvider\ConfigurableLtiProviderRepository;
+use oat\taoLti\models\classes\LtiProvider\LtiProvider;
+use oat\taoLti\models\classes\LtiProvider\LtiProviderFactory;
+use oat\taoLti\models\classes\LtiProvider\LtiProviderFieldsMapper;
+use oat\taoLti\models\classes\LtiProvider\Validation\LtiProviderValidator;
+use oat\taoLti\models\classes\LtiProvider\Validation\ValidationRegistry;
+use oat\taoLti\models\classes\LtiProvider\Validation\ValidatorsFactory;
 
 class ConfigurableLtiProviderRepositoryTest extends TestCase
 {
@@ -41,6 +48,7 @@ class ConfigurableLtiProviderRepositoryTest extends TestCase
         $this->assertEquals('provider1_key', $providers[0]->getKey());
         $this->assertEquals('provider1_secret', $providers[0]->getSecret());
         $this->assertEquals('provider1_callback_url', $providers[0]->getCallbackUrl());
+        $this->assertEquals('jwksUrl', $providers[0]->getToolJwksUrl());
         $this->assertEquals(['Learner'], $providers[0]->getRoles());
 
         $this->assertInstanceOf(LtiProvider::class, $providers[1]);
@@ -95,7 +103,7 @@ class ConfigurableLtiProviderRepositoryTest extends TestCase
         $subject = $this->createSubject('incomplete_lti_provider_list.json');
 
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Missing key \'callback_url\' in LTI provider list.');
+        $this->expectExceptionMessage('"key": This field is required');
 
         $subject->count();
     }
@@ -116,10 +124,38 @@ class ConfigurableLtiProviderRepositoryTest extends TestCase
                 ) : null
             ]
         );
+
+        $validationService = new LtiProviderValidator();
+        $factory = new LtiProviderFactory();
+        $validationFactory = new ValidatorsFactory();
+        $validationFactory->setServiceLocator(
+            $this->getServiceLocatorMock(
+                [
+                    ValidationRegistry::class => new ValidationRegistry(),
+                ]
+            )
+        );
+        $validationService->setServiceLocator(
+            $this->getServiceLocatorMock(
+                [
+                    LtiProviderFieldsMapper::class => new LtiProviderFieldsMapper(),
+                    ValidationRegistry::class => new ValidationRegistry(),
+                    ValidatorsFactory::class => $validationFactory,
+
+                ]
+            )
+        );
+        $factory->setServiceLocator(
+            $this->getServiceLocatorMock(
+                [
+                    LtiProviderValidator::class => $validationService,
+                ]
+            )
+        );
         $subject->setServiceLocator(
             $this->getServiceLocatorMock(
                 [
-                    LtiProviderFactory::class => new LtiProviderFactory(),
+                    LtiProviderFactory::class => $factory
                 ]
             )
         );

@@ -125,4 +125,12 @@ class PlatformKeyChainRepositoryTest extends TestCase
 
         $this->subject->save(new KeyChain('', '', new Key(''), new Key('')));
     }
+
+    public function testGetDefaultKeyId(): void
+    {
+        $this->assertSame(
+            'keyId',
+            $this->subject->getDefaultKeyId()
+        );
+    }
 }

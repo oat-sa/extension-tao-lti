@@ -53,15 +53,14 @@ class KeyChainView extends CommonModule
     private function getSafeKeyChains(): array
     {
         $keyChains = $this->getKeyChainRepository()->findAll(new KeyChainQuery())->getKeyChains();
-        $safeKeyChains = array_map(function (KeyChain $keyChain) {
+
+        return array_map(function (KeyChain $keyChain) {
             return [
                 'identifier' => $keyChain->getIdentifier(),
                 'name' => $keyChain->getName(),
                 'public' => $keyChain->getPublicKey()->getValue(),
             ];
         }, $keyChains);
-
-        return $safeKeyChains;
     }
 
     private function getJwksRepository(): JwksRepositoryInterface

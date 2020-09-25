@@ -4,15 +4,18 @@
         "label": "provider1_label",
         "key": "provider1_key",
         "secret": "provider1_secret",
+        "ltiVersion": "1.1",
         "callback_url": "provider1_callback_url",
         "roles": [
             "Learner"
-        ]
+        ],
+        "toolJwksUrl": "jwksUrl"
     },
     {
         "uri": "provider2_uri",
         "label": "provider2_label",
         "key": "provider2_key",
+        "ltiVersion": "1.1",
         "secret": "provider2_secret",
         "callback_url": "provider2_callback_url"
     }

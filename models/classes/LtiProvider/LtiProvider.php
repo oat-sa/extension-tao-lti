@@ -80,9 +80,9 @@ class LtiProvider implements JsonSerializable
     public function __construct(
         string $id,
         string $label,
-        string $key,
-        string $secret,
-        string $callbackUrl,
+        string $key = null,
+        string $secret = null,
+        string $callbackUrl = null,
         array $roles = [],
         string $ltiVersion = null,
         string $toolIdentifier = null,
@@ -123,17 +123,17 @@ class LtiProvider implements JsonSerializable
         return $this->label;
     }
 
-    public function getKey(): string
+    public function getKey(): ?string
     {
         return $this->key;
     }
 
-    public function getSecret(): string
+    public function getSecret(): ?string
     {
         return $this->secret;
     }
 
-    public function getCallbackUrl(): string
+    public function getCallbackUrl(): ?string
     {
         return $this->callbackUrl;
     }
@@ -183,7 +183,7 @@ class LtiProvider implements JsonSerializable
         return $this->toolLaunchUrl;
     }
 
-    public function getToolPublicKey(): string
+    public function getToolPublicKey(): ?string
     {
         return $this->toolPublicKey;
     }
