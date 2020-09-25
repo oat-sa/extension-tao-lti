@@ -22,31 +22,9 @@ declare(strict_types=1);
 
 namespace oat\taoLti\models\classes\LtiProvider;
 
-use oat\oatbox\service\ConfigurableService;
-use oat\tao\model\featureFlag\FeatureFlagChecker;
+use oat\tao\helpers\form\AbstractFeatureFlagFormPropertyMapper;
 
-class FeatureFlagFormPropertyMapper extends ConfigurableService
+class FeatureFlagFormPropertyMapper extends AbstractFeatureFlagFormPropertyMapper
 {
     public const SERVICE_ID = 'taoLti/featureFlagFormPropertyMapper';
-    public const OPTION_FEATURE_FLAG_FORM_FIELDS = 'featureFlagFormFields';
-
-    public function getExcludedProperties(): array
-    {
-        $excludedProperties = [];
-
-        foreach ($this->getOption(self::OPTION_FEATURE_FLAG_FORM_FIELDS) as $field => $featureFlags) {
-            foreach ($featureFlags as $featureFlag) {
-                if (!$this->getFeatureFlagChecker()->isEnabled($featureFlag)) {
-                    $excludedProperties[] = $field;
-                }
-            }
-        }
-
-        return $excludedProperties;
-    }
-
-    private function getFeatureFlagChecker(): FeatureFlagChecker
-    {
-        return $this->getServiceLocator()->get(FeatureFlagChecker::class);
-    }
 }
