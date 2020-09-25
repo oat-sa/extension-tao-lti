@@ -43,6 +43,9 @@ class Lti1p3RegistrationRepository extends ConfigurableService implements Regist
     public const SERVICE_ID = 'taoLti/Lti1p3RegistrationRepository';
     public const OPTION_ROOT_URL = 'rootUrl';
     private const PLATFORM_ID = 'tao';
+    private const OIDC_PATH = 'taoLti/Security/oidc';
+    private const OAUTH_PATH = 'taoLti/Security/oauth';
+    private const JWKS_PATH = 'taoLti/Security/jwks';
 
     public function find(string $identifier): ?RegistrationInterface
     {
@@ -119,8 +122,8 @@ class Lti1p3RegistrationRepository extends ConfigurableService implements Regist
             self::PLATFORM_ID,
             self::PLATFORM_ID,
             rtrim($this->getOption(self::OPTION_ROOT_URL), '/'),
-            $this->getOption(self::OPTION_ROOT_URL) . 'taoLti/Security/oidc',
-            $this->getOption(self::OPTION_ROOT_URL) . 'taoLti/Security/oauth'
+            $this->getOption(self::OPTION_ROOT_URL) . self::OIDC_PATH,
+            $this->getOption(self::OPTION_ROOT_URL) . self::OAUTH_PATH
         );
     }
 
@@ -136,11 +139,16 @@ class Lti1p3RegistrationRepository extends ConfigurableService implements Regist
             ->getKeyChains());
 
         $platformKeyChain = current($this->getPlatformKeyChainRepository()
-            ->findAll(new KeyChainQuery())
+            ->findAll(new KeyChainQuery($ltiProvider->getId()))
             ->getKeyChains());
 
-        if ($toolKeyChain === false || $platformKeyChain === false) {
+        if ($platformKeyChain === false) {
             return null;
+        }
+
+        $translatedToolKeyChain = null;
+        if ($toolKeyChain !== false && empty($ltiProvider->getToolJwksUrl())) {
+            $translatedToolKeyChain = $this->translateKeyChain($toolKeyChain);
         }
 
         return new Registration(
@@ -150,7 +158,9 @@ class Lti1p3RegistrationRepository extends ConfigurableService implements Regist
             $this->getTool($ltiProvider),
             $ltiProvider->getToolDeploymentIds(),
             $this->translateKeyChain($platformKeyChain),
-            $this->translateKeyChain($toolKeyChain)
+            $translatedToolKeyChain,
+            $this->getOption(self::OPTION_ROOT_URL) . self::JWKS_PATH,
+            $ltiProvider->getToolJwksUrl()
         );
     }
 }

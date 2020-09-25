@@ -107,6 +107,7 @@ class Lti1p3RegistrationRepositoryTest extends TestCase
         $this->assertSame('tao', $registration->getPlatform()->getName());
         $this->assertSame(rtrim('ROOT_URL', '/'), $registration->getPlatform()->getAudience());
         $this->assertSame('ROOT_URL' . 'taoLti/Security/oidc', $registration->getPlatform()->getOidcAuthenticationUrl());
+        $this->assertSame('ROOT_URL' . 'taoLti/Security/jwks', $registration->getPlatformJwksUrl());
 
         $this->assertSame($this->platformKeyChain->getIdentifier(), $registration->getPlatformKeyChain()->getIdentifier());
         $this->assertSame($this->platformKeyChain->getName(), $registration->getPlatformKeyChain()->getKeySetName());
@@ -129,6 +130,43 @@ class Lti1p3RegistrationRepositoryTest extends TestCase
         $this->assertSame('audience', $registration->getTool()->getAudience());
         $this->assertSame('launch_url', $registration->getTool()->getLaunchUrl());
         $this->assertSame('oidc_url', $registration->getTool()->getOidcLoginInitiationUrl());
+    }
+
+    public function testFindWillReturnRegistrationForToolWithoutToolKeyChain(): void
+    {
+        $this->expectsProvider();
+
+        $this->expectToolAndPlatformKeys([], [$this->platformKeyChain]);
+
+        $registration = $this->subject->find('ltiId');
+
+        $this->assertInstanceOf(Registration::class, $registration);
+        $this->assertNull($registration->getToolKeyChain());
+    }
+
+    public function testFindWillReturnRegistrationForToolWithoutToolJwksUrl(): void
+    {
+        $ltiProvider = $this->createMock(LtiProvider::class);
+        $ltiProvider->method('getToolJwksUrl')
+            ->willReturn('not-empty');
+
+        $this->ltiProviderService
+            ->method('searchById')
+            ->willReturn($ltiProvider);
+
+        $this->expectToolAndPlatformKeys([$this->toolKeyChain], [$this->platformKeyChain]);
+
+        $registration = $this->subject->find('ltiId');
+
+        $this->assertInstanceOf(Registration::class, $registration);
+        $this->assertNull($registration->getToolKeyChain());
+    }
+
+    public function testFindWillNullWhenNoPlatformIsReturned(): void
+    {
+        $this->expectToolAndPlatformKeys([$this->toolKeyChain], []);
+
+        $this->assertNull($this->subject->find('ltiId'));
     }
 
     public function testFindWillReturnNullIfNoKeysFound(): void

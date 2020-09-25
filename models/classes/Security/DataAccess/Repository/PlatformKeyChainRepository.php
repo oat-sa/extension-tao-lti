@@ -82,6 +82,11 @@ class PlatformKeyChainRepository extends ConfigurableService implements KeyChain
         return new KeyChainCollection(...[$keyChain]);
     }
 
+    public function getDefaultKeyId(): string
+    {
+        return $this->getOption(PlatformKeyChainRepository::OPTION_DEFAULT_KEY_ID);
+    }
+
     private function getFileSystem(): FilesystemInterface
     {
         /** @var FileSystemService $fileSystemService */

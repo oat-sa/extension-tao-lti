@@ -183,7 +183,7 @@ class LtiProvider implements JsonSerializable
         return $this->toolLaunchUrl;
     }
 
-    public function getToolPublicKey(): string
+    public function getToolPublicKey(): ?string
     {
         return $this->toolPublicKey;
     }

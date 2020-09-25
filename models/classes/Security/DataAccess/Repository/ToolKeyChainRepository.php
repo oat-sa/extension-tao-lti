@@ -45,6 +45,10 @@ class ToolKeyChainRepository extends ConfigurableService implements KeyChainRepo
             throw new InvalidLtiProviderException('Lti Provider is not found');
         }
 
+        if (empty($ltiProvider->getToolPublicKey())) {
+            return new KeyChainCollection(...[]);
+        }
+
         $keyChain = new KeyChain(
             $ltiProvider->getId(),
             $ltiProvider->getId(),
