@@ -43,7 +43,7 @@ return [
       'author' => 'Open Assessment Technologies SA',
       'requires' => [
         'generis' => '>=12.15.0',
-        'tao' => '>=41.13.0'
+        'tao' => '>=45.14.0'
     ],
     'routes' => [
         '/taoLti' => 'oat\\taoLti\\controller'
