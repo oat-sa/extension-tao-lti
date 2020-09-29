@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 3.4.0-sprint112\n"
-"PO-Revision-Date: 2019-10-11T08:34:47\n"
+"Project-Id-Version: TAO 3.4.0-sprint117\n"
+"PO-Revision-Date: 2020-09-22T16:02:13\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: ja-JP\n"
@@ -28,10 +28,10 @@ msgstr "LTI 共通リソース名（非推奨）"
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiBaseRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "LTI Base Role"
-msgstr "LTI　基本権限"
+msgstr "LTI 基本権限"
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiBaseRole
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "The LTI Base Role"
-msgstr "LTI　基本権限"
+msgstr "LTI 基本ロール"
 
