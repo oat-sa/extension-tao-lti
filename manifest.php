@@ -25,6 +25,7 @@ use oat\taoLti\controller\CookieUtils;
 use oat\taoLti\controller\Security;
 use oat\taoLti\scripts\install\GenerateKeys;
 use oat\taoLti\scripts\install\InstallServices;
+use oat\taoLti\scripts\install\MapLtiSectionVisibility;
 use oat\taoLti\scripts\update\Updater;
 
 /**
@@ -61,7 +62,8 @@ return [
         ],
         'php' => [
             InstallServices::class,
-            GenerateKeys::class
+            GenerateKeys::class,
+            MapLtiSectionVisibility::class
         ]
     ],
     'update' => Updater::class,
