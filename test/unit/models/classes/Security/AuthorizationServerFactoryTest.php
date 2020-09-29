@@ -34,7 +34,7 @@ use oat\oatbox\cache\ItemPoolSimpleCacheAdapter;
 use oat\oatbox\log\LoggerService;
 use oat\tao\model\security\Business\Domain\Key\Key;
 use oat\tao\model\security\Business\Domain\Key\KeyChain;
-use oat\taoDeliverConnect\test\unit\helpers\NoPrivacyTrait;
+use oat\tao\test\unit\helpers\NoPrivacyTrait;
 use oat\taoLti\models\classes\Platform\Repository\Lti1p3RegistrationRepository;
 use oat\taoLti\models\classes\Security\AuthorizationServer\AuthorizationServerFactory;
 
