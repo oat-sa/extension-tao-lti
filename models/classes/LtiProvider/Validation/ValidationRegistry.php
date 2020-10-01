@@ -31,22 +31,22 @@ class ValidationRegistry extends ConfigurableService
 
     private const VALIDATORS = [
         '1.1' => [
-            DataStore::PROPERTY_OAUTH_KEY => [['notEmpty']],
-            DataStore::PROPERTY_OAUTH_SECRET => [['notEmpty']],
-            RdfLtiProviderRepository::LTI_VERSION => [['notEmpty']],
+            DataStore::PROPERTY_OAUTH_KEY => [['NotEmpty']],
+            DataStore::PROPERTY_OAUTH_SECRET => [['NotEmpty']],
+            RdfLtiProviderRepository::LTI_VERSION => [['NotEmpty']],
         ],
         '1.3' => [
-            RdfLtiProviderRepository::LTI_VERSION => [['notEmpty']],
-            RdfLtiProviderRepository::LTI_TOOL_CLIENT_ID => [['notEmpty']],
-            RdfLtiProviderRepository::LTI_TOOL_IDENTIFIER => [['notEmpty']],
-            RdfLtiProviderRepository::LTI_TOOL_NAME => [['notEmpty']],
-            RdfLtiProviderRepository::LTI_TOOL_DEPLOYMENT_IDS => [['notEmpty']],
-            RdfLtiProviderRepository::LTI_TOOL_AUDIENCE => [['notEmpty']],
-            RdfLtiProviderRepository::LTI_TOOL_OIDC_LOGIN_INITATION_URL => [['notEmpty'], ['url']],
-            RdfLtiProviderRepository::LTI_TOOL_LAUNCH_URL => [['url']],
+            RdfLtiProviderRepository::LTI_VERSION => [['NotEmpty']],
+            RdfLtiProviderRepository::LTI_TOOL_CLIENT_ID => [['NotEmpty']],
+            RdfLtiProviderRepository::LTI_TOOL_IDENTIFIER => [['NotEmpty']],
+            RdfLtiProviderRepository::LTI_TOOL_NAME => [['NotEmpty']],
+            RdfLtiProviderRepository::LTI_TOOL_DEPLOYMENT_IDS => [['NotEmpty']],
+            RdfLtiProviderRepository::LTI_TOOL_AUDIENCE => [['NotEmpty']],
+            RdfLtiProviderRepository::LTI_TOOL_OIDC_LOGIN_INITATION_URL => [['NotEmpty'], ['Url']],
+            RdfLtiProviderRepository::LTI_TOOL_LAUNCH_URL => [['Url']],
             RdfLtiProviderRepository::LTI_TOOL_JWKS_URL => [
                 [
-                    'url',
+                    'Url',
                     ['allow_empty' => true],
                 ],
                 [
