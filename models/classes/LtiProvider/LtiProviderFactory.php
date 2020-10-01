@@ -22,6 +22,7 @@ declare(strict_types=1);
 
 namespace oat\taoLti\models\classes\LtiProvider;
 
+use core_kernel_classes_Literal;
 use core_kernel_classes_Resource;
 use oat\oatbox\service\ConfigurableService;
 use oat\tao\model\oauth\DataStore;
@@ -98,6 +99,10 @@ class LtiProviderFactory extends ConfigurableService
     private function getLtiVersion(array $propertiesValues): string
     {
         $ltiVersionResource = reset($propertiesValues[RdfLtiProviderRepository::LTI_VERSION]);
+
+        if ($ltiVersionResource instanceof core_kernel_classes_Literal && !empty(trim($ltiVersionResource->literal))) {
+            return $ltiVersionResource->literal;
+        }
 
         if (!$ltiVersionResource || !$ltiVersionResource instanceof core_kernel_classes_Resource) {
             return '1.1';
