@@ -101,7 +101,7 @@ class LtiProviderFactory extends ConfigurableService
         $ltiVersionResource = reset($propertiesValues[RdfLtiProviderRepository::LTI_VERSION]);
 
         if ($ltiVersionResource instanceof core_kernel_classes_Literal && !empty(trim($ltiVersionResource->literal))) {
-            return $ltiVersionResource->literal;
+            return $ltiVersionResource->literal === RdfLtiProviderRepository::LTI_V_13 ? '1.3' : '1.1';
         }
 
         if (!$ltiVersionResource || !$ltiVersionResource instanceof core_kernel_classes_Resource) {
