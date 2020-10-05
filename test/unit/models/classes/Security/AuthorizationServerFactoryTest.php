@@ -71,7 +71,7 @@ class AuthorizationServerFactoryTest extends TestCase
             LoggerService::SERVICE_ID => $this->logger,
         ]));
     }
-    
+
     public function testCreate()
     {
         $keyChainPrivateKey = '-----BEGIN RSA PRIVATE KEY-----
