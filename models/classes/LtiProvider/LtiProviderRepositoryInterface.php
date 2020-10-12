@@ -32,26 +32,16 @@ interface LtiProviderRepositoryInterface extends Countable
      *
      * @return LtiProvider[]
      */
-    public function findAll();
+    public function findAll(): array;
 
     /**
      * Search all LTI providers with label property containing the given label.
      *
-     * @param string $label
-     *
      * @return LtiProvider[]
      */
-    public function searchByLabel($label);
+    public function searchByLabel(string $label): array;
 
-    /**
-     * @param string $id
-     * @return LtiProvider|null
-     */
-    public function searchById($id);
+    public function searchById(string $id): ?LtiProvider;
 
-    /**
-     * @param string $oauthKey
-     * @return LtiProvider|null
-     */
-    public function searchByOauthKey($oauthKey);
+    public function searchByOauthKey(string $oauthKey): ?LtiProvider;
 }

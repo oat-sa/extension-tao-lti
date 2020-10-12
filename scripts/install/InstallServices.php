@@ -22,11 +22,15 @@
 
 namespace oat\taoLti\scripts\install;
 
+use common_Exception;
 use common_report_Report;
 use oat\oatbox\extension\AbstractAction;
+use oat\oatbox\filesystem\FileSystemService;
+use oat\oatbox\service\exception\InvalidServiceManagerException;
 use oat\tao\model\mvc\error\ExceptionInterpreterService;
 use oat\taoLti\models\classes\ExceptionInterpreter;
 use oat\taoLti\models\classes\LtiException;
+use oat\taoLti\models\classes\Security\DataAccess\Repository\PlatformKeyChainRepository;
 use oat\taoLti\models\classes\user\UserService;
 
 /**
@@ -38,8 +42,8 @@ class InstallServices extends AbstractAction
     /**
      * @param $params
      * @return common_report_Report
-     * @throws \common_Exception
-     * @throws \oat\oatbox\service\exception\InvalidServiceManagerException
+     * @throws common_Exception
+     * @throws InvalidServiceManagerException
      */
     public function __invoke($params)
     {
@@ -54,6 +58,21 @@ class InstallServices extends AbstractAction
         $newLtiUserService = new UserService($config);
         $this->getServiceManager()->register(\tao_models_classes_UserService::SERVICE_ID, $newLtiUserService);
 
+        $this->createFileSystem();
+
         return common_report_Report::createSuccess('Successfully installed');
+    }
+
+    /**
+     * @throws common_Exception
+     * @throws InvalidServiceManagerException
+     */
+    private function createFileSystem(): void
+    {
+        /** @var FileSystemService $fsService */
+        $fsService = $this->getServiceManager()->get(FileSystemService::SERVICE_ID);
+        $fsService->createFileSystem(PlatformKeyChainRepository::FILE_SYSTEM_ID);
+
+        $this->getServiceManager()->register(FileSystemService::SERVICE_ID, $fsService);
     }
 }

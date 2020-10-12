@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -27,9 +29,9 @@ use oat\taoLti\models\classes\LtiProvider\LtiProvider;
 class LtiProviderTest extends TestCase
 {
     /**
-     * @dataProvider ltiDataProvide
+     * @dataProvider ltiDataProvider
      */
-    public function testGetters($id, $label, $key, $secret, $callbackUrl, $roles)
+    public function testGetters($id, $label, $key, $secret, $callbackUrl, $roles): void
     {
         $subject = new LtiProvider($id, $label, $key, $secret, $callbackUrl, $roles);
 
@@ -42,9 +44,9 @@ class LtiProviderTest extends TestCase
     }
 
     /**
-     * @dataProvider ltiDataProvide
+     * @dataProvider ltiDataProvider
      */
-    public function testSerializer($id, $label, $key, $secret, $callbackUrl, $roles)
+    public function testSerializer($id, $label, $key, $secret, $callbackUrl, $roles): void
     {
         $subject = new LtiProvider($id, $label, $key, $secret, $callbackUrl, $roles);
         $expected = [
@@ -59,7 +61,7 @@ class LtiProviderTest extends TestCase
         $this->assertEquals($expected, $subject->jsonSerialize());
     }
 
-    public function ltiDataProvide()
+    public function ltiDataProvider(): array
     {
         return [
             ['uid', 'uuuulabel', 'uuukey', 'uuuusecr', 'uuucallbacl', []],
