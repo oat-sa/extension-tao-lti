@@ -62,17 +62,17 @@ class Lti1p3LaunchRequestFactoryTest extends TestCase
         );
     }
 
-//    public function testWillThrowExceptionIfRegistrationNotFound(): void
-//    {
-//        $this->registrationRepository
-//            ->method('find')
-//            ->willReturn(null);
-//
-//        $this->expectException(ErrorException::class);
-//        $this->expectExceptionMessage('Registration for provider ltiId not found');
-//
-//        $this->subject->create($this->createCommand());
-//    }
+    public function testWillThrowExceptionIfRegistrationNotFound(): void
+    {
+        $this->registrationRepository
+            ->method('find')
+            ->willReturn(null);
+
+        $this->expectException(ErrorException::class);
+        $this->expectExceptionMessage('Registration for provider ltiId not found');
+
+        $this->subject->create($this->createCommand());
+    }
 
     public function testCreateOidcRequest(): void
     {
