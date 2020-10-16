@@ -129,7 +129,7 @@ class Lti1p3RegistrationRepositoryTest extends TestCase
         $this->assertSame('toolName', $registration->getTool()->getName());
         $this->assertSame('audience', $registration->getTool()->getAudience());
         $this->assertSame('launch_url', $registration->getTool()->getLaunchUrl());
-        $this->assertSame('oidc_url', $registration->getTool()->getOidcLoginInitiationUrl());
+        $this->assertSame('oidc_url', $registration->getTool()->getOidcInitiationUrl());
     }
 
     public function testFindWillReturnRegistrationForToolWithoutToolKeyChain(): void

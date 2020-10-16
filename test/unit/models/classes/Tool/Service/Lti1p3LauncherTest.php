@@ -23,7 +23,7 @@ declare(strict_types=1);
 namespace oat\taoLti\test\unit\models\classes\Tool\Service;
 
 use oat\generis\test\TestCase;
-use OAT\Library\Lti1p3Core\Launch\Request\LtiLaunchRequest;
+use OAT\Library\Lti1p3Core\Message\LtiMessage;
 use oat\taoLti\models\classes\Tool\Factory\Lti1p3LaunchRequestFactory;
 use oat\taoLti\models\classes\Tool\LtiLaunch;
 use oat\taoLti\models\classes\Tool\LtiLaunchCommand;
@@ -59,7 +59,7 @@ class Lti1p3LauncherTest extends TestCase
     public function testLaunch(): void
     {
         $command = $this->createMock(LtiLaunchCommand::class);
-        $launchRequest = new LtiLaunchRequest(self::LAUNCH_URL, self::LAUNCH_PARAMS);
+        $launchRequest = new LtiMessage(self::LAUNCH_URL, self::LAUNCH_PARAMS); //FIXME @TODO Use proper class
 
         $this->launchRequestFactory
             ->method('create')

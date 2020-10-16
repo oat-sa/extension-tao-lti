@@ -23,38 +23,32 @@ declare(strict_types=1);
 namespace oat\taoLti\models\classes\Tool\Factory;
 
 use ErrorException;
-use OAT\Library\Lti1p3Core\Launch\Builder\LtiLaunchRequestBuilder;
-use OAT\Library\Lti1p3Core\Launch\Builder\OidcLaunchRequestBuilder;
-use OAT\Library\Lti1p3Core\Launch\LaunchRequestInterface;
-use OAT\Library\Lti1p3Core\Link\ResourceLink\ResourceLink;
+use OAT\Library\Lti1p3Core\Exception\LtiExceptionInterface;
+use OAT\Library\Lti1p3Core\Message\Launch\Builder\LtiResourceLinkLaunchRequestBuilder;
+use OAT\Library\Lti1p3Core\Message\LtiMessageInterface;
 use OAT\Library\Lti1p3Core\Registration\RegistrationRepositoryInterface;
+use OAT\Library\Lti1p3Core\Resource\LtiResourceLink\LtiResourceLink;
 use oat\oatbox\service\ConfigurableService;
 use oat\taoLti\models\classes\Platform\Repository\Lti1p3RegistrationRepository;
 use oat\taoLti\models\classes\Tool\LtiLaunchCommandInterface;
 
 class Lti1p3LaunchRequestFactory extends ConfigurableService
 {
-    /** @var LtiLaunchRequestBuilder */
+    /** @var LtiResourceLinkLaunchRequestBuilder */
     private $ltiLaunchRequestBuilder;
 
-    /** @var OidcLaunchRequestBuilder */
-    private $oidcLaunchRequestBuilder;
-
-    public function withLtiLaunchRequestBuilder(LtiLaunchRequestBuilder $ltiLaunchRequestBuilder): self
+    public function withLtiLaunchRequestBuilder(LtiResourceLinkLaunchRequestBuilder $ltiLaunchRequestBuilder): self
     {
         $this->ltiLaunchRequestBuilder = $ltiLaunchRequestBuilder;
 
         return $this;
     }
 
-    public function withOidcLaunchRequestBuilder(OidcLaunchRequestBuilder $oidcLaunchRequestBuilder): self
-    {
-        $this->oidcLaunchRequestBuilder = $oidcLaunchRequestBuilder;
-
-        return $this;
-    }
-
-    public function create(LtiLaunchCommandInterface $command): LaunchRequestInterface
+    /**
+     * @throws ErrorException
+     * @throws LtiExceptionInterface
+     */
+    public function create(LtiLaunchCommandInterface $command): LtiMessageInterface
     {
         $registration = $this->getRegistrationRepository()
             ->find($command->getLtiProvider()->getId());
@@ -68,8 +62,13 @@ class Lti1p3LaunchRequestFactory extends ConfigurableService
             );
         }
 
-        return $this->getOidcLaunchRequestBuilder()->buildResourceLinkOidcLaunchRequest(
-            new ResourceLink($command->getResourceIdentifier(), $command->getLaunchUrl()),
+        return $this->getLaunchRequestBuilder()->buildLtiResourceLinkLaunchRequest(
+            new LtiResourceLink(
+                $command->getResourceIdentifier(),
+                [
+                    'url' => $command->getLaunchUrl(),
+                ]
+            ),
             $registration,
             $command->getOpenIdLoginHint(),
             $registration->getDefaultDeploymentId(),
@@ -78,9 +77,9 @@ class Lti1p3LaunchRequestFactory extends ConfigurableService
         );
     }
 
-    private function getOidcLaunchRequestBuilder(): OidcLaunchRequestBuilder
+    private function getLaunchRequestBuilder(): LtiResourceLinkLaunchRequestBuilder
     {
-        return $this->oidcLaunchRequestBuilder ?? new OidcLaunchRequestBuilder();
+        return $this->ltiLaunchRequestBuilder ?? new LtiResourceLinkLaunchRequestBuilder();
     }
 
     private function getRegistrationRepository(): RegistrationRepositoryInterface
