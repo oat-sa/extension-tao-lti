@@ -24,12 +24,11 @@ namespace oat\taoLti\test\unit\models\classes\Tool\Factory;
 
 use ErrorException;
 use oat\generis\test\TestCase;
-use OAT\Library\Lti1p3Core\Launch\Builder\LtiLaunchRequestBuilder;
-use OAT\Library\Lti1p3Core\Launch\Builder\OidcLaunchRequestBuilder;
-use OAT\Library\Lti1p3Core\Launch\Request\OidcLaunchRequest;
-use OAT\Library\Lti1p3Core\Link\ResourceLink\ResourceLink;
+use OAT\Library\Lti1p3Core\Message\Launch\Builder\LtiResourceLinkLaunchRequestBuilder;
+use OAT\Library\Lti1p3Core\Message\LtiMessageInterface;
 use OAT\Library\Lti1p3Core\Registration\RegistrationInterface;
 use OAT\Library\Lti1p3Core\Registration\RegistrationRepositoryInterface;
+use OAT\Library\Lti1p3Core\Resource\LtiResourceLink\LtiResourceLink;
 use oat\oatbox\user\User;
 use oat\taoLti\models\classes\LtiProvider\LtiProvider;
 use oat\taoLti\models\classes\Platform\Repository\Lti1p3RegistrationRepository;
@@ -45,20 +44,15 @@ class Lti1p3LaunchRequestFactoryTest extends TestCase
     /** @var Lti1p3LaunchRequestFactory */
     private $subject;
 
-    /** @var OidcLaunchRequestBuilder|MockObject */
-    private $oidcLaunchRequestBuilder;
-
-    /** @var LtiLaunchRequestBuilder|MockObject */
+    /** @var LtiResourceLinkLaunchRequestBuilder|MockObject */
     private $ltiLaunchRequestBuilder;
 
     public function setUp(): void
     {
         $this->registrationRepository = $this->createMock(RegistrationRepositoryInterface::class);
-        $this->oidcLaunchRequestBuilder = $this->createMock(OidcLaunchRequestBuilder::class);
-        $this->ltiLaunchRequestBuilder = $this->createMock(LtiLaunchRequestBuilder::class);
+        $this->ltiLaunchRequestBuilder = $this->createMock(LtiResourceLinkLaunchRequestBuilder::class);
         $this->subject = new Lti1p3LaunchRequestFactory();
         $this->subject->withLtiLaunchRequestBuilder($this->ltiLaunchRequestBuilder);
-        $this->subject->withOidcLaunchRequestBuilder($this->oidcLaunchRequestBuilder);
         $this->subject->setServiceLocator(
             $this->getServiceLocatorMock(
                 [
@@ -85,12 +79,12 @@ class Lti1p3LaunchRequestFactoryTest extends TestCase
         $registration = $this->expectRegistration();
         $command = $this->createCommand();
 
-        $launchRequest = $this->createMock(OidcLaunchRequest::class);
+        $launchRequest = $this->createMock(LtiMessageInterface::class);
 
-        $this->oidcLaunchRequestBuilder
-            ->method('buildResourceLinkOidcLaunchRequest')
+        $this->ltiLaunchRequestBuilder
+            ->method('buildLtiResourceLinkLaunchRequest')
             ->with(
-                new ResourceLink('deliveryExecutionIdentifier', $command->getLaunchUrl()),
+                new LtiResourceLink('deliveryExecutionIdentifier', ['url' => $command->getLaunchUrl()]),
                 $registration,
                 'userIdentifier',
                 '1',

@@ -25,8 +25,8 @@ namespace oat\taoLti\test\unit\models\classes\Platform\Service\Oidc;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\ServerRequest;
 use oat\generis\test\TestCase;
-use OAT\Library\Lti1p3Core\Launch\Request\LtiLaunchRequest;
-use OAT\Library\Lti1p3Core\Security\Oidc\Endpoint\OidcLoginAuthenticator;
+use OAT\Library\Lti1p3Core\Message\LtiMessage;
+use OAT\Library\Lti1p3Core\Security\Oidc\OidcAuthenticator;
 use oat\taoLti\models\classes\Platform\Service\Oidc\Lti1p3OidcLoginAuthenticator;
 use PHPUnit\Framework\MockObject\MockObject;
 
@@ -35,29 +35,29 @@ class Lti1p3OidcLoginAuthenticatorTest extends TestCase
     /** @var Lti1p3OidcLoginAuthenticator */
     private $subject;
 
-    /** @var OidcLoginAuthenticator|MockObject */
+    /** @var OidcAuthenticator|MockObject */
     private $oidcLoginAuthenticator;
 
     public function setUp(): void
     {
-        $this->oidcLoginAuthenticator = $this->createMock(OidcLoginAuthenticator::class);
+        $this->oidcLoginAuthenticator = $this->createMock(OidcAuthenticator::class);
         $this->subject = new Lti1p3OidcLoginAuthenticator();
         $this->subject->withLoginAuthenticator($this->oidcLoginAuthenticator);
     }
 
     public function testAuthenticate(): void
     {
-        $launch = new LtiLaunchRequest('');
+        $ltiMessage = new LtiMessage('');
 
         $this->oidcLoginAuthenticator
             ->method('authenticate')
-            ->willReturn($launch);
+            ->willReturn($ltiMessage);
 
         $request = new ServerRequest('GET', '');
         $response = new Response();
 
         $this->assertSame(
-            $launch->toHtmlRedirectForm(),
+            $ltiMessage->toHtmlRedirectForm(),
             (string)$this->subject->authenticate($request, $response)->getBody()
         );
     }
