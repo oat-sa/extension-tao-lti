@@ -15,11 +15,14 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2019 (original work) Open Assessment Technologies SA
+ * Copyright (c) 2019-2020 (original work) Open Assessment Technologies SA
  */
+
+declare(strict_types=1);
 
 namespace oat\taoLti\models\classes\LtiProvider;
 
+use oat\generis\model\OntologyAwareTrait;
 use oat\oatbox\service\ConfigurableService;
 
 /**
@@ -27,15 +30,15 @@ use oat\oatbox\service\ConfigurableService;
  */
 class LtiProviderService extends ConfigurableService implements LtiProviderRepositoryInterface
 {
-    const SERVICE_ID = 'taoLti/LtiProviderService';
-    const LTI_PROVIDER_LIST_IMPLEMENTATIONS = 'ltiProviderListImplementations';
+    use OntologyAwareTrait;
+
+    public const SERVICE_ID = 'taoLti/LtiProviderService';
+    public const LTI_PROVIDER_LIST_IMPLEMENTATIONS = 'ltiProviderListImplementations';
 
     /**
      * Counts the number of LTI providers found from all implementations configured.
-     *
-     * @return int
      */
-    public function count()
+    public function count(): int
     {
         return $this->aggregate(
             0,
@@ -45,12 +48,23 @@ class LtiProviderService extends ConfigurableService implements LtiProviderRepos
         );
     }
 
+    public function searchByToolClientId(string $clientId): LtiProvider
+    {
+        foreach ($this->findAll() as $provider) {
+            if ($clientId === $provider->getToolClientId()) {
+                return $provider;
+            }
+        }
+
+        throw new InvalidLtiProviderException(sprintf('Lti provider with client id %s does not exist', $clientId));
+    }
+
     /**
      * Gathers LTI providers found from all implementations configured.
      *
      * @return LtiProvider[]
      */
-    public function findAll()
+    public function findAll(): array
     {
         return $this->aggregate(
             [],
@@ -63,11 +77,9 @@ class LtiProviderService extends ConfigurableService implements LtiProviderRepos
     /**
      * Gathers LTI providers found from all implementations configured and filters them by a string contained in label.
      *
-     * @param string $label
-     *
      * @return LtiProvider[]
      */
-    public function searchByLabel($label)
+    public function searchByLabel(string $label): array
     {
         return $this->aggregate(
             [],
@@ -95,25 +107,21 @@ class LtiProviderService extends ConfigurableService implements LtiProviderRepos
         return $result;
     }
 
-    /**
-     * @param string $id
-     * @return LtiProvider
-     */
-    public function searchById($id)
+    public function searchById(string $id): ?LtiProvider
     {
-        return current(array_filter($this->aggregate(
-            [],
-            static function ($providers, LtiProviderRepositoryInterface $implementation) use ($id) {
-                return array_merge($providers, [$implementation->searchById($id)]);
-            }
-        )));
+        return current(
+            array_filter(
+                $this->aggregate(
+                    [],
+                    static function ($providers, LtiProviderRepositoryInterface $implementation) use ($id) {
+                        return array_merge($providers, [$implementation->searchById($id)]);
+                    }
+                )
+            )
+        ) ?: null;
     }
 
-    /**
-     * @param string $oauthKey
-     * @return LtiProvider|null
-     */
-    public function searchByOauthKey($oauthKey)
+    public function searchByOauthKey(string $oauthKey): ?LtiProvider
     {
         $found = array_filter($this->aggregate(
             [],

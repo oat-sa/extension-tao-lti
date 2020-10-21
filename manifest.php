@@ -19,9 +19,13 @@
  * Copyright (c) 2013-2020 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
  */
 
+use oat\tao\model\accessControl\func\AccessRule;
 use oat\tao\model\user\TaoRoles;
 use oat\taoLti\controller\CookieUtils;
+use oat\taoLti\controller\Security;
+use oat\taoLti\scripts\install\GenerateKeys;
 use oat\taoLti\scripts\install\InstallServices;
+use oat\taoLti\scripts\install\MapLtiSectionVisibility;
 use oat\taoLti\scripts\update\Updater;
 
 /**
@@ -35,7 +39,7 @@ return [
     'label' => 'LTI library',
     'description' => 'TAO LTI library and helpers',
     'license' => 'GPL-2.0',
-    'version' => '11.11.2',
+    'version' => '11.14.1',
       'author' => 'Open Assessment Technologies SA',
       'requires' => [
         'generis' => '>=12.15.0',
@@ -57,15 +61,18 @@ return [
             $extpath . 'install/ontology/ltiroles_membership.rdf'
         ],
         'php' => [
-            InstallServices::class
+            InstallServices::class,
+            GenerateKeys::class,
+            MapLtiSectionVisibility::class
         ]
     ],
     'update' => Updater::class,
     'managementRole' => 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiManagerRole',
     'acl' => [
-        ['grant', 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiManagerRole', ['ext' => 'taoLti']],
-        ['grant', TaoRoles::ANONYMOUS, CookieUtils::class],
-        ['grant', 'http://www.tao.lu/Ontologies/TAO.rdf#BaseUserRole', ['ext' => 'taoLti','mod' => 'LtiConsumer', 'act' => 'call']]
+        [AccessRule::GRANT, 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiManagerRole', ['ext' => 'taoLti']],
+        [AccessRule::GRANT, TaoRoles::ANONYMOUS, CookieUtils::class],
+        [AccessRule::GRANT, TaoRoles::BASE_USER, ['ext' => 'taoLti','mod' => 'LtiConsumer', 'act' => 'call']],
+        [AccessRule::GRANT, TaoRoles::ANONYMOUS, Security::class],
     ],
     'constants' => [
         # controller directory

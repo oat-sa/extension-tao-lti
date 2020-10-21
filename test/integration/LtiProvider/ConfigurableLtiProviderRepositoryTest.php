@@ -15,37 +15,40 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2019 (original work) Open Assessment Technologies SA
+ * Copyright (c) 2019-2020 (original work) Open Assessment Technologies SA
  */
 
-namespace oat\taoLti\models\classes\LtiProvider;
+declare(strict_types=1);
+
+namespace oat\taoLti\test\integration;
 
 use InvalidArgumentException;
 use oat\generis\test\TestCase;
+use oat\taoLti\models\classes\LtiProvider\ConfigurableLtiProviderRepository;
+use oat\taoLti\models\classes\LtiProvider\LtiProvider;
+use oat\taoLti\models\classes\LtiProvider\LtiProviderFactory;
+use oat\taoLti\models\classes\LtiProvider\LtiProviderFieldsMapper;
+use oat\taoLti\models\classes\LtiProvider\Validation\LtiProviderValidator;
+use oat\taoLti\models\classes\LtiProvider\Validation\ValidationRegistry;
+use oat\taoLti\models\classes\LtiProvider\Validation\ValidatorsFactory;
 
-/**
- * Service methods to manage the LTI provider business objects.
- */
 class ConfigurableLtiProviderRepositoryTest extends TestCase
 {
-    public function testConstructorCountFindAll()
+    public function testConstructorCountFindAll(): void
     {
-        $subject = new ConfigurableLtiProviderRepository([
-            ConfigurableLtiProviderRepository::OPTION_LTI_PROVIDER_LIST => json_decode(
-                file_get_contents(__DIR__ . '/_resources/lti_provider_list.json'),
-                true
-            )
-        ]);
+        $subject = $this->createSubject('lti_provider_list.json');
 
         $this->assertEquals(2, $subject->count());
 
         $providers = $subject->findAll();
+
         $this->assertInstanceOf(LtiProvider::class, $providers[0]);
         $this->assertEquals('provider1_uri', $providers[0]->getId());
         $this->assertEquals('provider1_label', $providers[0]->getLabel());
         $this->assertEquals('provider1_key', $providers[0]->getKey());
         $this->assertEquals('provider1_secret', $providers[0]->getSecret());
         $this->assertEquals('provider1_callback_url', $providers[0]->getCallbackUrl());
+        $this->assertEquals('jwksUrl', $providers[0]->getToolJwksUrl());
         $this->assertEquals(['Learner'], $providers[0]->getRoles());
 
         $this->assertInstanceOf(LtiProvider::class, $providers[1]);
@@ -57,14 +60,9 @@ class ConfigurableLtiProviderRepositoryTest extends TestCase
         $this->assertEquals([], $providers[1]->getRoles());
     }
 
-    public function testSearchByLabel()
+    public function testSearchByLabel(): void
     {
-        $subject = new ConfigurableLtiProviderRepository([
-            ConfigurableLtiProviderRepository::OPTION_LTI_PROVIDER_LIST => json_decode(
-                file_get_contents(__DIR__ . '/_resources/lti_provider_list.json'),
-                true
-            )
-        ]);
+        $subject = $this->createSubject('lti_provider_list.json');
 
         $providers = $subject->searchByLabel('provider1');
         $this->assertEquals(1, count($providers));
@@ -76,14 +74,9 @@ class ConfigurableLtiProviderRepositoryTest extends TestCase
         $this->assertEquals('provider1_callback_url', $providers[0]->getCallbackUrl());
     }
 
-    public function testSearchByOauthKey()
+    public function testSearchByOauthKey(): void
     {
-        $subject = new ConfigurableLtiProviderRepository([
-            ConfigurableLtiProviderRepository::OPTION_LTI_PROVIDER_LIST => json_decode(
-                file_get_contents(__DIR__ . '/_resources/lti_provider_list.json'),
-                true
-            )
-        ]);
+        $subject = $this->createSubject('lti_provider_list.json');
 
         $provider = $subject->searchByOauthKey('provider2_key');
         $this->assertInstanceOf(LtiProvider::class, $provider);
@@ -96,27 +89,77 @@ class ConfigurableLtiProviderRepositoryTest extends TestCase
         $this->assertNull($subject->searchByOauthKey('not_existing'));
     }
 
-    public function testConstructorWithNullProviderListThrowsException()
+    public function testConstructorWithNullProviderListThrowsException(): void
     {
-        $subject = new ConfigurableLtiProviderRepository([
-            ConfigurableLtiProviderRepository::OPTION_LTI_PROVIDER_LIST => null
-        ]);
+        $subject = $this->createSubject(null);
+
         $this->expectException(InvalidArgumentException::class);
 
         $subject->count();
     }
 
-    public function testConstructorWithInvalidProviderListThrowsException()
+    public function testConstructorWithInvalidProviderListThrowsException(): void
     {
-        $subject = new ConfigurableLtiProviderRepository([
-            ConfigurableLtiProviderRepository::OPTION_LTI_PROVIDER_LIST => json_decode(
-                file_get_contents(__DIR__ . '/_resources/incomplete_lti_provider_list.json'),
-                true
-            )
-        ]);
+        $subject = $this->createSubject('incomplete_lti_provider_list.json');
+
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Missing key \'callback_url\' in LTI provider list.');
+        $this->expectExceptionMessage('"key": This field is required');
 
         $subject->count();
+    }
+
+    private function createSubject(string $providerListPath = null): ConfigurableLtiProviderRepository
+    {
+        $subject = new ConfigurableLtiProviderRepository(
+            [
+                ConfigurableLtiProviderRepository::OPTION_LTI_PROVIDER_LIST => $providerListPath ? json_decode(
+                    file_get_contents(
+                        __DIR__
+                        . DIRECTORY_SEPARATOR
+                        . '_resources'
+                        . DIRECTORY_SEPARATOR
+                        . $providerListPath
+                    ),
+                    true
+                ) : null
+            ]
+        );
+
+        $validationService = new LtiProviderValidator();
+        $factory = new LtiProviderFactory();
+        $validationFactory = new ValidatorsFactory();
+        $validationFactory->setServiceLocator(
+            $this->getServiceLocatorMock(
+                [
+                    ValidationRegistry::class => new ValidationRegistry(),
+                ]
+            )
+        );
+        $validationService->setServiceLocator(
+            $this->getServiceLocatorMock(
+                [
+                    LtiProviderFieldsMapper::class => new LtiProviderFieldsMapper(),
+                    ValidationRegistry::class => new ValidationRegistry(),
+                    ValidatorsFactory::class => $validationFactory,
+
+                ]
+            )
+        );
+        $factory->setServiceLocator(
+            $this->getServiceLocatorMock(
+                [
+                    LtiProviderValidator::class => $validationService,
+                ]
+            )
+        );
+        $subject->setServiceLocator(
+            $this->getServiceLocatorMock(
+                [
+                    LtiProviderFactory::class => $factory
+                ]
+            )
+        );
+
+        return $subject;
     }
 }
