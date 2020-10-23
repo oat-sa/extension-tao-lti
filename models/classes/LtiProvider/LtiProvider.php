@@ -15,8 +15,10 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2019 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
+ * Copyright (c) 2019-2020 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
  */
+
+declare(strict_types=1);
 
 namespace oat\taoLti\models\classes\LtiProvider;
 
@@ -45,62 +47,145 @@ class LtiProvider implements JsonSerializable
     /** @var array */
     private $roles;
 
-    /**
-     * @param string $id
-     * @param string $label
-     * @param string $key
-     * @param string $secret
-     * @param string $callbackUrl
-     * @param string[] $roles
-     */
-    public function __construct($id, $label, $key, $secret, $callbackUrl, array $roles = [])
-    {
+    /** @var string */
+    private $ltiVersion;
+
+    /** @var string */
+    private $toolClientId;
+
+    /** @var string */
+    private $toolAudience;
+
+    /** @var string[] */
+    private $toolDeploymentIds = [];
+
+    /** @var string */
+    private $toolOidcLoginInitiationUrl;
+
+    /** @var string */
+    private $toolLaunchUrl;
+
+    /** @var string */
+    private $toolPublicKey;
+
+    /** @var string */
+    private $toolIdentifier;
+
+    /** @var string */
+    private $toolName;
+
+    /** @var string */
+    private $toolJwksUrl;
+
+    public function __construct(
+        string $id,
+        string $label,
+        string $key = null,
+        string $secret = null,
+        string $callbackUrl = null,
+        array $roles = [],
+        string $ltiVersion = null,
+        string $toolIdentifier = null,
+        string $toolName = null,
+        string $toolClientId = null,
+        array $toolDeploymentIds = [],
+        string $toolAudience = null,
+        string $toolOidcLoginInitiationUrl = null,
+        string $toolLaunchUrl = null,
+        string $toolPublicKey = null,
+        string $toolJwksUrl = null
+    ) {
         $this->id = $id;
         $this->label = $label;
         $this->key = $key;
         $this->secret = $secret;
         $this->callbackUrl = $callbackUrl;
         $this->roles = $roles;
+        $this->ltiVersion = $ltiVersion;
+        $this->toolClientId = $toolClientId;
+        $this->toolDeploymentIds = $toolDeploymentIds;
+        $this->toolAudience = $toolAudience;
+        $this->toolOidcLoginInitiationUrl = $toolOidcLoginInitiationUrl;
+        $this->toolLaunchUrl = $toolLaunchUrl;
+        $this->toolPublicKey = $toolPublicKey;
+        $this->toolIdentifier = $toolIdentifier;
+        $this->toolName = $toolName;
+        $this->toolJwksUrl = $toolJwksUrl;
     }
 
-    /**
-     * @return string
-     */
-    public function getId()
+    public function getId(): string
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
-    public function getLabel()
+    public function getLabel(): string
     {
         return $this->label;
     }
 
-    /**
-     * @return string
-     */
-    public function getKey()
+    public function getKey(): ?string
     {
         return $this->key;
     }
 
-    /**
-     * @return string
-     */
-    public function getSecret()
+    public function getSecret(): ?string
     {
         return $this->secret;
     }
 
-    /**
-     * @return string
-     */
-    public function getCallbackUrl()
+    public function getCallbackUrl(): ?string
     {
         return $this->callbackUrl;
+    }
+
+    public function getLtiVersion(): string
+    {
+        return $this->ltiVersion;
+    }
+
+    public function getToolIdentifier(): string
+    {
+        return $this->toolIdentifier;
+    }
+
+    public function getToolName(): string
+    {
+        return $this->toolName;
+    }
+
+    public function getToolJwksUrl(): ?string
+    {
+        return $this->toolJwksUrl;
+    }
+
+    public function getToolClientId(): string
+    {
+        return $this->toolClientId;
+    }
+
+    public function getToolDeploymentIds(): array
+    {
+        return $this->toolDeploymentIds;
+    }
+
+    public function getToolAudience(): string
+    {
+        return $this->toolAudience;
+    }
+
+    public function getToolOidcLoginInitiationUrl(): string
+    {
+        return $this->toolOidcLoginInitiationUrl;
+    }
+
+    public function getToolLaunchUrl(): string
+    {
+        return $this->toolLaunchUrl;
+    }
+
+    public function getToolPublicKey(): ?string
+    {
+        return $this->toolPublicKey;
     }
 
     /**
@@ -119,10 +204,7 @@ class LtiProvider implements JsonSerializable
         ];
     }
 
-    /**
-     * @return string[]
-     */
-    public function getRoles()
+    public function getRoles(): array
     {
         return $this->roles;
     }
