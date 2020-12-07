@@ -57,7 +57,7 @@ msgstr ""
 
 #, tao-public
 msgid "Export"
-msgstr "エクスポート..."
+msgstr "エクスポート"
 
 msgid "Generate a new secret key"
 msgstr ""
@@ -113,7 +113,7 @@ msgid "Return to %s."
 msgstr "%s　に戻る"
 
 msgid "Server Error"
-msgstr "サーバエラー"
+msgstr "サーバーエラー"
 
 #, tao-public
 msgid "Settings"
@@ -135,8 +135,8 @@ msgid "Unable to restore Session"
 msgstr "セッションを復元することができません。"
 
 msgid "user"
-msgstr "ユーザ"
+msgstr "ユーザー"
 
 msgid "You are not authorized to use this system"
-msgstr "あなたはこのシステムを使用する権限がありません"
+msgstr "あなたはこのシステム使用を承認されていません"
 

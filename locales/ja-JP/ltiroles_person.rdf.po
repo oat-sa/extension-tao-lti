@@ -18,7 +18,7 @@ msgstr ""
 # http://www.imsglobal.org/imspurl/lis/v1/vocab/person#Learner
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "The LTI Institution Learner Role"
-msgstr "LTI　ラーナー権限"
+msgstr "LTI　ラーナーロール"
 
 # http://www.imsglobal.org/imspurl/lis/v1/vocab/person#Instructor
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -38,7 +38,7 @@ msgstr ""
 # http://www.imsglobal.org/imspurl/lis/v1/vocab/person#Student
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "The LTI Student Role"
-msgstr "LTI　学生権限"
+msgstr "LTI 学生権限"
 
 # http://www.imsglobal.org/imspurl/lis/v1/vocab/person#Administrator
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
