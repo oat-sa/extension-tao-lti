@@ -25,8 +25,8 @@ namespace oat\taoLti\test\unit\models\classes\Platform\Service;
 use oat\generis\test\MockObject;
 use oat\generis\test\TestCase;
 use OAT\Library\Lti1p3Core\Registration\RegistrationInterface;
-use OAT\Library\Lti1p3Core\Service\Server\Validator\AccessTokenRequestValidationResult;
-use OAT\Library\Lti1p3Core\Service\Server\Validator\AccessTokenRequestValidator as Lti1p3AccessTokenRequestValidator;
+use OAT\Library\Lti1p3Core\Security\OAuth2\Validator\Result\RequestAccessTokenValidationResultInterface as AccessTokenRequestValidationResultInterface;
+use OAT\Library\Lti1p3Core\Security\OAuth2\Validator\RequestAccessTokenValidator as Lti1p3AccessTokenRequestValidator;
 use oat\taoLti\models\classes\LtiProvider\InvalidLtiProviderException;
 use oat\taoLti\models\classes\LtiProvider\LtiProvider;
 use oat\taoLti\models\classes\LtiProvider\LtiProviderService;
@@ -43,7 +43,7 @@ class AccessTokenRequestValidatorTest extends TestCase
     /** @var Lti1p3AccessTokenRequestValidator|MockObject */
     private $validator;
 
-    /** @var AccessTokenRequestValidationResult|MockObject */
+    /** @var AccessTokenRequestValidationResultInterface|MockObject */
     private $validatorResult;
 
     /** @var MockObject|ServerRequestInterface  */
@@ -52,7 +52,7 @@ class AccessTokenRequestValidatorTest extends TestCase
     public function setUp(): void
     {
         $this->validator = $this->createMock(Lti1p3AccessTokenRequestValidator::class);
-        $this->validatorResult = $this->createMock(AccessTokenRequestValidationResult::class);
+        $this->validatorResult = $this->createMock(AccessTokenRequestValidationResultInterface::class);
         $this->request = $this->createMock(ServerRequestInterface::class);
 
         $this->validatorResult

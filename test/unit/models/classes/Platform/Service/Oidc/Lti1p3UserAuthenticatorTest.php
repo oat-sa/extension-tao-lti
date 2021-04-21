@@ -23,7 +23,7 @@ declare(strict_types=1);
 namespace oat\taoLti\test\unit\models\classes\Platform\Service\Oidc;
 
 use oat\generis\test\TestCase;
-use OAT\Library\Lti1p3Core\Security\User\UserAuthenticationResult;
+use OAT\Library\Lti1p3Core\Security\User\Result\UserAuthenticationResult;
 use OAT\Library\Lti1p3Core\User\UserIdentity;
 use oat\oatbox\user\User;
 use oat\oatbox\user\UserService;
@@ -71,6 +71,8 @@ class Lti1p3UserAuthenticatorTest extends TestCase
                     'email'
                 )
             ),
+
+            // @todo fix 1st param
             $this->subject->authenticate('login')
         );
     }

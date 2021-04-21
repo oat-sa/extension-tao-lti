@@ -24,8 +24,9 @@ namespace oat\taoLti\models\classes\Platform\Service\Oidc;
 
 use ErrorException;
 use oat\generis\model\GenerisRdf;
-use OAT\Library\Lti1p3Core\Security\User\UserAuthenticationResult;
-use OAT\Library\Lti1p3Core\Security\User\UserAuthenticationResultInterface;
+use OAT\Library\Lti1p3Core\Registration\RegistrationInterface;
+use OAT\Library\Lti1p3Core\Security\User\Result\UserAuthenticationResult;
+use OAT\Library\Lti1p3Core\Security\User\Result\UserAuthenticationResultInterface;
 use OAT\Library\Lti1p3Core\Security\User\UserAuthenticatorInterface;
 use OAT\Library\Lti1p3Core\User\UserIdentity;
 use oat\oatbox\service\ConfigurableService;
@@ -35,7 +36,7 @@ use Throwable;
 
 class Lti1p3UserAuthenticator extends ConfigurableService implements UserAuthenticatorInterface
 {
-    public function authenticate(string $loginHint): UserAuthenticationResultInterface
+    public function authenticate(RegistrationInterface $registration, string $loginHint): UserAuthenticationResultInterface
     {
         try {
             return new UserAuthenticationResult(true, $this->getUserIdentity($loginHint));
