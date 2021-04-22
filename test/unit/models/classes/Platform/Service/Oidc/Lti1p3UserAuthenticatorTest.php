@@ -23,6 +23,7 @@ declare(strict_types=1);
 namespace oat\taoLti\test\unit\models\classes\Platform\Service\Oidc;
 
 use oat\generis\test\TestCase;
+use OAT\Library\Lti1p3Core\Registration\RegistrationInterface;
 use OAT\Library\Lti1p3Core\Security\User\Result\UserAuthenticationResult;
 use OAT\Library\Lti1p3Core\User\UserIdentity;
 use oat\oatbox\user\User;
@@ -62,6 +63,9 @@ class Lti1p3UserAuthenticatorTest extends TestCase
             'email'
         );
 
+        /** @var RegistrationInterface|MockObject $registration */
+        $registration = $this->createMock(RegistrationInterface::class);
+
         $this->assertEquals(
             new UserAuthenticationResult(
                 true,
@@ -72,8 +76,7 @@ class Lti1p3UserAuthenticatorTest extends TestCase
                 )
             ),
 
-            // @todo fix 1st param
-            $this->subject->authenticate('login')
+            $this->subject->authenticate($registration, 'login')
         );
     }
 
