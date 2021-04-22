@@ -37,6 +37,7 @@ use oat\taoLti\models\classes\LtiProvider\LtiProvider;
 use oat\taoLti\models\classes\LtiProvider\LtiProviderService;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\CachedPlatformKeyChainRepository;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\ToolKeyChainRepository;
+use OAT\Library\Lti1p3Core\Security\Key\Key;
 
 class Lti1p3RegistrationRepository extends ConfigurableService implements RegistrationRepositoryInterface
 {
@@ -100,8 +101,8 @@ class Lti1p3RegistrationRepository extends ConfigurableService implements Regist
         return new KeyChain(
             $keyChain->getIdentifier(),
             $keyChain->getName(),
-            $keyChain->getPublicKey()->getValue(),
-            $keyChain->getPrivateKey()->getValue()
+            new Key($keyChain->getPublicKey()->getValue()),
+            new Key($keyChain->getPrivateKey()->getValue()),
         );
     }
 

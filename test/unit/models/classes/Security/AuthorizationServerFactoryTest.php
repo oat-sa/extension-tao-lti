@@ -121,7 +121,9 @@ ABC-----END RSA PRIVATE KEY-----';
 
         $scopeRepository = $this->getPrivateProperty($authorizationServer, 'scopeRepository');
         $this->assertInstanceOf(ScopeRepository::class, $scopeRepository);
+        /** @var \OAT\Library\Lti1p3Core\Util\Collection\Collection $scopes */
         $scopes = $this->getPrivateProperty($scopeRepository, 'scopes');
+        $scopes = $scopes->all();
         $this->assertArrayHasKey('https://purl.imsglobal.org/spec/lti-bo/scope/basicoutcome', $scopes);
 
         $privateKey = $this->getPrivateProperty($authorizationServer, 'privateKey');
