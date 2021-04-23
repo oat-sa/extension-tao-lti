@@ -102,7 +102,7 @@ class Lti1p3RegistrationRepository extends ConfigurableService implements Regist
             $keyChain->getIdentifier(),
             $keyChain->getName(),
             new Key($keyChain->getPublicKey()->getValue()),
-            new Key($keyChain->getPrivateKey()->getValue()),
+            new Key($keyChain->getPrivateKey()->getValue())
         );
     }
 
