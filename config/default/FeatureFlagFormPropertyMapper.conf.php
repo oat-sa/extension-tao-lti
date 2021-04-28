@@ -33,9 +33,6 @@ return new FeatureFlagFormPropertyMapper(
             RdfLtiProviderRepository::LTI_TOOL_NAME => [
                 'FEATURE_FLAG_LTI1P3'
             ],
-            RdfLtiProviderRepository::LTI_TOOL_IDENTIFIER => [
-                'FEATURE_FLAG_LTI1P3'
-            ],
             RdfLtiProviderRepository::LTI_VERSION => [
                 'FEATURE_FLAG_LTI1P3'
             ],

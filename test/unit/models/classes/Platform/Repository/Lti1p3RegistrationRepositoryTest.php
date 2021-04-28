@@ -111,6 +111,7 @@ class Lti1p3RegistrationRepositoryTest extends TestCase
 
         $this->assertSame($this->platformKeyChain->getIdentifier(), $registration->getPlatformKeyChain()->getIdentifier());
         $this->assertSame($this->platformKeyChain->getName(), $registration->getPlatformKeyChain()->getKeySetName());
+
         $this->assertSame($this->platformKeyChain->getPublicKey()->getValue(), $registration->getPlatformKeyChain()->getPublicKey()->getContent());
         $this->assertSame($this->platformKeyChain->getPrivateKey()->getValue(), $registration->getPlatformKeyChain()->getPrivateKey()->getContent());
 
