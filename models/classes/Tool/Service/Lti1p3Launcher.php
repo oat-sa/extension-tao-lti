@@ -34,7 +34,7 @@ class Lti1p3Launcher extends ConfigurableService implements LtiLauncherInterface
     {
         $launchRequest = $this->getLaunchRequestFactory()->create($command);
 
-        return new LtiLaunch($launchRequest->getUrl(), $launchRequest->getParameters());
+        return new LtiLaunch($launchRequest->getUrl(), $launchRequest->getParameters()->all());
     }
 
     private function getLaunchRequestFactory(): Lti1p3LaunchRequestFactory

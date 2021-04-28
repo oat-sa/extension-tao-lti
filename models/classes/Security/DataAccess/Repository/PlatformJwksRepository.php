@@ -24,6 +24,7 @@ namespace oat\taoLti\models\classes\Security\DataAccess\Repository;
 
 use OAT\Library\Lti1p3Core\Security\Jwks\Exporter\Jwk\JwkExporterInterface;
 use OAT\Library\Lti1p3Core\Security\Jwks\Exporter\Jwk\JwkRS256Exporter;
+use OAT\Library\Lti1p3Core\Security\Key\Key;
 use OAT\Library\Lti1p3Core\Security\Key\KeyChain;
 use oat\oatbox\service\ConfigurableService;
 use oat\tao\model\security\Business\Contract\JwksRepositoryInterface;
@@ -50,7 +51,7 @@ class PlatformJwksRepository extends ConfigurableService implements JwksReposito
             $keyChain = new KeyChain(
                 $key->getIdentifier(),
                 $key->getName(),
-                $key->getPublicKey()->getValue()
+                new Key($key->getPublicKey()->getValue())
             );
 
             $exported = $exporter->export($keyChain);

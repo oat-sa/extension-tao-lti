@@ -23,7 +23,7 @@ declare(strict_types=1);
 namespace oat\taoLti\models\classes\Security;
 
 use OAT\Library\Lti1p3Core\Registration\RegistrationRepositoryInterface;
-use OAT\Library\Lti1p3Core\Service\Server\Validator\AccessTokenRequestValidator as Lti1p3AccessTokenRequestValidator;
+use OAT\Library\Lti1p3Core\Security\OAuth2\Validator\RequestAccessTokenValidator as Lti1p3AccessTokenRequestValidator;
 use oat\oatbox\service\ConfigurableService;
 use oat\taoLti\models\classes\LtiProvider\InvalidLtiProviderException;
 use oat\taoLti\models\classes\LtiProvider\LtiProvider;

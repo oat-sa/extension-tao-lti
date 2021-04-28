@@ -25,11 +25,11 @@ namespace unit\models\classes\Security;
 use League\OAuth2\Server\CryptKey;
 use oat\generis\test\TestCase;
 use OAT\Library\Lti1p3Core\Security\Jwks\Fetcher\JwksFetcher;
-use OAT\Library\Lti1p3Core\Service\Server\Grant\ClientAssertionCredentialsGrant;
-use OAT\Library\Lti1p3Core\Service\Server\Repository\AccessTokenRepository;
-use OAT\Library\Lti1p3Core\Service\Server\Repository\ClientRepository;
-use OAT\Library\Lti1p3Core\Service\Server\Repository\ScopeRepository;
-use OAT\Library\Lti1p3Core\Service\Server\ResponseType\ScopedBearerTokenResponse;
+use OAT\Library\Lti1p3Core\Security\OAuth2\Grant\ClientAssertionCredentialsGrant;
+use OAT\Library\Lti1p3Core\Security\OAuth2\Repository\AccessTokenRepository;
+use OAT\Library\Lti1p3Core\Security\OAuth2\Repository\ClientRepository;
+use OAT\Library\Lti1p3Core\Security\OAuth2\Repository\ScopeRepository;
+use OAT\Library\Lti1p3Core\Security\OAuth2\ResponseType\ScopedBearerTokenResponse;
 use oat\oatbox\cache\ItemPoolSimpleCacheAdapter;
 use oat\oatbox\log\LoggerService;
 use oat\tao\model\security\Business\Domain\Key\Key;
@@ -121,7 +121,9 @@ ABC-----END RSA PRIVATE KEY-----';
 
         $scopeRepository = $this->getPrivateProperty($authorizationServer, 'scopeRepository');
         $this->assertInstanceOf(ScopeRepository::class, $scopeRepository);
+        /** @var \OAT\Library\Lti1p3Core\Util\Collection\Collection $scopes */
         $scopes = $this->getPrivateProperty($scopeRepository, 'scopes');
+        $scopes = $scopes->all();
         $this->assertArrayHasKey('https://purl.imsglobal.org/spec/lti-bo/scope/basicoutcome', $scopes);
 
         $privateKey = $this->getPrivateProperty($authorizationServer, 'privateKey');
