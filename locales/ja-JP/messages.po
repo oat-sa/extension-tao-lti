@@ -14,53 +14,53 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 
 msgid "%s created"
-msgstr ""
+msgstr "%s が生成されました"
 
 #, tao-public
 msgid "Add Consumer"
-msgstr "コンシューマに追加"
+msgstr "コンシューマ追加"
 
 #, tao-public
 msgid "Add Provider"
-msgstr ""
+msgstr "プロバイダ追加"
 
 msgid "Authorization failed"
-msgstr ""
+msgstr "承認に失敗しました"
 
 msgid "Back"
 msgstr "戻る"
 
 msgid "Create instance of "
-msgstr ""
+msgstr "インスタンス作成："
 
 #, tao-public
 msgid "Delete"
 msgstr "削除"
 
 msgid "Edit Instance"
-msgstr ""
+msgstr "インスタンス編集"
 
 msgid "Error"
 msgstr "エラー"
 
 msgid "Error (%s): "
-msgstr ""
+msgstr "エラー (%s): "
 
 msgid "Error(%s): [key %s] %s \"%s"
-msgstr ""
+msgstr "エラー(%s): [key %s] %s \"%s"
 
 msgid "Error: "
-msgstr ""
+msgstr "エラー"
 
 msgid "Error: [key %s] \"%s"
-msgstr ""
+msgstr "エラー: [key %s] \"%s"
 
 #, tao-public
 msgid "Export"
-msgstr "エクスポート..."
+msgstr "エクスポート"
 
 msgid "Generate a new secret key"
-msgstr ""
+msgstr "新規の秘密キーが生成されました"
 
 #, tao-public
 msgid "Import"
@@ -71,43 +71,43 @@ msgid "Index"
 msgstr "インデックス"
 
 msgid "Instance saved"
-msgstr ""
+msgstr "インスタンスが保存されました"
 
 msgid "Learning Tools Interoperability"
-msgstr "Learning Tools Interoperability"
+msgstr "LTI（Learning Tools Interoperability）"
 
 msgid "link"
 msgstr "リンク"
 
 #, tao-public
 msgid "LTI Consumers"
-msgstr "LTI コンシューマ"
+msgstr "LTIコンシューマ"
 
 #, tao-public
 msgid "LTI Providers"
-msgstr ""
+msgstr "LTIプロバイダ"
 
 msgid "Oauth consumer secret has been copied to the clipboard"
-msgstr ""
+msgstr "Oauth consumer secret　がクリップボードにコピーされました"
 
 msgid "Open in a new window"
-msgstr "新しいウインドウで開く"
+msgstr "新規ウインドウで開く"
 
 msgid "Please consider that generating a new key will replace the previously generated one."
-msgstr ""
+msgstr "新規キーを生成すると、以前に生成されたキーと置き換えられます。よろしいですか？"
 
 msgid "Please give the key value persistence id"
-msgstr ""
+msgstr "キー値としてパーシステンスIDを指定してください"
 
 #, tao-public
 msgid "Properties"
 msgstr "プロパティ"
 
 msgid "Registered Lti user in Key value"
-msgstr ""
+msgstr "キー値に登録されたLTIユーザ"
 
 msgid "Registered Lti user in ontology"
-msgstr ""
+msgstr "オントロジーに登録されたLTIユーザ"
 
 msgid "Return to %s."
 msgstr "%s　に戻る"
@@ -120,23 +120,23 @@ msgid "Settings"
 msgstr "設定"
 
 msgid "The LTI connection could not be established"
-msgstr "LTIで接続できませんでした"
+msgstr "LTIの接続が確立できませんでした"
 
 msgid "The LTI Provider library."
-msgstr "LTI　プロバイダ　ライブラリ"
+msgstr "LTIプロバイダ ライブラリ"
 
 msgid "The LTI tool could not be opened in the current window. Please click on the button to open it in a new window."
-msgstr "LTIツールはこの画面では開けません。新しいウィンドウを開くボタンを押してください。"
+msgstr "LTIツールはこの画面では開けません。新規ウィンドウを開くボタンを押してください。"
 
 msgid "Third party cookies are not supported by your browser"
-msgstr "サードパーティーのcookiesは、このブラウザをサポートしていません"
+msgstr "サードパーティーのクッキーは、ご利用のブラウザをサポートしていません"
 
 msgid "Unable to restore Session"
-msgstr "セッションを復元することができません。"
+msgstr "セッションを復元することができません"
 
 msgid "user"
 msgstr "ユーザ"
 
 msgid "You are not authorized to use this system"
-msgstr "あなたはこのシステムを使用する権限がありません"
+msgstr "あなたはこのシステムの使用を許可されていません"
 

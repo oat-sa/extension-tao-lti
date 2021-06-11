@@ -38,7 +38,6 @@ return [
     'name' => 'taoLti',
     'label' => 'LTI library',
     'description' => 'TAO LTI library and helpers',
-    'version' => '11.14.0',
     'author' => 'Open Assessment Technologies SA',
     'routes' => [
         '/taoLti' => 'oat\\taoLti\\controller'
