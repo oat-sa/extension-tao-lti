@@ -13,60 +13,60 @@ msgstr ""
 # http://www.imsglobal.org/imspurl/lis/v1/vocab/person#Learner
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "LTI Learner (Institution)"
-msgstr ""
+msgstr "LTI Learner (Institution)"
 
 # http://www.imsglobal.org/imspurl/lis/v1/vocab/person#Learner
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "The LTI Institution Learner Role"
-msgstr "LTI　ラーナー権限"
+msgstr "The LTI Institution Learner ロール"
 
 # http://www.imsglobal.org/imspurl/lis/v1/vocab/person#Instructor
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "LTI Instructor (Institution)"
-msgstr ""
+msgstr "LTI Instructor (Institution)"
 
 # http://www.imsglobal.org/imspurl/lis/v1/vocab/person#Instructor
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "The LTI Institution Instructor Role"
-msgstr "LTI　インストラクタ権限"
+msgstr "The LTI Institution Instructorロール"
 
 # http://www.imsglobal.org/imspurl/lis/v1/vocab/person#Student
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
-msgid "LTI Student (Institution)"
-msgstr ""
+msgid "LTIStudent (Institution)"
+msgstr "LTIStudent (Institution)"
 
 # http://www.imsglobal.org/imspurl/lis/v1/vocab/person#Student
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "The LTI Student Role"
-msgstr "LTI　学生権限"
+msgstr "The LTI Studentロール"
 
 # http://www.imsglobal.org/imspurl/lis/v1/vocab/person#Administrator
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "LTI Administrator (System)"
-msgstr ""
+msgstr "LTI Administrator (System)"
 
 # http://www.imsglobal.org/imspurl/lis/v1/vocab/person#Administrator
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "The LTI Administrator Role"
-msgstr "LTI　アドミニストレータ権限"
+msgstr "The LTI Administratorロール"
 
 # http://www.imsglobal.org/imspurl/lis/v1/vocab/person#Learner
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "LTI Learner"
-msgstr "LTI　ラーナー"
+msgstr "LTI Learner"
 
 # http://www.imsglobal.org/imspurl/lis/v1/vocab/person#Instructor
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "LTI Instructor"
-msgstr "LTI　インストラクタ"
+msgstr "LTI Instructor"
 
 # http://www.imsglobal.org/imspurl/lis/v1/vocab/person#Student
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "LTI Institution Student"
-msgstr "LTI　学生"
+msgstr "LTI Institution Student"
 
 # http://www.imsglobal.org/imspurl/lis/v1/vocab/person#Administrator
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "LTI Administrator"
-msgstr "LTI　アドミニストレータ"
+msgstr "LTI Administrator"
 
