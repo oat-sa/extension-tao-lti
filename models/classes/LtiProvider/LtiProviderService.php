@@ -133,4 +133,17 @@ class LtiProviderService extends ConfigurableService implements LtiProviderRepos
             ? reset($found)
             : null;
     }
+
+    public function searchByIssuer(string $issuer, ?string $clientId = null): ?LtiProvider
+    {
+        $found = array_filter($this->aggregate(
+            [],
+            static function ($providers, LtiProviderRepositoryInterface $implementation) use ($issuer, $clientId) {
+                return array_merge($providers, [$implementation->searchByIssuer($issuer, $clientId)]);
+            }
+        ));
+        return count($found) > 0
+            ? reset($found)
+            : null;
+    }
 }

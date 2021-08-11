@@ -118,6 +118,19 @@ class ConfigurableLtiProviderRepository extends ConfigurableService implements L
         return null;
     }
 
+    public function searchByIssuer(string $issuer, ?string $clientId = null): ?LtiProvider
+    {
+        foreach ($this->getProviders() as $provider) {
+            if ($clientId !== null && $provider->getToolClientId() !== $clientId) {
+                continue;
+            }
+            if ($provider->getToolAudience() === $issuer) {
+                return $provider;
+            }
+        }
+        return null;
+    }
+
     private function getLtiProviderFactory(): LtiProviderFactory
     {
         /** @noinspection PhpIncompatibleReturnTypeInspection */

@@ -30,7 +30,9 @@ use oat\tao\model\security\Business\Domain\Key\KeyChain;
 use oat\tao\model\security\Business\Domain\Key\KeyChainCollection;
 use oat\taoLti\models\classes\LtiProvider\LtiProvider;
 use oat\taoLti\models\classes\LtiProvider\LtiProviderService;
+use oat\taoLti\models\classes\Platform\LtiPlatform;
 use oat\taoLti\models\classes\Platform\Repository\Lti1p3RegistrationRepository;
+use oat\taoLti\models\classes\Platform\Repository\LtiPlatformRepositoryInterface;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\CachedPlatformKeyChainRepository;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\ToolKeyChainRepository;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -48,6 +50,9 @@ class Lti1p3RegistrationRepositoryTest extends TestCase
 
     /** @var LtiProviderService|MockObject */
     private $ltiProviderService;
+
+    /** @var LtiPlatformRepositoryInterface|MockObject */
+    private $ltiPlatformRepository;
 
     /** @var KeyChain */
     private $platformKeyChain;
@@ -70,6 +75,7 @@ class Lti1p3RegistrationRepositoryTest extends TestCase
             new Key('tool_private_key')
         );
         $this->ltiProviderService = $this->createMock(LtiProviderService::class);
+        $this->ltiPlatformRepository = $this->createMock(LtiPlatformRepositoryInterface::class);
         $this->toolKeyChainRepository = $this->createMock(KeyChainRepositoryInterface::class);
         $this->platformKeyChainRepository = $this->createMock(KeyChainRepositoryInterface::class);
         $this->subject = new Lti1p3RegistrationRepository([Lti1p3RegistrationRepository::OPTION_ROOT_URL => 'ROOT_URL']);
@@ -78,19 +84,49 @@ class Lti1p3RegistrationRepositoryTest extends TestCase
                 [
                     ToolKeyChainRepository::class => $this->toolKeyChainRepository,
                     CachedPlatformKeyChainRepository::class => $this->platformKeyChainRepository,
-                    LtiProviderService::SERVICE_ID => $this->ltiProviderService
+                    LtiProviderService::SERVICE_ID => $this->ltiProviderService,
+                    LtiPlatformRepositoryInterface::SERVICE_ID => $this->ltiPlatformRepository,
                 ]
             )
         );
     }
 
-    public function testFindWithNoLtiProvider(): void
+    public function testFindWithNoLtiProviderNorPlatform(): void
     {
         $this->ltiProviderService
             ->method('searchById')
             ->willReturn(null);
-        
+
+        $this->ltiPlatformRepository
+            ->method('searchById')
+            ->willReturn(null);
+
         $this->assertNull($this->subject->find('id'));
+    }
+
+    public function testItCreatesPlatformRegistration(): void
+    {
+        $this->expectToolAndPlatformKeys([$this->toolKeyChain], [$this->platformKeyChain]);
+        $this->ltiProviderService
+            ->method('searchById')
+            ->willReturn(null);
+
+        $platform = new LtiPlatform('id', 'label', 'clientId', 'deploymentId', 'audience',
+            'http://oauth.aceess/token.url', 'http://oidc.auth.url', 'http://jwks.url');
+
+        $this->ltiPlatformRepository
+            ->method('searchById')
+            ->willReturn($platform);
+
+        $registration = $this->subject->find('id');
+        $this->assertInstanceOf(Registration::class, $registration);
+        $this->assertSame($platform->getId(), $registration->getPlatform()->getIdentifier());
+        $this->assertSame($platform->getClientId(), $registration->getClientId());
+        $this->assertSame($platform->getAudience(), $registration->getPlatform()->getAudience());
+        $this->assertSame([$platform->getDeploymentId()], $registration->getDeploymentIds());
+        $this->assertSame($platform->getJwksUrl(), $registration->getPlatformJwksUrl());
+        $this->assertSame($platform->getOidcAuthenticationUrl(), $registration->getPlatform()->getOidcAuthenticationUrl());
+        $this->assertSame($platform->getOuath2AccessTokenUrl(), $registration->getPlatform()->getOAuth2AccessTokenUrl());
     }
 
     public function testFindWillReturnRegistrationForTool(): void
@@ -176,6 +212,56 @@ class Lti1p3RegistrationRepositoryTest extends TestCase
         $this->expectToolAndPlatformKeys([], []);
 
         $this->assertNull($this->subject->find('registrationId'));
+    }
+
+    public function testFindAllAggregatesProvidersAndPlatforms(): void
+    {
+        $ltiProvider = $this->createMock(LtiProvider::class);
+
+        $ltiProvider->method('getId')
+            ->willReturn('ltiId');
+
+        $ltiProvider->method('getToolName')
+            ->willReturn('toolName');
+
+        $ltiProvider->method('getToolIdentifier')
+            ->willReturn('toolIdentifier');
+
+        $ltiProvider->method('getToolPublicKey')
+            ->willReturn('key');
+
+        $ltiProvider->method('getToolAudience')
+            ->willReturn('audience');
+
+        $ltiProvider->method('getToolOidcLoginInitiationUrl')
+            ->willReturn('oidc_url');
+
+        $ltiProvider->method('getToolLaunchUrl')
+            ->willReturn('launch_url');
+
+        $ltiProvider->method('getToolClientId')
+            ->willReturn('client_id');
+
+        $ltiProvider->method('getToolDeploymentIds')
+            ->willReturn(['1']);
+
+        $this->ltiProviderService
+            ->method('findAll')
+            ->willReturn([$ltiProvider]);
+
+        $this->expectToolAndPlatformKeys([$this->toolKeyChain], [$this->platformKeyChain]);
+
+        $this->ltiPlatformRepository
+            ->method('findAll')
+            ->willReturn([new LtiPlatform('id', 'label', 'clientId', 'deploymentId', 'audience',
+                'http://oauth.aceess/token.url', 'http://oidc.auth.url', 'http://jwks.url')]);
+
+        $providersAndRegistrations = $this->subject->findAll();
+
+        $this->assertIsArray($providersAndRegistrations);
+        $this->assertCount(2, $providersAndRegistrations);
+        $this->assertInstanceOf(Registration::class, $providersAndRegistrations[0]);
+        $this->assertInstanceOf(Registration::class, $providersAndRegistrations[1]);
     }
 
     private function expectsProvider(): LtiProvider
