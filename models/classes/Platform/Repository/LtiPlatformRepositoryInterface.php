@@ -31,20 +31,18 @@ interface LtiPlatformRepositoryInterface extends Countable
     const SERVICE_ID = 'taoLti/LtiPlatformRepository';
 
     /**
-     * Returns all providers.
-     *
      * @return LtiPlatform[]
      */
     public function findAll(): array;
 
     /**
-     * Search all LTI providers with label property containing the given label.
-     *
      * @return LtiPlatform[]
      */
     public function searchByLabel(string $label): array;
 
     public function searchById(string $id): ?LtiPlatform;
+
+    public function searchByClientId(string $clientId): ?LtiPlatform;
 
     public function searchByIssuer(string $issuer, string $clientId = null): ?LtiPlatform;
 }

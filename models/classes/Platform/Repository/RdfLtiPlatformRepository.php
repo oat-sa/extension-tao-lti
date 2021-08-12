@@ -24,7 +24,7 @@ use core_kernel_classes_Class;
 use oat\generis\model\kernel\persistence\smoothsql\search\ComplexSearchService;
 use oat\generis\model\OntologyRdfs;
 use oat\tao\model\OntologyClassService;
-use oat\taoLti\models\classes\LtiProvider\LtiPlatformFactory;
+use oat\taoLti\models\classes\Platform\LtiPlatformFactory;
 use oat\taoLti\models\classes\Platform\LtiPlatform;
 use common_exception_Error as ErrorException;
 use core_kernel_classes_Resource as RdfResource;
@@ -43,7 +43,7 @@ class RdfLtiPlatformRepository extends OntologyClassService implements LtiPlatfo
     public const LTI_PLATFORM_AUDIENCE = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#PlatformAudience';
     public const LTI_PLATFORM_OAUTH2_ACCESS_TOKEN_URL = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#PlatformOuath2AccessTokenUrl';
     public const LTI_PLATFORM_OIDC_URL = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#PlatformOidcAuthenticationUrl';
-    public const LTI_TOOL_JWKS_URL = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#PlatformJwksUrl';
+    public const LTI_PLATFORM_JWKS_URL = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#PlatformJwksUrl';
 
     /**
      * return the group top level class
@@ -56,8 +56,6 @@ class RdfLtiPlatformRepository extends OntologyClassService implements LtiPlatfo
     }
 
     /**
-     * Returns the number of LtiProviders.
-     *
      * @return int
      */
     public function count()
@@ -89,13 +87,13 @@ class RdfLtiPlatformRepository extends OntologyClassService implements LtiPlatfo
     private function getPlatforms(array $criteria = []): array
     {
         $resources = $this->queryResources($criteria, 'search', []);
-        $ltiProviders = [];
+        $ltiPlatforms = [];
 
         foreach ($resources as $resource) {
-            $ltiProviders[] = $this->getLtiProviderFromResource($resource);
+            $ltiPlatforms[] = $this->getLtiPlatformFromResource($resource);
         }
 
-        return $ltiProviders;
+        return $ltiPlatforms;
     }
 
     /**
@@ -125,13 +123,13 @@ class RdfLtiPlatformRepository extends OntologyClassService implements LtiPlatfo
 
             return $searchService->getGateway()->$hydration($queryBuilder);
         } catch (ErrorException $e) {
-            $this->logError('Unable to retrieve providers: ' . $e->getMessage());
+            $this->logError('Unable to retrieve platforms: ' . $e->getMessage());
 
             return $default;
         }
     }
 
-    private function getLtiProviderFromResource(RdfResource $resource): LtiPlatform
+    private function getLtiPlatformFromResource(RdfResource $resource): LtiPlatform
     {
         return $this->getLtiPlatformFactory()->createFromResource($resource);
     }
@@ -139,7 +137,7 @@ class RdfLtiPlatformRepository extends OntologyClassService implements LtiPlatfo
     public function searchById(string $id): ?LtiPlatform
     {
         if ($this->getResource($id)->exists()) {
-            return $this->getLtiProviderFromResource($this->getResource($id));
+            return $this->getLtiPlatformFromResource($this->getResource($id));
         }
         return null;
     }

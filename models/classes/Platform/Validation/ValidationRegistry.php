@@ -31,7 +31,7 @@ class ValidationRegistry extends ConfigurableService
         RdfLtiPlatformRepository::LTI_PLATFORM_AUDIENCE => [['NotEmpty']],
         RdfLtiPlatformRepository::LTI_PLATFORM_OAUTH2_ACCESS_TOKEN_URL => [['NotEmpty'], ['Url']],
         RdfLtiPlatformRepository::LTI_PLATFORM_OIDC_URL => [['NotEmpty'], ['Url']],
-        RdfLtiPlatformRepository::LTI_TOOL_JWKS_URL => [['NotEmpty'], ['Url']],
+        RdfLtiPlatformRepository::LTI_PLATFORM_JWKS_URL => [['NotEmpty'], ['Url']],
     ];
 
     public function getValidators(string $field = null): array

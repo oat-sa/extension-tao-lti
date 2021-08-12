@@ -20,11 +20,10 @@
 
 declare(strict_types=1);
 
-namespace oat\taoLti\models\classes\LtiProvider;
+namespace oat\taoLti\models\classes\Platform;
 
 use core_kernel_classes_Resource;
 use oat\oatbox\service\ConfigurableService;
-use oat\taoLti\models\classes\Platform\LtiPlatform;
 use oat\taoLti\models\classes\Platform\Repository\RdfLtiPlatformRepository;
 
 class LtiPlatformFactory extends ConfigurableService
@@ -38,7 +37,7 @@ class LtiPlatformFactory extends ConfigurableService
                 RdfLtiPlatformRepository::LTI_PLATFORM_AUDIENCE,
                 RdfLtiPlatformRepository::LTI_PLATFORM_OAUTH2_ACCESS_TOKEN_URL,
                 RdfLtiPlatformRepository::LTI_PLATFORM_OIDC_URL,
-                RdfLtiPlatformRepository::LTI_TOOL_JWKS_URL,
+                RdfLtiPlatformRepository::LTI_PLATFORM_JWKS_URL,
             ]
         );
 
@@ -50,7 +49,7 @@ class LtiPlatformFactory extends ConfigurableService
             (string)reset($propertiesValues[RdfLtiPlatformRepository::LTI_PLATFORM_AUDIENCE]),
             (string)reset($propertiesValues[RdfLtiPlatformRepository::LTI_PLATFORM_OAUTH2_ACCESS_TOKEN_URL]),
             (string)reset($propertiesValues[RdfLtiPlatformRepository::LTI_PLATFORM_OIDC_URL]),
-            (string)reset($propertiesValues[RdfLtiPlatformRepository::LTI_TOOL_JWKS_URL]),
+            (string)reset($propertiesValues[RdfLtiPlatformRepository::LTI_PLATFORM_JWKS_URL]),
         );
     }
 }
