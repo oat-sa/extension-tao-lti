@@ -115,8 +115,6 @@ class AccessTokenRequestValidatorTest extends TestCase
 
     public function testRegistrationClientNotMatchingDelivery(): void
     {
-        $this->expectException(InvalidLtiProviderException::class);
-
         $registration = $this->createMock(RegistrationInterface::class);
         $ltiProviderService = $this->createMock(LtiProviderService::class);
         $ltiProvider = $this->createMock(LtiProvider::class);
