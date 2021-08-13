@@ -166,8 +166,12 @@ class RdfLtiPlatformRepository extends OntologyClassService implements LtiPlatfo
             return null;
         }
         if ($count > 1) {
-            $this->logWarning(sprintf('Found %d LTI platforms with the same clientId: %s and audience: %s',
-                $count, $clientId, $issuer));
+            $this->logWarning(sprintf(
+                'Found %d LTI platforms with the same clientId: %s and audience: %s',
+                $count,
+                $clientId,
+                $issuer
+            ));
         }
         return reset($platforms);
     }

@@ -28,7 +28,7 @@ use oat\taoLti\models\classes\Platform\LtiPlatform;
  */
 interface LtiPlatformRepositoryInterface extends Countable
 {
-    const SERVICE_ID = 'taoLti/LtiPlatformRepository';
+    public const SERVICE_ID = 'taoLti/LtiPlatformRepository';
 
     /**
      * @return LtiPlatform[]
