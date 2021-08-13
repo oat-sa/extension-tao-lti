@@ -45,7 +45,6 @@ class ValidatorsFactory extends ConfigurableService
 
     private function getValidationRegistry(): ValidationRegistry
     {
-        /** @noinspection PhpIncompatibleReturnTypeInspection */
         return $this->getServiceLocator()->get(ValidationRegistry::class);
     }
 }

@@ -27,7 +27,7 @@ use oat\taoLti\models\classes\Platform\Repository\RdfLtiPlatformRepository;
 
 class ValidationRegistry extends ConfigurableService
 {
-    private const validators = [
+    private const VALIDATORS = [
         RdfLtiPlatformRepository::LTI_PLATFORM_AUDIENCE => [['NotEmpty']],
         RdfLtiPlatformRepository::LTI_PLATFORM_OAUTH2_ACCESS_TOKEN_URL => [['NotEmpty'], ['Url']],
         RdfLtiPlatformRepository::LTI_PLATFORM_OIDC_URL => [['NotEmpty'], ['Url']],
@@ -37,8 +37,8 @@ class ValidationRegistry extends ConfigurableService
     public function getValidators(string $field = null): array
     {
         if ($field !== null) {
-            return self::validators[$field];
+            return self::VALIDATORS[$field];
         }
-        return self::validators;
+        return self::VALIDATORS;
     }
 }
