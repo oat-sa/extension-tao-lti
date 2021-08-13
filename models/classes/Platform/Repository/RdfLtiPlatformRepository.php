@@ -24,7 +24,6 @@ use core_kernel_classes_Class;
 use oat\generis\model\kernel\persistence\smoothsql\search\ComplexSearchService;
 use oat\generis\model\OntologyRdfs;
 use oat\tao\model\OntologyClassService;
-use oat\taoLti\models\classes\Platform\LtiPlatformFactory;
 use oat\taoLti\models\classes\Platform\LtiPlatform;
 use common_exception_Error as ErrorException;
 use core_kernel_classes_Resource as RdfResource;

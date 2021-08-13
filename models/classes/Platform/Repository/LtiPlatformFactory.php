@@ -20,11 +20,11 @@
 
 declare(strict_types=1);
 
-namespace oat\taoLti\models\classes\Platform;
+namespace oat\taoLti\models\classes\Platform\Repository;
 
 use core_kernel_classes_Resource;
 use oat\oatbox\service\ConfigurableService;
-use oat\taoLti\models\classes\Platform\Repository\RdfLtiPlatformRepository;
+use oat\taoLti\models\classes\Platform\LtiPlatform;
 
 class LtiPlatformFactory extends ConfigurableService
 {
