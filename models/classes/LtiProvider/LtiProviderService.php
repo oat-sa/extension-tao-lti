@@ -48,7 +48,7 @@ class LtiProviderService extends ConfigurableService implements LtiProviderRepos
         );
     }
 
-    public function searchByToolClientId(string $clientId): LtiProvider
+    public function searchByToolClientId(string $clientId): ?LtiProvider
     {
         foreach ($this->findAll() as $provider) {
             if ($clientId === $provider->getToolClientId()) {
@@ -56,7 +56,7 @@ class LtiProviderService extends ConfigurableService implements LtiProviderRepos
             }
         }
 
-        throw new InvalidLtiProviderException(sprintf('Lti provider with client id %s does not exist', $clientId));
+        return null;
     }
 
     /**

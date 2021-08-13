@@ -87,7 +87,7 @@ class Lti1p3RegistrationRepository extends ConfigurableService implements Regist
         if (!$ltiProvider) {
             $ltiPlatform = $this->getLtiPlatformService()->searchByClientId($clientId);
             if ($ltiPlatform) {
-                $this->createRegistrationByPlatform($ltiPlatform);
+                return $this->createRegistrationByPlatform($ltiPlatform);
             } else {
                 return null;
             }
