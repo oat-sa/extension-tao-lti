@@ -40,7 +40,8 @@ class RdfLtiPlatformRepository extends OntologyClassService implements LtiPlatfo
     public const LTI_PLATFORM_CLIENT_ID = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#PlatformClientId';
     public const LTI_PLATFORM_DEPLOYMENT_ID = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#PlatformDeploymentId';
     public const LTI_PLATFORM_AUDIENCE = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#PlatformAudience';
-    public const LTI_PLATFORM_OAUTH2_ACCESS_TOKEN_URL = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#PlatformOuath2AccessTokenUrl';
+    public const LTI_PLATFORM_OAUTH2_ACCESS_TOKEN_URL =
+        'http://www.tao.lu/Ontologies/TAOLTI.rdf#PlatformOuath2AccessTokenUrl';
     public const LTI_PLATFORM_OIDC_URL = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#PlatformOidcAuthenticationUrl';
     public const LTI_PLATFORM_JWKS_URL = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#PlatformJwksUrl';
 
