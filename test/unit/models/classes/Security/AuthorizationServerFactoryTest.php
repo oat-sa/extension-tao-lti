@@ -42,6 +42,9 @@ class AuthorizationServerFactoryTest extends TestCase
 {
     use NoPrivacyTrait;
 
+    private const PRIVATE_KEY_PATH = __DIR__ . '/../../../../../vendor/oat-sa/lib-lti1p3-core/tests/Resource/Key/RSA/private.key';
+    private const PUBLIC_KEY_PATH = __DIR__ . '/../../../../../vendor/oat-sa/lib-lti1p3-core/tests/Resource/Key/RSA/public.key';
+
     private $subject;
 
     private $registrationRepository;
@@ -74,13 +77,13 @@ class AuthorizationServerFactoryTest extends TestCase
 
     public function testCreate()
     {
-        $keyChainPrivateKey = '-----BEGIN RSA PRIVATE KEY-----
-ABC-----END RSA PRIVATE KEY-----';
+        $keyChainPrivateKey = file_get_contents(self::PRIVATE_KEY_PATH);
+        $keyChainPublicKey = file_get_contents(self::PUBLIC_KEY_PATH);
 
         $keyChain = new KeyChain(
             'toto',
             'toto',
-            new Key('toto-public'),
+            new Key($keyChainPublicKey),
             new Key($keyChainPrivateKey)
         );
 
@@ -128,7 +131,8 @@ ABC-----END RSA PRIVATE KEY-----';
 
         $privateKey = $this->getPrivateProperty($authorizationServer, 'privateKey');
         $this->assertInstanceOf(CryptKey::class, $privateKey);
-        $this->assertSame($keyChainPrivateKey, file_get_contents($privateKey->getKeyPath()));
+
+        $this->assertSame($keyChainPrivateKey, $privateKey->getKeyContents());
 
         $this->assertSame(
             'toto',

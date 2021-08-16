@@ -15,35 +15,34 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2019 (original work) Open Assessment Technologies SA
+ * Copyright (c) 2021 (original work) Open Assessment Technologies SA
  */
 
-namespace oat\taoLti\models\classes\LtiProvider;
+namespace oat\taoLti\models\classes\Platform\Repository;
 
 use Countable;
+use oat\taoLti\models\classes\Platform\LtiPlatform;
 
 /**
- * Service methods to manage the LTI provider business objects.
+ * Service methods to manage the LTI platform business objects.
  */
-interface LtiProviderRepositoryInterface extends Countable
+interface LtiPlatformRepositoryInterface extends Countable
 {
+    public const SERVICE_ID = 'taoLti/LtiPlatformRepository';
+
     /**
-     * Returns all providers.
-     *
-     * @return LtiProvider[]
+     * @return LtiPlatform[]
      */
     public function findAll(): array;
 
     /**
-     * Search all LTI providers with label property containing the given label.
-     *
-     * @return LtiProvider[]
+     * @return LtiPlatform[]
      */
     public function searchByLabel(string $label): array;
 
-    public function searchById(string $id): ?LtiProvider;
+    public function searchById(string $id): ?LtiPlatform;
 
-    public function searchByOauthKey(string $oauthKey): ?LtiProvider;
+    public function searchByClientId(string $clientId): ?LtiPlatform;
 
-    public function searchByIssuer(string $issuer, ?string $clientId = null): ?LtiProvider;
+    public function searchByIssuer(string $issuer, string $clientId = null): ?LtiPlatform;
 }

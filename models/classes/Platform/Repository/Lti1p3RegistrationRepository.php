@@ -35,6 +35,7 @@ use oat\tao\model\security\Business\Domain\Key\KeyChain as TaoKeyChain;
 use oat\tao\model\security\Business\Domain\Key\KeyChainQuery;
 use oat\taoLti\models\classes\LtiProvider\LtiProvider;
 use oat\taoLti\models\classes\LtiProvider\LtiProviderService;
+use oat\taoLti\models\classes\Platform\LtiPlatform;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\CachedPlatformKeyChainRepository;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\ToolKeyChainRepository;
 use OAT\Library\Lti1p3Core\Security\Key\Key;
@@ -44,6 +45,7 @@ class Lti1p3RegistrationRepository extends ConfigurableService implements Regist
     public const SERVICE_ID = 'taoLti/Lti1p3RegistrationRepository';
     public const OPTION_ROOT_URL = 'rootUrl';
     private const PLATFORM_ID = 'tao';
+    private const TOOL_ID = 'tao_tool';
     private const OIDC_PATH = 'taoLti/Security/oidc';
     private const OAUTH_PATH = 'taoLti/Security/oauth';
     private const JWKS_PATH = 'taoLti/Security/jwks';
@@ -53,7 +55,12 @@ class Lti1p3RegistrationRepository extends ConfigurableService implements Regist
         $ltiProvider = $this->getLtiProviderService()->searchById($identifier);
 
         if (!$ltiProvider) {
-            return null;
+            $ltiPlatform = $this->getLtiPlatformService()->searchById($identifier);
+            if ($ltiPlatform) {
+                return $this->createRegistrationByPlatform($ltiPlatform);
+            } else {
+                return null;
+            }
         }
 
         return $this->createRegistrationByProvider($ltiProvider);
@@ -61,29 +68,50 @@ class Lti1p3RegistrationRepository extends ConfigurableService implements Regist
 
     public function findAll(): array
     {
-        $this->throwMissingImplementation(__METHOD__);
+        $registrations = [];
+
+        foreach ($this->getLtiProviderService()->findAll() as $ltiProvider) {
+            $registrations[] = $this->createRegistrationByProvider($ltiProvider);
+        }
+        foreach ($this->getLtiPlatformService()->findAll() as $ltiPlatform) {
+            $registrations[] = $this->createRegistrationByPlatform($ltiPlatform);
+        }
+
+        return $registrations;
     }
 
     public function findByClientId(string $clientId): ?RegistrationInterface
     {
         $ltiProvider = $this->getLtiProviderService()->searchByToolClientId($clientId);
 
+        if (!$ltiProvider) {
+            $ltiPlatform = $this->getLtiPlatformService()->searchByClientId($clientId);
+            if ($ltiPlatform) {
+                return $this->createRegistrationByPlatform($ltiPlatform);
+            } else {
+                return null;
+            }
+        }
+
         return $this->createRegistrationByProvider($ltiProvider);
     }
 
     public function findByPlatformIssuer(string $issuer, string $clientId = null): ?RegistrationInterface
     {
-        $this->throwMissingImplementation(__METHOD__);
+        $platform = $this->getLtiPlatformService()->searchByIssuer($issuer, $clientId);
+        if (!$platform) {
+            return null;
+        }
+        return $this->createRegistrationByPlatform($platform);
     }
 
     public function findByToolIssuer(string $issuer, string $clientId = null): ?RegistrationInterface
     {
-        $this->throwMissingImplementation(__METHOD__);
-    }
-
-    private function throwMissingImplementation(string $method): void
-    {
-        throw new LogicException('Method ' . $method . ' was not required at needs to be implemented');
+        $provider = $this->getLtiProviderService()->searchByIssuer($issuer, $clientId);
+        if (!$provider) {
+            return null;
+        }
+        return $this->createRegistrationByProvider($provider);
     }
 
     private function getToolKeyChainRepository(): KeyChainRepositoryInterface
@@ -128,9 +156,14 @@ class Lti1p3RegistrationRepository extends ConfigurableService implements Regist
         );
     }
 
-    private function getLtiProviderService(): LtiProviderService
+    private function getDefaultTool(): Tool
     {
-        return $this->getServiceLocator()->get(LtiProviderService::SERVICE_ID);
+        return new Tool(
+            self::TOOL_ID,
+            self::TOOL_ID,
+            rtrim($this->getOption(self::OPTION_ROOT_URL), '/'),
+            $this->getOption(self::OPTION_ROOT_URL) . self::OIDC_PATH
+        );
     }
 
     private function createRegistrationByProvider(LtiProvider $ltiProvider): ?Registration
@@ -163,5 +196,50 @@ class Lti1p3RegistrationRepository extends ConfigurableService implements Regist
             $this->getOption(self::OPTION_ROOT_URL) . self::JWKS_PATH,
             $ltiProvider->getToolJwksUrl()
         );
+    }
+
+    private function createRegistrationByPlatform(LtiPlatform $ltiPlatform): ?Registration
+    {
+        $toolKeyChain = current($this->getToolKeyChainRepository()
+            ->findAll(new KeyChainQuery($ltiPlatform->getId()))
+            ->getKeyChains());
+
+        $platformKeyChain = current($this->getPlatformKeyChainRepository()
+            ->findAll(new KeyChainQuery($ltiPlatform->getId()))
+            ->getKeyChains());
+
+        if ($platformKeyChain === false) {
+            return null;
+        }
+
+        $translatedToolKeyChain = null;
+        if ($toolKeyChain !== false && empty($ltiPlatform->getJwksUrl())) {
+            $translatedToolKeyChain = $this->translateKeyChain($toolKeyChain);
+        }
+
+        $platform = new Platform($ltiPlatform->getId(), $ltiPlatform->getId(), $ltiPlatform->getAudience(),
+            $ltiPlatform->getOidcAuthenticationUrl(), $ltiPlatform->getOuath2AccessTokenUrl());
+
+        return new Registration(
+            $ltiPlatform->getId(),
+            $ltiPlatform->getClientId(),
+            $platform,
+            $this->getDefaultTool(),
+            [$ltiPlatform->getDeploymentId()],
+            $this->translateKeyChain($platformKeyChain),
+            $translatedToolKeyChain,
+            $ltiPlatform->getJwksUrl(),
+            $this->getOption(self::OPTION_ROOT_URL) . self::JWKS_PATH
+        );
+    }
+
+    private function getLtiProviderService(): LtiProviderService
+    {
+        return $this->getServiceLocator()->get(LtiProviderService::SERVICE_ID);
+    }
+
+    private function getLtiPlatformService(): LtiPlatformRepositoryInterface
+    {
+        return $this->getServiceLocator()->get(LtiPlatformRepositoryInterface::SERVICE_ID);
     }
 }

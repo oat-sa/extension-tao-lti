@@ -78,9 +78,14 @@ class AccessTokenRequestValidator extends ConfigurableService implements AccessT
         }
 
         if ($this->ltiProvider !== null) {
+            $requestClientId = $result->getRegistration()->getClientId();
             $ltiProvider = $this->getLtiProviderService()->searchByToolClientId(
-                $result->getRegistration()->getClientId()
+                $requestClientId
             );
+
+            if ($ltiProvider === null) {
+                throw new InvalidLtiProviderException(sprintf('Lti provider with client id %s does not exist', $requestClientId));
+            }
 
             if (!$this->isSameLtiProvider($ltiProvider)) {
                 throw new InvalidLtiProviderException('Lti provider from registration is not matching delivery');

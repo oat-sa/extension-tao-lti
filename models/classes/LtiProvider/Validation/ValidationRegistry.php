@@ -28,7 +28,6 @@ use oat\taoLti\models\classes\LtiProvider\RdfLtiProviderRepository;
 
 class ValidationRegistry extends ConfigurableService
 {
-
     private const VALIDATORS = [
         '1.1' => [
             DataStore::PROPERTY_OAUTH_KEY => [['NotEmpty']],
