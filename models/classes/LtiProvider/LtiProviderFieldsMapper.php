@@ -46,6 +46,6 @@ class LtiProviderFieldsMapper extends ConfigurableService
 
     public function map(string $rdfUri): ?string
     {
-        return self::MAP [$rdfUri] ?? null;
+        return self::MAP[$rdfUri] ?? null;
     }
 }

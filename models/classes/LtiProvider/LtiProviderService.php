@@ -48,7 +48,7 @@ class LtiProviderService extends ConfigurableService implements LtiProviderRepos
         );
     }
 
-    public function searchByToolClientId(string $clientId): LtiProvider
+    public function searchByToolClientId(string $clientId): ?LtiProvider
     {
         foreach ($this->findAll() as $provider) {
             if ($clientId === $provider->getToolClientId()) {
@@ -56,7 +56,7 @@ class LtiProviderService extends ConfigurableService implements LtiProviderRepos
             }
         }
 
-        throw new InvalidLtiProviderException(sprintf('Lti provider with client id %s does not exist', $clientId));
+        return null;
     }
 
     /**
@@ -127,6 +127,19 @@ class LtiProviderService extends ConfigurableService implements LtiProviderRepos
             [],
             static function ($providers, LtiProviderRepositoryInterface $implementation) use ($oauthKey) {
                 return array_merge($providers, [$implementation->searchByOauthKey($oauthKey)]);
+            }
+        ));
+        return count($found) > 0
+            ? reset($found)
+            : null;
+    }
+
+    public function searchByIssuer(string $issuer, ?string $clientId = null): ?LtiProvider
+    {
+        $found = array_filter($this->aggregate(
+            [],
+            static function ($providers, LtiProviderRepositoryInterface $implementation) use ($issuer, $clientId) {
+                return array_merge($providers, [$implementation->searchByIssuer($issuer, $clientId)]);
             }
         ));
         return count($found) > 0

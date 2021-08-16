@@ -24,7 +24,6 @@ namespace oat\taoLti\test\unit\models\classes\LtiProvider;
 
 use oat\generis\test\MockObject;
 use oat\generis\test\TestCase;
-use oat\taoLti\models\classes\LtiProvider\InvalidLtiProviderException;
 use oat\taoLti\models\classes\LtiProvider\LtiProvider;
 use oat\taoLti\models\classes\LtiProvider\LtiProviderRepositoryInterface;
 use oat\taoLti\models\classes\LtiProvider\LtiProviderService;
@@ -109,8 +108,6 @@ class LtiProviderServiceTest extends TestCase
 
     public function testFailingSearchByToolClientId(): void
     {
-        $this->expectException(InvalidLtiProviderException::class);
-
         $provider = $this->createLtiProvider();
         $provider2 = $this->createLtiProvider();
 
@@ -127,7 +124,7 @@ class LtiProviderServiceTest extends TestCase
             ->method('getToolClientId')
             ->willReturn('also_not_this');
 
-        $this->subject->searchByToolClientId('client_id');
+        $this->assertNull($this->subject->searchByToolClientId('client_id'));
     }
 
     /**

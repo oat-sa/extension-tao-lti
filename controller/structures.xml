@@ -34,6 +34,30 @@
                     </action>
 				</actions>
 			</section>
+			<section id="settings_oauth_mng_platform" name="LTI 1.3 Platforms" url="/taoLti/PlatformAdmin/index">
+				<trees>
+					<tree name="LTI 1.3 Platforms"
+						  className="LTI 1.3 Platforms"
+						  dataUrl="/taoLti/PlatformAdmin/getOntologyData"
+						  rootNode="http://www.tao.lu/Ontologies/TAOLTI.rdf#Platform"
+						  selectClass="ltiplatform-index"
+						  selectInstance="ltiplatform-edit"
+						  delete="ltiplatform-delete"
+					/>
+				</trees>
+				<actions>
+					<action id="ltiplatform-index" name="Index" url="/taoLti/PlatformAdmin/index" context="class" group="none" />
+					<action id="ltiplatform-edit" name="Properties" url="/taoLti/PlatformAdmin/editInstance" context="instance" group="none">
+						<icon id="icon-edit"/>
+					</action>
+					<action id="ltiplatform-delete" name="Delete" binding="removeNode" url="/taoLti/PlatformAdmin/delete" context="instance" group="tree">
+						<icon id="icon-bin"/>
+					</action>
+					<action id="ltiplatform-new" name="Add Platform" url="/taoLti/PlatformAdmin/addInstanceForm" context="class" group="tree">
+						<icon id="icon-add"/>
+					</action>
+				</actions>
+			</section>
 			<section id="settings_oauth_mng_provider" name="LTI Providers" url="/taoLti/ProviderAdmin/index">
 				<trees>
 					<tree name="LTI Providers"

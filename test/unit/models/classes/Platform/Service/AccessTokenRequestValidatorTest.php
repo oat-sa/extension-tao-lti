@@ -119,7 +119,13 @@ class AccessTokenRequestValidatorTest extends TestCase
 
         $registration = $this->createMock(RegistrationInterface::class);
         $ltiProviderService = $this->createMock(LtiProviderService::class);
+        $requestLtiProvider = $this->createMock(LtiProvider::class);
         $ltiProvider = $this->createMock(LtiProvider::class);
+
+        $ltiProviderService
+            ->expects($this->once())
+            ->method('searchByToolClientId')
+            ->willReturn($requestLtiProvider);
 
         $this->subject->setServiceLocator(
             $this->getServiceLocatorMock(

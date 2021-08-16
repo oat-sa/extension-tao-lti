@@ -168,6 +168,24 @@ class RdfLtiProviderRepository extends OntologyClassService implements LtiProvid
         return reset($providers);
     }
 
+    public function searchByIssuer(string $issuer, string $clientId = null): ?LtiProvider
+    {
+        $criteria = [self::LTI_TOOL_AUDIENCE => $issuer];
+        if ($clientId !== null) {
+            $criteria[self::LTI_TOOL_CLIENT_ID] = $clientId;
+        }
+        $providers = $this->getProviders($criteria);
+        $count = count($providers);
+        if ($count === 0) {
+            return null;
+        }
+        if ($count > 1) {
+            $this->logWarning(sprintf('Found %d LTI provider with the same clientId: %s and audience: %s',
+                $count, $clientId, $issuer));
+        }
+        return reset($providers);
+    }
+
     private function getLtiProviderFactory(): LtiProviderFactory
     {
         return $this->getServiceLocator()->get(LtiProviderFactory::class);
