@@ -20,8 +20,11 @@
 namespace oat\taoLti\controller;
 
 use League\OAuth2\Server\Exception\OAuthServerException;
+use OAT\Library\Lti1p3Core\Registration\RegistrationRepositoryInterface;
+use OAT\Library\Lti1p3Core\Security\Oidc\OidcInitiator;
 use oat\tao\model\http\Controller;
 use oat\tao\model\security\Business\Contract\JwksRepositoryInterface;
+use oat\taoLti\models\classes\Platform\Repository\Lti1p3RegistrationRepository;
 use oat\taoLti\models\classes\Platform\Service\Oidc\OidcLoginAuthenticatorInterface;
 use oat\taoLti\models\classes\Platform\Service\Oidc\OidcLoginAuthenticatorProxy;
 use oat\taoLti\models\classes\Security\AccessTokenResponseGenerator;
@@ -66,6 +69,17 @@ class Security extends Controller implements ServiceLocatorAwareInterface
         $this->setResponse($response);
     }
 
+    public function oidcInitiation(): void
+    {
+        // Create the OIDC initiator
+        $initiator = new OidcInitiator($this->getLti1p3RegistrationRepository());
+
+        // Perform the OIDC initiation (including state generation)
+        $message = $initiator->initiate($this->getPsrRequest());
+
+        $this->redirect($message->toUrl());
+    }
+
     private function getJwksRepository(): JwksRepositoryInterface
     {
         return $this->getServiceLocator()->get(CachedPlatformJwksRepository::class);
@@ -79,5 +93,10 @@ class Security extends Controller implements ServiceLocatorAwareInterface
     private function getAccessTokenGenerator(): AccessTokenResponseGeneratorInterface
     {
         return $this->getServiceLocator()->get(AccessTokenResponseGenerator::class);
+    }
+
+    private function getLti1p3RegistrationRepository(): RegistrationRepositoryInterface
+    {
+        return $this->getServiceLocator()->get(Lti1p3RegistrationRepository::class);
     }
 }

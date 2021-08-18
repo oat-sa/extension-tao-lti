@@ -200,8 +200,9 @@ class Lti1p3RegistrationRepository extends ConfigurableService implements Regist
 
     private function createRegistrationByPlatform(LtiPlatform $ltiPlatform): ?Registration
     {
-        $toolKeyChain = current($this->getToolKeyChainRepository()
-            ->findAll(new KeyChainQuery($ltiPlatform->getId()))
+        // use platform key chain
+        $toolKeyChain = current($this->getPlatformKeyChainRepository()
+            ->findAll(new KeyChainQuery())
             ->getKeyChains());
 
         $platformKeyChain = current($this->getPlatformKeyChainRepository()
@@ -213,7 +214,7 @@ class Lti1p3RegistrationRepository extends ConfigurableService implements Regist
         }
 
         $translatedToolKeyChain = null;
-        if ($toolKeyChain !== false && empty($ltiPlatform->getJwksUrl())) {
+        if ($toolKeyChain !== false /*&& empty($ltiPlatform->getJwksUrl())*/) {
             $translatedToolKeyChain = $this->translateKeyChain($toolKeyChain);
         }
 
