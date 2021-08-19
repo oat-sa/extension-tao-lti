@@ -25,6 +25,7 @@ use common_Exception;
 use common_exception_Error;
 use common_exception_IsAjaxAction;
 use common_http_Request;
+use OAT\Library\Lti1p3Core\Message\Launch\Validator\Tool\ToolLaunchValidator;
 use oat\tao\model\oauth\OauthService;
 use tao_helpers_Request;
 use common_Logger;
@@ -135,5 +136,14 @@ abstract class ToolModule extends LtiModule
             }
         }
         $this->logInfo('LTI_LAUNCH_PARAMS:' . json_encode($variables));
+    }
+
+    protected function getValidatedLtiMessagePayload()
+    {
+        /** @var ToolLaunchValidator $validator */
+        $validator = $this->getServiceLocator()->get(ToolLaunchValidator::class);
+        $validationResult = $validator->validatePlatformOriginatingLaunch($this->getPsrRequest());
+
+        return $validationResult->getPayload();
     }
 }
