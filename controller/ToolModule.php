@@ -26,7 +26,9 @@ use common_exception_Error;
 use common_exception_IsAjaxAction;
 use common_http_Request;
 use OAT\Library\Lti1p3Core\Message\Launch\Validator\Tool\ToolLaunchValidator;
+use OAT\Library\Lti1p3Core\Message\Payload\LtiMessagePayloadInterface;
 use oat\tao\model\oauth\OauthService;
+use oat\taoLti\models\classes\Tool\Validation\Lti1p3Validator;
 use tao_helpers_Request;
 use common_Logger;
 use common_user_auth_AuthFailedException;
@@ -138,12 +140,10 @@ abstract class ToolModule extends LtiModule
         $this->logInfo('LTI_LAUNCH_PARAMS:' . json_encode($variables));
     }
 
-    protected function getValidatedLtiMessagePayload()
+    protected function getValidatedLtiMessagePayload(): LtiMessagePayloadInterface
     {
-        /** @var ToolLaunchValidator $validator */
-        $validator = $this->getServiceLocator()->get(ToolLaunchValidator::class);
-        $validationResult = $validator->validatePlatformOriginatingLaunch($this->getPsrRequest());
-
-        return $validationResult->getPayload();
+        return $this->getServiceLocator()
+            ->get(Lti1p3Validator::class)
+            ->getValidatedPayload($this->getPsrRequest());
     }
 }
