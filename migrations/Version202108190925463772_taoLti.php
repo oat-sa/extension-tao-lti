@@ -7,6 +7,8 @@ namespace oat\taoLti\migrations;
 use Doctrine\DBAL\Schema\Schema;
 use oat\tao\scripts\tools\migrations\AbstractMigration;
 use oat\tao\model\search\SearchProxy;
+use oat\taoLti\models\classes\ConsumerService;
+use oat\taoLti\models\classes\ProviderService;
 
 final class Version202108190925463772_taoLti extends AbstractMigration
 {
@@ -21,11 +23,11 @@ final class Version202108190925463772_taoLti extends AbstractMigration
         $generisSearchWhitelist = $this->getLTIClassURI();
         $searchProxy = $this->getProxy();
         
-        if ($searchProxy->hasOption("generis_search_whitelist")) {
-            $options = $searchProxy->getOption("generis_search_whitelist");
+        if ($searchProxy->hasOption(SearchProxy::OPTION_GENERIS_SEARCH_WHITELIST)) {
+            $options = $searchProxy->getOption(SearchProxy::OPTION_GENERIS_SEARCH_WHITELIST);
             $generisSearchWhitelist = array_merge($options, $generisSearchWhitelist);
         }
-        $searchProxy->setOption("generis_search_whitelist", $generisSearchWhitelist);
+        $searchProxy->setOption(SearchProxy::OPTION_GENERIS_SEARCH_WHITELIST, $generisSearchWhitelist);
         
         $this->getServiceManager()->register(SearchProxy::SERVICE_ID, $searchProxy);
     }
@@ -34,11 +36,12 @@ final class Version202108190925463772_taoLti extends AbstractMigration
     {
         $generisSearchWhitelist = $this->getLTIClassURI();
         $searchProxy = $this->getProxy();
-        if ($searchProxy->hasOption("generis_search_whitelist")) {
-            $options = $searchProxy->getOption("generis_search_whitelist");
+        if ($searchProxy->hasOption(SearchProxy::OPTION_GENERIS_SEARCH_WHITELIST)) {
+            $options = $searchProxy->getOption(SearchProxy::OPTION_GENERIS_SEARCH_WHITELIST);
             $generisSearchlist = array_diff($options, $generisSearchWhitelist);
-            $searchProxy->setOption("generis_search_whitelist", $generisSearchlist);
+            $searchProxy->setOption(SearchProxy::OPTION_GENERIS_SEARCH_WHITELIST, $generisSearchlist);
         }
+        $this->getServiceManager()->register(SearchProxy::SERVICE_ID, $searchProxy);
     }
 
     private function getProxy(): SearchProxy
@@ -49,9 +52,8 @@ final class Version202108190925463772_taoLti extends AbstractMigration
     private function getLTIClassURI(): array
     {
         return [
-            'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIConsumer',
-            'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIProvider',
-            'http://www.tao.lu/Ontologies/TAOLTI.rdf#Platform',
+            ConsumerService::CLASS_URI,
+            ProviderService::CLASS_URI,
         ];
     }
 }
