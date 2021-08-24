@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2013-2020 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
+ * Copyright (c) 2013-2021 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
  */
 
 use oat\tao\model\accessControl\func\AccessRule;
@@ -26,6 +26,7 @@ use oat\taoLti\controller\Security;
 use oat\taoLti\scripts\install\GenerateKeys;
 use oat\taoLti\scripts\install\InstallServices;
 use oat\taoLti\scripts\install\MapLtiSectionVisibility;
+use oat\taoLti\scripts\install\GenerisSearchWhitelist;
 use oat\taoLti\scripts\update\Updater;
 
 /**
@@ -57,7 +58,8 @@ return [
         'php' => [
             InstallServices::class,
             GenerateKeys::class,
-            MapLtiSectionVisibility::class
+            MapLtiSectionVisibility::class,
+            GenerisSearchWhitelist::class
         ]
     ],
     'update' => Updater::class,
