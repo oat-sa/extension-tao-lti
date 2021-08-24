@@ -23,6 +23,8 @@ declare(strict_types=1);
 namespace oat\taoLti\test\integration\models\classes\Tool\Validation;
 
 use Carbon\Carbon;
+use Laminas\ServiceManager\Exception;
+use Laminas\ServiceManager\ServiceLocatorInterface;
 use Nyholm\Psr7\Factory\HttplugFactory;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use oat\generis\test\TestCase;
@@ -58,6 +60,17 @@ use OAT\Library\Lti1p3Core\Tool\Tool;
 use OAT\Library\Lti1p3Core\Tool\ToolInterface;
 use OAT\Library\Lti1p3Core\User\UserIdentity;
 use OAT\Library\Lti1p3Core\Util\Generator\IdGeneratorInterface;
+use oat\oatbox\cache\CacheItem;
+use oat\oatbox\cache\ItemPoolSimpleCacheAdapter;
+use oat\taoLti\models\classes\LtiProvider\Validation\ValidationRegistry;
+use oat\taoLti\models\classes\Platform\Repository\Lti1p3RegistrationRepository;
+use oat\taoLti\models\classes\Platform\Repository\RdfLtiPlatformRepository;
+use oat\taoLti\models\classes\Tool\Validation\Lti1p3Validator;
+use oat\taoLti\models\classes\user\LtiUserFactoryInterface;
+use oat\taoLti\models\classes\user\LtiUserInterface;
+use Psr\Cache\CacheItemInterface;
+use Psr\Cache\CacheItemPoolInterface;
+use Psr\Cache\InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -91,224 +104,7 @@ class Lti1p3ValidatorTest extends TestCase
         $this->registrationRepository = $this->createTestRegistrationRepository();
         $this->nonceRepository = $this->createTestNonceRepository();
 
-        $this->registration = $this->createTestRegistration();
-
-        $this->builder = new PlatformOriginatingLaunchBuilder();
-        $this->oidcInitiator = new OidcInitiator($this->registrationRepository);
-        $this->oidcAuthenticator = new OidcAuthenticator($this->registrationRepository, $this->createTestUserAuthenticator());
-
-        $this->subject = new ToolLaunchValidator($this->registrationRepository, $this->nonceRepository);
-    }
-    public function testValidatePlatformOriginatingLaunchForLtiResourceLinkSuccess(): void
-    {
-        die;
-        $message = $this->builder->buildPlatformOriginatingLaunch(
-            $this->registration,
-            LtiMessageInterface::LTI_MESSAGE_TYPE_RESOURCE_LINK_REQUEST,
-            $this->registration->getTool()->getLaunchUrl(),
-            'loginHint',
-            null,
-            [],
-            [
-                new ResourceLinkClaim('identifier')
-            ]
-        );
-
-        $res = $this->buildOidcFlowRequest($message);
-
-        var_dump($res);
-
-        /*        $result = $this->subject->validatePlatformOriginatingLaunch($this->buildOidcFlowRequest($message));
-
-                $this->assertInstanceOf(LaunchValidationResultInterface::class, $result);
-                $this->assertFalse($result->hasError());
-
-                $this->verifyJwt($result->getPayload()->getToken(), $this->registration->getPlatformKeyChain()->getPublicKey());
-                $this->verifyJwt($result->getState()->getToken(), $this->registration->getToolKeyChain()->getPublicKey());
-
-                $this->assertEquals(
-                    [
-                        'ID token kid header is provided',
-                        'ID token validation success',
-                        'ID token version claim is valid',
-                        'ID token message_type claim is valid',
-                        'ID token roles claim is valid',
-                        'ID token user identifier (sub) claim is valid',
-                        'ID token nonce claim is valid',
-                        'ID token deployment_id claim valid for this registration',
-                        'ID token message type claim LtiResourceLinkRequest requirements are valid',
-                        'State validation success',
-                    ],
-                    $result->getSuccesses()
-                );
-
-                $this->assertEquals('identifier', $result->getPayload()->getResourceLink()->getIdentifier());*/
-    }
-
-
-    private function buildOidcFlowRequest(LtiMessageInterface $message): ServerRequestInterface
-    {
-        return $this->createServerRequest('GET', $this->performOidcFlow($message)->toUrl());
-    }
-
-    private function performOidcFlow(
-        LtiMessageInterface $message,
-        RegistrationRepositoryInterface $repository = null,
-        UserAuthenticatorInterface $authenticator = null
-    ): LtiMessageInterface {
-        $repository = $repository ?? $this->createTestRegistrationRepository();
-        $authenticator = $authenticator ?? $this->createTestUserAuthenticator();
-
-        $oidcInitiator = new OidcInitiator($repository);
-        $oidcAuthenticator = new OidcAuthenticator($repository, $authenticator);
-
-        $oidcInitMessage = $oidcInitiator->initiate($this->createServerRequest('GET', $message->toUrl()));
-
-        return $oidcAuthenticator->authenticate($this->createServerRequest('GET', $oidcInitMessage->toUrl()));
-    }
-
-    private function createServerRequest(
-        string $method,
-        string $uri,
-        array $params = [],
-        array $headers = []
-    ): ServerRequestInterface {
-        $serverRequest =  (new Psr17Factory())->createServerRequest($method, $uri);
-
-        foreach ($headers as $headerName => $headerValue) {
-            $serverRequest = $serverRequest->withAddedHeader($headerName, $headerValue);
-        }
-
-        $method = strtoupper($method);
-
-        if ($method === 'GET') {
-            return $serverRequest->withQueryParams($params);
-        }
-
-        if ($method === 'POST') {
-            return $serverRequest->withParsedBody($params);
-        }
-
-        return $serverRequest;
-    }
-
-    private function createResponse($content = null, int $statusCode = 200, array $headers = []): ResponseInterface
-    {
-        return (new HttplugFactory())->createResponse($statusCode, null, $headers, $content);
-    }
-
-    private function createTestRegistration(
-        string $identifier = 'registrationIdentifier',
-        string $clientId = 'registrationClientId',
-        PlatformInterface $platform = null,
-        ToolInterface $tool = null,
-        array $deploymentIds = ['deploymentIdentifier'],
-        KeyChainInterface $platformKeyChain = null,
-        KeyChainInterface $toolKeyChain = null,
-        string $platformJwksUrl = null,
-        string $toolJwksUrl = null
-    ): Registration {
-        return new Registration(
-            $identifier,
-            $clientId,
-            $platform ?? $this->createTestPlatform(),
-            $tool ?? $this->createTestTool(),
-            $deploymentIds,
-            $platformKeyChain ?? $this->createTestKeyChain('platformKeyChain'),
-            $toolKeyChain ?? $this->createTestKeyChain('toolKeyChain'),
-            $platformJwksUrl,
-            $toolJwksUrl
-        );
-    }
-
-    private function createTestRegistrationRepository(array $registrations = []): RegistrationRepositoryInterface
-    {
-        $registrations = !empty($registrations)
-            ? $registrations
-            : [$this->createTestRegistration()];
-
-        return new class ($registrations) implements RegistrationRepositoryInterface
-        {
-            /** @var RegistrationInterface[] */
-            private $registrations;
-
-            /** @param RegistrationInterface[] $registrations */
-            public function __construct(array $registrations)
-            {
-                foreach ($registrations as $registration) {
-                    $this->registrations[$registration->getIdentifier()] = $registration;
-                }
-            }
-
-            public function find(string $identifier): ?RegistrationInterface
-            {
-                return $this->registrations[$identifier] ?? null;
-            }
-
-            public function findAll(): array
-            {
-                return $this->registrations;
-            }
-
-            public function findByClientId(string $clientId): ?RegistrationInterface
-            {
-                foreach ($this->registrations as $registration) {
-                    if ($registration->getClientId() === $clientId) {
-                        return $registration;
-                    }
-                }
-
-                return null;
-            }
-
-            public function findByPlatformIssuer(string $issuer, string $clientId = null): ?RegistrationInterface
-            {
-                foreach ($this->registrations as $registration) {
-                    if ($registration->getPlatform()->getAudience() === $issuer) {
-                        if (null !== $clientId) {
-                            if ($registration->getClientId() === $clientId) {
-                                return $registration;
-                            }
-                        } else {
-                            return $registration;
-                        }
-                    }
-                }
-
-                return null;
-            }
-
-            public function findByToolIssuer(string $issuer, string $clientId = null): ?RegistrationInterface
-            {
-                foreach ($this->registrations as $registration) {
-                    if ($registration->getTool()->getAudience() === $issuer) {
-                        if (null !== $clientId) {
-                            if ($registration->getClientId() === $clientId) {
-                                return $registration;
-                            }
-                        } else {
-                            return $registration;
-                        }
-                    }
-                }
-
-                return null;
-            }
-        };
-    }
-
-    private function createTestKeyChain(
-        string $identifier = 'keyChainIdentifier',
-        string $keySetName = 'keySetName',
-        string $publicKey = null,
-        string $privateKey = null,
-        string $privateKeyPassPhrase = null,
-        string $algorithm = KeyInterface::ALG_RS256
-    ): KeyChainInterface {
-        return (new KeyChainFactory)->create(
-            $identifier,
-            $keySetName,
-            $publicKey ?? '-----BEGIN PUBLIC KEY-----
+        $publicKey = '-----BEGIN PUBLIC KEY-----
 MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAscIMHj3PYVhSYoj9+8ZO
 /MzX06SQmqbCguT9OFlmsDSngV8Cxbgnb6U4Jrfz76gfX99Ohbdl8+qTz+bid7Mm
 UVxMYf1nNs7l74TBVsFrKQLlEbtf+h4/CtA6NvKLE9Wbh0KvIL/1LzNLvb8LmTIe
@@ -316,8 +112,9 @@ PZ1n8IKq/983qHPua3fIVxOFW9iYzbUdKpPHNmvgrsSkyqrVq3cuJMW0ZSszRiVP
 5BKev8YYt6SnJrVE5GYg6X32rVCpdrNIuluLF+uPBs/Ed0x33or0e590HwZxYPgQ
 3/1SsKtfxvLlNydBgbi7RNjVw1fNju9dSfQr9Ximac02/7yiw5Kv9zWiDrk4Sib4
 CwIDAQAB
------END PUBLIC KEY-----',
-            $privateKey ?? '-----BEGIN RSA PRIVATE KEY-----
+-----END PUBLIC KEY-----';
+
+        $privateKey = '-----BEGIN RSA PRIVATE KEY-----
 MIIEogIBAAKCAQEAscIMHj3PYVhSYoj9+8ZO/MzX06SQmqbCguT9OFlmsDSngV8C
 xbgnb6U4Jrfz76gfX99Ohbdl8+qTz+bid7MmUVxMYf1nNs7l74TBVsFrKQLlEbtf
 +h4/CtA6NvKLE9Wbh0KvIL/1LzNLvb8LmTIePZ1n8IKq/983qHPua3fIVxOFW9iY
@@ -343,197 +140,133 @@ Zul0qy9IIPGa0pjqUH+UAMnvTEOhOA+yF2zZan6k2zif1O4+n2YnYJhFHBAIBNKH
 HFGXAoGAAIP89G0qmsgpYFV3xkiOSw9NA5W8kFY4hLj1e+SbqaBELGxbI419nvYS
 01OjK+G+5jbuGOidVcJ1SVn/2hKvvCfiTJovU9x8iIvr0ke61rsHGXfUJ3eWLnXa
 uRQa1b83fSwj0MKYiZAHQ2xAInIWpK4bPyLOgRNKtUsNsT1HQQk=
------END RSA PRIVATE KEY-----
-',
-            $privateKeyPassPhrase,
-            $algorithm
+-----END RSA PRIVATE KEY-----';
+
+        $this->registration = $this->createTestRegistration(
+            'registrationIdentifier',
+            'registrationClientId',
+            null,
+            null,
+            ['deploymentIdentifier'],
+            $this->createTestKeyChain(
+                'platformKeyChain',
+                'keySetName',
+                $publicKey,
+                $privateKey
+            ),
+            $this->createTestKeyChain(
+                'toolKeyChain',
+                'keySetName',
+                $publicKey,
+                $privateKey
+            )
         );
-    }
 
-    private function buildJwt(
-        array $headers = [],
-        array $claims = [],
-        KeyInterface $key = null
-    ): TokenInterface {
-        return (new Builder(null, $this->createTestIdGenerator()))->build(
-            $headers,
-            $claims,
-            $key ?? $this->createTestKeyChain()->getPrivateKey()
-        );
-    }
+        $this->builder = new PlatformOriginatingLaunchBuilder();
+        $this->oidcInitiator = new OidcInitiator($this->registrationRepository);
+        $this->oidcAuthenticator = new OidcAuthenticator($this->registrationRepository, $this->createTestUserAuthenticator());
 
-    private function parseJwt(string $tokenString): TokenInterface
-    {
-        return (new Parser())->parse($tokenString);
-    }
 
-    private function verifyJwt(TokenInterface $token, KeyInterface $key): bool
-    {
-        return (new Validator())->validate($token, $key);
-    }
+        $this->subject = new Lti1p3Validator();
 
-    private function createTestClientAssertion(RegistrationInterface $registration): string
-    {
-        $assertion = $this->buildJwt(
-            [
-                MessagePayloadInterface::HEADER_KID => $registration->getToolKeyChain()->getIdentifier()
-            ],
-            [
-                MessagePayloadInterface::CLAIM_ISS => $registration->getTool()->getAudience(),
-                MessagePayloadInterface::CLAIM_SUB => $registration->getClientId(),
-                MessagePayloadInterface::CLAIM_AUD => [
-                    $registration->getPlatform()->getAudience(),
-                    $registration->getPlatform()->getOAuth2AccessTokenUrl(),
+        $mockRegistrationRepository = $this->getMockBuilder(Lti1p3RegistrationRepository::class)->getMock();
+        $mockRegistrationRepository
+            ->method('findByPlatformIssuer')
+            ->willReturn($this->registration);
+
+
+        $this->subject->setServiceLocator(
+            $this->getServiceLocatorMock(
+                [
+                    Lti1p3RegistrationRepository::SERVICE_ID => $mockRegistrationRepository,
+                    ItemPoolSimpleCacheAdapter::class => $this->createArrayCache()
                 ]
-            ],
-            $registration->getToolKeyChain()->getPrivateKey()
+            )
         );
-
-        return $assertion->toString();
     }
-
-    private function createTestClientAccessToken(RegistrationInterface $registration, array $scopes = []): string
+    public function testValidatePlatformOriginatingLaunchForLtiResourceLinkSuccess(): void
     {
-        $accessToken = $this->buildJwt(
-            [],
+        $message = $this->builder->buildPlatformOriginatingLaunch(
+            $this->registration,
+            LtiMessageInterface::LTI_MESSAGE_TYPE_RESOURCE_LINK_REQUEST,
+            $this->registration->getTool()->getLaunchUrl(),
+            'loginHint',
+            null,
+            ['http://purl.imsglobal.org/vocab/lis/v2/membership#Learner'],
             [
-                MessagePayloadInterface::CLAIM_AUD => $registration->getClientId(),
-                'scopes' => $scopes
-            ],
-            $registration->getPlatformKeyChain()->getPrivateKey()
+                new ResourceLinkClaim('identifier')
+            ]
         );
 
-        return $accessToken->toString();
+        $messagePayload = $this->subject->getValidatedPayload($this->buildOidcFlowRequest($message));
+
+        self::assertEquals('deploymentIdentifier', $messagePayload->getDeploymentId());
+        self::assertEquals('1.3.0', $messagePayload->getVersion());
+        self::assertEquals('userName', $messagePayload->getUserIdentity()->getName());
+        self::assertEquals(new ResourceLinkClaim('identifier'), $messagePayload->getResourceLink());
     }
 
-    private function createTestIdGenerator(string $generatedId = null): IdGeneratorInterface
+
+    private function buildOidcFlowRequest(LtiMessageInterface $message): ServerRequestInterface
     {
-        return new class ($generatedId) implements IdGeneratorInterface
-        {
-            /** @var string */
-            private $generatedId;
-
-            public function __construct(string $generatedId = null)
-            {
-                $this->generatedId = $generatedId ?? 'id';
-            }
-
-            public function generate(): string
-            {
-                return $this->generatedId;
-            }
-        };
+        return $this->createServerRequest(
+            'GET',
+            $this->performOidcFlow(
+                $message,
+                $this->createTestRegistrationRepository([$this->registration])
+            )->toUrl()
+        );
     }
 
-    private function createTestUserAuthenticator(
-        bool $withAuthenticationSuccess = true,
-        bool $withAnonymous = false
-    ): UserAuthenticatorInterface {
-        return new class ($withAuthenticationSuccess, $withAnonymous) implements UserAuthenticatorInterface
-        {
-            /** @var bool */
-            private $withAuthenticationSuccess;
-
-            /** @var bool */
-            private $withAnonymous;
-
-            public function __construct(bool $withAuthenticationSuccess, bool $withAnonymous)
-            {
-                $this->withAuthenticationSuccess = $withAuthenticationSuccess;
-                $this->withAnonymous = $withAnonymous;
-            }
-
-            public function authenticate(
-                RegistrationInterface $registration,
-                string $loginHint
-            ): UserAuthenticationResultInterface {
-                return new UserAuthenticationResult(
-                    $this->withAuthenticationSuccess,
-                    $this->withAnonymous ? null : $this->createTestUserIdentity()
-                );
-            }
-
-            private function createTestUserIdentity(
-                string $identifier = 'userIdentifier',
-                string $name = 'userName',
-                string $email = 'userEmail',
-                string $givenName = 'userGivenName',
-                string $familyName = 'userFamilyName',
-                string $middleName = 'userMiddleName',
-                string $locale = 'userLocale',
-                string $picture = 'userPicture',
-                array $additionalProperties = []
-            ): UserIdentity {
-                return new UserIdentity($identifier, $name, $email, $givenName, $familyName, $middleName, $locale, $picture, $additionalProperties);
-            }
-        };
-    }
-
-    private function createTestNonceRepository(array $nonces = [], bool $withAutomaticFind = false): NonceRepositoryInterface
+    private function createArrayCache(): CacheItemPoolInterface
     {
-        $nonces = !empty($nonces) ? $nonces : [
-            new Nonce('existing'),
-            new Nonce('expired', Carbon::now()->subDay()),
-        ];
+        return new class() implements CacheItemPoolInterface {
+            private $cache = [];
 
-        return new class ($nonces, $withAutomaticFind) implements NonceRepositoryInterface
-        {
-            /** @var NonceInterface[] */
-            private $nonces;
-
-            /** @var bool */
-            private $withAutomaticFind;
-
-            public function __construct(array $nonces, bool $withAutomaticFind)
+            public function getItem($key)
             {
-                foreach ($nonces as $nonce) {
-                    $this->add($nonce);
-                }
-
-                $this->withAutomaticFind = $withAutomaticFind;
+                return $this->cache[$key] ?? new CacheItem($key);
             }
 
-            public function add(NonceInterface $nonce): self
+            public function getItems(array $keys = array())
             {
-                $this->nonces[$nonce->getValue()] = $nonce;
-
-                return $this;
+                return $this->cache;
             }
 
-            public function find(string $value): ?NonceInterface
+            public function hasItem($key)
             {
-                if ($this->withAutomaticFind) {
-                    return current($this->nonces);
-                }
-
-                return $this->nonces[$value] ?? null;
+                return !empty($this->cache[$key]);
             }
 
-            public function save(NonceInterface $nonce): void
+            public function clear()
             {
-                return;
+                $this->cache = [];
+            }
+
+            public function deleteItem($key)
+            {
+                unset($this->cache[$key]);
+            }
+
+            public function deleteItems(array $keys)
+            {
+                $this->clear();
+            }
+
+            public function save(CacheItemInterface $item)
+            {
+                $this->cache[$item->getKey()] = $item;
+            }
+
+            public function saveDeferred(CacheItemInterface $item)
+            {
+                // TODO: Implement saveDeferred() method.
+            }
+
+            public function commit()
+            {
+                // TODO: Implement commit() method.
             }
         };
-    }
-
-    private function createTestPlatform(
-        string $identifier = 'platformIdentifier',
-        string $name = 'platformName',
-        string $audience = 'platformAudience',
-        string $oidcAuthenticationUrl = 'http://platform.com/oidc-auth',
-        string $oauth2AccessTokenUrl = 'http://platform.com/access-token'
-    ): Platform {
-        return new Platform($identifier, $name, $audience, $oidcAuthenticationUrl, $oauth2AccessTokenUrl);
-    }
-
-    private function createTestTool(
-        string $identifier = 'toolIdentifier',
-        string $name = 'toolName',
-        string $audience = 'toolAudience',
-        string $oidcInitiationUrl = 'http://tool.com/oidc-init',
-        string $launchUrl = 'http://tool.com/launch',
-        string $deepLinkingUrl = 'http://tool.com/deep-launch'
-    ): Tool {
-        return new Tool($identifier, $name, $audience, $oidcInitiationUrl, $launchUrl, $deepLinkingUrl);
     }
 }
