@@ -22,6 +22,7 @@ declare(strict_types=1);
 
 namespace oat\taoLti\models\classes\Tool\Validation;
 
+use OAT\Library\Lti1p3Core\Exception\LtiException as Lti1p3Exception;
 use OAT\Library\Lti1p3Core\Message\Launch\Validator\Tool\ToolLaunchValidator;
 use OAT\Library\Lti1p3Core\Message\Payload\LtiMessagePayloadInterface;
 use OAT\Library\Lti1p3Core\Role\RoleInterface;
@@ -31,18 +32,23 @@ use oat\oatbox\service\ConfigurableService;
 use oat\taoLti\models\classes\LtiException;
 use oat\taoLti\models\classes\Platform\Repository\Lti1p3RegistrationRepository;
 use Psr\Http\Message\ServerRequestInterface;
+use Throwable;
 
 class Lti1p3Validator extends ConfigurableService
 {
     public function getValidatedPayload(ServerRequestInterface $request): LtiMessagePayloadInterface
     {
-        $ltiMessagePayload = $this->validateRequest($request);
+        try {
+            $ltiMessagePayload = $this->validateRequest($request);
 
-        if ($ltiMessagePayload === null) {
-            throw new LtiException('No LTI message payload received.');
+            if ($ltiMessagePayload === null) {
+                throw new LtiException('No LTI message payload received.');
+            }
+
+            $this->validateRole($ltiMessagePayload);
+        } catch (Lti1p3Exception $exception) {
+            throw new LtiException($exception->getMessage());
         }
-
-        $this->validateRole($ltiMessagePayload);
 
         return $ltiMessagePayload;
     }

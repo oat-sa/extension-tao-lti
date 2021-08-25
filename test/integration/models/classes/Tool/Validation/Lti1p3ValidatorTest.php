@@ -62,6 +62,7 @@ use OAT\Library\Lti1p3Core\User\UserIdentity;
 use OAT\Library\Lti1p3Core\Util\Generator\IdGeneratorInterface;
 use oat\oatbox\cache\CacheItem;
 use oat\oatbox\cache\ItemPoolSimpleCacheAdapter;
+use oat\taoLti\models\classes\LtiException;
 use oat\taoLti\models\classes\LtiProvider\Validation\ValidationRegistry;
 use oat\taoLti\models\classes\Platform\Repository\Lti1p3RegistrationRepository;
 use oat\taoLti\models\classes\Platform\Repository\RdfLtiPlatformRepository;
@@ -184,7 +185,8 @@ uRQa1b83fSwj0MKYiZAHQ2xAInIWpK4bPyLOgRNKtUsNsT1HQQk=
             )
         );
     }
-    public function testValidatePlatformOriginatingLaunchForLtiResourceLinkSuccess(): void
+
+    public function testItGetsValidatedPayload(): void
     {
         $message = $this->builder->buildPlatformOriginatingLaunch(
             $this->registration,
@@ -206,6 +208,44 @@ uRQa1b83fSwj0MKYiZAHQ2xAInIWpK4bPyLOgRNKtUsNsT1HQQk=
         self::assertEquals(new ResourceLinkClaim('identifier'), $messagePayload->getResourceLink());
     }
 
+    /**
+     * @dataProvider providerItControlRoles
+     */
+    public function testItControlRoles(array $roles, string $expectedMessage): void
+    {
+        $this->expectException(LtiException::class);
+        $this->expectExceptionMessage($expectedMessage);
+
+        $message = $this->builder->buildPlatformOriginatingLaunch(
+            $this->registration,
+            LtiMessageInterface::LTI_MESSAGE_TYPE_RESOURCE_LINK_REQUEST,
+            $this->registration->getTool()->getLaunchUrl(),
+            'loginHint',
+            null,
+            $roles,
+            [
+                new ResourceLinkClaim('identifier')
+            ]
+        );
+
+        $messagePayload = $this->subject->getValidatedPayload($this->buildOidcFlowRequest($message));
+
+        self::assertEquals('deploymentIdentifier', $messagePayload->getDeploymentId());
+        self::assertEquals('1.3.0', $messagePayload->getVersion());
+        self::assertEquals('userName', $messagePayload->getUserIdentity()->getName());
+        self::assertEquals(new ResourceLinkClaim('identifier'), $messagePayload->getResourceLink());
+    }
+
+    public function providerItControlRoles(): array
+    {
+        return [
+            'No role provided' => [[], 'No valid IMS context role has been provided'],
+            'Invalid role provided' => [
+                ['http://purl.imsglobal.org/vocab/lis/v2/membership#Wrong'],
+                'Role http://purl.imsglobal.org/vocab/lis/v2/membership#Wrong is invalid for type context'
+            ]
+        ];
+    }
 
     private function buildOidcFlowRequest(LtiMessageInterface $message): ServerRequestInterface
     {
