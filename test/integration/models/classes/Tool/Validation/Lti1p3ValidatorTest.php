@@ -229,11 +229,6 @@ uRQa1b83fSwj0MKYiZAHQ2xAInIWpK4bPyLOgRNKtUsNsT1HQQk=
         );
 
         $messagePayload = $this->subject->getValidatedPayload($this->buildOidcFlowRequest($message));
-
-        self::assertEquals('deploymentIdentifier', $messagePayload->getDeploymentId());
-        self::assertEquals('1.3.0', $messagePayload->getVersion());
-        self::assertEquals('userName', $messagePayload->getUserIdentity()->getName());
-        self::assertEquals(new ResourceLinkClaim('identifier'), $messagePayload->getResourceLink());
     }
 
     public function providerItControlRoles(): array
@@ -298,15 +293,9 @@ uRQa1b83fSwj0MKYiZAHQ2xAInIWpK4bPyLOgRNKtUsNsT1HQQk=
                 $this->cache[$item->getKey()] = $item;
             }
 
-            public function saveDeferred(CacheItemInterface $item)
-            {
-                // TODO: Implement saveDeferred() method.
-            }
+            public function saveDeferred(CacheItemInterface $item) {}
 
-            public function commit()
-            {
-                // TODO: Implement commit() method.
-            }
+            public function commit() {}
         };
     }
 }
