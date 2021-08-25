@@ -32,7 +32,6 @@ use oat\oatbox\service\ConfigurableService;
 use oat\taoLti\models\classes\LtiException;
 use oat\taoLti\models\classes\Platform\Repository\Lti1p3RegistrationRepository;
 use Psr\Http\Message\ServerRequestInterface;
-use Throwable;
 
 class Lti1p3Validator extends ConfigurableService
 {
