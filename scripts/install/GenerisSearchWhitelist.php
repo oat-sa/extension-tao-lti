@@ -33,17 +33,10 @@ class GenerisSearchWhitelist extends InstallAction
     {
         /** @var SearchProxy $searchProxy */
         $searchProxy = $this->getServiceManager()->get(SearchProxy::SERVICE_ID);
-
-        $generisSearchWhitelist = [
+        $searchProxy->extendGenerisSearchWhiteList([
             ConsumerService::CLASS_URI,
             ProviderService::CLASS_URI,
-        ];
-
-        if ($searchProxy->hasOption(SearchProxy::OPTION_GENERIS_SEARCH_WHITELIST)) {
-            $options = $searchProxy->getOption(SearchProxy::OPTION_GENERIS_SEARCH_WHITELIST);
-            $generisSearchWhitelist = array_merge($options, $generisSearchWhitelist);
-        }
-        $searchProxy->setOption(SearchProxy::OPTION_GENERIS_SEARCH_WHITELIST, $generisSearchWhitelist);
+        ]);
 
         $this->getServiceManager()->register(SearchProxy::SERVICE_ID, $searchProxy);
     }
