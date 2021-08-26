@@ -179,7 +179,7 @@ uRQa1b83fSwj0MKYiZAHQ2xAInIWpK4bPyLOgRNKtUsNsT1HQQk=
     /**
      * @dataProvider providerItControlRoles
      */
-    public function testItControlRoles(array $roles, string $expectedMessage): void
+    public function testItControlsRoles(array $roles, string $expectedMessage): void
     {
         $this->expectException(LtiException::class);
         $this->expectExceptionMessage($expectedMessage);
