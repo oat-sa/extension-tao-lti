@@ -59,7 +59,7 @@
         "oat-sa/oatbox-extension-installer": "~1.1||dev-master",
         "oat-sa/lib-lti1p3-core": "^6.0.0",
         "oat-sa/generis" : ">=14.0.0",
-        "oat-sa/tao-core" : ">=47.0.0"
+        "oat-sa/tao-core" : ">=48.30.0"
     },
     "autoload" : {
         "psr-4" : {
