@@ -26,9 +26,12 @@ use common_http_Request;
 use common_session_SessionManager;
 use core_kernel_classes_Class;
 use core_kernel_classes_Resource;
+use OAT\Library\Lti1p3Core\Message\Payload\LtiMessagePayloadInterface;
 use oat\oatbox\log\LoggerService;
 use oat\tao\model\TaoOntology;
 use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
+use oat\taoLti\models\classes\user\Lti1p3User;
+use oat\taoLti\models\classes\user\LtiUser;
 use Psr\Log\LogLevel;
 use oat\oatbox\service\ServiceManager;
 use oat\oatbox\service\ConfigurableService;
@@ -61,6 +64,26 @@ class LtiService extends ConfigurableService
         }
     }
 
+    public function createLti1p3Session(LtiMessagePayloadInterface $messagePayload)
+    {
+        try {
+            $session = new TaoLtiSession(new Lti1p3User(
+                LtiLaunchData::fromLti1p3MessagePayload($messagePayload),
+                'test'
+            ));
+
+            $this->getServiceLocator()->propagate($session);
+            return $session;
+        } catch (LtiInvalidVariableException $e) {
+            $this->getServiceLocator()->get(LoggerService::SERVICE_ID)
+                ->log(LogLevel::INFO, $e->getMessage());
+            throw new LtiException(
+                __($e->getMessage()),
+                LtiErrorMessage::ERROR_UNAUTHORIZED
+            );
+        }
+    }
+
     /**
      * start a session from the provided OAuth Request
      *
@@ -73,6 +96,11 @@ class LtiService extends ConfigurableService
     public function startLtiSession(common_http_Request $request)
     {
         $this->getServiceLocator()->get(SessionService::SERVICE_ID)->setSession($this->createLtiSession($request));
+    }
+
+    public function startLti1p3Session(LtiMessagePayloadInterface $messagePayload)
+    {
+        $this->getServiceLocator()->get(SessionService::SERVICE_ID)->setSession($this->createLti1p3Session($messagePayload));
     }
 
     /**
