@@ -30,12 +30,12 @@ use OAT\Library\Lti1p3Core\Message\LtiMessageInterface;
 use OAT\Library\Lti1p3Core\Message\Payload\Claim\ResourceLinkClaim;
 use OAT\Library\Lti1p3Core\Registration\RegistrationInterface;
 use OAT\Library\Lti1p3Core\Registration\RegistrationRepositoryInterface;
+use OAT\Library\Lti1p3Core\Security\Nonce\NonceRepository;
 use OAT\Library\Lti1p3Core\Security\Nonce\NonceRepositoryInterface;
 use OAT\Library\Lti1p3Core\Security\Oidc\OidcAuthenticator;
 use OAT\Library\Lti1p3Core\Security\Oidc\OidcInitiator;
 use OAT\Library\Lti1p3Core\Tests\Traits\OidcTestingTrait;
 use oat\oatbox\cache\CacheItem;
-use oat\oatbox\cache\ItemPoolSimpleCacheAdapter;
 use oat\taoLti\models\classes\LtiException;
 use oat\taoLti\models\classes\Platform\Repository\Lti1p3RegistrationRepository;
 use oat\taoLti\models\classes\Tool\Validation\Lti1p3Validator;
@@ -65,7 +65,7 @@ class Lti1p3ValidatorTest extends TestCase
     /** @var OidcAuthenticator */
     private $oidcAuthenticator;
 
-    /** @var ToolLaunchValidator */
+    /** @var Lti1p3Validator */
     private $subject;
 
     public static function setUpBeforeClass(): void
@@ -142,21 +142,17 @@ uRQa1b83fSwj0MKYiZAHQ2xAInIWpK4bPyLOgRNKtUsNsT1HQQk=
         $this->oidcInitiator = new OidcInitiator($this->registrationRepository);
         $this->oidcAuthenticator = new OidcAuthenticator($this->registrationRepository, $this->createTestUserAuthenticator());
 
-
-        $this->subject = new Lti1p3Validator();
-
         $mockRegistrationRepository = $this->getMockBuilder(Lti1p3RegistrationRepository::class)->getMock();
         $mockRegistrationRepository
             ->method('findByPlatformIssuer')
             ->willReturn($this->registration);
 
-
-        $this->subject->setServiceLocator(
-            $this->getServiceLocatorMock(
-                [
-                    Lti1p3RegistrationRepository::SERVICE_ID => $mockRegistrationRepository,
-                    ItemPoolSimpleCacheAdapter::class => $this->createArrayCache()
-                ]
+        $this->subject = new Lti1p3Validator(
+            new ToolLaunchValidator(
+                mockRegistrationRepository,
+                new NonceRepository(
+                    $this->createArrayCache()
+                )
             )
         );
     }
