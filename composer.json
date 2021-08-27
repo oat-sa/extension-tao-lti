@@ -63,8 +63,7 @@
     },
     "autoload" : {
         "psr-4" : {
-            "oat\\taoLti\\" : "",
-            "OAT\\Library\\Lti1p3Core\\Tests\\": "../vendor/oat-sa/lib-lti1p3-core/tests/"
+            "oat\\taoLti\\" : ""
         }
     }
 }
