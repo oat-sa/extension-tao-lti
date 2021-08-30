@@ -136,10 +136,20 @@ class RdfLtiPlatformRepository extends OntologyClassService implements LtiPlatfo
 
     public function searchById(string $id): ?LtiPlatform
     {
-        if ($this->getResource($id)->exists()) {
-            return $this->getLtiPlatformFromResource($this->getResource($id));
+        $resource = $this->getResource($id);
+
+        if (!$resource->exists()) {
+            return null;
         }
-        return null;
+
+        $types = $resource->getTypes();
+        $type = reset($types);
+
+        if ($type->getUri() !== self::CLASS_URI) {
+            return null;
+        }
+
+        return $this->getLtiPlatformFromResource($this->getResource($id));
     }
 
     public function searchByClientId(string $clientId): ?LtiPlatform
