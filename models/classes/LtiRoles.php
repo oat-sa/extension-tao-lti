@@ -39,4 +39,7 @@ interface LtiRoles
     const CONTEXT_INSTRUCTOR = 'http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#Instructor';
 
     const CONTEXT_ADMINISTRATOR = 'http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#Administrator';
+
+    // LTI 1p3
+    const CONTEXT_LTI1P3_LEARNER = 'http://purl.imsglobal.org/vocab/lis/v2/membership#Learner';
 }

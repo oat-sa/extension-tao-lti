@@ -82,22 +82,22 @@ class Lti1p3User extends \common_user_User implements ServiceLocatorAwareInterfa
 
     /**
      * @param LtiLaunchData $launchData
-     * @param $userUri
      * @throws \common_Exception
      * @throws \common_exception_Error
      * @throws \oat\taoLti\models\classes\LtiVariableMissingException
      */
-    public function __construct($launchData, $userUri)
+    public function __construct($launchData)
     {
         $this->ltiLaunchData = $launchData;
-        $this->userUri = $userUri;
-/*        $taoRoles = $this->determineTaoRoles($launchData);
+        $this->userUri = $launchData->getVariable(LtiLaunchData::USER_ID) ?? 'anonymous';
+
+        $taoRoles = $this->determineTaoRoles($launchData);
         if (empty($taoRoles)) {
             $message = "Invalid LTI role parameter value: " . $this->ltiLaunchData->getVariable(LtiLaunchData::ROLES);
             throw new LtiInvalidVariableException($message);
-        }*/
+        }
 
-        $this->setRoles($launchData->getUserRoles());
+        $this->setRoles($taoRoles);
 
         $email = '';
         $label = $launchData->getUserFullName();
@@ -228,17 +228,23 @@ class Lti1p3User extends \common_user_User implements ServiceLocatorAwareInterfa
     protected function determineTaoRoles(LtiLaunchData $ltiLaunchData)
     {
         $roles = [];
+        $ltiRoles = [];
+
         if ($ltiLaunchData->hasVariable(LtiLaunchData::ROLES)) {
-            foreach ($ltiLaunchData->getUserRoles() as $role) {
+            $ltiRoles = $ltiLaunchData->getUserRoles();
+            foreach ($ltiRoles as $role) {
                 $taoRole = LtiUtils::mapLTIRole2TaoRole($role);
                 if (!is_null($taoRole)) {
                     $roles[] = $taoRole;
                 }
             }
             $roles = array_unique($roles);
-        } else {
-            return [LtiRoles::INSTANCE_LTI_BASE];
         }
-        return $roles;
+
+        if (empty($roles)) {
+            $roles[] = LtiRoles::INSTANCE_LTI_BASE;
+        }
+
+        return array_merge($roles, $ltiRoles);
     }
 }

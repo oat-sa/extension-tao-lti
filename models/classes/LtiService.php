@@ -67,16 +67,17 @@ class LtiService extends ConfigurableService
     public function createLti1p3Session(LtiMessagePayloadInterface $messagePayload)
     {
         try {
-            $session = new TaoLtiSession(new Lti1p3User(
-                LtiLaunchData::fromLti1p3MessagePayload($messagePayload),
-                'test'
-            ));
+            $session = new TaoLti1p3Session(
+                new Lti1p3User(LtiLaunchData::fromLti1p3MessagePayload($messagePayload))
+            );
 
             $this->getServiceLocator()->propagate($session);
+
             return $session;
         } catch (LtiInvalidVariableException $e) {
             $this->getServiceLocator()->get(LoggerService::SERVICE_ID)
                 ->log(LogLevel::INFO, $e->getMessage());
+
             throw new LtiException(
                 __($e->getMessage()),
                 LtiErrorMessage::ERROR_UNAUTHORIZED

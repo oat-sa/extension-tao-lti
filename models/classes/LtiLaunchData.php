@@ -376,7 +376,7 @@ class LtiLaunchData implements \JsonSerializable
     public function getLtiConsumer()
     {
         if (is_null($this->ltiConsumer)) {
-            $dataStore = new tao_models_classes_oauth_DataStore();
+            $dataStore = new \tao_models_classes_oauth_DataStore();
             $this->ltiConsumer = $dataStore->findOauthConsumerResource($this->getOauthKey())->getUri();
         }
 
