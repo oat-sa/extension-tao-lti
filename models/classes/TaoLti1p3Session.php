@@ -52,6 +52,8 @@ class TaoLti1p3Session extends TaoLtiSession
 //            $service = $this->getServiceLocator()->get(LinkService::SERVICE_ID);
 //            $consumer = new \core_kernel_classes_Resource('eugene'); //$this->getLaunchData()->getLtiConsumer();
 //            $linkId = $service->getLinkId($consumer->getUri(), $this->getLaunchData()->getResourceLinkID());
+
+            // What lti link is? What purpose?
             $this->ltiLink = new core_kernel_classes_Resource($this->getLaunchData()->getVariable(LtiLaunchData::RESOURCE_LINK_ID));
         }
         return $this->ltiLink;
