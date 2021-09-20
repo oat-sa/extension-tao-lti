@@ -42,8 +42,8 @@ class AuthorizationServerFactoryTest extends TestCase
 {
     use NoPrivacyTrait;
 
-    private const PRIVATE_KEY_PATH = __DIR__ . '/../../../../../vendor/oat-sa/lib-lti1p3-core/tests/Resource/Key/RSA/private.key';
-    private const PUBLIC_KEY_PATH = __DIR__ . '/../../../../../vendor/oat-sa/lib-lti1p3-core/tests/Resource/Key/RSA/public.key';
+    private const PRIVATE_KEY_PATH = __DIR__ . '/../../../../../../vendor/oat-sa/lib-lti1p3-core/tests/Resource/Key/RSA/private.key';
+    private const PUBLIC_KEY_PATH = __DIR__ . '/../../../../../../vendor/oat-sa/lib-lti1p3-core/tests/Resource/Key/RSA/public.key';
 
     private $subject;
 

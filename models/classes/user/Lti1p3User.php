@@ -43,7 +43,13 @@ class Lti1p3User extends \common_user_User implements ServiceLocatorAwareInterfa
 {
     use ServiceLocatorAwareTrait;
 
-    const USER_IDENTIFIER = 'identifier';
+    protected const USER_IDENTIFIER = 'identifier';
+
+    /**
+     * Cache of the current user's lti roles
+     * @var array
+     */
+    protected $taoRoles;
 
     /**
      * Data with which this session was launched
@@ -56,12 +62,6 @@ class Lti1p3User extends \common_user_User implements ServiceLocatorAwareInterfa
      * @var \core_kernel_classes_Resource
      */
     private $userUri;
-
-    /**
-     * Cache of the current user's lti roles
-     * @var array
-     */
-    protected $taoRoles;
 
     private $language;
 
@@ -89,11 +89,13 @@ class Lti1p3User extends \common_user_User implements ServiceLocatorAwareInterfa
     public function __construct($launchData)
     {
         $this->ltiLaunchData = $launchData;
-        $this->userUri = $launchData->getVariable(LtiLaunchData::USER_ID) ?? 'anonymous';
+        $this->userUri = $launchData->hasVariable(LtiLaunchData::USER_ID)
+            ? $launchData->getVariable(LtiLaunchData::USER_ID)
+            : 'anonymous';
 
         $taoRoles = $this->determineTaoRoles($launchData);
         if (empty($taoRoles)) {
-            $message = "Invalid LTI role parameter value: " . $this->ltiLaunchData->getVariable(LtiLaunchData::ROLES);
+            $message = 'Invalid LTI role parameter value: ' . $this->ltiLaunchData->getVariable(LtiLaunchData::ROLES);
             throw new LtiInvalidVariableException($message);
         }
 
@@ -168,7 +170,6 @@ class Lti1p3User extends \common_user_User implements ServiceLocatorAwareInterfa
      */
     public function getPropertyValues($property)
     {
-        $returnValue = null;
         switch ($property) {
             case GenerisRdf::PROPERTY_USER_DEFLG:
                 $returnValue = [$this->getServiceLocator()->get(UserLanguageService::SERVICE_ID)->getDefaultLanguage()];

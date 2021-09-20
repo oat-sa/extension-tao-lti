@@ -79,7 +79,7 @@ class LtiService extends ConfigurableService
                 ->log(LogLevel::INFO, $e->getMessage());
 
             throw new LtiException(
-                __($e->getMessage()),
+                $e->getMessage(),
                 LtiErrorMessage::ERROR_UNAUTHORIZED
             );
         }
