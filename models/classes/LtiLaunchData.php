@@ -24,7 +24,9 @@ namespace oat\taoLti\models\classes;
 use common_http_Request;
 use core_kernel_classes_Resource;
 use OAT\Library\Lti1p3Core\Message\Payload\LtiMessagePayloadInterface;
+use OAT\Library\Lti1p3Core\Registration\RegistrationInterface;
 use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
+use oat\taoLti\models\classes\Platform\LtiPlatform;
 use tao_helpers_Request;
 use oat\oatbox\log\LoggerAwareTrait;
 use Psr\Http\Message\ServerRequestInterface;
@@ -50,6 +52,7 @@ class LtiLaunchData implements \JsonSerializable
     const LAUNCH_PRESENTATION_LOCALE     = 'launch_presentation_locale';
     const LAUNCH_PRESENTATION_RETURN_URL = 'launch_presentation_return_url';
 
+    const TOOL_CONSUMER_INSTANCE_ID          = 'tool_consumer_instance_id';
     const TOOL_CONSUMER_INSTANCE_NAME        = 'tool_consumer_instance_name';
     const TOOL_CONSUMER_INSTANCE_DESCRIPTION = 'tool_consumer_instance_description';
 
@@ -124,7 +127,7 @@ class LtiLaunchData implements \JsonSerializable
         return new static($request->getParams(), $extra);
     }
 
-    public static function fromLti1p3MessagePayload(LtiMessagePayloadInterface $ltiMessagePayload)
+    public static function fromLti1p3MessagePayload(LtiMessagePayloadInterface $ltiMessagePayload, LtiPlatform $platform = null)
     {
         $variables[self::OAUTH_CONSUMER_KEY] = '';
         $variables[self::RESOURCE_LINK_ID] = $ltiMessagePayload->getResourceLink() ? $ltiMessagePayload->getResourceLink()->getIdentifier() : null;
@@ -140,12 +143,16 @@ class LtiLaunchData implements \JsonSerializable
         $variables[self::LIS_PERSON_CONTACT_EMAIL_PRIMARY] = $ltiMessagePayload->getUserIdentity() ? $ltiMessagePayload->getUserIdentity()->getEmail() : null;
         $variables[self::LAUNCH_PRESENTATION_LOCALE] = $ltiMessagePayload->getLaunchPresentation() ? $ltiMessagePayload->getLaunchPresentation()->getLocale(): null;
         $variables[self::LAUNCH_PRESENTATION_RETURN_URL] = $ltiMessagePayload->getLaunchPresentation() ? $ltiMessagePayload->getLaunchPresentation()->getReturnUrl() : null;
-        $variables[self::TOOL_CONSUMER_INSTANCE_NAME] = 'TAO';
-        $variables[self::TOOL_CONSUMER_INSTANCE_DESCRIPTION] = 'TAO';
         $variables[self::LTI_VERSION] = $ltiMessagePayload->getVersion();
         $variables[self::LTI_MESSAGE_TYPE] = $ltiMessagePayload->getMessageType();
         $variables[self::LIS_RESULT_SOURCEDID] = $ltiMessagePayload->getBasicOutcome() ? $ltiMessagePayload->getBasicOutcome()->getLisResultSourcedId() : null;
         $variables[self::LIS_OUTCOME_SERVICE_URL] = $ltiMessagePayload->getBasicOutcome() ? $ltiMessagePayload->getBasicOutcome()->getLisOutcomeServiceUrl() : null;
+
+        if ($platform) {
+            $variables[self::TOOL_CONSUMER_INSTANCE_ID] = $platform->getLabel();
+            $variables[self::TOOL_CONSUMER_INSTANCE_NAME] = $platform->getLabel();
+            $variables[self::TOOL_CONSUMER_INSTANCE_DESCRIPTION] = $platform->getLabel();
+        }
 
         $customParams = $ltiMessagePayload->getCustom();
 

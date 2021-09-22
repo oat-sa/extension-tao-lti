@@ -27,15 +27,17 @@ use common_session_SessionManager;
 use core_kernel_classes_Class;
 use core_kernel_classes_Resource;
 use OAT\Library\Lti1p3Core\Message\Payload\LtiMessagePayloadInterface;
+use OAT\Library\Lti1p3Core\Message\Payload\MessagePayloadInterface;
 use oat\oatbox\log\LoggerService;
+use oat\oatbox\service\ConfigurableService;
+use oat\oatbox\service\ServiceManager;
+use oat\oatbox\session\SessionService;
 use oat\tao\model\TaoOntology;
 use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
+use oat\taoLti\models\classes\Platform\Repository\Lti1p3RegistrationRepository;
+use oat\taoLti\models\classes\Platform\Repository\LtiPlatformRepositoryInterface;
 use oat\taoLti\models\classes\user\Lti1p3User;
-use oat\taoLti\models\classes\user\LtiUser;
 use Psr\Log\LogLevel;
-use oat\oatbox\service\ServiceManager;
-use oat\oatbox\service\ConfigurableService;
-use oat\oatbox\session\SessionService;
 
 class LtiService extends ConfigurableService
 {
@@ -48,7 +50,7 @@ class LtiService extends ConfigurableService
         try {
             /** @var FactoryLtiAuthAdapterService $factoryAuth */
             $factoryAuth = $this->getServiceLocator()->get(FactoryLtiAuthAdapterServiceInterface::SERVICE_ID);
-            $adapter     = $factoryAuth->create($request);
+            $adapter = $factoryAuth->create($request);
             $user = $adapter->authenticate();
             $session = new TaoLtiSession($user);
 
@@ -67,8 +69,19 @@ class LtiService extends ConfigurableService
     public function createLti1p3Session(LtiMessagePayloadInterface $messagePayload)
     {
         try {
+            /** @var Lti1p3RegistrationRepository $repository */
+            $repository = $this->getServiceLocator()->get(Lti1p3RegistrationRepository::SERVICE_ID);
+            $registration = $repository->findByPlatformIssuer(
+                $messagePayload->getMandatoryClaim(MessagePayloadInterface::CLAIM_ISS),
+                $messagePayload->getMandatoryClaim(MessagePayloadInterface::CLAIM_AUD)[0]
+            );
+
+            /** @var LtiPlatformRepositoryInterface $platformRepository */
+            $platformRepository = $this->getServiceLocator()->get(LtiPlatformRepositoryInterface::SERVICE_ID);
+            $platform = $platformRepository->searchById($registration->getPlatform()->getIdentifier());
+
             $session = new TaoLti1p3Session(
-                new Lti1p3User(LtiLaunchData::fromLti1p3MessagePayload($messagePayload))
+                new Lti1p3User(LtiLaunchData::fromLti1p3MessagePayload($messagePayload, $platform))
             );
 
             $this->getServiceLocator()->propagate($session);
@@ -88,7 +101,7 @@ class LtiService extends ConfigurableService
     /**
      * start a session from the provided OAuth Request
      *
-     * @param common_http_Request $request
+     * @param  common_http_Request  $request
      *
      * @throws LtiException
      * @throws common_Exception
@@ -101,7 +114,9 @@ class LtiService extends ConfigurableService
 
     public function startLti1p3Session(LtiMessagePayloadInterface $messagePayload)
     {
-        $this->getServiceLocator()->get(SessionService::SERVICE_ID)->setSession($this->createLti1p3Session($messagePayload));
+        $this->getServiceLocator()->get(SessionService::SERVICE_ID)->setSession(
+            $this->createLti1p3Session($messagePayload)
+        );
     }
 
     /**
@@ -115,7 +130,7 @@ class LtiService extends ConfigurableService
     {
         $session = common_session_SessionManager::getSession();
         if (!$session instanceof TaoLtiSession) {
-            throw new LtiException(__FUNCTION__ . ' called on a non LTI session', LtiErrorMessage::ERROR_SYSTEM_ERROR);
+            throw new LtiException(__FUNCTION__.' called on a non LTI session', LtiErrorMessage::ERROR_SYSTEM_ERROR);
         }
         $this->getServiceLocator()->propagate($session);
 
@@ -132,11 +147,11 @@ class LtiService extends ConfigurableService
         $class = new core_kernel_classes_Class(ConsumerService::CLASS_URI);
         $instances = $class->searchInstances([TaoOntology::PROPERTY_OAUTH_KEY => $key], ['like' => false]);
         if (count($instances) == 0) {
-            throw new LtiException('No Credentials for consumer key ' . $key, LtiErrorMessage::ERROR_UNAUTHORIZED);
+            throw new LtiException('No Credentials for consumer key '.$key, LtiErrorMessage::ERROR_UNAUTHORIZED);
         }
         if (count($instances) > 1) {
             throw new LtiException(
-                'Multiple Credentials for consumer key ' . $key,
+                'Multiple Credentials for consumer key '.$key,
                 LtiErrorMessage::ERROR_INVALID_PARAMETER
             );
         }
@@ -148,10 +163,10 @@ class LtiService extends ConfigurableService
      * Returns the LTI Consumer resource associated to this lti session
      *
      * @access public
-     * @author Joel Bout, <joel@taotesting.com>
-     * @param LtiLaunchData $launchData
+     * @param  LtiLaunchData  $launchData
      * @return core_kernel_classes_Resource resource of LtiConsumer
      * @throws LtiVariableMissingException
+     * @author Joel Bout, <joel@taotesting.com>
      * @deprecated use LtiLaunchData::getLtiConsumer instead
      */
     public function getLtiConsumerResource($launchData)
@@ -160,8 +175,8 @@ class LtiService extends ConfigurableService
     }
 
     /**
-     * @deprecated
      * @return LtiService
+     * @deprecated
      */
     public static function singleton()
     {
