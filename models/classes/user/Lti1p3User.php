@@ -22,15 +22,10 @@ declare(strict_types=1);
 
 namespace oat\taoLti\models\classes\user;
 
-use oat\generis\model\GenerisRdf;
-use oat\generis\model\OntologyRdfs;
-use oat\taoLti\models\classes\LtiInvalidVariableException;
 use oat\taoLti\models\classes\LtiLaunchData;
 use oat\taoLti\models\classes\LtiRoles;
 use oat\taoLti\models\classes\LtiUtils;
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
-use Zend\ServiceManager\ServiceLocatorAwareTrait;
-use oat\oatbox\user\UserLanguageService;
+use oat\taoLti\models\classes\LtiVariableMissingException;
 
 /**
  * Authentication adapter interface to be implemented by authentication methodes
@@ -38,187 +33,25 @@ use oat\oatbox\user\UserLanguageService;
  * @access public
  * @package taoLti
  */
-class Lti1p3User extends \common_user_User implements ServiceLocatorAwareInterface, \JsonSerializable, LtiUserInterface
+class Lti1p3User extends LtiUser
 {
-    use ServiceLocatorAwareTrait;
-
-    protected const USER_IDENTIFIER = 'identifier';
-
-    /**
-     * Cache of the current user's lti roles
-     * @var array
-     */
-    protected $taoRoles;
-
-    /**
-     * Data with which this session was launched
-     * @var LtiLaunchData
-     */
-    private $ltiLaunchData;
-
-    /**
-     * Local representation of user
-     * @var \core_kernel_classes_Resource
-     */
-    private $userUri;
-
-    private $language;
-
-    private $firstname;
-
-    private $lastname;
-
-    private $email;
-
-    private $label;
-
-    /**
-     * Currently used UI languages.
-     *
-     * @var array
-     */
-    protected $uiLanguage;
-
     /**
      * @param LtiLaunchData $launchData
      * @throws \common_Exception
      * @throws \common_exception_Error
-     * @throws \oat\taoLti\models\classes\LtiVariableMissingException
+     * @throws LtiVariableMissingException
      */
     public function __construct($launchData)
     {
-        $this->ltiLaunchData = $launchData;
-        $this->userUri = $launchData->hasVariable(LtiLaunchData::USER_ID)
+        $userUri = $launchData->hasVariable(LtiLaunchData::USER_ID)
             ? $launchData->getVariable(LtiLaunchData::USER_ID)
             : 'anonymous';
 
-        $taoRoles = $this->determineTaoRoles($launchData);
-        if (empty($taoRoles)) {
-            $message = 'Invalid LTI role parameter value: ' . $this->ltiLaunchData->getVariable(LtiLaunchData::ROLES);
-            throw new LtiInvalidVariableException($message);
-        }
-
-        $this->setRoles($taoRoles);
-
-        $email = '';
-        $label = $launchData->getUserFullName();
-        $firstname = $launchData->getUserGivenName();
-        $lastname = $launchData->getUserFamilyName();
-
-        if ($launchData->hasVariable(LtiLaunchData::LIS_PERSON_CONTACT_EMAIL_PRIMARY)) {
-            $email = $launchData->getUserEmail();
-        }
-
-        $this->firstname = $firstname;
-        $this->lastname = $lastname;
-        $this->email = $email;
-        $this->label = $label;
-    }
-
-    public function setRoles($roles)
-    {
-        $newRoles = array_map(static function ($value) {
-            return ($value instanceof \core_kernel_classes_Resource) ? $value->getUri() : $value;
-        }, $roles);
-
-        $this->taoRoles = $newRoles;
+        parent::__construct($launchData, $userUri);
     }
 
     /**
-     * (non-PHPdoc)
-     * @see \common_user_User::getIdentifier()
-     */
-    public function getIdentifier()
-    {
-        return $this->userUri;
-    }
-
-    public function setIdentifier($userId)
-    {
-        $this->userUri = $userId;
-    }
-
-    /**
-     * @return LtiLaunchData
-     */
-    public function getLaunchData()
-    {
-        return $this->ltiLaunchData;
-    }
-
-    /**
-     * Get user langugae
-     * @return string
-     */
-    public function getLanguage()
-    {
-        if (!isset($this->language)) {
-            if ($this->getLaunchData()->hasLaunchLanguage()) {
-                $launchLanguage = $this->getLaunchData()->getLaunchLanguage();
-                $this->language = LtiUtils::mapCode2InterfaceLanguage($launchLanguage);
-            } else {
-                $this->language = $this->getServiceLocator()->get(UserLanguageService::SERVICE_ID)->getDefaultLanguage();
-            }
-        }
-        return $this->language;
-    }
-
-    /**
-     * (non-PHPdoc)
-     * @see \common_user_User::getPropertyValues()
-     */
-    public function getPropertyValues($property)
-    {
-        switch ($property) {
-            case GenerisRdf::PROPERTY_USER_DEFLG:
-                $returnValue = [$this->getServiceLocator()->get(UserLanguageService::SERVICE_ID)->getDefaultLanguage()];
-                break;
-            case GenerisRdf::PROPERTY_USER_UILG:
-                $returnValue = [$this->getLanguage()];
-                break;
-            case GenerisRdf::PROPERTY_USER_ROLES:
-                $returnValue = $this->taoRoles;
-                break;
-            case GenerisRdf::PROPERTY_USER_FIRSTNAME:
-                $returnValue = $this->firstname !== null ? [$this->firstname] : '';
-                break;
-            case GenerisRdf::PROPERTY_USER_LASTNAME:
-                $returnValue = $this->lastname !== null ? [$this->lastname] : '';
-                break;
-            case OntologyRdfs::RDFS_LABEL:
-                $returnValue = [$this->label];
-                break;
-            default:
-                \common_Logger::d('Unkown property ' . $property . ' requested from ' . __CLASS__);
-                $returnValue = [];
-        }
-        return $returnValue;
-    }
-
-    /**
-     * (non-PHPdoc)
-     * @see \common_user_User::refresh()
-     */
-    public function refresh()
-    {
-        // nothing to do
-    }
-
-    public function jsonSerialize()
-    {
-        return [
-            self::USER_IDENTIFIER => $this->userUri,
-            GenerisRdf::PROPERTY_USER_ROLES => $this->taoRoles,
-            GenerisRdf::PROPERTY_USER_UILG => $this->getLanguage(),
-            GenerisRdf::PROPERTY_USER_FIRSTNAME => $this->firstname,
-            GenerisRdf::PROPERTY_USER_LASTNAME => $this->lastname,
-            GenerisRdf::PROPERTY_USER_MAIL => $this->email,
-            OntologyRdfs::RDFS_LABEL => $this->label,
-        ];
-    }
-
-    /**
-     * Calculate your primary tao roles from the launchdata
+     * Calculate your primary tao roles from the launch data
      *
      * @param LtiLaunchData $ltiLaunchData
      * @return array
