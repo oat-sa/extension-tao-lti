@@ -36,7 +36,6 @@ use oat\oatbox\user\UserLanguageService;
  * Authentication adapter interface to be implemented by authentication methodes
  *
  * @access public
- * @author Joel Bout, <joel@taotesting.com>
  * @package taoLti
  */
 class Lti1p3User extends \common_user_User implements ServiceLocatorAwareInterface, \JsonSerializable, LtiUserInterface
@@ -118,7 +117,7 @@ class Lti1p3User extends \common_user_User implements ServiceLocatorAwareInterfa
 
     public function setRoles($roles)
     {
-        $newRoles = array_map(function ($value) {
+        $newRoles = array_map(static function ($value) {
             return ($value instanceof \core_kernel_classes_Resource) ? $value->getUri() : $value;
         }, $roles);
 

@@ -48,7 +48,7 @@ class TaoLti1p3Session extends TaoLtiSession
      */
     public function getLtiLinkResource()
     {
-        if (is_null($this->ltiLink)) {
+        if (null === $this->ltiLink) {
 //            $service = $this->getServiceLocator()->get(LinkService::SERVICE_ID);
 //            $consumer = new \core_kernel_classes_Resource('eugene'); //$this->getLaunchData()->getLtiConsumer();
 //            $linkId = $service->getLinkId($consumer->getUri(), $this->getLaunchData()->getResourceLinkID());

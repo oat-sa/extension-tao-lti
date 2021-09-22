@@ -26,7 +26,7 @@ use core_kernel_classes_Resource;
 use OAT\Library\Lti1p3Core\Message\Payload\LtiMessagePayloadInterface;
 use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
 use tao_helpers_Request;
-    use oat\oatbox\log\LoggerAwareTrait;
+use oat\oatbox\log\LoggerAwareTrait;
 use Psr\Http\Message\ServerRequestInterface;
 
 class LtiLaunchData implements \JsonSerializable
