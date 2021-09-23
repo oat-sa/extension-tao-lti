@@ -21,7 +21,7 @@
 
 namespace oat\taoLti\test\models\classes\user;
 
-include_once dirname(__FILE__) . '/../../../../../includes/raw_start.php';
+include_once __FILE__ . '/../../../../../includes/raw_start.php';
 
 use oat\generis\test\TestCase;
 use oat\taoLti\models\classes\LtiLaunchData;
