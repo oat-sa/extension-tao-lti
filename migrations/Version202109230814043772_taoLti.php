@@ -9,8 +9,12 @@ use Doctrine\Migrations\Exception\IrreversibleMigration;
 use oat\tao\scripts\SyncModels;
 use oat\tao\scripts\tools\migrations\AbstractMigration;
 
-final class Version202109040100000000_taoLti extends AbstractMigration
+/**
+ * Auto-generated Migration: Please modify to your needs!
+ */
+final class Version202109230814043772_taoLti extends AbstractMigration
 {
+
     public function getDescription(): string
     {
         return 'Add LTI 1p3 Learner Role';

@@ -27,12 +27,6 @@ use oat\taoLti\models\classes\LtiRoles;
 use oat\taoLti\models\classes\LtiUtils;
 use oat\taoLti\models\classes\LtiVariableMissingException;
 
-/**
- * Authentication adapter interface to be implemented by authentication methodes
- *
- * @access public
- * @package taoLti
- */
 class Lti1p3User extends LtiUser
 {
     /**

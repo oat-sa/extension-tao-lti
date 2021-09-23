@@ -26,13 +26,6 @@ use common_exception_Error;
 use core_kernel_classes_Resource;
 use oat\taoLti\models\classes\ResourceLink\LinkService;
 
-/**
- * The TAO layer ontop of the LtiSession
- *
- * @access public
- * @author Joel Bout, <joel@taotesting.com>
- * @package taoLti
- */
 class TaoLti1p3Session extends TaoLtiSession
 {
     /**

@@ -24,7 +24,6 @@ namespace oat\taoLti\models\classes;
 use common_http_Request;
 use core_kernel_classes_Resource;
 use OAT\Library\Lti1p3Core\Message\Payload\LtiMessagePayloadInterface;
-use OAT\Library\Lti1p3Core\Registration\RegistrationInterface;
 use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
 use oat\taoLti\models\classes\Platform\LtiPlatform;
 use tao_helpers_Request;
