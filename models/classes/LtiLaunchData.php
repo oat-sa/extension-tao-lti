@@ -149,9 +149,17 @@ class LtiLaunchData implements \JsonSerializable
         $variables[self::LIS_OUTCOME_SERVICE_URL] = $ltiMessagePayload->getBasicOutcome() ? $ltiMessagePayload->getBasicOutcome()->getLisOutcomeServiceUrl() : null;
 
         if ($platform) {
-            $variables[self::TOOL_CONSUMER_INSTANCE_ID] = $platform->getLabel();
-            $variables[self::TOOL_CONSUMER_INSTANCE_NAME] = $platform->getLabel();
-            $variables[self::TOOL_CONSUMER_INSTANCE_DESCRIPTION] = $platform->getLabel();
+            // we need to have inner platform ID
+            $variables[self::TOOL_CONSUMER_INSTANCE_ID] = $platform->getId();
+
+            if ($platformFromClaim = $ltiMessagePayload->getPlatformInstance()) {
+                $variables[self::TOOL_CONSUMER_INSTANCE_NAME] = $platformFromClaim->getName();
+                $variables[self::TOOL_CONSUMER_INSTANCE_DESCRIPTION] = $platformFromClaim->getDescription();
+            } else {
+                $variables[self::TOOL_CONSUMER_INSTANCE_NAME] = $platform->getLabel();
+                $variables[self::TOOL_CONSUMER_INSTANCE_DESCRIPTION] = $platform->getLabel();
+            }
+
         }
 
         $customParams = $ltiMessagePayload->getCustom();
