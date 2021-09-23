@@ -24,14 +24,8 @@ namespace oat\taoLti\models\classes;
 
 use common_exception_Error;
 use core_kernel_classes_Resource;
+use oat\taoLti\models\classes\ResourceLink\LinkService;
 
-/**
- * The TAO layer ontop of the LtiSession
- *
- * @access public
- * @author Joel Bout, <joel@taotesting.com>
- * @package taoLti
- */
 class TaoLti1p3Session extends TaoLtiSession
 {
     /**
@@ -48,13 +42,14 @@ class TaoLti1p3Session extends TaoLtiSession
      */
     public function getLtiLinkResource()
     {
-        if (is_null($this->ltiLink)) {
-//            $service = $this->getServiceLocator()->get(LinkService::SERVICE_ID);
-//            $consumer = new \core_kernel_classes_Resource('eugene'); //$this->getLaunchData()->getLtiConsumer();
-//            $linkId = $service->getLinkId($consumer->getUri(), $this->getLaunchData()->getResourceLinkID());
+        if (null === $this->ltiLink) {
+            $service = $this->getServiceLocator()->get(LinkService::SERVICE_ID);
+            $linkId = $service->getLinkId(
+                $this->getLaunchData()->getVariable(LtiLaunchData::TOOL_CONSUMER_INSTANCE_ID),
+                $this->getLaunchData()->getVariable(LtiLaunchData::RESOURCE_LINK_ID)
+            );
 
-            // What lti link is? What purpose?
-            $this->ltiLink = new core_kernel_classes_Resource($this->getLaunchData()->getVariable(LtiLaunchData::RESOURCE_LINK_ID));
+            $this->ltiLink = new core_kernel_classes_Resource($linkId);
         }
         return $this->ltiLink;
     }
