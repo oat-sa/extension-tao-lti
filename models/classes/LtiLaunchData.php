@@ -61,6 +61,10 @@ class LtiLaunchData implements \JsonSerializable
     const LIS_RESULT_SOURCEDID = 'lis_result_sourcedid';
     const LIS_OUTCOME_SERVICE_URL = 'lis_outcome_service_url';
 
+    // review mode
+    const LTI_SHOW_SCORE = 'custom_show_score';
+    const LTI_SHOW_CORRECT = 'custom_show_correct';
+
     /**
      * LTI variables
      *
@@ -162,6 +166,15 @@ class LtiLaunchData implements \JsonSerializable
         }
 
         $customParams = $ltiMessagePayload->getCustom();
+
+        // review mode
+        if (isset($customParams[self::LTI_SHOW_SCORE])) {
+            $variables[self::LTI_SHOW_SCORE] = true;
+        }
+
+        if (isset($customParams[self::LTI_SHOW_CORRECT])) {
+            $variables[self::LTI_SHOW_CORRECT] = true;
+        }
 
         return new static($variables, $customParams);
     }
