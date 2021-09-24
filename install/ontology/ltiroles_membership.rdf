@@ -50,4 +50,12 @@
     <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiBaseRole"/>
     <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
   </rdf:Description>
+  <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership#Learner">
+      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+      <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 Learner]]></rdfs:label>
+      <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context Learner Role]]></rdfs:comment>
+      <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiBaseRole"/>
+      <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAO.rdf#DeliveryRole"/>
+      <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
+    </rdf:Description>
  </rdf:RDF>

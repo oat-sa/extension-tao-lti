@@ -23,9 +23,10 @@ namespace oat\taoLti\models\classes;
 
 use common_http_Request;
 use core_kernel_classes_Resource;
+use OAT\Library\Lti1p3Core\Message\Payload\LtiMessagePayloadInterface;
 use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
+use oat\taoLti\models\classes\Platform\LtiPlatform;
 use tao_helpers_Request;
-use tao_models_classes_oauth_DataStore;
 use oat\oatbox\log\LoggerAwareTrait;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -50,6 +51,7 @@ class LtiLaunchData implements \JsonSerializable
     const LAUNCH_PRESENTATION_LOCALE     = 'launch_presentation_locale';
     const LAUNCH_PRESENTATION_RETURN_URL = 'launch_presentation_return_url';
 
+    const TOOL_CONSUMER_INSTANCE_ID          = 'tool_consumer_instance_id';
     const TOOL_CONSUMER_INSTANCE_NAME        = 'tool_consumer_instance_name';
     const TOOL_CONSUMER_INSTANCE_DESCRIPTION = 'tool_consumer_instance_description';
 
@@ -58,6 +60,10 @@ class LtiLaunchData implements \JsonSerializable
 
     const LIS_RESULT_SOURCEDID = 'lis_result_sourcedid';
     const LIS_OUTCOME_SERVICE_URL = 'lis_outcome_service_url';
+
+    // review mode
+    const LTI_SHOW_SCORE = 'custom_show_score';
+    const LTI_SHOW_CORRECT = 'custom_show_correct';
 
     /**
      * LTI variables
@@ -122,6 +128,55 @@ class LtiLaunchData implements \JsonSerializable
     {
         $extra = self::getParametersFromUrl($request->getUrl());
         return new static($request->getParams(), $extra);
+    }
+
+    public static function fromLti1p3MessagePayload(LtiMessagePayloadInterface $ltiMessagePayload, LtiPlatform $platform = null)
+    {
+        $variables[self::OAUTH_CONSUMER_KEY] = '';
+        $variables[self::RESOURCE_LINK_ID] = $ltiMessagePayload->getResourceLink() ? $ltiMessagePayload->getResourceLink()->getIdentifier() : null;
+        $variables[self::RESOURCE_LINK_TITLE] = $ltiMessagePayload->getResourceLink() ? $ltiMessagePayload->getResourceLink()->getTitle() : null;
+        $variables[self::CONTEXT_ID] = $ltiMessagePayload->getContext() ? $ltiMessagePayload->getContext()->getIdentifier() : null;
+        $variables[self::CONTEXT_LABEL] = $ltiMessagePayload->getContext() ? $ltiMessagePayload->getContext()->getLabel() : null;
+        $variables[self::CONTEXT_TITLE] = $ltiMessagePayload->getContext() ? $ltiMessagePayload->getContext()->getTitle() : null;
+        $variables[self::USER_ID] = $ltiMessagePayload->getUserIdentity() ? $ltiMessagePayload->getUserIdentity()->getIdentifier() : null;
+        $variables[self::ROLES] = implode(',', $ltiMessagePayload->getRoles());
+        $variables[self::LIS_PERSON_NAME_GIVEN] = $ltiMessagePayload->getUserIdentity() ? $ltiMessagePayload->getUserIdentity()->getGivenName() : null;
+        $variables[self::LIS_PERSON_NAME_FAMILY] = $ltiMessagePayload->getUserIdentity() ? $ltiMessagePayload->getUserIdentity()->getFamilyName() : null;
+        $variables[self::LIS_PERSON_NAME_FULL] = $ltiMessagePayload->getUserIdentity() ? $ltiMessagePayload->getUserIdentity()->getName() : null;
+        $variables[self::LIS_PERSON_CONTACT_EMAIL_PRIMARY] = $ltiMessagePayload->getUserIdentity() ? $ltiMessagePayload->getUserIdentity()->getEmail() : null;
+        $variables[self::LAUNCH_PRESENTATION_LOCALE] = $ltiMessagePayload->getLaunchPresentation() ? $ltiMessagePayload->getLaunchPresentation()->getLocale(): null;
+        $variables[self::LAUNCH_PRESENTATION_RETURN_URL] = $ltiMessagePayload->getLaunchPresentation() ? $ltiMessagePayload->getLaunchPresentation()->getReturnUrl() : null;
+        $variables[self::LTI_VERSION] = $ltiMessagePayload->getVersion();
+        $variables[self::LTI_MESSAGE_TYPE] = $ltiMessagePayload->getMessageType();
+        $variables[self::LIS_RESULT_SOURCEDID] = $ltiMessagePayload->getBasicOutcome() ? $ltiMessagePayload->getBasicOutcome()->getLisResultSourcedId() : null;
+        $variables[self::LIS_OUTCOME_SERVICE_URL] = $ltiMessagePayload->getBasicOutcome() ? $ltiMessagePayload->getBasicOutcome()->getLisOutcomeServiceUrl() : null;
+
+        if ($platform) {
+            // we need to have inner platform ID
+            $variables[self::TOOL_CONSUMER_INSTANCE_ID] = $platform->getId();
+
+            if ($platformFromClaim = $ltiMessagePayload->getPlatformInstance()) {
+                $variables[self::TOOL_CONSUMER_INSTANCE_NAME] = $platformFromClaim->getName();
+                $variables[self::TOOL_CONSUMER_INSTANCE_DESCRIPTION] = $platformFromClaim->getDescription();
+            } else {
+                $variables[self::TOOL_CONSUMER_INSTANCE_NAME] = $platform->getLabel();
+                $variables[self::TOOL_CONSUMER_INSTANCE_DESCRIPTION] = $platform->getLabel();
+            }
+
+        }
+
+        $customParams = $ltiMessagePayload->getCustom();
+
+        // review mode
+        if (isset($customParams[self::LTI_SHOW_SCORE])) {
+            $variables[self::LTI_SHOW_SCORE] = true;
+        }
+
+        if (isset($customParams[self::LTI_SHOW_CORRECT])) {
+            $variables[self::LTI_SHOW_CORRECT] = true;
+        }
+
+        return new static($variables, $customParams);
     }
 
     /**
@@ -348,7 +403,7 @@ class LtiLaunchData implements \JsonSerializable
     public function getLtiConsumer()
     {
         if (is_null($this->ltiConsumer)) {
-            $dataStore = new tao_models_classes_oauth_DataStore();
+            $dataStore = new \tao_models_classes_oauth_DataStore();
             $this->ltiConsumer = $dataStore->findOauthConsumerResource($this->getOauthKey())->getUri();
         }
 
@@ -406,8 +461,8 @@ class LtiLaunchData implements \JsonSerializable
     public function jsonSerialize()
     {
         return [
-              'variables' => $this->variables,
-              'customParams' => $this->customParams,
+            'variables' => $this->variables,
+            'customParams' => $this->customParams,
         ];
     }
 }
