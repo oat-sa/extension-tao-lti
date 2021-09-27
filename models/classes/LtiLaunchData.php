@@ -65,6 +65,9 @@ class LtiLaunchData implements \JsonSerializable
     const LTI_SHOW_SCORE = 'custom_show_score';
     const LTI_SHOW_CORRECT = 'custom_show_correct';
 
+    // AGS
+    const AGS_CLAIMS = 'ags_claims';
+
     /**
      * LTI variables
      *
@@ -165,6 +168,10 @@ class LtiLaunchData implements \JsonSerializable
                 $variables[self::TOOL_CONSUMER_INSTANCE_DESCRIPTION] = $platform->getName();
             }
 
+        }
+
+        if ($ags = $ltiMessagePayload->getAgs()) {
+            $variables[self::AGS_CLAIMS] = $ags;
         }
 
         $customParams = $ltiMessagePayload->getCustom();
