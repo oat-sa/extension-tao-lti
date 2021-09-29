@@ -84,6 +84,8 @@ class LtiService extends ConfigurableService
 
             $session = TaoLtiSession::fromVersion1p3($user);
 
+            $session->setRegistration($registration);
+
             $this->getServiceLocator()->propagate($session);
 
             return $session;

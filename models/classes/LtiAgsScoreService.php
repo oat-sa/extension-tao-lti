@@ -21,25 +21,45 @@
 
 namespace oat\taoLti\models\classes;
 
+use common_exception_NoImplementation;
 use OAT\Library\Lti1p3Ags\Factory\Score\ScoreFactory;
+use OAT\Library\Lti1p3Ags\Factory\Score\ScoreFactoryInterface;
 use OAT\Library\Lti1p3Ags\Service\Score\Client\ScoreServiceClient;
+use OAT\Library\Lti1p3Ags\Service\Score\ScoreServiceInterface;
 use OAT\Library\Lti1p3Core\Message\Payload\Claim\AgsClaim;
 use OAT\Library\Lti1p3Core\Registration\RegistrationInterface;
+use oat\oatbox\service\ConfigurableService;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorAwareTrait;
 
-class LtiAgsScoreService implements ServiceLocatorAwareInterface
+class LtiAgsScoreService extends ConfigurableService implements ServiceLocatorAwareInterface
 {
     use ServiceLocatorAwareTrait;
 
-    public function send(RegistrationInterface $registration, AgsClaim $ags): bool
+    const SERVICE_ID = 'taoLti/LtiAgsScoreService';
+
+    const OPTION_SCORE_SERVICE_CLIENT = 'score_service_client';
+    const OPTION_SCORE_FACTORY = 'score_factory';
+
+    /**
+     * @throws common_exception_NoImplementation
+     */
+    public function send(RegistrationInterface $registration, AgsClaim $ags, array $data): bool
     {
-        $scoreClient = new ScoreServiceClient();
-        $scoreFactory = new ScoreFactory();
+        $scoreClient = $this->getOption(self::OPTION_SCORE_SERVICE_CLIENT) ?? new ScoreServiceClient();
+        $scoreFactory = $this->getOption(self::OPTION_SCORE_FACTORY) ?? new ScoreFactory();
+
+        if (!$scoreClient instanceof ScoreServiceInterface) {
+            throw new common_exception_NoImplementation(sprintf('%s option should implement ScoreServiceInterface', self::OPTION_SCORE_SERVICE_CLIENT));
+        }
+
+        if (!$scoreFactory instanceof ScoreFactoryInterface) {
+            throw new common_exception_NoImplementation(sprintf('%s option should implement ScoreFactoryInterface', self::OPTION_SCORE_FACTORY));
+        }
 
         return $scoreClient->publishScoreForClaim(
             $registration,
-            $scoreFactory->create([]),
+            $scoreFactory->create($data),
             $ags
         );
     }
