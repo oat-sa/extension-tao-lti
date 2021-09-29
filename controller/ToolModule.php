@@ -25,6 +25,7 @@ use common_Exception;
 use common_exception_Error;
 use common_exception_IsAjaxAction;
 use common_http_Request;
+use common_session_SessionManager as SessionManager;
 use oat\tao\model\oauth\OauthService;
 use tao_helpers_Request;
 use common_Logger;
@@ -58,6 +59,8 @@ abstract class ToolModule extends LtiModule
      */
     public function launch()
     {
+        SessionManager::endSession();
+
         try {
             $request = common_http_Request::currentRequest();
             $ltiLaunchData = LtiLaunchData::fromRequest($request);
