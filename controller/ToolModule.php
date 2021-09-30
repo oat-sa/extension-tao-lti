@@ -25,7 +25,7 @@ use common_Exception;
 use common_exception_Error;
 use common_exception_IsAjaxAction;
 use common_http_Request;
-use OAT\Library\Lti1p3Core\Message\Launch\Validator\Tool\ToolLaunchValidator;
+use common_session_SessionManager as SessionManager;
 use OAT\Library\Lti1p3Core\Message\Payload\LtiMessagePayloadInterface;
 use oat\tao\model\oauth\OauthService;
 use oat\taoLti\models\classes\Tool\Validation\Lti1p3Validator;
@@ -61,6 +61,8 @@ abstract class ToolModule extends LtiModule
      */
     public function launch()
     {
+        SessionManager::endSession();
+
         try {
             $request = common_http_Request::currentRequest();
             $ltiLaunchData = LtiLaunchData::fromRequest($request);
