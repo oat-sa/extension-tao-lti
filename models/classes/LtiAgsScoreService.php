@@ -19,13 +19,15 @@
  *
  */
 
+declare(strict_types=1);
+
 namespace oat\taoLti\models\classes;
 
-use common_exception_NoImplementation;
 use OAT\Library\Lti1p3Ags\Factory\Score\ScoreFactory;
 use OAT\Library\Lti1p3Ags\Factory\Score\ScoreFactoryInterface;
 use OAT\Library\Lti1p3Ags\Service\Score\Client\ScoreServiceClient;
 use OAT\Library\Lti1p3Ags\Service\Score\ScoreServiceInterface;
+use OAT\Library\Lti1p3Core\Exception\LtiExceptionInterface;
 use OAT\Library\Lti1p3Core\Message\Payload\Claim\AgsClaim;
 use OAT\Library\Lti1p3Core\Registration\RegistrationInterface;
 use oat\oatbox\service\ConfigurableService;
@@ -42,7 +44,7 @@ class LtiAgsScoreService extends ConfigurableService implements ServiceLocatorAw
     const OPTION_SCORE_FACTORY = 'score_factory';
 
     /**
-     * @throws common_exception_NoImplementation
+     * @throws LtiAgsException
      */
     public function send(RegistrationInterface $registration, AgsClaim $ags, array $data): bool
     {
@@ -50,17 +52,24 @@ class LtiAgsScoreService extends ConfigurableService implements ServiceLocatorAw
         $scoreFactory = $this->getOption(self::OPTION_SCORE_FACTORY) ?? new ScoreFactory();
 
         if (!$scoreClient instanceof ScoreServiceInterface) {
-            throw new common_exception_NoImplementation(sprintf('%s option should implement ScoreServiceInterface', self::OPTION_SCORE_SERVICE_CLIENT));
+            throw new LtiAgsException(sprintf('%s option should implement ScoreServiceInterface', self::OPTION_SCORE_SERVICE_CLIENT));
         }
 
         if (!$scoreFactory instanceof ScoreFactoryInterface) {
-            throw new common_exception_NoImplementation(sprintf('%s option should implement ScoreFactoryInterface', self::OPTION_SCORE_FACTORY));
+            throw new LtiAgsException(sprintf('%s option should implement ScoreFactoryInterface', self::OPTION_SCORE_FACTORY));
         }
 
-        return $scoreClient->publishScoreForClaim(
-            $registration,
-            $scoreFactory->create($data),
-            $ags
-        );
+        $score = $scoreFactory->create($data);
+
+        try {
+            return $scoreClient->publishScoreForClaim($registration, $score, $ags);
+        } catch (LtiExceptionInterface $e) {
+            $exception = new LtiAgsException('AGS score send failed', 1, $e);
+
+            throw $exception
+                ->setAgsClaim($ags)
+                ->setRegistration($registration)
+                ->setScore($score);
+        }
     }
 }
