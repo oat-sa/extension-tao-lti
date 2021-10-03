@@ -21,7 +21,6 @@
 
 namespace oat\taoLti\models\classes;
 
-use common_exception_NoImplementation;
 use oat\generis\test\TestCase;
 use OAT\Library\Lti1p3Ags\Factory\Score\ScoreFactory;
 use OAT\Library\Lti1p3Ags\Service\Score\Client\ScoreServiceClient;
@@ -69,7 +68,7 @@ class LtiAgsScoreServiceTest extends TestCase
                 ]
             );
 
-            $this->expectException(common_exception_NoImplementation::class);
+            $this->expectException(LtiAgsException::class);
             $this->expectExceptionMessage('score_service_client option should implement ScoreServiceInterface');
 
             $ltiAgsService->send(
@@ -88,7 +87,7 @@ class LtiAgsScoreServiceTest extends TestCase
             ]
         );
 
-        $this->expectException(common_exception_NoImplementation::class);
+        $this->expectException(LtiAgsException::class);
         $this->expectExceptionMessage('score_factory option should implement ScoreFactoryInterface');
 
         $ltiAgsService->send(
