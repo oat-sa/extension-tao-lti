@@ -78,7 +78,7 @@ class LtiAgsScoreServiceTest extends TestCase
             );
     }
 
-    public function testItCanVerifyScoreFactoryOption(): void
+    public function testItThrowsWhenScoreFactoryOptionIsInvalid(): void
     {
         $ltiAgsService = new LtiAgsScoreService(
             [
