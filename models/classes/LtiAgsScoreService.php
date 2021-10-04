@@ -38,10 +38,10 @@ class LtiAgsScoreService extends ConfigurableService implements ServiceLocatorAw
 {
     use ServiceLocatorAwareTrait;
 
-    const SERVICE_ID = 'taoLti/LtiAgsScoreService';
+    public const SERVICE_ID = 'taoLti/LtiAgsScoreService';
 
-    const OPTION_SCORE_SERVICE_CLIENT = 'score_service_client';
-    const OPTION_SCORE_FACTORY = 'score_factory';
+    public const OPTION_SCORE_SERVICE_CLIENT = 'score_service_client';
+    public const OPTION_SCORE_FACTORY = 'score_factory';
 
     /**
      * @throws LtiAgsException
@@ -52,11 +52,15 @@ class LtiAgsScoreService extends ConfigurableService implements ServiceLocatorAw
         $scoreFactory = $this->getOption(self::OPTION_SCORE_FACTORY) ?? new ScoreFactory();
 
         if (!$scoreClient instanceof ScoreServiceInterface) {
-            throw new LtiAgsException(sprintf('%s option should implement ScoreServiceInterface', self::OPTION_SCORE_SERVICE_CLIENT));
+            throw new LtiAgsException(
+                sprintf('%s option should implement ScoreServiceInterface',self::OPTION_SCORE_SERVICE_CLIENT)
+            );
         }
 
         if (!$scoreFactory instanceof ScoreFactoryInterface) {
-            throw new LtiAgsException(sprintf('%s option should implement ScoreFactoryInterface', self::OPTION_SCORE_FACTORY));
+            throw new LtiAgsException(
+                sprintf('%s option should implement ScoreFactoryInterface', self::OPTION_SCORE_FACTORY)
+            );
         }
 
         $score = $scoreFactory->create($data);

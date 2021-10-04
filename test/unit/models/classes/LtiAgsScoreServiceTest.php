@@ -30,7 +30,7 @@ use stdClass;
 
 class LtiAgsScoreServiceTest extends TestCase
 {
-    public function testItCanCallSend(): void
+    public function testItSendsAgsClaim(): void
     {
         $scoreServerClient = $this->createMock(ScoreServiceClient::class);
         $scoreFactory = $this->createMock(ScoreFactory::class);
@@ -59,7 +59,7 @@ class LtiAgsScoreServiceTest extends TestCase
         $ltiAgsService->send($registration, $agsClaim, ['userId' => '1']);
     }
 
-    public function testItCanVerifyServiceClientOption(): void
+    public function testItThrowsWhenServiceClientOptionIsInvalid(): void
     {
             $ltiAgsService = new LtiAgsScoreService(
                 [
