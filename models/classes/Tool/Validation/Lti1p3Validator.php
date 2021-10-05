@@ -35,6 +35,9 @@ use Psr\Http\Message\ServerRequestInterface;
 
 class Lti1p3Validator extends ConfigurableService
 {
+    /**
+     * @throws LtiException
+     */
     public function getValidatedPayload(ServerRequestInterface $request): LtiMessagePayloadInterface
     {
         try {
@@ -52,6 +55,9 @@ class Lti1p3Validator extends ConfigurableService
         return $ltiMessagePayload;
     }
 
+    /**
+     * @throws Lti1p3Exception
+     */
     public function validateRequest(ServerRequestInterface $request): LtiMessagePayloadInterface
     {
         $validator = new ToolLaunchValidator(
@@ -59,9 +65,18 @@ class Lti1p3Validator extends ConfigurableService
             new NonceRepository($this->getServiceLocator()->get(ItemPoolSimpleCacheAdapter::class))
         );
 
-        return $validator->validatePlatformOriginatingLaunch($request)->getPayload();
+        $result = $validator->validatePlatformOriginatingLaunch($request);
+
+        if ($result->hasError()) {
+            throw new Lti1p3Exception($result->getError());
+        }
+
+        return $result->getPayload();
     }
 
+    /**
+     * @throws LtiException
+     */
     public function validateRole(LtiMessagePayloadInterface $ltiMessagePayload): void
     {
         $roles = $ltiMessagePayload->getValidatedRoleCollection();
