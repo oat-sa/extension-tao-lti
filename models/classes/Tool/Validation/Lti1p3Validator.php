@@ -35,14 +35,13 @@ use Psr\Http\Message\ServerRequestInterface;
 
 class Lti1p3Validator extends ConfigurableService
 {
+    /**
+     * @throws LtiException
+     */
     public function getValidatedPayload(ServerRequestInterface $request): LtiMessagePayloadInterface
     {
         try {
             $ltiMessagePayload = $this->validateRequest($request);
-
-            if ($ltiMessagePayload === null) {
-                throw new LtiException('No LTI message payload received.');
-            }
 
             $this->validateRole($ltiMessagePayload);
         } catch (Lti1p3Exception $exception) {
@@ -52,6 +51,9 @@ class Lti1p3Validator extends ConfigurableService
         return $ltiMessagePayload;
     }
 
+    /**
+     * @throws Lti1p3Exception
+     */
     public function validateRequest(ServerRequestInterface $request): LtiMessagePayloadInterface
     {
         $validator = new ToolLaunchValidator(
@@ -59,9 +61,24 @@ class Lti1p3Validator extends ConfigurableService
             new NonceRepository($this->getServiceLocator()->get(ItemPoolSimpleCacheAdapter::class))
         );
 
-        return $validator->validatePlatformOriginatingLaunch($request)->getPayload();
+        $result = $validator->validatePlatformOriginatingLaunch($request);
+
+        if ($result->hasError()) {
+            throw new Lti1p3Exception($result->getError());
+        }
+
+        $ltiMessagePayload = $result->getPayload();
+
+        if ($ltiMessagePayload === null) {
+            throw new Lti1p3Exception('No LTI message payload received.');
+        }
+
+        return $ltiMessagePayload;
     }
 
+    /**
+     * @throws LtiException
+     */
     public function validateRole(LtiMessagePayloadInterface $ltiMessagePayload): void
     {
         $roles = $ltiMessagePayload->getValidatedRoleCollection();
