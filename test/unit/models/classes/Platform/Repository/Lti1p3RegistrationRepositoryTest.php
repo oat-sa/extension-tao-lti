@@ -111,8 +111,16 @@ class Lti1p3RegistrationRepositoryTest extends TestCase
             ->method('searchById')
             ->willReturn(null);
 
-        $platform = new LtiPlatform('id', 'label', 'clientId', 'deploymentId', 'audience',
-            'http://oauth.aceess/token.url', 'http://oidc.auth.url', 'http://jwks.url');
+        $platform = new LtiPlatform(
+            'id',
+            'label',
+            'audience',
+            'http://oauth.aceess/token.url',
+            'http://oidc.auth.url',
+            'http://jwks.url',
+            'clientId',
+            'deploymentId'
+        );
 
         $this->ltiPlatformRepository
             ->method('searchById')
@@ -120,13 +128,13 @@ class Lti1p3RegistrationRepositoryTest extends TestCase
 
         $registration = $this->subject->find('id');
         $this->assertInstanceOf(Registration::class, $registration);
-        $this->assertSame($platform->getId(), $registration->getPlatform()->getIdentifier());
+        $this->assertSame($platform->getIdentifier(), $registration->getPlatform()->getIdentifier());
         $this->assertSame($platform->getClientId(), $registration->getClientId());
         $this->assertSame($platform->getAudience(), $registration->getPlatform()->getAudience());
         $this->assertSame([$platform->getDeploymentId()], $registration->getDeploymentIds());
         $this->assertSame($platform->getJwksUrl(), $registration->getPlatformJwksUrl());
         $this->assertSame($platform->getOidcAuthenticationUrl(), $registration->getPlatform()->getOidcAuthenticationUrl());
-        $this->assertSame($platform->getOuath2AccessTokenUrl(), $registration->getPlatform()->getOAuth2AccessTokenUrl());
+        $this->assertSame($platform->getOAuth2AccessTokenUrl(), $registration->getPlatform()->getOAuth2AccessTokenUrl());
     }
 
     public function testFindWillReturnRegistrationForTool(): void
@@ -251,10 +259,20 @@ class Lti1p3RegistrationRepositoryTest extends TestCase
 
         $this->expectToolAndPlatformKeys([$this->toolKeyChain], [$this->platformKeyChain]);
 
+        $platform = new LtiPlatform(
+            'id',
+            'label',
+            'audience',
+            'http://oauth.aceess/token.url',
+            'http://oidc.auth.url',
+            'http://jwks.url',
+            'clientId',
+            'deploymentId'
+        );
+
         $this->ltiPlatformRepository
             ->method('findAll')
-            ->willReturn([new LtiPlatform('id', 'label', 'clientId', 'deploymentId', 'audience',
-                'http://oauth.aceess/token.url', 'http://oidc.auth.url', 'http://jwks.url')]);
+            ->willReturn([$platform]);
 
         $providersAndRegistrations = $this->subject->findAll();
 

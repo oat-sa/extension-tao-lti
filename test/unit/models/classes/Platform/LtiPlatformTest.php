@@ -31,16 +31,33 @@ class LtiPlatformTest extends TestCase
     /**
      * @dataProvider ltiDataProvider
      */
-    public function testGetters($id, $label, $clientId, $deploymentId, $audience, $oauth2AccessTokenUrl, $oidcAuthenticationUrl, $jwksUrl): void
-    {
-        $subject = new LtiPlatform($id, $label, $clientId, $deploymentId, $audience, $oauth2AccessTokenUrl, $oidcAuthenticationUrl, $jwksUrl);
+    public function testGetters(
+        $id,
+        $name,
+        $audience,
+        $oauth2AccessTokenUrl,
+        $oidcAuthenticationUrl,
+        $jwksUrl,
+        $clientId,
+        $deploymentId
+    ): void {
+        $subject = new LtiPlatform(
+            $id,
+            $name,
+            $audience,
+            $oauth2AccessTokenUrl,
+            $oidcAuthenticationUrl,
+            $jwksUrl,
+            $clientId,
+            $deploymentId
+        );
 
-        $this->assertEquals($id, $subject->getId());
-        $this->assertEquals($label, $subject->getLabel());
+        $this->assertEquals($id, $subject->getIdentifier());
+        $this->assertEquals($name, $subject->getName());
         $this->assertEquals($clientId, $subject->getClientId());
         $this->assertEquals($deploymentId, $subject->getDeploymentId());
         $this->assertEquals($audience, $subject->getAudience());
-        $this->assertEquals($oauth2AccessTokenUrl, $subject->getOuath2AccessTokenUrl());
+        $this->assertEquals($oauth2AccessTokenUrl, $subject->getOAuth2AccessTokenUrl());
         $this->assertEquals($oidcAuthenticationUrl, $subject->getOidcAuthenticationUrl());
         $this->assertEquals($jwksUrl, $subject->getJwksUrl());
     }
@@ -48,8 +65,26 @@ class LtiPlatformTest extends TestCase
     public function ltiDataProvider(): array
     {
         return [
-            ['uid', 'label', 'client_id', 'deployment_id', 'audience', 'http://oauth.aceess/token.url', 'http://oidc.auth.url', 'http://jwks.url'],
-            ['123', '', '', '', 'audience', 'http://oauth.aceess/token.url', 'http://oidc.auth.url', 'http://jwks.url'],
+            [
+                'uid',
+                'name',
+                'audience',
+                'http://oauth.aceess/token.url',
+                'http://oidc.auth.url',
+                'http://jwks.url',
+                'client_id',
+                'deployment_id'
+            ],
+            [
+                '123',
+                '',
+                'audience',
+                'http://oauth.aceess/token.url',
+                'http://oidc.auth.url',
+                'http://jwks.url',
+                '',
+                '',
+            ],
         ];
     }
 }

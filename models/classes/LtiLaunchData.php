@@ -24,8 +24,8 @@ namespace oat\taoLti\models\classes;
 use common_http_Request;
 use core_kernel_classes_Resource;
 use OAT\Library\Lti1p3Core\Message\Payload\LtiMessagePayloadInterface;
+use OAT\Library\Lti1p3Core\Platform\PlatformInterface;
 use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
-use oat\taoLti\models\classes\Platform\LtiPlatform;
 use tao_helpers_Request;
 use oat\oatbox\log\LoggerAwareTrait;
 use Psr\Http\Message\ServerRequestInterface;
@@ -130,8 +130,10 @@ class LtiLaunchData implements \JsonSerializable
         return new static($request->getParams(), $extra);
     }
 
-    public static function fromLti1p3MessagePayload(LtiMessagePayloadInterface $ltiMessagePayload, LtiPlatform $platform = null)
-    {
+    public static function fromLti1p3MessagePayload(
+        LtiMessagePayloadInterface $ltiMessagePayload,
+        PlatformInterface $platform = null
+    ) {
         $variables[self::OAUTH_CONSUMER_KEY] = '';
         $variables[self::RESOURCE_LINK_ID] = $ltiMessagePayload->getResourceLink() ? $ltiMessagePayload->getResourceLink()->getIdentifier() : null;
         $variables[self::RESOURCE_LINK_TITLE] = $ltiMessagePayload->getResourceLink() ? $ltiMessagePayload->getResourceLink()->getTitle() : null;
@@ -153,14 +155,14 @@ class LtiLaunchData implements \JsonSerializable
 
         if ($platform) {
             // we need to have inner platform ID
-            $variables[self::TOOL_CONSUMER_INSTANCE_ID] = $platform->getId();
+            $variables[self::TOOL_CONSUMER_INSTANCE_ID] = $platform->getIdentifier();
 
             if ($platformFromClaim = $ltiMessagePayload->getPlatformInstance()) {
                 $variables[self::TOOL_CONSUMER_INSTANCE_NAME] = $platformFromClaim->getName();
                 $variables[self::TOOL_CONSUMER_INSTANCE_DESCRIPTION] = $platformFromClaim->getDescription();
             } else {
-                $variables[self::TOOL_CONSUMER_INSTANCE_NAME] = $platform->getLabel();
-                $variables[self::TOOL_CONSUMER_INSTANCE_DESCRIPTION] = $platform->getLabel();
+                $variables[self::TOOL_CONSUMER_INSTANCE_NAME] = $platform->getName();
+                $variables[self::TOOL_CONSUMER_INSTANCE_DESCRIPTION] = $platform->getName();
             }
 
         }

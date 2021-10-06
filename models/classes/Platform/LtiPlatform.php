@@ -22,28 +22,24 @@ declare(strict_types=1);
 
 namespace oat\taoLti\models\classes\Platform;
 
+use OAT\Library\Lti1p3Core\Platform\PlatformInterface;
+
 /**
  * LTI platform Value Object.
  */
-class LtiPlatform
+class LtiPlatform implements PlatformInterface
 {
     /** @var string */
-    private $id;
+    private $identifier;
 
     /** @var string */
-    private $label;
-
-    /** @var string */
-    private $clientId;
-
-    /** @var string */
-    private $deploymentId;
+    private $name;
 
     /** @var string */
     private $audience;
 
     /** @var string */
-    private $ouath2AccessTokenUrl;
+    private $oauth2AccessTokenUrl;
 
     /** @var string */
     private $oidcAuthenticationUrl;
@@ -51,34 +47,60 @@ class LtiPlatform
     /** @var string */
     private $jwksUrl;
 
+    /** @var string */
+    private $clientId;
+
+    /** @var string */
+    private $deploymentId;
+
     public function __construct(
-        string $id,
-        string $label,
-        string $clientId,
-        string $deploymentId,
+        string $identifier,
+        string $name,
         string $audience,
-        string $ouath2AccessTokenUrl,
+        string $oauth2AccessTokenUrl,
         string $oidcAuthenticationUrl,
-        string $jwksUrl
+        string $jwksUrl,
+        string $clientId,
+        string $deploymentId
     ) {
-        $this->id = $id;
-        $this->label = $label;
-        $this->clientId = $clientId;
-        $this->deploymentId = $deploymentId;
+        $this->identifier = $identifier;
+        $this->name = $name;
         $this->audience = $audience;
-        $this->ouath2AccessTokenUrl = $ouath2AccessTokenUrl;
+        $this->oauth2AccessTokenUrl = $oauth2AccessTokenUrl;
         $this->oidcAuthenticationUrl = $oidcAuthenticationUrl;
         $this->jwksUrl = $jwksUrl;
+        $this->clientId = $clientId;
+        $this->deploymentId = $deploymentId;
     }
 
-    public function getId(): string
+    public function getIdentifier(): string
     {
-        return $this->id;
+        return $this->identifier;
     }
 
-    public function getLabel(): string
+    public function getName(): string
     {
-        return $this->label;
+        return $this->name;
+    }
+
+    public function getAudience(): string
+    {
+        return $this->audience;
+    }
+
+    public function getOidcAuthenticationUrl(): string
+    {
+        return $this->oidcAuthenticationUrl;
+    }
+
+    public function getOAuth2AccessTokenUrl(): string
+    {
+        return $this->oauth2AccessTokenUrl;
+    }
+
+    public function getJwksUrl(): string
+    {
+        return $this->jwksUrl;
     }
 
     public function getClientId(): string
@@ -89,25 +111,5 @@ class LtiPlatform
     public function getDeploymentId(): string
     {
         return $this->deploymentId;
-    }
-
-    public function getAudience(): string
-    {
-        return $this->audience;
-    }
-
-    public function getOuath2AccessTokenUrl(): string
-    {
-        return $this->ouath2AccessTokenUrl;
-    }
-
-    public function getOidcAuthenticationUrl(): string
-    {
-        return $this->oidcAuthenticationUrl;
-    }
-
-    public function getJwksUrl(): string
-    {
-        return $this->jwksUrl;
     }
 }
