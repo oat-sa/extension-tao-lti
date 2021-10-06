@@ -43,10 +43,6 @@ class Lti1p3Validator extends ConfigurableService
         try {
             $ltiMessagePayload = $this->validateRequest($request);
 
-            if ($ltiMessagePayload === null) {
-                throw new LtiException('No LTI message payload received.');
-            }
-
             $this->validateRole($ltiMessagePayload);
         } catch (Lti1p3Exception $exception) {
             throw new LtiException($exception->getMessage());
@@ -71,7 +67,13 @@ class Lti1p3Validator extends ConfigurableService
             throw new Lti1p3Exception($result->getError());
         }
 
-        return $result->getPayload();
+        $ltiMessagePayload = $result->getPayload();
+
+        if ($ltiMessagePayload === null) {
+            throw new Lti1p3Exception('No LTI message payload received.');
+        }
+
+        return $ltiMessagePayload;
     }
 
     /**
