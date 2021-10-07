@@ -53,7 +53,7 @@ class LtiAgsScoreService extends ConfigurableService implements ServiceLocatorAw
 
         if (!$scoreClient instanceof ScoreServiceInterface) {
             throw new LtiAgsException(
-                sprintf('%s option should implement ScoreServiceInterface',self::OPTION_SCORE_SERVICE_CLIENT)
+                sprintf('%s option should implement ScoreServiceInterface', self::OPTION_SCORE_SERVICE_CLIENT)
             );
         }
 
