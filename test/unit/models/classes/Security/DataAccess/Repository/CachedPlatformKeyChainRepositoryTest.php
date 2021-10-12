@@ -24,9 +24,10 @@ namespace oat\taoLti\test\unit\models\classes\Security\DataAccess\Repository;
 
 use oat\generis\test\MockObject;
 use oat\generis\test\TestCase;
+use OAT\Library\Lti1p3Core\Security\Key\Key;
+use OAT\Library\Lti1p3Core\Security\Key\KeyChain;
+use OAT\Library\Lti1p3Core\Security\Key\KeyChainInterface;
 use oat\oatbox\cache\SimpleCache;
-use oat\tao\model\security\Business\Domain\Key\Key;
-use oat\tao\model\security\Business\Domain\Key\KeyChain;
 use oat\tao\model\security\Business\Domain\Key\KeyChainCollection;
 use oat\tao\model\security\Business\Domain\Key\KeyChainQuery;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\CachedPlatformKeyChainRepository;
@@ -86,21 +87,21 @@ class CachedPlatformKeyChainRepositoryTest extends TestCase
             ->expects($this->exactly(2))
             ->method('set')
             ->withConsecutive(
-                [sprintf(CachedPlatformKeyChainRepository::PRIVATE_PATTERN, self::KEY_CHAIN_ID), $keyChain->getPrivateKey()->getValue()],
-                [sprintf(CachedPlatformKeyChainRepository::PUBLIC_PATTERN, self::KEY_CHAIN_ID), $keyChain->getPublicKey()->getValue()]
+                [sprintf(CachedPlatformKeyChainRepository::PRIVATE_PATTERN, self::KEY_CHAIN_ID), $keyChain->getPrivateKey()->getContent()],
+                [sprintf(CachedPlatformKeyChainRepository::PUBLIC_PATTERN, self::KEY_CHAIN_ID), $keyChain->getPublicKey()->getContent()]
             );
 
         $this->platformKeyChainRepository
             ->expects($this->once())
-            ->method('save');
+            ->method('save')
+            ->willReturn(true);
 
-        $this->assertNull($this->subject->save($keyChain));
+        $this->assertTrue($this->subject->save($keyChain));
     }
 
-    public function testFindAllWhenCacheEmpty(): void
+    public function testFindWhenCacheEmpty(): void
     {
         $keyChain = $this->getKeyChain();
-        $keyChainQuery = new KeyChainQuery(self::KEY_CHAIN_ID);
 
         $this->cache
             ->method('has')
@@ -117,28 +118,24 @@ class CachedPlatformKeyChainRepositoryTest extends TestCase
             ->expects($this->exactly(2))
             ->method('set')
             ->withConsecutive(
-                [sprintf(CachedPlatformKeyChainRepository::PRIVATE_PATTERN, self::KEY_CHAIN_ID), $keyChain->getPrivateKey()->getValue()],
-                [sprintf(CachedPlatformKeyChainRepository::PUBLIC_PATTERN, self::KEY_CHAIN_ID), $keyChain->getPublicKey()->getValue()]
+                [sprintf(CachedPlatformKeyChainRepository::PRIVATE_PATTERN, self::KEY_CHAIN_ID), $keyChain->getPrivateKey()->getContent()],
+                [sprintf(CachedPlatformKeyChainRepository::PUBLIC_PATTERN, self::KEY_CHAIN_ID), $keyChain->getPublicKey()->getContent()]
             );
 
         $this->platformKeyChainRepository
             ->expects($this->once())
-            ->method('findAll')
-            ->willReturn(new KeyChainCollection($this->getKeyChain()));
+            ->method('find')
+            ->willReturn($this->getKeyChain());
 
-        $result = $this->subject->findAll($keyChainQuery);
+        $keyChain = $this->subject->find(self::KEY_CHAIN_ID);
 
-        $keyChainCollection = $result->getKeyChains();
-
-        $this->assertSame(self::KEY_CHAIN_ID, $keyChainCollection[0]->getIdentifier());
-        $this->assertSame('privateKey', $keyChainCollection[0]->getPrivateKey()->getValue());
-        $this->assertSame('publicKey', $keyChainCollection[0]->getPublicKey()->getValue());
+        $this->assertSame(self::KEY_CHAIN_ID, $keyChain->getIdentifier());
+        $this->assertSame('privateKey', $keyChain->getPrivateKey()->getContent());
+        $this->assertSame('publicKey', $keyChain->getPublicKey()->getContent());
     }
 
-    public function testFindAll(): void
+    public function testFind(): void
     {
-        $keyChainQuery = new KeyChainQuery(self::KEY_CHAIN_ID);
-
         $this->cache
             ->method('has')
             ->withConsecutive(
@@ -165,55 +162,14 @@ class CachedPlatformKeyChainRepositoryTest extends TestCase
                 ]
             );
 
-        $result = $this->subject->findAll($keyChainQuery);
+        $keyChain = $this->subject->find(self::KEY_CHAIN_ID);
 
-        $keyChainCollection = $result->getKeyChains();
-
-        $this->assertSame(self::KEY_CHAIN_ID, $keyChainCollection[0]->getIdentifier());
-        $this->assertSame('privateKey', $keyChainCollection[0]->getPrivateKey()->getValue());
-        $this->assertSame('publicKey', $keyChainCollection[0]->getPublicKey()->getValue());
+        $this->assertSame(self::KEY_CHAIN_ID, $keyChain->getIdentifier());
+        $this->assertSame('privateKey', $keyChain->getPrivateKey()->getContent());
+        $this->assertSame('publicKey', $keyChain->getPublicKey()->getContent());
     }
 
-    public function testFindAllWithoutKeyChainQueryIdentifier(): void
-    {
-        $defaultKeyId = 'toto';
-
-        $this->platformKeyChainRepository
-            ->method('getDefaultKeyId')
-            ->willReturn($defaultKeyId);
-
-        $this->cache
-            ->method('has')
-            ->withConsecutive(
-                [sprintf(CachedPlatformKeyChainRepository::PRIVATE_PATTERN, $defaultKeyId)],
-                [sprintf(CachedPlatformKeyChainRepository::PUBLIC_PATTERN, $defaultKeyId)]
-            )
-            ->willReturnOnConsecutiveCalls(
-                true,
-                true
-            )
-        ;
-
-        $this->cache
-            ->expects($this->once())
-            ->method('getMultiple')
-            ->with(
-                [
-                    sprintf(CachedPlatformKeyChainRepository::PRIVATE_PATTERN, $defaultKeyId),
-                    sprintf(CachedPlatformKeyChainRepository::PUBLIC_PATTERN, $defaultKeyId),
-                ]
-            )->willReturn(
-                [
-                    sprintf(CachedPlatformKeyChainRepository::PRIVATE_PATTERN, $defaultKeyId) => 'privateKey',
-                    sprintf(CachedPlatformKeyChainRepository::PUBLIC_PATTERN, $defaultKeyId) => 'publicKey',
-                ]
-            );
-
-        $this->subject->setOption(PlatformKeyChainRepository::OPTION_DEFAULT_KEY_ID, $defaultKeyId);
-        $this->subject->findAll(new KeyChainQuery());
-    }
-
-    private function getKeyChain(): KeyChain
+    private function getKeyChain(): KeyChainInterface
     {
         return new KeyChain(
             self::KEY_CHAIN_ID,

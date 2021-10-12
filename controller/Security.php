@@ -21,15 +21,20 @@ namespace oat\taoLti\controller;
 
 use League\OAuth2\Server\Exception\OAuthServerException;
 use OAT\Library\Lti1p3Core\Registration\RegistrationRepositoryInterface;
+use OAT\Library\Lti1p3Core\Security\Key\KeyChainRepositoryInterface;
+use OAT\Library\Lti1p3Core\Security\OAuth2\Generator\AccessTokenResponseGenerator;
+use OAT\Library\Lti1p3Core\Security\OAuth2\Generator\AccessTokenResponseGeneratorInterface;
 use OAT\Library\Lti1p3Core\Security\Oidc\OidcInitiator;
 use oat\tao\model\http\Controller;
 use oat\tao\model\security\Business\Contract\JwksRepositoryInterface;
 use oat\taoLti\models\classes\Platform\Repository\Lti1p3RegistrationRepository;
 use oat\taoLti\models\classes\Platform\Service\Oidc\OidcLoginAuthenticatorInterface;
 use oat\taoLti\models\classes\Platform\Service\Oidc\OidcLoginAuthenticatorProxy;
-use oat\taoLti\models\classes\Security\AccessTokenResponseGenerator;
-use oat\taoLti\models\classes\Security\AccessTokenResponseGeneratorInterface;
+
+use oat\taoLti\models\classes\Security\AuthorizationServer\AuthorizationServerFactory;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\CachedPlatformJwksRepository;
+use oat\taoLti\models\classes\Security\DataAccess\Repository\CachedPlatformKeyChainRepository;
+use oat\taoLti\models\classes\Security\DataAccess\Repository\PlatformKeyChainRepository;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorAwareTrait;
 use function GuzzleHttp\Psr7\stream_for;
@@ -44,7 +49,8 @@ class Security extends Controller implements ServiceLocatorAwareInterface
             $this->setResponse(
                 $this->getAccessTokenGenerator()->generate(
                     $this->getPsrRequest(),
-                    $this->getPsrResponse()
+                    $this->getPsrResponse(),
+                    $this->getPlatformKeyChainRepository()->getDefaultKeyId()
                 )
             );
         } catch (OAuthServerException $exception) {
@@ -80,6 +86,21 @@ class Security extends Controller implements ServiceLocatorAwareInterface
         $this->redirect($message->toUrl());
     }
 
+    private function getKeyChainRepository(): KeyChainRepositoryInterface
+    {
+        return $this->getServiceLocator()->get(CachedPlatformKeyChainRepository::class);
+    }
+
+    private function getPlatformKeyChainRepository(): PlatformKeyChainRepository
+    {
+        return $this->getServiceLocator()->get(PlatformKeyChainRepository::SERVICE_ID);
+    }
+
+    private function getAuthorizationServerFactory(): AuthorizationServerFactory
+    {
+        return $this->getServiceLocator()->get(AuthorizationServerFactory::class);
+    }
+
     private function getJwksRepository(): JwksRepositoryInterface
     {
         return $this->getServiceLocator()->get(CachedPlatformJwksRepository::class);
@@ -90,13 +111,16 @@ class Security extends Controller implements ServiceLocatorAwareInterface
         return $this->getServiceLocator()->get(OidcLoginAuthenticatorProxy::class);
     }
 
-    private function getAccessTokenGenerator(): AccessTokenResponseGeneratorInterface
-    {
-        return $this->getServiceLocator()->get(AccessTokenResponseGenerator::class);
-    }
-
     private function getLti1p3RegistrationRepository(): RegistrationRepositoryInterface
     {
         return $this->getServiceLocator()->get(Lti1p3RegistrationRepository::class);
+    }
+
+    private function getAccessTokenGenerator(): AccessTokenResponseGeneratorInterface
+    {
+        return new AccessTokenResponseGenerator(
+            $this->getKeyChainRepository(),
+            $this->getAuthorizationServerFactory()->getImplementation()
+        );
     }
 }

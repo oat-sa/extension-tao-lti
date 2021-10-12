@@ -22,14 +22,15 @@ declare(strict_types=1);
 
 namespace oat\taoLti\models\classes\Platform\Service;
 
+use OAT\Library\Lti1p3Core\Security\Key\Key;
+use OAT\Library\Lti1p3Core\Security\Key\KeyChain;
+use OAT\Library\Lti1p3Core\Security\Key\KeyChainInterface;
 use oat\oatbox\service\ConfigurableService;
-use oat\tao\model\security\Business\Domain\Key\Key;
-use oat\tao\model\security\Business\Domain\Key\KeyChain;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\PlatformKeyChainRepository;
 
 class KeyChainGenerator extends ConfigurableService implements KeyChainGeneratorInterface
 {
-    public function generate(): KeyChain
+    public function generate(): KeyChainInterface
     {
         $resource = openssl_pkey_new($this->getOption(self::OPTION_DATA_STORE));
         openssl_pkey_export($resource, $privateKey);

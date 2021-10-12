@@ -39,9 +39,9 @@ class KeyChainGeneratorTest extends TestCase
     {
         $result = $this->subject->generate();
 
-        $this->assertStringContainsString('-----BEGIN PRIVATE KEY-----', $result->getPrivateKey()->getValue());
-        $this->assertStringContainsString('-----END PRIVATE KEY-----', $result->getPrivateKey()->getValue());
-        $this->assertStringContainsString('-----BEGIN PUBLIC KEY-----', $result->getPublicKey()->getValue());
-        $this->assertStringContainsString('-----END PUBLIC KEY-----', $result->getPublicKey()->getValue());
+        $this->assertStringContainsString('-----BEGIN PRIVATE KEY-----', $result->getPrivateKey()->getContent());
+        $this->assertStringContainsString('-----END PRIVATE KEY-----', $result->getPrivateKey()->getContent());
+        $this->assertStringContainsString('-----BEGIN PUBLIC KEY-----', $result->getPublicKey()->getContent());
+        $this->assertStringContainsString('-----END PUBLIC KEY-----', $result->getPublicKey()->getContent());
     }
 }

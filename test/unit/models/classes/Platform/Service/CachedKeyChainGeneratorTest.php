@@ -4,9 +4,10 @@ namespace oat\taoLti\test\unit\models\classes\Platform\Service;
 
 use oat\generis\test\MockObject;
 use oat\generis\test\TestCase;
+use OAT\Library\Lti1p3Core\Security\Key\Key;
+use OAT\Library\Lti1p3Core\Security\Key\KeyChain;
+use OAT\Library\Lti1p3Core\Security\Key\KeyChainInterface;
 use oat\oatbox\cache\SimpleCache;
-use oat\tao\model\security\Business\Domain\Key\Key;
-use oat\tao\model\security\Business\Domain\Key\KeyChain;
 use oat\taoLti\models\classes\Platform\Service\CachedKeyChainGenerator;
 use oat\taoLti\models\classes\Platform\Service\KeyChainGenerator;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\CachedPlatformJwksRepository;
@@ -27,7 +28,7 @@ class CachedKeyChainGeneratorTest extends TestCase
     /** @var SimpleCache|MockObject */
     private $simpleCacheMock;
 
-    /** @var KeyChain */
+    /** @var KeyChainInterface */
     private $keyChain;
 
     public function setUp(): void

@@ -24,12 +24,11 @@ namespace oat\taoLti\test\unit\models\classes\Security\DataAccess\Repository;
 
 use ErrorException;
 use oat\generis\test\TestCase;
+use OAT\Library\Lti1p3Core\Security\Key\Key;
+use OAT\Library\Lti1p3Core\Security\Key\KeyChain;
+use OAT\Library\Lti1p3Core\Security\Key\KeyChainInterface;
 use oat\oatbox\filesystem\FileSystem;
 use oat\oatbox\filesystem\FileSystemService;
-use oat\tao\model\security\Business\Domain\Key\Key;
-use oat\tao\model\security\Business\Domain\Key\KeyChain;
-use oat\tao\model\security\Business\Domain\Key\KeyChainCollection;
-use oat\tao\model\security\Business\Domain\Key\KeyChainQuery;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\PlatformKeyChainRepository;
 use PHPUnit\Framework\MockObject\MockObject;
 
@@ -66,7 +65,7 @@ class PlatformKeyChainRepositoryTest extends TestCase
         );
     }
 
-    public function testFindAll(): void
+    public function testFind(): void
     {
         $this->fileSystem
             ->method('read')
@@ -75,9 +74,9 @@ class PlatformKeyChainRepositoryTest extends TestCase
                 'privateKey'
             );
 
-        $collection = $this->subject->findAll(new KeyChainQuery());
+        $keyChain = $this->subject->find('keyId');
 
-        $this->assertInstanceOf(KeyChainCollection::class, $collection);
+        $this->assertInstanceOf(KeyChainInterface::class, $keyChain);
         $this->assertEquals(
             $keyChain = new KeyChain(
                 'keyId',
@@ -85,20 +84,19 @@ class PlatformKeyChainRepositoryTest extends TestCase
                 new Key('publicKey'),
                 new Key('privateKey')
             ),
-            $collection->getKeyChains()[0]
+            $keyChain
         );
     }
 
-    public function testFindAllFails(): void
+    public function testFindFails(): void
     {
         $this->fileSystem
             ->method('read')
             ->willReturn(false);
 
-        $this->expectException(ErrorException::class);
-        $this->expectExceptionMessage('Impossible to read LTI keys');
+        $keyChain = $this->subject->find('');
 
-        $this->subject->findAll(new KeyChainQuery());
+        $this->assertNull($keyChain);
     }
 
     public function testSave(): void
@@ -107,11 +105,9 @@ class PlatformKeyChainRepositoryTest extends TestCase
             ->method('put')
             ->willReturn(true);
 
-        $this->assertNull(
-            $this->subject->save(
-                new KeyChain('', '', new Key(''), new Key(''))
-            )
-        );
+        $this->assertTrue($this->subject->save(
+            new KeyChain('', '', new Key(''), new Key(''))
+        ));
     }
 
     public function testSaveFails(): void

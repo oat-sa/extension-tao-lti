@@ -22,13 +22,13 @@ declare(strict_types=1);
 
 namespace oat\taoLti\models\classes\Security\DataAccess\Repository;
 
+use common_exception_NoImplementation;
+use OAT\Library\Lti1p3Core\Security\Key\Key;
+use OAT\Library\Lti1p3Core\Security\Key\KeyChain;
+use OAT\Library\Lti1p3Core\Security\Key\KeyChainInterface;
+use OAT\Library\Lti1p3Core\Security\Key\KeyChainRepositoryInterface;
 use oat\oatbox\cache\SimpleCache;
 use oat\oatbox\service\ConfigurableService;
-use oat\tao\model\security\Business\Contract\KeyChainRepositoryInterface;
-use oat\tao\model\security\Business\Domain\Key\Key;
-use oat\tao\model\security\Business\Domain\Key\KeyChain;
-use oat\tao\model\security\Business\Domain\Key\KeyChainCollection;
-use oat\tao\model\security\Business\Domain\Key\KeyChainQuery;
 use Psr\SimpleCache\CacheInterface;
 use Psr\SimpleCache\InvalidArgumentException;
 
@@ -37,78 +37,76 @@ class CachedPlatformKeyChainRepository extends ConfigurableService implements Ke
     public const PRIVATE_PATTERN = 'PLATFORM_LTI_PRIVATE_KEY_%s';
     public const PUBLIC_PATTERN = 'PLATFORM_LTI_PUBLIC_KEY_%s';
 
-    public function save(KeyChain $keyChain): void
+    public function save(KeyChainInterface $keyChain): bool
     {
         $this->setKeys(
             $keyChain,
-            new KeyChainQuery($keyChain->getIdentifier())
+            $keyChain->getIdentifier()
         );
 
-        $this->getPlatformKeyChainRepository()->save($keyChain);
+        return $this->getPlatformKeyChainRepository()->save($keyChain);
     }
 
-    public function findAll(KeyChainQuery $query): KeyChainCollection
+    public function find(string $identifier): ?KeyChainInterface
     {
-        if ($query->getIdentifier() == null) {
-            $query = new KeyChainQuery($this->getPlatformKeyChainRepository()->getDefaultKeyId());
-        }
-
-        if ($this->isCacheAvailable($query)) {
+        if ($this->isCacheAvailable($identifier)) {
             //TODO: Needs to be refactor if we have multiple key chains
             $rawKeys = $this->getCacheService()->getMultiple(
                 [
-                    sprintf(self::PRIVATE_PATTERN, $query->getIdentifier()),
-                    sprintf(self::PUBLIC_PATTERN, $query->getIdentifier()),
+                    sprintf(self::PRIVATE_PATTERN, $identifier),
+                    sprintf(self::PUBLIC_PATTERN, $identifier),
                 ]
             );
 
             $platformKeyChainRepository = $this->getPlatformKeyChainRepository();
 
-            return new KeyChainCollection(
-                new KeyChain(
-                    $platformKeyChainRepository->getOption(PlatformKeyChainRepository::OPTION_DEFAULT_KEY_ID),
-                    $platformKeyChainRepository->getOption(PlatformKeyChainRepository::OPTION_DEFAULT_KEY_NAME),
-                    new Key($rawKeys[sprintf(self::PUBLIC_PATTERN, $query->getIdentifier())]),
-                    new Key($rawKeys[sprintf(self::PRIVATE_PATTERN, $query->getIdentifier())])
-                )
+            return new KeyChain(
+                $platformKeyChainRepository->getOption(PlatformKeyChainRepository::OPTION_DEFAULT_KEY_ID),
+                $platformKeyChainRepository->getOption(PlatformKeyChainRepository::OPTION_DEFAULT_KEY_NAME),
+                new Key($rawKeys[sprintf(self::PUBLIC_PATTERN, $identifier)]),
+                new Key($rawKeys[sprintf(self::PRIVATE_PATTERN, $identifier)])
             );
         }
 
-        $keyChainCollection = $this->getPlatformKeyChainRepository()->findAll($query);
+        $keyChain = $this->getPlatformKeyChainRepository()->find($identifier);
 
-        foreach ($keyChainCollection->getKeyChains() as $keyChain) {
-            $this->setKeys($keyChain, $query);
+        if ($keyChain !== null) {
+            $this->setKeys($keyChain, $identifier);
         }
 
-        return $keyChainCollection;
+        return $keyChain;
+    }
+
+    /**
+     * @throws common_exception_NoImplementation
+     */
+    public function findByKeySetName(string $keySetName): array
+    {
+        throw new common_exception_NoImplementation();
     }
 
     /**
      * @throws InvalidArgumentException
      */
-    private function setKeys(KeyChain $keyChain, KeyChainQuery $query): void
+    private function setKeys(KeyChainInterface $keyChain, string $identifier): void
     {
         $this->getCacheService()->set(
-            sprintf(self::PRIVATE_PATTERN,
-                $query->getIdentifier()
-            ),
+            sprintf(self::PRIVATE_PATTERN, $identifier),
 
-            $keyChain->getPrivateKey()->getValue()
+            $keyChain->getPrivateKey()->getContent()
         );
 
         $this->getCacheService()->set(
-            sprintf(self::PUBLIC_PATTERN,
-                $query->getIdentifier()
-            ),
+            sprintf(self::PUBLIC_PATTERN, $identifier),
 
-            $keyChain->getPublicKey()->getValue()
+            $keyChain->getPublicKey()->getContent()
         );
     }
 
-    private function isCacheAvailable(KeyChainQuery $query): bool
+    private function isCacheAvailable(string $identifier): bool
     {
-        return $this->getCacheService()->has(sprintf(self::PRIVATE_PATTERN, $query->getIdentifier())) &&
-            $this->getCacheService()->has(sprintf(self::PUBLIC_PATTERN, $query->getIdentifier()));
+        return $this->getCacheService()->has(sprintf(self::PRIVATE_PATTERN, $identifier)) &&
+            $this->getCacheService()->has(sprintf(self::PUBLIC_PATTERN, $identifier));
     }
 
     private function getCacheService(): CacheInterface

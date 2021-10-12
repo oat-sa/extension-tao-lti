@@ -22,22 +22,17 @@ declare(strict_types=1);
 
 namespace oat\taoLti\models\classes\Security\AuthorizationServer;
 
-use InvalidArgumentException;
-use League\OAuth2\Server\AuthorizationServer;
-use League\OAuth2\Server\CryptKey;
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
 use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
 use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
+use \OAT\Library\Lti1p3Core\Security\OAuth2\Factory\AuthorizationServerFactory as LibraryAuthorizationServerFactory;
 use OAT\Library\Lti1p3Core\Security\Jwks\Fetcher\JwksFetcher;
 use OAT\Library\Lti1p3Core\Security\OAuth2\Entity\Scope;
-use OAT\Library\Lti1p3Core\Security\OAuth2\Grant\ClientAssertionCredentialsGrant;
 use OAT\Library\Lti1p3Core\Security\OAuth2\Repository\AccessTokenRepository;
 use OAT\Library\Lti1p3Core\Security\OAuth2\Repository\ClientRepository;
 use OAT\Library\Lti1p3Core\Security\OAuth2\Repository\ScopeRepository;
-use OAT\Library\Lti1p3Core\Security\OAuth2\ResponseType\ScopedBearerTokenResponse;
 use oat\oatbox\cache\ItemPoolSimpleCacheAdapter;
 use oat\oatbox\service\ConfigurableService;
-use oat\tao\model\security\Business\Domain\Key\KeyChain;
 use oat\taoLti\models\classes\Platform\Repository\Lti1p3RegistrationRepository;
 use Psr\Cache\CacheItemPoolInterface;
 
@@ -46,30 +41,22 @@ class AuthorizationServerFactory extends ConfigurableService
     public const SERVICE_ID = 'taoLti/AuthorizationServerFactory';
     public const OPTION_ENCRYPTION_KEY = 'encryptionKey';
 
-    public function create(KeyChain $keyChain): AuthorizationServer
+    /** @var LibraryAuthorizationServerFactory */
+    private $implementation = null;
+
+    // it is needed only for configurable encryption key, maybe there is another way to do it and avoid having this class
+    public function getImplementation(): LibraryAuthorizationServerFactory
     {
-        if (null === $keyChain->getPrivateKey()) {
-            throw new InvalidArgumentException('Missing private key');
+        if (null === $this->implementation) {
+            $this->implementation = new LibraryAuthorizationServerFactory(
+                $this->getClientRepository(),
+                $this->getAccessTokenRepository(),
+                $this->getScopeRepository(),
+                $this->getOption(self::OPTION_ENCRYPTION_KEY)
+            );
         }
 
-        $privateKey = new CryptKey(
-            $keyChain->getPrivateKey()->getValue(),
-            null,
-            false
-        );
-
-        $server = new AuthorizationServer(
-            $this->getClientRepository(),
-            $this->getAccessTokenRepository(),
-            $this->getScopeRepository(),
-            $privateKey,
-            $this->getOption(self::OPTION_ENCRYPTION_KEY),
-            new ScopedBearerTokenResponse()
-        );
-
-        $server->enableGrantType(new ClientAssertionCredentialsGrant());
-
-        return $server;
+        return $this->implementation;
     }
 
     private function getRegistrationRepository(): Lti1p3RegistrationRepository

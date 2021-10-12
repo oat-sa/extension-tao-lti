@@ -22,40 +22,15 @@ declare(strict_types=1);
 
 namespace unit\models\classes\Security;
 
-use League\OAuth2\Server\CryptKey;
 use oat\generis\test\TestCase;
-use OAT\Library\Lti1p3Core\Security\Jwks\Fetcher\JwksFetcher;
-use OAT\Library\Lti1p3Core\Security\OAuth2\Grant\ClientAssertionCredentialsGrant;
-use OAT\Library\Lti1p3Core\Security\OAuth2\Repository\AccessTokenRepository;
-use OAT\Library\Lti1p3Core\Security\OAuth2\Repository\ClientRepository;
-use OAT\Library\Lti1p3Core\Security\OAuth2\Repository\ScopeRepository;
-use OAT\Library\Lti1p3Core\Security\OAuth2\ResponseType\ScopedBearerTokenResponse;
 use oat\oatbox\cache\ItemPoolSimpleCacheAdapter;
 use oat\oatbox\log\LoggerService;
-use oat\tao\model\security\Business\Domain\Key\Key;
-use oat\tao\model\security\Business\Domain\Key\KeyChain;
-use oat\tao\test\unit\helpers\NoPrivacyTrait;
 use oat\taoLti\models\classes\Platform\Repository\Lti1p3RegistrationRepository;
 use oat\taoLti\models\classes\Security\AuthorizationServer\AuthorizationServerFactory;
 
 class AuthorizationServerFactoryTest extends TestCase
 {
-    use NoPrivacyTrait;
-
-    private const PRIVATE_KEY_PATH = __DIR__ . '/../../../../../vendor/oat-sa/lib-lti1p3-core/tests/Resource/Key/RSA/private.key';
-    private const PUBLIC_KEY_PATH = __DIR__ . '/../../../../../vendor/oat-sa/lib-lti1p3-core/tests/Resource/Key/RSA/public.key';
-
     private $subject;
-
-    private $registrationRepository;
-
-    private $accessTokenRepository;
-
-    private $cache;
-    /**
-     * @var \PHPUnit\Framework\MockObject\MockObject|string
-     */
-    private $logger;
 
     protected function setUp(): void
     {
@@ -63,90 +38,16 @@ class AuthorizationServerFactoryTest extends TestCase
             AuthorizationServerFactory::OPTION_ENCRYPTION_KEY => 'toto',
         ]);
 
-        $this->registrationRepository = $this->createMock(Lti1p3RegistrationRepository::class);
-        $this->accessTokenRepository = $this->createMock(accessTokenRepository::class);
-        $this->cache = $this->createMock(ItemPoolSimpleCacheAdapter::class);
-        $this->logger = $this->createMock(LoggerService::class);
-
         $this->subject->setServiceLocator($this->getServiceLocatorMock([
-            Lti1p3RegistrationRepository::class => $this->registrationRepository,
-            ItemPoolSimpleCacheAdapter::class => $this->cache,
-            LoggerService::SERVICE_ID => $this->logger,
+            Lti1p3RegistrationRepository::class => $this->createMock(Lti1p3RegistrationRepository::class),
+            ItemPoolSimpleCacheAdapter::class => $this->createMock(ItemPoolSimpleCacheAdapter::class),
+            LoggerService::SERVICE_ID => $this->createMock(LoggerService::class),
         ]));
     }
 
-    public function testCreate()
+    public function testImplementation(): void
     {
-        $keyChainPrivateKey = file_get_contents(self::PRIVATE_KEY_PATH);
-        $keyChainPublicKey = file_get_contents(self::PUBLIC_KEY_PATH);
-
-        $keyChain = new KeyChain(
-            'toto',
-            'toto',
-            new Key($keyChainPublicKey),
-            new Key($keyChainPrivateKey)
-        );
-
-        $authorizationServer = $this->subject->create($keyChain);
-
-        $clientRepository = $this->getPrivateProperty($authorizationServer, 'clientRepository');
-        $this->assertInstanceOf(ClientRepository::class, $clientRepository);
-        $this->assertSame(
-            $this->registrationRepository,
-            $this->getPrivateProperty($clientRepository, 'repository')
-        );
-        $fetcher = $this->getPrivateProperty($clientRepository, 'fetcher');
-        $this->assertInstanceOf(JwksFetcher::class, $fetcher);
-        $this->assertSame($this->cache, $this->getPrivateProperty($fetcher, 'cache'));
-        $this->assertSame($this->logger, $this->getPrivateProperty($fetcher, 'logger'));
-
-        $accessTokenRepository = $this->getPrivateProperty($authorizationServer, 'accessTokenRepository');
-        $this->assertInstanceOf(AccessTokenRepository::class, $accessTokenRepository);
-        $this->assertSame(
-            $this->cache,
-            $this->getPrivateProperty($accessTokenRepository, 'cache')
-        );
-        $this->assertSame(
-            $this->logger,
-            $this->getPrivateProperty($accessTokenRepository, 'logger')
-        );
-
-        $accessTokenRepository = $this->getPrivateProperty($authorizationServer, 'accessTokenRepository');
-        $this->assertInstanceOf(AccessTokenRepository::class, $accessTokenRepository);
-        $this->assertSame(
-            $this->cache,
-            $this->getPrivateProperty($accessTokenRepository, 'cache')
-        );
-        $this->assertSame(
-            $this->logger,
-            $this->getPrivateProperty($accessTokenRepository, 'logger')
-        );
-
-        $scopeRepository = $this->getPrivateProperty($authorizationServer, 'scopeRepository');
-        $this->assertInstanceOf(ScopeRepository::class, $scopeRepository);
-        /** @var \OAT\Library\Lti1p3Core\Util\Collection\Collection $scopes */
-        $scopes = $this->getPrivateProperty($scopeRepository, 'scopes');
-        $scopes = $scopes->all();
-        $this->assertArrayHasKey('https://purl.imsglobal.org/spec/lti-bo/scope/basicoutcome', $scopes);
-
-        $privateKey = $this->getPrivateProperty($authorizationServer, 'privateKey');
-        $this->assertInstanceOf(CryptKey::class, $privateKey);
-
-        $this->assertSame($keyChainPrivateKey, $privateKey->getKeyContents());
-
-        $this->assertSame(
-            'toto',
-            $this->getPrivateProperty($authorizationServer, 'encryptionKey')
-        );
-
-        $this->assertInstanceOf(
-            ScopedBearerTokenResponse::class,
-            $this->getPrivateProperty($authorizationServer, 'responseType')
-        );
-
-        $this->assertArrayHasKey(
-            ClientAssertionCredentialsGrant::GRANT_IDENTIFIER,
-            $this->getPrivateProperty($authorizationServer, 'enabledGrantTypes')
-        );
+        $implementation = $this->subject->getImplementation();
+        $this->assertInstanceOf(\OAT\Library\Lti1p3Core\Security\OAuth2\Factory\AuthorizationServerFactory::class, $implementation);
     }
 }

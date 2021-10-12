@@ -24,16 +24,17 @@ namespace oat\taoLti\test\unit\models\classes\Platform\Repository;
 
 use oat\generis\test\TestCase;
 use OAT\Library\Lti1p3Core\Registration\Registration;
-use oat\tao\model\security\Business\Contract\KeyChainRepositoryInterface;
-use oat\tao\model\security\Business\Domain\Key\Key;
-use oat\tao\model\security\Business\Domain\Key\KeyChain;
-use oat\tao\model\security\Business\Domain\Key\KeyChainCollection;
+use OAT\Library\Lti1p3Core\Security\Key\Key;
+use OAT\Library\Lti1p3Core\Security\Key\KeyChain;
+use OAT\Library\Lti1p3Core\Security\Key\KeyChainInterface;
+use OAT\Library\Lti1p3Core\Security\Key\KeyChainRepositoryInterface;
 use oat\taoLti\models\classes\LtiProvider\LtiProvider;
 use oat\taoLti\models\classes\LtiProvider\LtiProviderService;
 use oat\taoLti\models\classes\Platform\LtiPlatform;
 use oat\taoLti\models\classes\Platform\Repository\Lti1p3RegistrationRepository;
 use oat\taoLti\models\classes\Platform\Repository\LtiPlatformRepositoryInterface;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\CachedPlatformKeyChainRepository;
+use oat\taoLti\models\classes\Security\DataAccess\Repository\PlatformKeyChainRepository;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\ToolKeyChainRepository;
 use PHPUnit\Framework\MockObject\MockObject;
 
@@ -45,8 +46,11 @@ class Lti1p3RegistrationRepositoryTest extends TestCase
     /** @var KeyChainRepositoryInterface|MockObject */
     private $toolKeyChainRepository;
 
-    /** @var KeyChainRepositoryInterface|MockObject */
+    /** @var PlatformKeyChainRepository|MockObject */
     private $platformKeyChainRepository;
+
+    /** @var KeyChainRepositoryInterface|MockObject */
+    private $cachedPlatformKeyChainRepository;
 
     /** @var LtiProviderService|MockObject */
     private $ltiProviderService;
@@ -77,13 +81,15 @@ class Lti1p3RegistrationRepositoryTest extends TestCase
         $this->ltiProviderService = $this->createMock(LtiProviderService::class);
         $this->ltiPlatformRepository = $this->createMock(LtiPlatformRepositoryInterface::class);
         $this->toolKeyChainRepository = $this->createMock(KeyChainRepositoryInterface::class);
-        $this->platformKeyChainRepository = $this->createMock(KeyChainRepositoryInterface::class);
+        $this->cachedPlatformKeyChainRepository = $this->createMock(KeyChainRepositoryInterface::class);
+        $this->platformKeyChainRepository = $this->createMock(PlatformKeyChainRepository::class);
         $this->subject = new Lti1p3RegistrationRepository([Lti1p3RegistrationRepository::OPTION_ROOT_URL => 'ROOT_URL']);
         $this->subject->setServiceLocator(
             $this->getServiceLocatorMock(
                 [
                     ToolKeyChainRepository::class => $this->toolKeyChainRepository,
-                    CachedPlatformKeyChainRepository::class => $this->platformKeyChainRepository,
+                    CachedPlatformKeyChainRepository::class => $this->cachedPlatformKeyChainRepository,
+                    PlatformKeyChainRepository::class => $this->platformKeyChainRepository,
                     LtiProviderService::SERVICE_ID => $this->ltiProviderService,
                     LtiPlatformRepositoryInterface::SERVICE_ID => $this->ltiPlatformRepository,
                 ]
@@ -106,7 +112,7 @@ class Lti1p3RegistrationRepositoryTest extends TestCase
 
     public function testItCreatesPlatformRegistration(): void
     {
-        $this->expectToolAndPlatformKeys([$this->toolKeyChain], [$this->platformKeyChain]);
+        $this->expectToolAndPlatformKeys($this->toolKeyChain, $this->platformKeyChain);
         $this->ltiProviderService
             ->method('searchById')
             ->willReturn(null);
@@ -141,7 +147,7 @@ class Lti1p3RegistrationRepositoryTest extends TestCase
     {
         $this->expectsProvider();
 
-        $this->expectToolAndPlatformKeys([$this->toolKeyChain], [$this->platformKeyChain]);
+        $this->expectToolAndPlatformKeys($this->toolKeyChain, $this->platformKeyChain);
 
         $registration = $this->subject->find('ltiId');
 
@@ -154,15 +160,15 @@ class Lti1p3RegistrationRepositoryTest extends TestCase
         $this->assertSame('ROOT_URL' . 'taoLti/Security/jwks', $registration->getPlatformJwksUrl());
 
         $this->assertSame($this->platformKeyChain->getIdentifier(), $registration->getPlatformKeyChain()->getIdentifier());
-        $this->assertSame($this->platformKeyChain->getName(), $registration->getPlatformKeyChain()->getKeySetName());
+        $this->assertSame($this->platformKeyChain->getKeySetName(), $registration->getPlatformKeyChain()->getKeySetName());
 
-        $this->assertSame($this->platformKeyChain->getPublicKey()->getValue(), $registration->getPlatformKeyChain()->getPublicKey()->getContent());
-        $this->assertSame($this->platformKeyChain->getPrivateKey()->getValue(), $registration->getPlatformKeyChain()->getPrivateKey()->getContent());
+        $this->assertSame($this->platformKeyChain->getPublicKey()->getContent(), $registration->getPlatformKeyChain()->getPublicKey()->getContent());
+        $this->assertSame($this->platformKeyChain->getPrivateKey()->getContent(), $registration->getPlatformKeyChain()->getPrivateKey()->getContent());
 
         $this->assertSame($this->toolKeyChain->getIdentifier(), $registration->getToolKeyChain()->getIdentifier());
-        $this->assertSame($this->toolKeyChain->getName(), $registration->getToolKeyChain()->getKeySetName());
-        $this->assertSame($this->toolKeyChain->getPublicKey()->getValue(), $registration->getToolKeyChain()->getPublicKey()->getContent());
-        $this->assertSame($this->toolKeyChain->getPrivateKey()->getValue(), $registration->getToolKeyChain()->getPrivateKey()->getContent());
+        $this->assertSame($this->toolKeyChain->getKeySetName(), $registration->getToolKeyChain()->getKeySetName());
+        $this->assertSame($this->toolKeyChain->getPublicKey()->getContent(), $registration->getToolKeyChain()->getPublicKey()->getContent());
+        $this->assertSame($this->toolKeyChain->getPrivateKey()->getContent(), $registration->getToolKeyChain()->getPrivateKey()->getContent());
 
         $this->assertSame('client_id', $registration->getClientId());
         $this->assertSame('ltiId', $registration->getIdentifier());
@@ -181,7 +187,7 @@ class Lti1p3RegistrationRepositoryTest extends TestCase
     {
         $this->expectsProvider();
 
-        $this->expectToolAndPlatformKeys([], [$this->platformKeyChain]);
+        $this->expectToolAndPlatformKeys(null, $this->platformKeyChain);
 
         $registration = $this->subject->find('ltiId');
 
@@ -199,17 +205,17 @@ class Lti1p3RegistrationRepositoryTest extends TestCase
             ->method('searchById')
             ->willReturn($ltiProvider);
 
-        $this->expectToolAndPlatformKeys([$this->toolKeyChain], [$this->platformKeyChain]);
+        $this->expectToolAndPlatformKeys($this->toolKeyChain, $this->platformKeyChain);
 
         $registration = $this->subject->find('ltiId');
 
         $this->assertInstanceOf(Registration::class, $registration);
-        $this->assertNull($registration->getToolKeyChain());
+        $this->assertEquals('not-empty', $registration->getToolJwksUrl());
     }
 
     public function testFindWillNullWhenNoPlatformIsReturned(): void
     {
-        $this->expectToolAndPlatformKeys([$this->toolKeyChain], []);
+        $this->expectToolAndPlatformKeys($this->toolKeyChain, null);
 
         $this->assertNull($this->subject->find('ltiId'));
     }
@@ -217,7 +223,7 @@ class Lti1p3RegistrationRepositoryTest extends TestCase
     public function testFindWillReturnNullIfNoKeysFound(): void
     {
         $this->expectsProvider();
-        $this->expectToolAndPlatformKeys([], []);
+        $this->expectToolAndPlatformKeys(null, null);
 
         $this->assertNull($this->subject->find('registrationId'));
     }
@@ -257,7 +263,7 @@ class Lti1p3RegistrationRepositoryTest extends TestCase
             ->method('findAll')
             ->willReturn([$ltiProvider]);
 
-        $this->expectToolAndPlatformKeys([$this->toolKeyChain], [$this->platformKeyChain]);
+        $this->expectToolAndPlatformKeys($this->toolKeyChain, $this->platformKeyChain);
 
         $platform = new LtiPlatform(
             'id',
@@ -320,14 +326,14 @@ class Lti1p3RegistrationRepositoryTest extends TestCase
         return $ltiProvider;
     }
 
-    private function expectToolAndPlatformKeys(array $toolKeyChains, array $platformKeyChains): void
+    private function expectToolAndPlatformKeys(?KeyChainInterface $toolKeyChain, ?KeyChainInterface $platformKeyChain): void
     {
         $this->toolKeyChainRepository
-            ->method('findAll')
-            ->willReturn(new KeyChainCollection(...$toolKeyChains));
+            ->method('find')
+            ->willReturn($toolKeyChain);
 
-        $this->platformKeyChainRepository
-            ->method('findAll')
-            ->willReturn(new KeyChainCollection(...$platformKeyChains));
+        $this->cachedPlatformKeyChainRepository
+            ->method('find')
+            ->willReturn($platformKeyChain);
     }
 }

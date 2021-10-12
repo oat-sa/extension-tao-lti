@@ -22,10 +22,10 @@ declare(strict_types=1);
 
 namespace oat\taoLti\models\classes\Platform\Service;
 
+use OAT\Library\Lti1p3Core\Security\Key\KeyChainInterface;
+use OAT\Library\Lti1p3Core\Security\Key\KeyChainRepositoryInterface;
 use oat\oatbox\cache\SimpleCache;
 use oat\oatbox\service\ConfigurableService;
-use oat\tao\model\security\Business\Contract\KeyChainRepositoryInterface;
-use oat\tao\model\security\Business\Domain\Key\KeyChain;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\CachedPlatformJwksRepository;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\CachedPlatformKeyChainRepository;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\PlatformKeyChainRepository;
@@ -33,7 +33,7 @@ use Psr\SimpleCache\CacheInterface;
 
 class CachedKeyChainGenerator extends ConfigurableService implements KeyChainGeneratorInterface
 {
-    public function generate(): KeyChain
+    public function generate(): KeyChainInterface
     {
         $keyChain = $this->getKeyChainGenerator()->generate();
         $this->getKeyChainRepository()->save($keyChain);
@@ -44,7 +44,7 @@ class CachedKeyChainGenerator extends ConfigurableService implements KeyChainGen
         return $keyChain;
     }
 
-    private function invalidateKeyChain(KeyChain $keyChain): void
+    private function invalidateKeyChain(KeyChainInterface $keyChain): void
     {
         $this->getCache()->delete(
             sprintf(CachedPlatformKeyChainRepository::PRIVATE_PATTERN, $keyChain->getIdentifier())
