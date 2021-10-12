@@ -32,17 +32,17 @@ class TaoLtiSession extends common_session_DefaultSession
     private const VERSION_LTI_1P3 = '1.3';
 
     /** @var string */
-    protected $linkId = null;
+    private $linkId = null;
 
     /** @var string */
-    protected $version = self::VERSION_LTI_1P1;
+    private $version = self::VERSION_LTI_1P1;
 
     public function __construct(LtiUserInterface $user)
     {
         parent::__construct($user);
     }
 
-    public static function version1p3(LtiUserInterface $user): self
+    public static function fromVersion1p3(LtiUserInterface $user): self
     {
         $session = new self($user);
 
