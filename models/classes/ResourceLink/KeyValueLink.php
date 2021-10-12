@@ -36,17 +36,14 @@ class KeyValueLink extends ConfigurableService implements LinkService
 
     const PREFIX = 'lti_link_';
 
-    /**
-     * (non-PHPdoc)
-     * @see \oat\taoLti\models\classes\ResourceLink\LinkService::getLinkId()
-     */
-    public function getLinkId($consumerId, $resourceLink)
+    public function getLinkId($consumerId, $resourceLink): string
     {
         $id = $this->getPersistence()->get(self::PREFIX . $consumerId . $resourceLink);
         if ($id == false) {
             $id = \core_kernel_uri_UriService::singleton()->generateUri();
             $this->getPersistence()->set(self::PREFIX . $consumerId . $resourceLink, $id);
         }
+
         return $id;
     }
 
