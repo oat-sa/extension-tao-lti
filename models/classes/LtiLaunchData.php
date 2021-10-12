@@ -391,7 +391,7 @@ class LtiLaunchData implements \JsonSerializable
     {
         $consumerName = null;
 
-        if ($this->getVariable(self::TOOL_CONSUMER_INSTANCE_NAME)) {
+        if ($this->hasVariable(self::TOOL_CONSUMER_INSTANCE_NAME)) {
             $consumerName = $this->getVariable(self::TOOL_CONSUMER_INSTANCE_NAME);
         }
 
