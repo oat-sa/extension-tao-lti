@@ -389,11 +389,20 @@ class LtiLaunchData implements \JsonSerializable
      */
     public function getToolConsumerName()
     {
-        return $this->hasVariable(self::TOOL_CONSUMER_INSTANCE_NAME)
-            ? $this->getVariable(self::TOOL_CONSUMER_INSTANCE_NAME)
-            : $this->hasVariable(self::TOOL_CONSUMER_INSTANCE_DESCRIPTION)
-                ? $this->getVariable(self::TOOL_CONSUMER_INSTANCE_DESCRIPTION)
-                : null;
+        $consumerName = null;
+
+        if ($this->getVariable(self::TOOL_CONSUMER_INSTANCE_NAME)) {
+            $consumerName = $this->getVariable(self::TOOL_CONSUMER_INSTANCE_NAME);
+        }
+
+        if (
+            $consumerName === null
+            && $this->hasVariable(self::TOOL_CONSUMER_INSTANCE_DESCRIPTION)
+        ) {
+            $consumerName = $this->getVariable(self::TOOL_CONSUMER_INSTANCE_DESCRIPTION);
+        }
+
+        return $consumerName;
     }
 
     /**
