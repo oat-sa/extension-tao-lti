@@ -22,6 +22,7 @@ namespace oat\taoLti\controller;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use OAT\Library\Lti1p3Core\Registration\RegistrationRepositoryInterface;
 use OAT\Library\Lti1p3Core\Security\Key\KeyChainRepositoryInterface;
+use OAT\Library\Lti1p3Core\Security\OAuth2\Factory\AuthorizationServerFactory;
 use OAT\Library\Lti1p3Core\Security\OAuth2\Generator\AccessTokenResponseGenerator;
 use OAT\Library\Lti1p3Core\Security\OAuth2\Generator\AccessTokenResponseGeneratorInterface;
 use OAT\Library\Lti1p3Core\Security\Oidc\OidcInitiator;
@@ -31,7 +32,7 @@ use oat\taoLti\models\classes\Platform\Repository\Lti1p3RegistrationRepository;
 use oat\taoLti\models\classes\Platform\Service\Oidc\OidcLoginAuthenticatorInterface;
 use oat\taoLti\models\classes\Platform\Service\Oidc\OidcLoginAuthenticatorProxy;
 
-use oat\taoLti\models\classes\Security\AuthorizationServer\AuthorizationServerFactory;
+//use oat\taoLti\models\classes\Security\AuthorizationServer\AuthorizationServerFactory;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\CachedPlatformJwksRepository;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\CachedPlatformKeyChainRepository;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\PlatformKeyChainRepository;
@@ -98,7 +99,7 @@ class Security extends Controller implements ServiceLocatorAwareInterface
 
     private function getAuthorizationServerFactory(): AuthorizationServerFactory
     {
-        return $this->getServiceLocator()->get(AuthorizationServerFactory::class);
+        return $this->getServiceLocator()->getContainer()->get(AuthorizationServerFactory::class);
     }
 
     private function getJwksRepository(): JwksRepositoryInterface
@@ -120,7 +121,7 @@ class Security extends Controller implements ServiceLocatorAwareInterface
     {
         return new AccessTokenResponseGenerator(
             $this->getKeyChainRepository(),
-            $this->getAuthorizationServerFactory()->getImplementation()
+            $this->getAuthorizationServerFactory()
         );
     }
 }
