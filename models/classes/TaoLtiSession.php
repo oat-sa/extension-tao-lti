@@ -110,7 +110,7 @@ class TaoLtiSession extends common_session_DefaultSession
      *
      * @throws LtiVariableMissingException
      */
-    protected function getLtiConsumer(): string
+    private function getLtiConsumer(): string
     {
         if ($this->version === self::VERSION_LTI_1P1) {
             return $this->getLaunchData()
