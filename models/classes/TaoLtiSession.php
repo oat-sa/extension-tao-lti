@@ -15,9 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2013 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
- *
- *
+ * Copyright (c) 2013-2021 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
  */
 
 namespace oat\taoLti\models\classes;
@@ -28,27 +26,33 @@ use core_kernel_classes_Resource;
 use oat\taoLti\models\classes\ResourceLink\LinkService;
 use oat\taoLti\models\classes\user\LtiUserInterface;
 
-/**
- * The TAO layer ontop of the LtiSession
- *
- * @access public
- * @author Joel Bout, <joel@taotesting.com>
- * @package taoLti
- */
 class TaoLtiSession extends common_session_DefaultSession
 {
-    /**
-     * @var core_kernel_classes_Resource
-     */
-    private $ltiLink = null;
+    private const VERSION_LTI_1P1 = '1.1';
+    private const VERSION_LTI_1P3 = '1.3';
+
+    /** @var string */
+    private $linkId = null;
+
+    /** @var string */
+    private $version = self::VERSION_LTI_1P1;
 
     public function __construct(LtiUserInterface $user)
     {
         parent::__construct($user);
     }
 
+    public static function fromVersion1p3(LtiUserInterface $user): self
+    {
+        $session = new self($user);
+
+        $session->version = self::VERSION_LTI_1P3;
+
+        return $session;
+    }
+
     /**
-     * Override tje default label construction
+     * Override the default label construction
      * (non-PHPdoc)
      * @see common_session_DefaultSession::getUserLabel()
      *
@@ -81,20 +85,40 @@ class TaoLtiSession extends common_session_DefaultSession
     }
 
     /**
-     * Returns an resource representing the incoming link
+     * Returns a resource representing the incoming link
      *
-     * @return core_kernel_classes_Resource
      * @throws LtiVariableMissingException
      * @throws common_exception_Error
      */
-    public function getLtiLinkResource()
+    public function getLtiLinkResource(): core_kernel_classes_Resource
     {
-        if (is_null($this->ltiLink)) {
+        if ($this->linkId === null) {
+            /** @var LinkService $service */
             $service = $this->getServiceLocator()->get(LinkService::SERVICE_ID);
-            $consumer = $this->getLaunchData()->getLtiConsumer();
-            $linkId = $service->getLinkId($consumer->getUri(), $this->getLaunchData()->getResourceLinkID());
-            $this->ltiLink = new core_kernel_classes_Resource($linkId);
+
+            $this->linkId = $service->getLinkId(
+                $this->getLtiConsumer(),
+                $this->getLaunchData()->getResourceLinkID()
+            );
         }
-        return $this->ltiLink;
+
+        return new core_kernel_classes_Resource($this->linkId);
+    }
+
+    /**
+     * Returns the consumer based on the LTI version
+     *
+     * @throws LtiVariableMissingException
+     */
+    private function getLtiConsumer(): string
+    {
+        if ($this->version === self::VERSION_LTI_1P1) {
+            return $this->getLaunchData()
+                ->getLtiConsumer()
+                ->getUri();
+        }
+
+        return (string)$this->getLaunchData()
+            ->getVariable(LtiLaunchData::TOOL_CONSUMER_INSTANCE_ID);
     }
 }
