@@ -56,7 +56,41 @@ class LtiAgsScoreServiceTest extends TestCase
         $scoreServerClient
             ->expects($this->once())
             ->method('publishScoreForClaim')
-            ->with($registration, $data, $agsClaim);
+            ->with($registration, $data, $agsClaim)
+            ->willReturn(true);
+
+        $ltiAgsService->send($registration, $agsClaim, ['userId' => '1']);
+    }
+
+    public function testItThrowsWhenPublishMethodReturnsFalse(): void
+    {
+        $scoreServerClient = $this->createMock(ScoreServiceClient::class);
+        $scoreFactory = $this->createMock(ScoreFactory::class);
+        $registration = $this->createMock(RegistrationInterface::class);
+        $agsClaim = $this->createMock(AgsClaim::class);
+
+        $ltiAgsService = new LtiAgsScoreService(
+            [
+                LtiAgsScoreService::OPTION_SCORE_SERVICE_CLIENT => $scoreServerClient,
+                LtiAgsScoreService::OPTION_SCORE_FACTORY => $scoreFactory,
+            ]
+        );
+
+        $data = (new ScoreFactory())->create(['userId' => '1']);
+
+        $scoreFactory
+            ->method('create')
+            ->with(['userId' => '1'])
+            ->willReturn($data);
+
+        $scoreServerClient
+            ->expects($this->once())
+            ->method('publishScoreForClaim')
+            ->with($registration, $data, $agsClaim)
+            ->willReturn(false);
+
+        $this->expectException(LtiAgsException::class);
+        $this->expectExceptionMessage('AGS score send failed. Failed status has been received during AGS sending');
 
         $ltiAgsService->send($registration, $agsClaim, ['userId' => '1']);
     }
@@ -71,7 +105,7 @@ class LtiAgsScoreServiceTest extends TestCase
             );
 
             $this->expectException(LtiAgsException::class);
-            $this->expectExceptionMessage('score_service_client option should implement ScoreServiceInterface');
+            $this->expectExceptionMessage('score_service_client option should implement OAT\Library\Lti1p3Ags\Service\Score\ScoreServiceInterface');
 
             $ltiAgsService->send(
                 $this->createMock(RegistrationInterface::class),
@@ -90,7 +124,7 @@ class LtiAgsScoreServiceTest extends TestCase
         );
 
         $this->expectException(LtiAgsException::class);
-        $this->expectExceptionMessage('score_factory option should implement ScoreFactoryInterface');
+        $this->expectExceptionMessage('score_factory option should implement OAT\Library\Lti1p3Ags\Factory\Score\ScoreFactoryInterface');
 
         $ltiAgsService->send(
             $this->createMock(RegistrationInterface::class),

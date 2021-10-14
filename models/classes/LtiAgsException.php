@@ -28,6 +28,7 @@ use Exception;
 use OAT\Library\Lti1p3Ags\Model\Score\ScoreInterface;
 use OAT\Library\Lti1p3Core\Message\Payload\Claim\AgsClaim;
 use OAT\Library\Lti1p3Core\Registration\RegistrationInterface;
+use Ramsey\Uuid\Uuid;
 
 final class LtiAgsException extends common_Exception
 {
@@ -62,7 +63,7 @@ final class LtiAgsException extends common_Exception
     public function getKey(): string
     {
         if (!isset($this->key)) {
-            $this->key = uniqid();
+            $this->key = Uuid::uuid4()->toString();
         }
 
         return $this->key;

@@ -60,7 +60,7 @@ class LtiAgsScoreService extends ConfigurableService implements ServiceLocatorAw
 
         if (!$scoreFactory instanceof ScoreFactoryInterface) {
             throw new LtiAgsException(
-                sprintf('%s option should implement %s', self::OPTION_SCORE_FACTORY, ScoreServiceInterface::class)
+                sprintf('%s option should implement %s', self::OPTION_SCORE_FACTORY, ScoreFactoryInterface::class)
             );
         }
 
@@ -70,11 +70,11 @@ class LtiAgsScoreService extends ConfigurableService implements ServiceLocatorAw
             $result = $scoreClient->publishScoreForClaim($registration, $score, $ags);
 
             if (false === $result) {
-                throw new LtiException('Failed status has benn received during AGS sending');
+                throw new LtiException('Failed status has been received during AGS sending');
             }
 
         } catch (LtiExceptionInterface $e) {
-            $exception = new LtiAgsException('AGS score send failed', 1, $e);
+            $exception = new LtiAgsException('AGS score send failed.', 1, $e);
 
             throw $exception
                 ->setAgsClaim($ags)
