@@ -23,11 +23,13 @@ declare(strict_types=1);
 
 namespace oat\taoLti\models\classes;
 
+use common_Exception;
+use Exception;
 use OAT\Library\Lti1p3Ags\Model\Score\ScoreInterface;
 use OAT\Library\Lti1p3Core\Message\Payload\Claim\AgsClaim;
 use OAT\Library\Lti1p3Core\Registration\RegistrationInterface;
 
-final class LtiAgsException extends \common_Exception
+final class LtiAgsException extends common_Exception
 {
     /**
      * @var string Unique key to determine error in log
@@ -47,9 +49,9 @@ final class LtiAgsException extends \common_Exception
      * LtiException constructor.
      * @param null $message
      * @param int $code
-     * @param \Exception|null $previous
+     * @param Exception|null $previous
      */
-    public function __construct($message = null, $code = 0, \Exception $previous = null)
+    public function __construct($message = null, $code = 0, Exception $previous = null)
     {
         if (!is_null($previous)) {
             $message .= ' ' . $previous->getMessage();

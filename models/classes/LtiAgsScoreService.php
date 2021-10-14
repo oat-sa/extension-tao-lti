@@ -27,6 +27,7 @@ use OAT\Library\Lti1p3Ags\Factory\Score\ScoreFactory;
 use OAT\Library\Lti1p3Ags\Factory\Score\ScoreFactoryInterface;
 use OAT\Library\Lti1p3Ags\Service\Score\Client\ScoreServiceClient;
 use OAT\Library\Lti1p3Ags\Service\Score\ScoreServiceInterface;
+use OAT\Library\Lti1p3Core\Exception\LtiException;
 use OAT\Library\Lti1p3Core\Exception\LtiExceptionInterface;
 use OAT\Library\Lti1p3Core\Message\Payload\Claim\AgsClaim;
 use OAT\Library\Lti1p3Core\Registration\RegistrationInterface;
@@ -46,27 +47,32 @@ class LtiAgsScoreService extends ConfigurableService implements ServiceLocatorAw
     /**
      * @throws LtiAgsException
      */
-    public function send(RegistrationInterface $registration, AgsClaim $ags, array $data): bool
+    public function send(RegistrationInterface $registration, AgsClaim $ags, array $data): void
     {
         $scoreClient = $this->getOption(self::OPTION_SCORE_SERVICE_CLIENT) ?? new ScoreServiceClient();
         $scoreFactory = $this->getOption(self::OPTION_SCORE_FACTORY) ?? new ScoreFactory();
 
         if (!$scoreClient instanceof ScoreServiceInterface) {
             throw new LtiAgsException(
-                sprintf('%s option should implement ScoreServiceInterface', self::OPTION_SCORE_SERVICE_CLIENT)
+                sprintf('%s option should implement %s', self::OPTION_SCORE_SERVICE_CLIENT, ScoreServiceInterface::class)
             );
         }
 
         if (!$scoreFactory instanceof ScoreFactoryInterface) {
             throw new LtiAgsException(
-                sprintf('%s option should implement ScoreFactoryInterface', self::OPTION_SCORE_FACTORY)
+                sprintf('%s option should implement %s', self::OPTION_SCORE_FACTORY, ScoreServiceInterface::class)
             );
         }
 
         $score = $scoreFactory->create($data);
 
         try {
-            return $scoreClient->publishScoreForClaim($registration, $score, $ags);
+            $result = $scoreClient->publishScoreForClaim($registration, $score, $ags);
+
+            if (false === $result) {
+                throw new LtiException('Failed status has benn received during AGS sending');
+            }
+
         } catch (LtiExceptionInterface $e) {
             $exception = new LtiAgsException('AGS score send failed', 1, $e);
 

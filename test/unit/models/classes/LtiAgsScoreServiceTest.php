@@ -19,6 +19,8 @@
  *
  */
 
+declare(strict_types=1);
+
 namespace oat\taoLti\models\classes;
 
 use oat\generis\test\TestCase;
