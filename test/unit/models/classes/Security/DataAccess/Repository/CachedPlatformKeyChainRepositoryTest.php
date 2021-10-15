@@ -93,10 +93,9 @@ class CachedPlatformKeyChainRepositoryTest extends TestCase
 
         $this->platformKeyChainRepository
             ->expects($this->once())
-            ->method('save')
-            ->willReturn(true);
+            ->method('save');
 
-        $this->assertTrue($this->subject->save($keyChain));
+        $this->subject->save($keyChain);
     }
 
     public function testFindWhenCacheEmpty(): void

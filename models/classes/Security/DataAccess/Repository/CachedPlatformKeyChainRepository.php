@@ -23,6 +23,7 @@ declare(strict_types=1);
 namespace oat\taoLti\models\classes\Security\DataAccess\Repository;
 
 use common_exception_NoImplementation;
+use ErrorException;
 use OAT\Library\Lti1p3Core\Security\Key\Key;
 use OAT\Library\Lti1p3Core\Security\Key\KeyChain;
 use OAT\Library\Lti1p3Core\Security\Key\KeyChainInterface;
@@ -37,14 +38,18 @@ class CachedPlatformKeyChainRepository extends ConfigurableService implements Ke
     public const PRIVATE_PATTERN = 'PLATFORM_LTI_PRIVATE_KEY_%s';
     public const PUBLIC_PATTERN = 'PLATFORM_LTI_PUBLIC_KEY_%s';
 
-    public function save(KeyChainInterface $keyChain): bool
+    /**
+     * @throws InvalidArgumentException
+     * @throws ErrorException
+     */
+    public function save(KeyChainInterface $keyChain): void
     {
         $this->setKeys(
             $keyChain,
             $keyChain->getIdentifier()
         );
 
-        return $this->getPlatformKeyChainRepository()->save($keyChain);
+        $this->getPlatformKeyChainRepository()->save($keyChain);
     }
 
     public function find(string $identifier): ?KeyChainInterface

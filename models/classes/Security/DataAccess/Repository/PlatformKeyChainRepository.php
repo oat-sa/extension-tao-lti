@@ -41,7 +41,10 @@ class PlatformKeyChainRepository extends ConfigurableService implements KeyChain
     public const OPTION_DEFAULT_PRIVATE_KEY_PATH = 'defaultPrivateKeyPath';
     public const FILE_SYSTEM_ID = 'ltiKeyChain';
 
-    public function save(KeyChainInterface $keyChain): bool
+    /**
+     * @throws ErrorException
+     */
+    public function save(KeyChainInterface $keyChain): void
     {
         $isPublicKeySaved = $this->getFileSystem()
             ->put(
@@ -58,8 +61,6 @@ class PlatformKeyChainRepository extends ConfigurableService implements KeyChain
         if (!$isPublicKeySaved || !$isPrivateKeySaved) {
             throw new ErrorException('Impossible to write LTI keys');
         }
-
-        return true;
     }
 
     public function getDefaultKeyId(): string

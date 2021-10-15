@@ -105,9 +105,11 @@ class PlatformKeyChainRepositoryTest extends TestCase
             ->method('put')
             ->willReturn(true);
 
-        $this->assertTrue($this->subject->save(
+        $this->subject->save(
             new KeyChain('', '', new Key(''), new Key(''))
-        ));
+        );
+
+        $this->expectNotToPerformAssertions();
     }
 
     public function testSaveFails(): void
