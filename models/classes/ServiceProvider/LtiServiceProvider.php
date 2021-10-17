@@ -41,7 +41,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
-use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
+use function Symfony\Component\DependencyInjection\Loader\Configurator\env;
 
 class LtiServiceProvider implements ContainerServiceProviderInterface
 {
@@ -49,9 +49,6 @@ class LtiServiceProvider implements ContainerServiceProviderInterface
     {
         $services = $configurator->services();
         $parameters = $configurator->parameters();
-
-        /** @todo need to think */
-        $parameters->set('encryptionKey', 'super-secret-key');
 
         /** @todo how to get logger? */
         $services
@@ -122,7 +119,7 @@ class LtiServiceProvider implements ContainerServiceProviderInterface
                     service(ClientRepositoryInterface::class),
                     service(AccessTokenRepositoryInterface::class),
                     service(ScopeRepositoryInterface::class),
-                    param('encryptionKey')
+                    env('LTI_AUTHORIZATION_SERVER_FACTORY_ENCRYPTION_KEY')
                 ]
             );
     }

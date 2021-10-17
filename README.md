@@ -116,5 +116,13 @@ As a system administrator you can also install it through the TAO Extension Mana
 *Value examples:* 
 * `[ new oat\taoLti\models\classes\LaunchData\Validator\Lti11LaunchDataValidator() ]`
 
+## Dependency Injection Service Providers
+
+### LtiServiceProvider
+
+#### Encryption key for `AuthorizationServerFactory`
+
+Need to set ENV variable `LTI_AUTHORIZATION_SERVER_FACTORY_ENCRYPTION_KEY`
+
 ## Extension Wiki
 You can find the [extension wiki here](https://github.com/oat-sa/extension-tao-lti/wiki).
