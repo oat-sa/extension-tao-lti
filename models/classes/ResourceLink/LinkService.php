@@ -30,5 +30,5 @@ interface LinkService
 {
     const SERVICE_ID = 'taoLti/ResourceLink';
 
-    public function getLinkId($consumer, $resourceLink);
+    public function getLinkId($consumer, $resourceLink): string;
 }
