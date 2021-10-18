@@ -24,7 +24,7 @@ use core_kernel_classes_Class;
 use oat\generis\model\kernel\persistence\smoothsql\search\ComplexSearchService;
 use oat\generis\model\OntologyRdfs;
 use oat\tao\model\OntologyClassService;
-use oat\taoLti\models\classes\Platform\LtiPlatform;
+use oat\taoLti\models\classes\Platform\LtiPlatformRegistration;
 use common_exception_Error as ErrorException;
 use core_kernel_classes_Resource as RdfResource;
 
@@ -82,7 +82,7 @@ class RdfLtiPlatformRepository extends OntologyClassService implements LtiPlatfo
     /**
      * Retrieves LTI platforms from RDF store corresponding to the given criteria.
      *
-     * @return LtiPlatform[]
+     * @return LtiPlatformRegistration[]
      */
     private function getPlatforms(array $criteria = []): array
     {
@@ -129,12 +129,12 @@ class RdfLtiPlatformRepository extends OntologyClassService implements LtiPlatfo
         }
     }
 
-    private function getLtiPlatformFromResource(RdfResource $resource): LtiPlatform
+    private function getLtiPlatformFromResource(RdfResource $resource): LtiPlatformRegistration
     {
         return $this->getLtiPlatformFactory()->createFromResource($resource);
     }
 
-    public function searchById(string $id): ?LtiPlatform
+    public function searchById(string $id): ?LtiPlatformRegistration
     {
         $resource = $this->getResource($id);
 
@@ -152,7 +152,7 @@ class RdfLtiPlatformRepository extends OntologyClassService implements LtiPlatfo
         return $this->getLtiPlatformFromResource($this->getResource($id));
     }
 
-    public function searchByClientId(string $clientId): ?LtiPlatform
+    public function searchByClientId(string $clientId): ?LtiPlatformRegistration
     {
         $platforms = $this->getPlatforms([self::LTI_PLATFORM_CLIENT_ID => $clientId]);
         $count = count($platforms);
@@ -165,7 +165,7 @@ class RdfLtiPlatformRepository extends OntologyClassService implements LtiPlatfo
         return reset($platforms);
     }
 
-    public function searchByIssuer(string $issuer, string $clientId = null): ?LtiPlatform
+    public function searchByIssuer(string $issuer, string $clientId = null): ?LtiPlatformRegistration
     {
         $criteria = [self::LTI_PLATFORM_AUDIENCE => $issuer];
         if ($clientId !== null) {

@@ -27,7 +27,7 @@ use OAT\Library\Lti1p3Core\Platform\PlatformInterface;
 /**
  * LTI platform Value Object.
  */
-class LtiPlatform implements PlatformInterface
+class LtiPlatformRegistration implements PlatformInterface
 {
     /** @var string */
     private $identifier;

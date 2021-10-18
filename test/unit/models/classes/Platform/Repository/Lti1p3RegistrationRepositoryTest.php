@@ -30,7 +30,7 @@ use OAT\Library\Lti1p3Core\Security\Key\KeyChainInterface;
 use OAT\Library\Lti1p3Core\Security\Key\KeyChainRepositoryInterface;
 use oat\taoLti\models\classes\LtiProvider\LtiProvider;
 use oat\taoLti\models\classes\LtiProvider\LtiProviderService;
-use oat\taoLti\models\classes\Platform\LtiPlatform;
+use oat\taoLti\models\classes\Platform\LtiPlatformRegistration;
 use oat\taoLti\models\classes\Platform\Repository\Lti1p3RegistrationRepository;
 use oat\taoLti\models\classes\Platform\Repository\LtiPlatformRepositoryInterface;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\CachedPlatformKeyChainRepository;
@@ -117,7 +117,7 @@ class Lti1p3RegistrationRepositoryTest extends TestCase
             ->method('searchById')
             ->willReturn(null);
 
-        $platform = new LtiPlatform(
+        $platform = new LtiPlatformRegistration(
             'id',
             'label',
             'audience',
@@ -265,7 +265,7 @@ class Lti1p3RegistrationRepositoryTest extends TestCase
 
         $this->expectToolAndPlatformKeys($this->toolKeyChain, $this->platformKeyChain);
 
-        $platform = new LtiPlatform(
+        $platform = new LtiPlatformRegistration(
             'id',
             'label',
             'audience',

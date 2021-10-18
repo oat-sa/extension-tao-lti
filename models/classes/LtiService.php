@@ -81,7 +81,6 @@ class LtiService extends ConfigurableService
             $platform = $platformRepository->searchById($registration->getPlatform()->getIdentifier());
 
             $user = new Lti1p3User(LtiLaunchData::fromLti1p3MessagePayload($messagePayload, $platform));
-            $user->setRegistration($registration);
 
             $session = TaoLtiSession::fromVersion1p3($user);
 

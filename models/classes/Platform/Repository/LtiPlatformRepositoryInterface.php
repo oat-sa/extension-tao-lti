@@ -21,7 +21,7 @@
 namespace oat\taoLti\models\classes\Platform\Repository;
 
 use Countable;
-use oat\taoLti\models\classes\Platform\LtiPlatform;
+use oat\taoLti\models\classes\Platform\LtiPlatformRegistration;
 
 /**
  * Service methods to manage the LTI platform business objects.
@@ -31,18 +31,18 @@ interface LtiPlatformRepositoryInterface extends Countable
     public const SERVICE_ID = 'taoLti/LtiPlatformRepository';
 
     /**
-     * @return LtiPlatform[]
+     * @return LtiPlatformRegistration[]
      */
     public function findAll(): array;
 
     /**
-     * @return LtiPlatform[]
+     * @return LtiPlatformRegistration[]
      */
     public function searchByLabel(string $label): array;
 
-    public function searchById(string $id): ?LtiPlatform;
+    public function searchById(string $id): ?LtiPlatformRegistration;
 
-    public function searchByClientId(string $clientId): ?LtiPlatform;
+    public function searchByClientId(string $clientId): ?LtiPlatformRegistration;
 
-    public function searchByIssuer(string $issuer, string $clientId = null): ?LtiPlatform;
+    public function searchByIssuer(string $issuer, string $clientId = null): ?LtiPlatformRegistration;
 }

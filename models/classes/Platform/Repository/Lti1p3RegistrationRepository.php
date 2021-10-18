@@ -31,7 +31,7 @@ use OAT\Library\Lti1p3Core\Tool\Tool;
 use oat\oatbox\service\ConfigurableService;
 use oat\taoLti\models\classes\LtiProvider\LtiProvider;
 use oat\taoLti\models\classes\LtiProvider\LtiProviderService;
-use oat\taoLti\models\classes\Platform\LtiPlatform;
+use oat\taoLti\models\classes\Platform\LtiPlatformRegistration;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\CachedPlatformKeyChainRepository;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\PlatformKeyChainRepository;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\ToolKeyChainRepository;
@@ -165,7 +165,7 @@ class Lti1p3RegistrationRepository extends ConfigurableService implements Regist
         );
     }
 
-    private function createRegistrationByPlatform(LtiPlatform $ltiPlatform): ?Registration
+    private function createRegistrationByPlatform(LtiPlatformRegistration $ltiPlatform): ?Registration
     {
         // use platform key chain
         $toolKeyChain = $this->getCachedPlatformKeyChainRepository()

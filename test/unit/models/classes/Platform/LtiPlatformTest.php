@@ -24,7 +24,7 @@ declare(strict_types=1);
 namespace oat\taoLti\test\unit\models\classes\Platform;
 
 use oat\generis\test\TestCase;
-use oat\taoLti\models\classes\Platform\LtiPlatform;
+use oat\taoLti\models\classes\Platform\LtiPlatformRegistration;
 
 class LtiPlatformTest extends TestCase
 {
@@ -41,7 +41,7 @@ class LtiPlatformTest extends TestCase
         $clientId,
         $deploymentId
     ): void {
-        $subject = new LtiPlatform(
+        $subject = new LtiPlatformRegistration(
             $id,
             $name,
             $audience,
