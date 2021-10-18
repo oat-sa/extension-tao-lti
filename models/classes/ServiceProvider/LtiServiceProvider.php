@@ -41,12 +41,19 @@ use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigura
 
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\env;
+use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
 
 class LtiServiceProvider implements ContainerServiceProviderInterface
 {
     public function __invoke(ContainerConfigurator $configurator): void
     {
         $services = $configurator->services();
+        $parameters = $configurator->parameters();
+
+        $parameters->set(
+            'defaultScope',
+            $_ENV['LTI_DEFAULT_SCOPE'] ?? 'https://purl.imsglobal.org/spec/lti-bo/scope/basicoutcome'
+        );
 
         $services
             ->set(JwksFetcherInterface::class, JwksFetcher::class)
@@ -86,7 +93,7 @@ class LtiServiceProvider implements ContainerServiceProviderInterface
             ->public()
             ->args(
                 [
-                    env('LTI_DEFAULT_SCOPE')->default('https://purl.imsglobal.org/spec/lti-bo/scope/basicoutcome')
+                    param('defaultScope')
                 ]
             );
 
