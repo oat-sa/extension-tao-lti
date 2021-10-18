@@ -28,7 +28,7 @@ use OAT\Library\Lti1p3Core\Security\Key\KeyChainInterface;
 use oat\oatbox\service\ConfigurableService;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\PlatformKeyChainRepository;
 
-class KeyChainGenerator extends ConfigurableService implements KeyChainGeneratorInterface
+class OpenSslKeyChainGenerator extends ConfigurableService implements KeyChainGeneratorInterface
 {
     public function generate(): KeyChainInterface
     {

@@ -133,7 +133,7 @@ class LtiLaunchData implements \JsonSerializable
     public static function fromLti1p3MessagePayload(
         LtiMessagePayloadInterface $ltiMessagePayload,
         PlatformInterface $platform = null
-    ) {
+    ): self {
         $variables[self::OAUTH_CONSUMER_KEY] = '';
         $variables[self::RESOURCE_LINK_ID] = $ltiMessagePayload->getResourceLink() ? $ltiMessagePayload->getResourceLink()->getIdentifier() : null;
         $variables[self::RESOURCE_LINK_TITLE] = $ltiMessagePayload->getResourceLink() ? $ltiMessagePayload->getResourceLink()->getTitle() : null;

@@ -26,7 +26,6 @@ use League\OAuth2\Server\Entities\ScopeEntityInterface;
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
 use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
 use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
-use Monolog\Logger;
 use oat\generis\model\DependencyInjection\ContainerServiceProviderInterface;
 use OAT\Library\Lti1p3Core\Security\Jwks\Fetcher\JwksFetcher;
 use OAT\Library\Lti1p3Core\Security\Jwks\Fetcher\JwksFetcherInterface;
@@ -36,8 +35,8 @@ use OAT\Library\Lti1p3Core\Security\OAuth2\Repository\AccessTokenRepository;
 use OAT\Library\Lti1p3Core\Security\OAuth2\Repository\ClientRepository;
 use OAT\Library\Lti1p3Core\Security\OAuth2\Repository\ScopeRepository;
 use oat\oatbox\cache\ItemPoolSimpleCacheAdapter;
+use oat\oatbox\log\LoggerService;
 use oat\taoLti\models\classes\Platform\Repository\Lti1p3RegistrationRepository;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
@@ -48,17 +47,6 @@ class LtiServiceProvider implements ContainerServiceProviderInterface
     public function __invoke(ContainerConfigurator $configurator): void
     {
         $services = $configurator->services();
-        $parameters = $configurator->parameters();
-
-        /** @todo how to get logger? */
-        $services
-            ->set(LoggerInterface::class, Logger::class)
-            ->public()
-            ->args(
-                [
-                    'general'
-                ]
-            );
 
         $services
             ->set(JwksFetcherInterface::class, JwksFetcher::class)
@@ -68,7 +56,7 @@ class LtiServiceProvider implements ContainerServiceProviderInterface
                     service(ItemPoolSimpleCacheAdapter::class),
                     null,
                     null,
-                    service(LoggerInterface::class)
+                    service(LoggerService::SERVICE_ID)
                 ]
             );
 
@@ -79,7 +67,7 @@ class LtiServiceProvider implements ContainerServiceProviderInterface
                 [
                     service(Lti1p3RegistrationRepository::class),
                     service(JwksFetcherInterface::class),
-                    service(LoggerInterface::class)
+                    service(LoggerService::SERVICE_ID)
                 ]
             );
 
@@ -89,7 +77,7 @@ class LtiServiceProvider implements ContainerServiceProviderInterface
             ->args(
                 [
                     service(ItemPoolSimpleCacheAdapter::class),
-                    service(LoggerInterface::class)
+                    service(LoggerService::SERVICE_ID)
                 ]
             );
 
@@ -98,7 +86,7 @@ class LtiServiceProvider implements ContainerServiceProviderInterface
             ->public()
             ->args(
                 [
-                    'https://purl.imsglobal.org/spec/lti-bo/scope/basicoutcome'
+                    env('LTI_DEFAULT_SCOPE')->default('https://purl.imsglobal.org/spec/lti-bo/scope/basicoutcome')
                 ]
             );
 

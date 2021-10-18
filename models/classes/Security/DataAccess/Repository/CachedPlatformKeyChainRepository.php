@@ -54,7 +54,7 @@ class CachedPlatformKeyChainRepository extends ConfigurableService implements Ke
 
     public function find(string $identifier): ?KeyChainInterface
     {
-        if ($this->isCacheAvailable($identifier)) {
+        if ($this->exists($identifier)) {
             //TODO: Needs to be refactor if we have multiple key chains
             $rawKeys = $this->getCacheService()->getMultiple(
                 [
@@ -108,7 +108,7 @@ class CachedPlatformKeyChainRepository extends ConfigurableService implements Ke
         );
     }
 
-    private function isCacheAvailable(string $identifier): bool
+    private function exists(string $identifier): bool
     {
         return $this->getCacheService()->has(sprintf(self::PRIVATE_PATTERN, $identifier)) &&
             $this->getCacheService()->has(sprintf(self::PUBLIC_PATTERN, $identifier));

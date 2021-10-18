@@ -62,7 +62,7 @@ class CachedKeyChainGenerator extends ConfigurableService implements KeyChainGen
 
     private function getKeyChainGenerator(): KeyChainGeneratorInterface
     {
-        return $this->getServiceLocator()->get(KeyChainGenerator::class);
+        return $this->getServiceLocator()->get(OpenSslKeyChainGenerator::class);
     }
 
     private function getKeyChainRepository(): KeyChainRepositoryInterface

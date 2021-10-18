@@ -120,9 +120,12 @@ As a system administrator you can also install it through the TAO Extension Mana
 
 ### LtiServiceProvider
 
-#### Encryption key for `AuthorizationServerFactory`
+#### Configuration for `AuthorizationServerFactory`
 
-Need to set ENV variable `LTI_AUTHORIZATION_SERVER_FACTORY_ENCRYPTION_KEY`
+| ENV variable                          | Required                                      | Description                                                     |
+|---------------------------------------|-----------------------------------------------|-----------------------------------------------------------------|
+| LTI_AUTHORIZATION_SERVER_FACTORY_ENCRYPTION_KEY          | Yes               | Encryption key for Authorization server factory                          |
+| LTI_DEFAULT_SCOPE         | No, default value is `https://purl.imsglobal.org/spec/lti-bo/scope/basicoutcome`        | A scope for score repository              |
 
 ## Extension Wiki
 You can find the [extension wiki here](https://github.com/oat-sa/extension-tao-lti/wiki).
