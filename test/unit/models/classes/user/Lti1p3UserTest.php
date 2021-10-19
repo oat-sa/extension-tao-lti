@@ -22,12 +22,13 @@
 namespace oat\taoLti\test\models\classes\user;
 
 use oat\generis\test\TestCase;
+use OAT\Library\Lti1p3Core\Registration\RegistrationInterface;
 use oat\taoLti\models\classes\LtiLaunchData;
 use oat\taoLti\models\classes\user\Lti1p3User;
 
 class Lti1p3UserTest extends TestCase
 {
-    public function testSuccessCase()
+    public function testSuccessCase(): void
     {
         $data = new LtiLaunchData([
                                       'oauth_consumer_key' => '',
@@ -55,5 +56,16 @@ class Lti1p3UserTest extends TestCase
         $subject = new Lti1p3User($data);
 
         self::assertEquals($data, $subject->getLaunchData());
+    }
+
+    public function testSetGetRegistration(): void
+    {
+        $registration = $this->createMock(RegistrationInterface::class);
+
+        $subject = new Lti1p3User(new LtiLaunchData([], []));
+
+        $subject->setRegistration($registration);
+
+        self::assertEquals($registration, $subject->getRegistration());
     }
 }
