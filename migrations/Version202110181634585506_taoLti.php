@@ -22,7 +22,7 @@ final class Version202110181634585506_taoLti extends AbstractMigration
     {
         $configPath = __DIR__ . '/../config/taoLti/AuthorizationServerFactory.conf.php';
 
-        if (file_exists($configPath) && unlink($configPath)) {
+        if (is_writable($configPath) && unlink($configPath)) {
             $this->addReport(Report::createInfo('AuthorizationServerFactory.conf.php has been removed.'));
         }
 
