@@ -21,53 +21,38 @@
 
 declare(strict_types=1);
 
-namespace oat\taoLti\models\classes;
+namespace oat\taoLti\models\classes\LtiAgs;
 
-use OAT\Library\Lti1p3Ags\Factory\Score\ScoreFactory;
 use OAT\Library\Lti1p3Ags\Factory\Score\ScoreFactoryInterface;
-use OAT\Library\Lti1p3Ags\Service\Score\Client\ScoreServiceClient;
 use OAT\Library\Lti1p3Ags\Service\Score\ScoreServiceInterface;
 use OAT\Library\Lti1p3Core\Exception\LtiException;
 use OAT\Library\Lti1p3Core\Exception\LtiExceptionInterface;
 use OAT\Library\Lti1p3Core\Message\Payload\Claim\AgsClaim;
 use OAT\Library\Lti1p3Core\Registration\RegistrationInterface;
-use oat\oatbox\service\ConfigurableService;
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
-use Zend\ServiceManager\ServiceLocatorAwareTrait;
 
-class LtiAgsScoreService extends ConfigurableService implements ServiceLocatorAwareInterface
+class LtiAgsScoreService implements LtiAgsScoreServiceInterface
 {
-    use ServiceLocatorAwareTrait;
+    /** @var ScoreServiceInterface  */
+    private $scoreServiceClient;
 
-    public const SERVICE_ID = 'taoLti/LtiAgsScoreService';
+    /** @var ScoreFactoryInterface  */
+    private $scoreFactory;
 
-    public const OPTION_SCORE_SERVICE_CLIENT = 'score_service_client';
-    public const OPTION_SCORE_FACTORY = 'score_factory';
+    public function __construct(ScoreServiceInterface $scoreServiceClient, ScoreFactoryInterface $scoreFactory)
+    {
+        $this->scoreServiceClient = $scoreServiceClient;
+        $this->scoreFactory = $scoreFactory;
+    }
 
     /**
      * @throws LtiAgsException
      */
     public function send(RegistrationInterface $registration, AgsClaim $ags, array $data): void
     {
-        $scoreClient = $this->getOption(self::OPTION_SCORE_SERVICE_CLIENT) ?? new ScoreServiceClient();
-        $scoreFactory = $this->getOption(self::OPTION_SCORE_FACTORY) ?? new ScoreFactory();
-
-        if (!$scoreClient instanceof ScoreServiceInterface) {
-            throw new LtiAgsException(
-                sprintf('%s option should implement %s', self::OPTION_SCORE_SERVICE_CLIENT, ScoreServiceInterface::class)
-            );
-        }
-
-        if (!$scoreFactory instanceof ScoreFactoryInterface) {
-            throw new LtiAgsException(
-                sprintf('%s option should implement %s', self::OPTION_SCORE_FACTORY, ScoreFactoryInterface::class)
-            );
-        }
-
-        $score = $scoreFactory->create($data);
+        $score = $this->scoreFactory->create($data);
 
         try {
-            $result = $scoreClient->publishScoreForClaim($registration, $score, $ags);
+            $result = $this->scoreServiceClient ->publishScoreForClaim($registration, $score, $ags);
 
             if (false === $result) {
                 throw new LtiException('Failed status has been received during AGS sending');

@@ -29,7 +29,8 @@ use OAT\Library\Lti1p3Ags\Factory\Score\ScoreFactoryInterface;
 use OAT\Library\Lti1p3Ags\Service\Score\Client\ScoreServiceClient;
 use OAT\Library\Lti1p3Core\Message\Payload\Claim\AgsClaim;
 use OAT\Library\Lti1p3Core\Registration\RegistrationInterface;
-use stdClass;
+use oat\taoLti\models\classes\LtiAgs\LtiAgsException;
+use oat\taoLti\models\classes\LtiAgs\LtiAgsScoreService;
 
 class LtiAgsScoreServiceTest extends TestCase
 {
@@ -40,12 +41,7 @@ class LtiAgsScoreServiceTest extends TestCase
         $registration = $this->createMock(RegistrationInterface::class);
         $agsClaim = $this->createMock(AgsClaim::class);
 
-        $ltiAgsService = new LtiAgsScoreService(
-            [
-                LtiAgsScoreService::OPTION_SCORE_SERVICE_CLIENT => $scoreServerClient,
-                LtiAgsScoreService::OPTION_SCORE_FACTORY => $scoreFactory,
-            ]
-        );
+        $ltiAgsService = new LtiAgsScoreService($scoreServerClient, $scoreFactory);
 
         $data = (new ScoreFactory())->create(['userId' => '1']);
 
@@ -70,12 +66,7 @@ class LtiAgsScoreServiceTest extends TestCase
         $registration = $this->createMock(RegistrationInterface::class);
         $agsClaim = $this->createMock(AgsClaim::class);
 
-        $ltiAgsService = new LtiAgsScoreService(
-            [
-                LtiAgsScoreService::OPTION_SCORE_SERVICE_CLIENT => $scoreServerClient,
-                LtiAgsScoreService::OPTION_SCORE_FACTORY => $scoreFactory,
-            ]
-        );
+        $ltiAgsService = new LtiAgsScoreService($scoreServerClient, $scoreFactory);
 
         $data = (new ScoreFactory())->create(['userId' => '1']);
 
@@ -94,43 +85,5 @@ class LtiAgsScoreServiceTest extends TestCase
         $this->expectExceptionMessage('AGS score send failed. Failed status has been received during AGS sending');
 
         $ltiAgsService->send($registration, $agsClaim, ['userId' => '1']);
-    }
-
-    public function testItThrowsWhenServiceClientOptionIsInvalid(): void
-    {
-            $ltiAgsService = new LtiAgsScoreService(
-                [
-                    LtiAgsScoreService::OPTION_SCORE_SERVICE_CLIENT => new stdClass(),
-                    LtiAgsScoreService::OPTION_SCORE_FACTORY => new ScoreFactory(),
-                ]
-            );
-
-            $this->expectException(LtiAgsException::class);
-            $this->expectExceptionMessage('score_service_client option should implement OAT\Library\Lti1p3Ags\Service\Score\ScoreServiceInterface');
-
-            $ltiAgsService->send(
-                $this->createMock(RegistrationInterface::class),
-                $this->createMock(AgsClaim::class),
-                []
-            );
-    }
-
-    public function testItThrowsWhenScoreFactoryOptionIsInvalid(): void
-    {
-        $ltiAgsService = new LtiAgsScoreService(
-            [
-                LtiAgsScoreService::OPTION_SCORE_SERVICE_CLIENT => new ScoreServiceClient(),
-                LtiAgsScoreService::OPTION_SCORE_FACTORY => new stdClass(),
-            ]
-        );
-
-        $this->expectException(LtiAgsException::class);
-        $this->expectExceptionMessage('score_factory option should implement OAT\Library\Lti1p3Ags\Factory\Score\ScoreFactoryInterface');
-
-        $ltiAgsService->send(
-            $this->createMock(RegistrationInterface::class),
-            $this->createMock(AgsClaim::class),
-            []
-        );
     }
 }

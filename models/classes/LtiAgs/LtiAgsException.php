@@ -21,7 +21,7 @@
 
 declare(strict_types=1);
 
-namespace oat\taoLti\models\classes;
+namespace oat\taoLti\models\classes\LtiAgs;
 
 use common_Exception;
 use Exception;

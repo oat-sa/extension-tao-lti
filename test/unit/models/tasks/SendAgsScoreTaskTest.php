@@ -26,9 +26,9 @@ use OAT\Library\Lti1p3Core\Message\Payload\Claim\AgsClaim;
 use OAT\Library\Lti1p3Core\Registration\RegistrationInterface;
 use OAT\Library\Lti1p3Core\Registration\RegistrationRepositoryInterface;
 use oat\oatbox\reporting\ReportInterface;
+use oat\taoLti\models\classes\LtiAgs\LtiAgsException;
+use oat\taoLti\models\classes\LtiAgs\LtiAgsScoreService;
 use oat\taoLti\models\tasks\SendAgsScoreTask;
-use oat\taoLti\models\classes\LtiAgsException;
-use oat\taoLti\models\classes\LtiAgsScoreService;
 use oat\taoLti\models\classes\Platform\Repository\Lti1p3RegistrationRepository;
 
 class SendAgsScoreTaskTest extends TestCase
@@ -203,7 +203,7 @@ class SendAgsScoreTaskTest extends TestCase
         $serviceLocatorMock = $this->getServiceLocatorMock(
             [
                 Lti1p3RegistrationRepository::SERVICE_ID => $registrationRepository,
-                LtiAgsScoreService::SERVICE_ID => $ltiAgsScoreService
+                LtiAgsScoreService::class => $ltiAgsScoreService
             ]
         );
         $this->subject->setServiceLocator($serviceLocatorMock);
