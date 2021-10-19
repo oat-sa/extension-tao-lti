@@ -58,14 +58,12 @@ class Lti1p3UserTest extends TestCase
         self::assertEquals($data, $subject->getLaunchData());
     }
 
-    public function testSetGetRegistration(): void
+    public function testSetGetRegistrationId(): void
     {
-        $registration = $this->createMock(RegistrationInterface::class);
-
         $subject = new Lti1p3User(new LtiLaunchData([], []));
 
-        $subject->setRegistration($registration);
+        $subject->setRegistrationId('registration-id');
 
-        self::assertEquals($registration, $subject->getRegistration());
+        self::assertEquals('registration-id', $subject->getRegistrationId());
     }
 }

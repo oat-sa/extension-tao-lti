@@ -22,7 +22,6 @@ declare(strict_types=1);
 
 namespace oat\taoLti\models\classes\user;
 
-use OAT\Library\Lti1p3Core\Registration\RegistrationInterface;
 use oat\taoLti\models\classes\LtiLaunchData;
 use oat\taoLti\models\classes\LtiRoles;
 use oat\taoLti\models\classes\LtiUtils;
@@ -30,8 +29,8 @@ use oat\taoLti\models\classes\LtiVariableMissingException;
 
 class Lti1p3User extends LtiUser
 {
-    /** @var RegistrationInterface */
-    private $registration = null;
+    /** @var string */
+    private $registrationId = null;
 
     /**
      * @param LtiLaunchData $launchData
@@ -48,14 +47,14 @@ class Lti1p3User extends LtiUser
         parent::__construct($launchData, $userUri);
     }
 
-    public function getRegistration(): ?RegistrationInterface
+    public function getRegistrationId(): ?string
     {
-        return $this->registration;
+        return $this->registrationId;
     }
 
-    public function setRegistration(?RegistrationInterface $registration): self
+    public function setRegistrationId(string $registrationId): self
     {
-        $this->registration = $registration;
+        $this->registrationId = $registrationId;
 
         return $this;
     }
