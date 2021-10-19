@@ -25,7 +25,7 @@ namespace oat\taoLti\models\classes\Platform;
 use OAT\Library\Lti1p3Core\Platform\PlatformInterface;
 
 /**
- * LTI platform Value Object.
+ * LTI platform registration Value Object. It contains combined data from Platform + Registration for LTI 1.3
  */
 class LtiPlatformRegistration implements PlatformInterface
 {

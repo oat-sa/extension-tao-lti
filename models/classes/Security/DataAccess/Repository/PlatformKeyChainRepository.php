@@ -65,7 +65,7 @@ class PlatformKeyChainRepository extends ConfigurableService implements KeyChain
 
     public function getDefaultKeyId(): string
     {
-        return $this->getOption(PlatformKeyChainRepository::OPTION_DEFAULT_KEY_ID) ?? '';
+        return $this->getOption(PlatformKeyChainRepository::OPTION_DEFAULT_KEY_ID, '');
     }
 
     /**

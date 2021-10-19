@@ -10,9 +10,6 @@ use oat\oatbox\reporting\Report;
 use oat\tao\scripts\SyncModels;
 use oat\tao\scripts\tools\migrations\AbstractMigration;
 
-/**
- * Auto-generated Migration: Please modify to your needs!
- */
 final class Version202110181634585506_taoLti extends AbstractMigration
 {
 
@@ -30,7 +27,7 @@ final class Version202110181634585506_taoLti extends AbstractMigration
         }
 
         $this->addReport(
-            Report::createInfo(
+            Report::createWarning(
                 'This migration has breaking changes, please set environment variables instead '
                 . 'using AuthorizationServerFactory.conf.php, check README for more details.'
             )
