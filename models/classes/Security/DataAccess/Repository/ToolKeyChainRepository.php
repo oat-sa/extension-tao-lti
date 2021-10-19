@@ -22,41 +22,46 @@ declare(strict_types=1);
 
 namespace oat\taoLti\models\classes\Security\DataAccess\Repository;
 
+use common_exception_NoImplementation;
+use OAT\Library\Lti1p3Core\Security\Key\Key;
+use OAT\Library\Lti1p3Core\Security\Key\KeyChain;
+use OAT\Library\Lti1p3Core\Security\Key\KeyChainInterface;
+use OAT\Library\Lti1p3Core\Security\Key\KeyChainRepositoryInterface;
 use oat\oatbox\service\ConfigurableService;
-use oat\tao\model\security\Business\Contract\KeyChainRepositoryInterface;
-use oat\tao\model\security\Business\Domain\Key\Key;
-use oat\tao\model\security\Business\Domain\Key\KeyChain;
-use oat\tao\model\security\Business\Domain\Key\KeyChainCollection;
-use oat\tao\model\security\Business\Domain\Key\KeyChainQuery;
 use oat\taoLti\models\classes\LtiProvider\InvalidLtiProviderException;
 use oat\taoLti\models\classes\LtiProvider\LtiProviderService;
 
 class ToolKeyChainRepository extends ConfigurableService implements KeyChainRepositoryInterface
 {
-    public function save(KeyChain $keyChain): void
+    /**
+     * @throws InvalidLtiProviderException
+     */
+    public function find(string $identifier): ?KeyChainInterface
     {
-    }
-
-    public function findAll(KeyChainQuery $query): KeyChainCollection
-    {
-        $ltiProvider = $this->getLtiProviderService()->searchById($query->getIdentifier());
+        $ltiProvider = $this->getLtiProviderService()->searchById($identifier);
 
         if (!$ltiProvider) {
             throw new InvalidLtiProviderException('Lti Provider is not found');
         }
 
         if (empty($ltiProvider->getToolPublicKey())) {
-            return new KeyChainCollection(...[]);
+            return null;
         }
 
-        $keyChain = new KeyChain(
+        return new KeyChain(
             $ltiProvider->getId(),
             $ltiProvider->getId(),
             new Key($ltiProvider->getToolPublicKey()),
             new Key('')
         );
+    }
 
-        return new KeyChainCollection(...[$keyChain]);
+    /**
+     * @throws common_exception_NoImplementation
+     */
+    public function findByKeySetName(string $keySetName): array
+    {
+        throw new common_exception_NoImplementation();
     }
 
     private function getLtiProviderService(): LtiProviderService

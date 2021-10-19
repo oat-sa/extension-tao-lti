@@ -23,10 +23,8 @@ declare(strict_types=1);
 namespace oat\taoLti\test\unit\models\classes\Security\DataAccess\Repository;
 
 use oat\generis\test\TestCase;
-use oat\tao\model\security\Business\Domain\Key\Key;
-use oat\tao\model\security\Business\Domain\Key\KeyChain;
-use oat\tao\model\security\Business\Domain\Key\KeyChainCollection;
-use oat\tao\model\security\Business\Domain\Key\KeyChainQuery;
+use OAT\Library\Lti1p3Core\Security\Key\Key;
+use OAT\Library\Lti1p3Core\Security\Key\KeyChain;
 use oat\taoLti\models\classes\LtiProvider\LtiProvider;
 use oat\taoLti\models\classes\LtiProvider\LtiProviderService;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\ToolKeyChainRepository;
@@ -53,7 +51,7 @@ class ToolKeyChainRepositoryTest extends TestCase
         );
     }
 
-    public function testFindAll(): void
+    public function testFind(): void
     {
         $ltiProvider = $this->createMock(LtiProvider::class);
 
@@ -75,8 +73,8 @@ class ToolKeyChainRepositoryTest extends TestCase
         );
 
         $this->assertEquals(
-            new KeyChainCollection(...[$keyChain]),
-            $this->subject->findAll(new KeyChainQuery('ltiId'))
+            $keyChain,
+            $this->subject->find('ltiId')
         );
     }
 
@@ -91,9 +89,6 @@ class ToolKeyChainRepositoryTest extends TestCase
             ->method('searchById')
             ->willReturn($ltiProvider);
 
-        $this->assertEquals(
-            new KeyChainCollection(...[]),
-            $this->subject->findAll(new KeyChainQuery('ltiId'))
-        );
+        $this->assertNull($this->subject->find('ltiId'));
     }
 }
