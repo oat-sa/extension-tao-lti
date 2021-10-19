@@ -24,11 +24,11 @@ namespace oat\taoLti\models\classes\Platform\Repository;
 
 use core_kernel_classes_Resource;
 use oat\oatbox\service\ConfigurableService;
-use oat\taoLti\models\classes\Platform\LtiPlatform;
+use oat\taoLti\models\classes\Platform\LtiPlatformRegistration;
 
 class LtiPlatformFactory extends ConfigurableService
 {
-    public function createFromResource(core_kernel_classes_Resource $resource): LtiPlatform
+    public function createFromResource(core_kernel_classes_Resource $resource): LtiPlatformRegistration
     {
         $propertiesValues = $resource->getPropertiesValues(
             [
@@ -41,15 +41,15 @@ class LtiPlatformFactory extends ConfigurableService
             ]
         );
 
-        return new LtiPlatform(
+        return new LtiPlatformRegistration(
             $resource->getUri(),
             $resource->getLabel(),
-            (string)reset($propertiesValues[RdfLtiPlatformRepository::LTI_PLATFORM_CLIENT_ID]),
-            (string)reset($propertiesValues[RdfLtiPlatformRepository::LTI_PLATFORM_DEPLOYMENT_ID]),
             (string)reset($propertiesValues[RdfLtiPlatformRepository::LTI_PLATFORM_AUDIENCE]),
             (string)reset($propertiesValues[RdfLtiPlatformRepository::LTI_PLATFORM_OAUTH2_ACCESS_TOKEN_URL]),
             (string)reset($propertiesValues[RdfLtiPlatformRepository::LTI_PLATFORM_OIDC_URL]),
-            (string)reset($propertiesValues[RdfLtiPlatformRepository::LTI_PLATFORM_JWKS_URL])
+            (string)reset($propertiesValues[RdfLtiPlatformRepository::LTI_PLATFORM_JWKS_URL]),
+            (string)reset($propertiesValues[RdfLtiPlatformRepository::LTI_PLATFORM_CLIENT_ID]),
+            (string)reset($propertiesValues[RdfLtiPlatformRepository::LTI_PLATFORM_DEPLOYMENT_ID])
         );
     }
 }

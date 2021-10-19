@@ -22,11 +22,11 @@ declare(strict_types=1);
 
 namespace oat\taoLti\models\classes\Platform\Service;
 
-use oat\tao\model\security\Business\Domain\Key\KeyChain;
+use OAT\Library\Lti1p3Core\Security\Key\KeyChainInterface;
 
 interface KeyChainGeneratorInterface
 {
     public const OPTION_DATA_STORE = 'sslConfig';
 
-    public function generate(): KeyChain;
+    public function generate(): KeyChainInterface;
 }

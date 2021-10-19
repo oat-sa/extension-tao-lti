@@ -23,25 +23,25 @@ declare(strict_types=1);
 namespace oat\taoLti\test\unit\models\classes\Platform\Service;
 
 use oat\generis\test\TestCase;
-use oat\taoLti\models\classes\Platform\Service\KeyChainGenerator;
+use oat\taoLti\models\classes\Platform\Service\OpenSslKeyChainGenerator;
 
 class KeyChainGeneratorTest extends TestCase
 {
-    /** @var KeyChainGenerator */
+    /** @var OpenSslKeyChainGenerator */
     private $subject;
 
     public function setUp(): void
     {
-        $this->subject = new KeyChainGenerator();
+        $this->subject = new OpenSslKeyChainGenerator();
     }
 
     public function testGenerate(): void
     {
         $result = $this->subject->generate();
 
-        $this->assertStringContainsString('-----BEGIN PRIVATE KEY-----', $result->getPrivateKey()->getValue());
-        $this->assertStringContainsString('-----END PRIVATE KEY-----', $result->getPrivateKey()->getValue());
-        $this->assertStringContainsString('-----BEGIN PUBLIC KEY-----', $result->getPublicKey()->getValue());
-        $this->assertStringContainsString('-----END PUBLIC KEY-----', $result->getPublicKey()->getValue());
+        $this->assertStringContainsString('-----BEGIN PRIVATE KEY-----', $result->getPrivateKey()->getContent());
+        $this->assertStringContainsString('-----END PRIVATE KEY-----', $result->getPrivateKey()->getContent());
+        $this->assertStringContainsString('-----BEGIN PUBLIC KEY-----', $result->getPublicKey()->getContent());
+        $this->assertStringContainsString('-----END PUBLIC KEY-----', $result->getPublicKey()->getContent());
     }
 }

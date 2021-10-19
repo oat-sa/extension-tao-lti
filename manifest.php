@@ -23,6 +23,7 @@ use oat\tao\model\accessControl\func\AccessRule;
 use oat\tao\model\user\TaoRoles;
 use oat\taoLti\controller\CookieUtils;
 use oat\taoLti\controller\Security;
+use oat\taoLti\models\classes\ServiceProvider\LtiServiceProvider;
 use oat\taoLti\scripts\install\GenerateKeys;
 use oat\taoLti\scripts\install\InstallServices;
 use oat\taoLti\scripts\install\MapLtiSectionVisibility;
@@ -85,5 +86,8 @@ return [
     ],
     'extra' => [
         'structures' => $extpath . 'controller' . DIRECTORY_SEPARATOR . 'structures.xml',
-    ]
+    ],
+    'containerServiceProviders' => [
+        LtiServiceProvider::class,
+    ],
 ];

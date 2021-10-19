@@ -24,6 +24,7 @@ namespace oat\taoLti\models\classes\Security;
 
 use OAT\Library\Lti1p3Core\Registration\RegistrationRepositoryInterface;
 use OAT\Library\Lti1p3Core\Security\OAuth2\Validator\RequestAccessTokenValidator as Lti1p3AccessTokenRequestValidator;
+use OAT\Library\Lti1p3Core\Security\OAuth2\Validator\RequestAccessTokenValidatorInterface;
 use oat\oatbox\service\ConfigurableService;
 use oat\taoLti\models\classes\LtiProvider\InvalidLtiProviderException;
 use oat\taoLti\models\classes\LtiProvider\LtiProvider;
@@ -93,12 +94,12 @@ class AccessTokenRequestValidator extends ConfigurableService implements AccessT
         }
     }
 
-    public function withValidator(Lti1p3AccessTokenRequestValidator $validator): void
+    public function withValidator(RequestAccessTokenValidatorInterface $validator): void
     {
         $this->validator = $validator;
     }
 
-    private function getAccessTokenRequestValidator(): Lti1p3AccessTokenRequestValidator
+    private function getAccessTokenRequestValidator(): RequestAccessTokenValidatorInterface
     {
         if (!$this->validator) {
             $this->validator = new Lti1p3AccessTokenRequestValidator($this->getRegistrationRepository());

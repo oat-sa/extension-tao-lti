@@ -4,11 +4,12 @@ namespace oat\taoLti\test\unit\models\classes\Platform\Service;
 
 use oat\generis\test\MockObject;
 use oat\generis\test\TestCase;
+use OAT\Library\Lti1p3Core\Security\Key\Key;
+use OAT\Library\Lti1p3Core\Security\Key\KeyChain;
+use OAT\Library\Lti1p3Core\Security\Key\KeyChainInterface;
 use oat\oatbox\cache\SimpleCache;
-use oat\tao\model\security\Business\Domain\Key\Key;
-use oat\tao\model\security\Business\Domain\Key\KeyChain;
 use oat\taoLti\models\classes\Platform\Service\CachedKeyChainGenerator;
-use oat\taoLti\models\classes\Platform\Service\KeyChainGenerator;
+use oat\taoLti\models\classes\Platform\Service\OpenSslKeyChainGenerator;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\CachedPlatformJwksRepository;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\CachedPlatformKeyChainRepository;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\PlatformKeyChainRepository;
@@ -18,7 +19,7 @@ class CachedKeyChainGeneratorTest extends TestCase
     /** @var CachedKeyChainGenerator */
     private $subject;
 
-    /** @var KeyChainGenerator|MockObject */
+    /** @var OpenSslKeyChainGenerator|MockObject */
     private $keyChainGeneratorMock;
 
     /** @var PlatformKeyChainRepository|MockObject */
@@ -27,14 +28,14 @@ class CachedKeyChainGeneratorTest extends TestCase
     /** @var SimpleCache|MockObject */
     private $simpleCacheMock;
 
-    /** @var KeyChain */
+    /** @var KeyChainInterface */
     private $keyChain;
 
     public function setUp(): void
     {
 
         $this->subject = new CachedKeyChainGenerator();
-        $this->keyChainGeneratorMock = $this->createMock(KeyChainGenerator::class);
+        $this->keyChainGeneratorMock = $this->createMock(OpenSslKeyChainGenerator::class);
         $this->platformKeyChainRepositoryMock = $this->createMock(PlatformKeyChainRepository::class);
         $this->simpleCacheMock = $this->createMock(SimpleCache::class);
 
@@ -48,7 +49,7 @@ class CachedKeyChainGeneratorTest extends TestCase
         $this->subject->setServiceLocator(
             $this->getServiceLocatorMock(
                 [
-                    KeyChainGenerator::class => $this->keyChainGeneratorMock,
+                    OpenSslKeyChainGenerator::class => $this->keyChainGeneratorMock,
                     PlatformKeyChainRepository::class => $this->platformKeyChainRepositoryMock,
                     SimpleCache::SERVICE_ID => $this->simpleCacheMock,
                 ]
