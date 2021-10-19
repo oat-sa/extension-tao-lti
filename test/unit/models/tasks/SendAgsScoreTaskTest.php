@@ -26,7 +26,7 @@ use OAT\Library\Lti1p3Core\Message\Payload\Claim\AgsClaim;
 use OAT\Library\Lti1p3Core\Registration\RegistrationInterface;
 use OAT\Library\Lti1p3Core\Registration\RegistrationRepositoryInterface;
 use oat\oatbox\reporting\ReportInterface;
-use oat\taoLti\model\tasks\SendAgsScoreTask;
+use oat\taoLti\models\tasks\SendAgsScoreTask;
 use oat\taoLti\models\classes\LtiAgsException;
 use oat\taoLti\models\classes\LtiAgsScoreService;
 use oat\taoLti\models\classes\Platform\Repository\Lti1p3RegistrationRepository;

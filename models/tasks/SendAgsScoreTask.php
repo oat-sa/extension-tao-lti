@@ -21,7 +21,7 @@
 
 declare(strict_types=1);
 
-namespace oat\taoLti\model\tasks;
+namespace oat\taoLti\models\tasks;
 
 use OAT\Library\Lti1p3Core\Message\Payload\Claim\AgsClaim;
 use oat\oatbox\extension\AbstractAction;
