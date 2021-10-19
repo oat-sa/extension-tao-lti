@@ -57,7 +57,6 @@ class LtiAgsScoreService implements LtiAgsScoreServiceInterface
             if (false === $result) {
                 throw new LtiException('Failed status has been received during AGS sending');
             }
-
         } catch (LtiExceptionInterface $e) {
             $exception = new LtiAgsException('AGS score send failed.', 1, $e);
 
