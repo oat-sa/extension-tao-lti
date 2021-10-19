@@ -28,7 +28,7 @@ final class Version202110181634585506_taoLti extends AbstractMigration
 
         $this->addReport(
             Report::createWarning(
-                'This migration has breaking changes, please set environment variables instead '
+                'This migration has breaking changes, please set environment variables instead of '
                 . 'using AuthorizationServerFactory.conf.php, check README for more details.'
             )
         );
