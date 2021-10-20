@@ -27,6 +27,9 @@ use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
 use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
 use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
 use oat\generis\model\DependencyInjection\ContainerServiceProviderInterface;
+use OAT\Library\Lti1p3Ags\Factory\Score\ScoreFactory;
+use OAT\Library\Lti1p3Ags\Factory\Score\ScoreFactoryInterface;
+use OAT\Library\Lti1p3Ags\Service\Score\Client\ScoreServiceClient;
 use OAT\Library\Lti1p3Core\Security\Jwks\Fetcher\JwksFetcher;
 use OAT\Library\Lti1p3Core\Security\Jwks\Fetcher\JwksFetcherInterface;
 use OAT\Library\Lti1p3Core\Security\OAuth2\Entity\Scope;
@@ -36,6 +39,8 @@ use OAT\Library\Lti1p3Core\Security\OAuth2\Repository\ClientRepository;
 use OAT\Library\Lti1p3Core\Security\OAuth2\Repository\ScopeRepository;
 use oat\oatbox\cache\ItemPoolSimpleCacheAdapter;
 use oat\oatbox\log\LoggerService;
+use oat\taoLti\models\classes\LtiAgs\LtiAgsScoreService;
+use oat\taoLti\models\classes\LtiAgs\LtiAgsScoreServiceInterface;
 use oat\taoLti\models\classes\Platform\Repository\Lti1p3RegistrationRepository;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
@@ -115,6 +120,24 @@ class LtiServiceProvider implements ContainerServiceProviderInterface
                     service(AccessTokenRepositoryInterface::class),
                     service(ScopeRepositoryInterface::class),
                     env('LTI_AUTHORIZATION_SERVER_FACTORY_ENCRYPTION_KEY')
+                ]
+            );
+
+        $services
+            ->set(ScoreServiceClient::class, ScoreServiceClient::class)
+            ->public();
+
+        $services
+            ->set(ScoreFactoryInterface::class, ScoreFactory::class)
+            ->public();
+
+        $services
+            ->set(LtiAgsScoreService::class, LtiAgsScoreServiceInterface::class)
+            ->public()
+            ->args(
+                [
+                    service(ScoreServiceClient::class),
+                    service(ScoreFactoryInterface::class)
                 ]
             );
     }

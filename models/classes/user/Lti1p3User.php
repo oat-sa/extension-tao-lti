@@ -29,6 +29,9 @@ use oat\taoLti\models\classes\LtiVariableMissingException;
 
 class Lti1p3User extends LtiUser
 {
+    /** @var string */
+    private $registrationId = null;
+
     /**
      * @param LtiLaunchData $launchData
      * @throws \common_Exception
@@ -42,6 +45,18 @@ class Lti1p3User extends LtiUser
             : 'anonymous';
 
         parent::__construct($launchData, $userUri);
+    }
+
+    public function getRegistrationId(): ?string
+    {
+        return $this->registrationId;
+    }
+
+    public function setRegistrationId(string $registrationId): self
+    {
+        $this->registrationId = $registrationId;
+
+        return $this;
     }
 
     /**
