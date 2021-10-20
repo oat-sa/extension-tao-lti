@@ -19,6 +19,8 @@
  *
  */
 
+declare(strict_types=1);
+
 namespace oat\taoLti\models\classes;
 
 use common_http_Request;
@@ -189,16 +191,20 @@ class LtiLaunchData implements \JsonSerializable
     }
 
     /**
-     * @param string $url
-     * @return array
      * @throws \ResolverException
      */
-    private static function getParametersFromUrl($url)
+    private static function getParametersFromUrl(string $url): array
     {
         $returnValue = [];
 
         // get parameters
-        parse_str(parse_url($url, PHP_URL_QUERY), $returnValue);
+        $query = parse_url($url, PHP_URL_QUERY);
+
+        if (false === is_string($query)) {
+            return $returnValue;
+        }
+
+        parse_str($query, $returnValue);
 
         // encoded in url
         $parts = explode('/', tao_helpers_Request::getRelativeUrl($url), 4);

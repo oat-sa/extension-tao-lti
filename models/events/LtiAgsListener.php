@@ -34,7 +34,7 @@ use oat\taoLti\models\tasks\SendAgsScoreTask;
 
 class LtiAgsListener extends ConfigurableService
 {
-    public function sendAgsOnStart(DeliveryExecutionCreated $event)
+    public function onDeliveryExecutionStart(DeliveryExecutionCreated $event)
     {
         $user = $event->getUser();
 

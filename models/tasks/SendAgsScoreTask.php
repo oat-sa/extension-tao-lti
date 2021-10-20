@@ -28,6 +28,7 @@ use oat\oatbox\extension\AbstractAction;
 use oat\oatbox\reporting\Report;
 use oat\taoLti\models\classes\LtiAgs\LtiAgsException;
 use oat\taoLti\models\classes\LtiAgs\LtiAgsScoreService;
+use oat\taoLti\models\classes\LtiAgs\LtiAgsScoreServiceInterface;
 use oat\taoLti\models\classes\Platform\Repository\Lti1p3RegistrationRepository;
 
 class SendAgsScoreTask extends AbstractAction
@@ -59,7 +60,7 @@ class SendAgsScoreTask extends AbstractAction
         }
 
         /** @var LtiAgsScoreService $agsScoreService */
-        $agsScoreService = $this->getServiceLocator()->getContainer()->get(LtiAgsScoreService::class);
+        $agsScoreService = $this->getServiceLocator()->getContainer()->get(LtiAgsScoreServiceInterface::class);
         try {
             $agsScoreService->send($registration, $agsClaim, $data);
         } catch (LtiAgsException $e) {

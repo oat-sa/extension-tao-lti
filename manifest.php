@@ -26,6 +26,7 @@ use oat\taoLti\controller\Security;
 use oat\taoLti\models\classes\ServiceProvider\LtiServiceProvider;
 use oat\taoLti\scripts\install\GenerateKeys;
 use oat\taoLti\scripts\install\InstallServices;
+use oat\taoLti\scripts\install\LtiEventsRegister;
 use oat\taoLti\scripts\install\MapLtiSectionVisibility;
 use oat\taoLti\scripts\install\GenerisSearchWhitelist;
 use oat\taoLti\scripts\update\Updater;
@@ -60,7 +61,8 @@ return [
             InstallServices::class,
             GenerateKeys::class,
             MapLtiSectionVisibility::class,
-            GenerisSearchWhitelist::class
+            GenerisSearchWhitelist::class,
+            LtiEventsRegister::class
         ]
     ],
     'update' => Updater::class,
