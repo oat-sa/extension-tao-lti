@@ -34,36 +34,39 @@ class LtiLaunchData implements \JsonSerializable
 {
     use LoggerAwareTrait;
 
-    const OAUTH_CONSUMER_KEY  = 'oauth_consumer_key';
-    const RESOURCE_LINK_ID    = 'resource_link_id';
-    const RESOURCE_LINK_TITLE = 'resource_link_title';
-    const CONTEXT_ID          = 'context_id';
-    const CONTEXT_LABEL       = 'context_label';
-    const CONTEXT_TITLE       = 'context_title';
+    public const OAUTH_CONSUMER_KEY  = 'oauth_consumer_key';
+    public const RESOURCE_LINK_ID    = 'resource_link_id';
+    public const RESOURCE_LINK_TITLE = 'resource_link_title';
+    public const CONTEXT_ID          = 'context_id';
+    public const CONTEXT_LABEL       = 'context_label';
+    public const CONTEXT_TITLE       = 'context_title';
 
-    const USER_ID                          = 'user_id';
-    const ROLES                            = 'roles';
-    const LIS_PERSON_NAME_GIVEN            = 'lis_person_name_given';
-    const LIS_PERSON_NAME_FAMILY           = 'lis_person_name_family';
-    const LIS_PERSON_NAME_FULL             = 'lis_person_name_full';
-    const LIS_PERSON_CONTACT_EMAIL_PRIMARY = 'lis_person_contact_email_primary';
+    public const USER_ID                          = 'user_id';
+    public const ROLES                            = 'roles';
+    public const LIS_PERSON_NAME_GIVEN            = 'lis_person_name_given';
+    public const LIS_PERSON_NAME_FAMILY           = 'lis_person_name_family';
+    public const LIS_PERSON_NAME_FULL             = 'lis_person_name_full';
+    public const LIS_PERSON_CONTACT_EMAIL_PRIMARY = 'lis_person_contact_email_primary';
 
-    const LAUNCH_PRESENTATION_LOCALE     = 'launch_presentation_locale';
-    const LAUNCH_PRESENTATION_RETURN_URL = 'launch_presentation_return_url';
+    public const LAUNCH_PRESENTATION_LOCALE     = 'launch_presentation_locale';
+    public const LAUNCH_PRESENTATION_RETURN_URL = 'launch_presentation_return_url';
 
-    const TOOL_CONSUMER_INSTANCE_ID          = 'tool_consumer_instance_id';
-    const TOOL_CONSUMER_INSTANCE_NAME        = 'tool_consumer_instance_name';
-    const TOOL_CONSUMER_INSTANCE_DESCRIPTION = 'tool_consumer_instance_description';
+    public const TOOL_CONSUMER_INSTANCE_ID          = 'tool_consumer_instance_id';
+    public const TOOL_CONSUMER_INSTANCE_NAME        = 'tool_consumer_instance_name';
+    public const TOOL_CONSUMER_INSTANCE_DESCRIPTION = 'tool_consumer_instance_description';
 
-    const LTI_VERSION = 'lti_version';
-    const LTI_MESSAGE_TYPE = 'lti_message_type';
+    public const LTI_VERSION = 'lti_version';
+    public const LTI_MESSAGE_TYPE = 'lti_message_type';
 
-    const LIS_RESULT_SOURCEDID = 'lis_result_sourcedid';
-    const LIS_OUTCOME_SERVICE_URL = 'lis_outcome_service_url';
+    public const LIS_RESULT_SOURCEDID = 'lis_result_sourcedid';
+    public const LIS_OUTCOME_SERVICE_URL = 'lis_outcome_service_url';
 
     // review mode
-    const LTI_SHOW_SCORE = 'custom_show_score';
-    const LTI_SHOW_CORRECT = 'custom_show_correct';
+    public const LTI_SHOW_SCORE = 'custom_show_score';
+    public const LTI_SHOW_CORRECT = 'custom_show_correct';
+
+    // AGS
+    public const AGS_CLAIMS = 'ags_claims';
 
     /**
      * LTI variables
@@ -165,6 +168,10 @@ class LtiLaunchData implements \JsonSerializable
                 $variables[self::TOOL_CONSUMER_INSTANCE_DESCRIPTION] = $platform->getName();
             }
 
+        }
+
+        if ($ags = $ltiMessagePayload->getAgs()) {
+            $variables[self::AGS_CLAIMS] = $ags;
         }
 
         $customParams = $ltiMessagePayload->getCustom();
