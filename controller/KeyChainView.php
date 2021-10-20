@@ -22,9 +22,9 @@ declare(strict_types=1);
 
 namespace oat\taoLti\controller;
 
+use OAT\Library\Lti1p3Core\Security\Key\KeyChainRepositoryInterface;
 use oat\tao\helpers\UrlHelper;
 use oat\tao\model\security\Business\Contract\JwksRepositoryInterface;
-use oat\tao\model\security\Business\Contract\KeyChainRepositoryInterface;
 use oat\tao\model\security\Business\Domain\Key\KeyChain;
 use oat\tao\model\security\Business\Domain\Key\KeyChainQuery;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\CachedPlatformJwksRepository;
