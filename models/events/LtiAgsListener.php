@@ -38,8 +38,8 @@ class LtiAgsListener
     {
         $user = $event->getUser();
 
-        if ($user instanceof Lti1p3User && $user->getLaunchData()->hasVariable(LtiLaunchData::AGS_CLAIMS)
-        ) {
+        if ($user instanceof Lti1p3User && $user->getLaunchData()->hasVariable(LtiLaunchData::AGS_CLAIMS))
+        {
             /** @var AgsClaim $agsClaim */
             $agsClaim = $user->getLaunchData()->getVariable(LtiLaunchData::AGS_CLAIMS);
 

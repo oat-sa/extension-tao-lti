@@ -24,7 +24,7 @@ declare(strict_types=1);
 namespace oat\taoLti\models\classes\LtiAgs;
 
 use OAT\Library\Lti1p3Ags\Factory\Score\ScoreFactoryInterface;
-use OAT\Library\Lti1p3Ags\Service\Score\ScoreServiceInterface;
+use OAT\Library\Lti1p3Ags\Service\Score\Client\ScoreServiceClient;
 use OAT\Library\Lti1p3Core\Exception\LtiException;
 use OAT\Library\Lti1p3Core\Exception\LtiExceptionInterface;
 use OAT\Library\Lti1p3Core\Message\Payload\Claim\AgsClaim;
@@ -32,21 +32,18 @@ use OAT\Library\Lti1p3Core\Registration\RegistrationInterface;
 
 class LtiAgsScoreService implements LtiAgsScoreServiceInterface
 {
-    /** @var ScoreServiceInterface  */
+    /** @var ScoreServiceClient  */
     private $scoreServiceClient;
 
     /** @var ScoreFactoryInterface  */
     private $scoreFactory;
 
-    public function __construct(ScoreServiceInterface $scoreServiceClient, ScoreFactoryInterface $scoreFactory)
+    public function __construct(ScoreServiceClient $scoreServiceClient, ScoreFactoryInterface $scoreFactory)
     {
         $this->scoreServiceClient = $scoreServiceClient;
         $this->scoreFactory = $scoreFactory;
     }
 
-    /**
-     * @throws LtiAgsException
-     */
     public function send(RegistrationInterface $registration, AgsClaim $ags, array $data): void
     {
         $score = $this->scoreFactory->create($data);

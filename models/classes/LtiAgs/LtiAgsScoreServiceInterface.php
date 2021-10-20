@@ -28,5 +28,8 @@ use OAT\Library\Lti1p3Core\Registration\RegistrationInterface;
 
 interface LtiAgsScoreServiceInterface
 {
+    /**
+     * @throws LtiAgsException // if sending fails by some reasons
+     */
     public function send(RegistrationInterface $registration, AgsClaim $ags, array $data): void;
 }
