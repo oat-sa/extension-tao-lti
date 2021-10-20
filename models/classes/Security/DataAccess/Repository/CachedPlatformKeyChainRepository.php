@@ -30,6 +30,10 @@ use OAT\Library\Lti1p3Core\Security\Key\KeyChainInterface;
 use OAT\Library\Lti1p3Core\Security\Key\KeyChainRepositoryInterface;
 use oat\oatbox\cache\SimpleCache;
 use oat\oatbox\service\ConfigurableService;
+use oat\tao\model\security\Business\Domain\Key\KeyChainCollection;
+use oat\tao\model\security\Business\Domain\Key\KeyChainQuery;
+use oat\tao\model\security\Business\Domain\Key\Key as TaoKey;
+use oat\tao\model\security\Business\Domain\Key\KeyChain as TaoKeyChain;
 use Psr\SimpleCache\CacheInterface;
 use Psr\SimpleCache\InvalidArgumentException;
 
@@ -82,6 +86,42 @@ class CachedPlatformKeyChainRepository extends ConfigurableService implements Ke
         return $keyChain;
     }
 
+    public function findAll(KeyChainQuery $query): KeyChainCollection
+    {
+        if ($query->getIdentifier() == null) {
+            $query = new KeyChainQuery($this->getPlatformKeyChainRepository()->getDefaultKeyId());
+        }
+
+        if ($this->exists($query->getIdentifier())) {
+            //TODO: Needs to be refactor if we have multiple key chains
+            $rawKeys = $this->getCacheService()->getMultiple(
+                [
+                    sprintf(self::PRIVATE_PATTERN, $query->getIdentifier()),
+                    sprintf(self::PUBLIC_PATTERN, $query->getIdentifier()),
+                ]
+            );
+
+            $platformKeyChainRepository = $this->getPlatformKeyChainRepository();
+
+            return new KeyChainCollection(
+                new TaoKeyChain(
+                    $platformKeyChainRepository->getOption(PlatformKeyChainRepository::OPTION_DEFAULT_KEY_ID),
+                    $platformKeyChainRepository->getOption(PlatformKeyChainRepository::OPTION_DEFAULT_KEY_NAME),
+                    new TaoKey($rawKeys[sprintf(self::PUBLIC_PATTERN, $query->getIdentifier())]),
+                    new TaoKey($rawKeys[sprintf(self::PRIVATE_PATTERN, $query->getIdentifier())])
+                )
+            );
+        }
+
+        $keyChainCollection = $this->getPlatformKeyChainRepository()->findAll($query);
+
+        foreach ($keyChainCollection->getKeyChains() as $keyChain) {
+            $this->setKeys($keyChain, $query->getIdentifier());
+        }
+
+        return $keyChainCollection;
+    }
+
     /**
      * @throws common_exception_NoImplementation
      */
@@ -91,9 +131,10 @@ class CachedPlatformKeyChainRepository extends ConfigurableService implements Ke
     }
 
     /**
+     * @var KeyChainInterface|TaoKeyChain $keyChain
      * @throws InvalidArgumentException
      */
-    private function setKeys(KeyChainInterface $keyChain, string $identifier): void
+    private function setKeys($keyChain, string $identifier): void
     {
         $this->getCacheService()->set(
             sprintf(self::PRIVATE_PATTERN, $identifier),
