@@ -25,6 +25,7 @@ namespace oat\taoLti\scripts\install;
 
 use oat\oatbox\extension\InstallAction;
 use oat\taoDelivery\models\classes\execution\event\DeliveryExecutionCreated;
+use oat\taoDelivery\models\classes\execution\event\DeliveryExecutionState;
 use oat\taoLti\models\events\LtiAgsListener;
 
 class LtiEventsRegister extends InstallAction
@@ -34,6 +35,11 @@ class LtiEventsRegister extends InstallAction
         $this->registerEvent(
             DeliveryExecutionCreated::class,
             [LtiAgsListener::class, 'onDeliveryExecutionStart']
+        );
+
+        $this->registerEvent(
+            DeliveryExecutionState::class,
+            [LtiAgsListener::class, 'onDeliveryExecutionStateUpdate']
         );
     }
 }

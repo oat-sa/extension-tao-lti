@@ -8,9 +8,10 @@ use Doctrine\DBAL\Schema\Schema;
 use oat\oatbox\event\EventManager;
 use oat\tao\scripts\tools\migrations\AbstractMigration;
 use oat\taoDelivery\models\classes\execution\event\DeliveryExecutionCreated;
+use oat\taoDelivery\models\classes\execution\event\DeliveryExecutionState;
 use oat\taoLti\models\events\LtiAgsListener;
 
-final class Version202110201634748503_taoLti extends AbstractMigration
+final class Version202110201634748504_taoLti extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -26,6 +27,11 @@ final class Version202110201634748503_taoLti extends AbstractMigration
             [LtiAgsListener::class, 'onDeliveryExecutionStart']
         );
 
+        $eventManager->attach(
+            DeliveryExecutionState::class,
+            [LtiAgsListener::class, 'onDeliveryExecutionStateUpdate']
+        );
+
         $this->getServiceManager()->register(EventManager::CONFIG_ID, $eventManager);
     }
 
@@ -36,6 +42,11 @@ final class Version202110201634748503_taoLti extends AbstractMigration
         $eventManager->detach(
             DeliveryExecutionCreated::class,
             [LtiAgsListener::class, 'onDeliveryExecutionStart']
+        );
+
+        $eventManager->detach(
+            DeliveryExecutionState::class,
+            [LtiAgsListener::class, 'onDeliveryExecutionStateUpdate']
         );
 
         $this->getServiceManager()->register(EventManager::CONFIG_ID, $eventManager);
