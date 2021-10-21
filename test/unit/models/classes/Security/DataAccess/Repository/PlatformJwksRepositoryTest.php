@@ -24,7 +24,6 @@ namespace oat\taoLti\test\unit\models\classes\Security\DataAccess\Repository;
 
 use oat\generis\test\TestCase;
 use OAT\Library\Lti1p3Core\Security\Jwks\Exporter\Jwk\JwkExporterInterface;
-use oat\tao\model\security\Business\Contract\KeyChainRepositoryInterface;
 use oat\tao\model\security\Business\Domain\Key\Key;
 use oat\tao\model\security\Business\Domain\Key\KeyChain;
 use oat\tao\model\security\Business\Domain\Key\KeyChainCollection;
@@ -40,13 +39,13 @@ class PlatformJwksRepositoryTest extends TestCase
     /** @var JwkExporterInterface|MockObject */
     private $jwksExporter;
 
-    /** @var KeyChainRepositoryInterface|MockObject */
+    /** @var PlatformKeyChainRepository|MockObject */
     private $keyChainRepository;
 
     public function setUp(): void
     {
         $this->jwksExporter = $this->createMock(JwkExporterInterface::class);
-        $this->keyChainRepository = $this->createMock(KeyChainRepositoryInterface::class);
+        $this->keyChainRepository = $this->createMock(PlatformKeyChainRepository::class);
         $this->subject = new PlatformJwksRepository();
         $this->subject->withJwksExporter($this->jwksExporter);
         $this->subject->setServiceLocator(

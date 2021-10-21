@@ -24,7 +24,6 @@ namespace oat\taoLti\controller;
 
 use oat\tao\helpers\UrlHelper;
 use oat\tao\model\security\Business\Contract\JwksRepositoryInterface;
-use oat\tao\model\security\Business\Contract\KeyChainRepositoryInterface;
 use oat\tao\model\security\Business\Domain\Key\KeyChain;
 use oat\tao\model\security\Business\Domain\Key\KeyChainQuery;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\CachedPlatformJwksRepository;
@@ -68,7 +67,7 @@ class KeyChainView extends CommonModule
         return $this->getServiceLocator()->get(CachedPlatformJwksRepository::class);
     }
 
-    private function getKeyChainRepository(): KeyChainRepositoryInterface
+    private function getKeyChainRepository(): CachedPlatformKeyChainRepository
     {
         return $this->getServiceLocator()->get(CachedPlatformKeyChainRepository::class);
     }
