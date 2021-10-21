@@ -26,7 +26,6 @@ use OAT\Library\Lti1p3Core\Security\Jwks\Exporter\Jwk\JwkExporterInterface;
 use OAT\Library\Lti1p3Core\Security\Jwks\Exporter\Jwk\JwkRS256Exporter;
 use OAT\Library\Lti1p3Core\Security\Key\Key;
 use OAT\Library\Lti1p3Core\Security\Key\KeyChain;
-use OAT\Library\Lti1p3Core\Security\Key\KeyChainRepositoryInterface;
 use oat\oatbox\service\ConfigurableService;
 use oat\tao\model\security\Business\Contract\JwksRepositoryInterface;
 use oat\tao\model\security\Business\Domain\Key\Jwk;
@@ -81,7 +80,7 @@ class PlatformJwksRepository extends ConfigurableService implements JwksReposito
         return $this->jwksExporter ?? new JwkRS256Exporter();
     }
 
-    private function getKeyChainRepository(): KeyChainRepositoryInterface
+    private function getKeyChainRepository(): PlatformKeyChainRepository
     {
         return $this->getServiceLocator()->get(PlatformKeyChainRepository::SERVICE_ID);
     }
