@@ -31,6 +31,10 @@ use OAT\Library\Lti1p3Core\Security\Key\KeyChainInterface;
 use OAT\Library\Lti1p3Core\Security\Key\KeyChainRepositoryInterface;
 use oat\oatbox\filesystem\FileSystemService;
 use oat\oatbox\service\ConfigurableService;
+use oat\tao\model\security\Business\Domain\Key\KeyChainCollection;
+use oat\tao\model\security\Business\Domain\Key\KeyChainQuery;
+use oat\tao\model\security\Business\Domain\Key\Key as TaoKey;
+use oat\tao\model\security\Business\Domain\Key\KeyChain as TaoKeyChain;
 
 class PlatformKeyChainRepository extends ConfigurableService implements KeyChainRepositoryInterface
 {
@@ -94,6 +98,29 @@ class PlatformKeyChainRepository extends ConfigurableService implements KeyChain
             new Key($privateKey)
         );
     }
+
+    public function findAll(KeyChainQuery $query): KeyChainCollection
+    {
+        $publicKey = $this->getFileSystem()
+            ->read($this->getOption(self::OPTION_DEFAULT_PUBLIC_KEY_PATH));
+
+        $privateKey = $this->getFileSystem()
+            ->read($this->getOption(self::OPTION_DEFAULT_PRIVATE_KEY_PATH));
+
+        if ($publicKey === false || $privateKey === false) {
+            throw new ErrorException('Impossible to read LTI keys');
+        }
+
+        $keyChain = new TaoKeyChain(
+            $this->getOption(self::OPTION_DEFAULT_KEY_ID),
+            $this->getOption(self::OPTION_DEFAULT_KEY_NAME),
+            new TaoKey($publicKey),
+            new TaoKey($privateKey)
+        );
+
+        return new KeyChainCollection(...[$keyChain]);
+    }
+
 
     /**
      * @throws common_exception_NoImplementation
