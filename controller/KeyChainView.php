@@ -68,7 +68,7 @@ class KeyChainView extends CommonModule
         return $this->getServiceLocator()->get(CachedPlatformJwksRepository::class);
     }
 
-    private function getKeyChainRepository(): KeyChainRepositoryInterface
+    private function getKeyChainRepository(): CachedPlatformKeyChainRepository
     {
         return $this->getServiceLocator()->get(CachedPlatformKeyChainRepository::class);
     }

@@ -81,7 +81,7 @@ class PlatformJwksRepository extends ConfigurableService implements JwksReposito
         return $this->jwksExporter ?? new JwkRS256Exporter();
     }
 
-    private function getKeyChainRepository(): KeyChainRepositoryInterface
+    private function getKeyChainRepository(): PlatformKeyChainRepository
     {
         return $this->getServiceLocator()->get(PlatformKeyChainRepository::SERVICE_ID);
     }
