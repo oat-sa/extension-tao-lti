@@ -1,0 +1,160 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: TAO 2021.10\n"
+"PO-Revision-Date: 2021-10-22T12:56:43\n"
+"Last-Translator: TAO Translation Team <translation@tao.lu>\n"
+"MIME-Version: 1.0\n"
+"Language: nb-NO\n"
+"sourceLanguage: en-US\n"
+"targetLanguage: nb-NO\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Basepath: ../../\n"
+"X-Poedit-KeywordsList: __\n"
+"X-Poedit-SearchPath-0: .\n"
+
+msgid "%s created"
+msgstr "%s opprettet"
+
+#, tao-public
+msgid "Add Consumer"
+msgstr "Legge til bruker"
+
+#, tao-public
+msgid "Add Platform"
+msgstr ""
+
+#, tao-public
+msgid "Add Provider"
+msgstr "Legg til leverandør"
+
+msgid "Authorization failed"
+msgstr "Autorisasjon feilet"
+
+msgid "Back"
+msgstr "Tilbake"
+
+msgid "Create instance of "
+msgstr "Opprett en ny "
+
+#, tao-public
+msgid "Delete"
+msgstr "Slett"
+
+msgid "Edit Instance"
+msgstr "Rediger forekomst"
+
+msgid "Error"
+msgstr "Feil"
+
+msgid "Error (%s): "
+msgstr "Feil (%s): "
+
+msgid "Error(%s): [key %s] %s \"%s"
+msgstr "Feil(%s): [key %s] %s \"%s"
+
+msgid "Error: "
+msgstr "Feil: "
+
+msgid "Error: [key %s] \"%s"
+msgstr "Feil: [key %s] \"%s"
+
+#, tao-public
+msgid "Export"
+msgstr "Eksporter"
+
+msgid "Generate a new secret key"
+msgstr "Lag en ny hemmelig nøkkel"
+
+#, tao-public
+msgid "Import"
+msgstr "Importer"
+
+#, tao-public
+msgid "Index"
+msgstr "Indeks"
+
+msgid "Instance saved"
+msgstr "Forekomsten ble lagret"
+
+msgid "Learning Tools Interoperability"
+msgstr "Læringsverktøysinteroperabilitet"
+
+msgid "link"
+msgstr "lenke"
+
+#, tao-public
+msgid "LTI 1.3 Platforms"
+msgstr ""
+
+#, tao-public
+msgid "LTI Consumers"
+msgstr "LTI brukere"
+
+msgid "LTI JWKS"
+msgstr "LTI JWKS"
+
+msgid "LTI Key Chain"
+msgstr "LTI nøkkelring"
+
+#, tao-public
+msgid "LTI Platform key chain"
+msgstr "LTI Plattform nøkkelring"
+
+#, tao-public
+msgid "LTI Providers"
+msgstr "LTI leverandører"
+
+msgid "Oauth consumer secret has been copied to the clipboard"
+msgstr "Oauth -forbrukerhemmeligheten er kopiert til utklippstavlen"
+
+msgid "Open in a new window"
+msgstr "Åpne i nytt vindu"
+
+msgid "Please consider that generating a new key will replace the previously generated one."
+msgstr "Vær oppmerksom på at generering av en ny nøkkel vil erstatte den tidligere genererte nøkkelen."
+
+msgid "Please give the key value persistence id"
+msgstr "Vennligst oppgi ID for nøkkelverdien"
+
+#, tao-public
+msgid "Properties"
+msgstr "Egenskaper"
+
+msgid "Registered Lti user in Key value"
+msgstr "Registrert Lti-bruker i nøkkelverdi"
+
+msgid "Registered Lti user in ontology"
+msgstr "Registrert Lti -bruker i ontologi"
+
+msgid "Return to %s."
+msgstr "Gå tilbake til %s."
+
+msgid "Server Error"
+msgstr "Serverfeil"
+
+#, tao-public
+msgid "Settings"
+msgstr "Innstillinger"
+
+msgid "The LTI connection could not be established"
+msgstr "LTI-tilkoblingen kunne ikke opprettes"
+
+msgid "The LTI Provider library."
+msgstr "LTI Leverandørbiblioteket."
+
+msgid "The LTI tool could not be opened in the current window. Please click on the button to open it in a new window."
+msgstr "LTI-verktøyet kunne ikke åpnes i det gjeldende vinduet. Klikk for å åpne i et nytt vindu."
+
+msgid "Third party cookies are not supported by your browser"
+msgstr "Tredjeparts informasjonskapsler støttes ikke av nettleseren din"
+
+msgid "Unable to restore Session"
+msgstr "Kunne ikke gjenopprette sesjonen"
+
+msgid "user"
+msgstr "bruker"
+
+msgid "You are not authorized to use this system"
+msgstr "Du er ikke autorisert til å bruke dette systemet"
+
