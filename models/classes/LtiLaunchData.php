@@ -189,15 +189,12 @@ class LtiLaunchData implements \JsonSerializable
     }
 
     /**
-     * @param string $url
-     * @return array
      * @throws \ResolverException
      */
-    private static function getParametersFromUrl($url)
+    private static function getParametersFromUrl(string $url): array
     {
         $returnValue = [];
 
-        // get parameters
         parse_str(parse_url($url, PHP_URL_QUERY), $returnValue);
 
         // encoded in url
@@ -284,7 +281,8 @@ class LtiLaunchData implements \JsonSerializable
      */
     public function getBooleanVariable($key)
     {
-        $var = mb_strtolower($this->getVariable($key));
+        $original = $this->getVariable($key);
+        $var = is_string($original) ? mb_strtolower($original) : null;
 
         if ($var === 'true') {
             return true;
