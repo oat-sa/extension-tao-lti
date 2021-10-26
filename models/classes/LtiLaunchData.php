@@ -19,8 +19,6 @@
  *
  */
 
-declare(strict_types=1);
-
 namespace oat\taoLti\models\classes;
 
 use common_http_Request;
@@ -197,14 +195,7 @@ class LtiLaunchData implements \JsonSerializable
     {
         $returnValue = [];
 
-        // get parameters
-        $query = parse_url($url, PHP_URL_QUERY);
-
-        if (false === is_string($query)) {
-            return $returnValue;
-        }
-
-        parse_str($query, $returnValue);
+        parse_str(parse_url($url, PHP_URL_QUERY), $returnValue);
 
         // encoded in url
         $parts = explode('/', tao_helpers_Request::getRelativeUrl($url), 4);
@@ -290,7 +281,8 @@ class LtiLaunchData implements \JsonSerializable
      */
     public function getBooleanVariable($key)
     {
-        $var = mb_strtolower($this->getVariable($key));
+        $original = $this->getVariable($key);
+        $var = is_string($original) ? mb_strtolower($original) : null;
 
         if ($var === 'true') {
             return true;
