@@ -26,6 +26,7 @@ use OAT\Library\Lti1p3Core\Security\Jwks\Exporter\Jwk\JwkExporterInterface;
 use OAT\Library\Lti1p3Core\Security\Jwks\Exporter\Jwk\JwkRS256Exporter;
 use OAT\Library\Lti1p3Core\Security\Key\Key;
 use OAT\Library\Lti1p3Core\Security\Key\KeyChain;
+use OAT\Library\Lti1p3Core\Security\Key\KeyChainRepositoryInterface;
 use oat\oatbox\service\ConfigurableService;
 use oat\tao\model\security\Business\Contract\JwksRepositoryInterface;
 use oat\tao\model\security\Business\Domain\Key\Jwk;

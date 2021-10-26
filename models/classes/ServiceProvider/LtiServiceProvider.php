@@ -132,7 +132,7 @@ class LtiServiceProvider implements ContainerServiceProviderInterface
             ->public();
 
         $services
-            ->set(LtiAgsScoreService::class, LtiAgsScoreServiceInterface::class)
+            ->set(LtiAgsScoreServiceInterface::class, LtiAgsScoreService::class)
             ->public()
             ->args(
                 [

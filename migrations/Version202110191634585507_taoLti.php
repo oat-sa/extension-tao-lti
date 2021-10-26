@@ -7,7 +7,6 @@ namespace oat\taoLti\migrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\Exception\IrreversibleMigration;
 use oat\oatbox\reporting\Report;
-use oat\tao\scripts\SyncModels;
 use oat\tao\scripts\tools\migrations\AbstractMigration;
 
 final class Version202110191634585507_taoLti extends AbstractMigration
