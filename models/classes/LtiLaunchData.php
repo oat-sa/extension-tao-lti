@@ -455,7 +455,7 @@ class LtiLaunchData implements \JsonSerializable
     /**
      * @throws LtiVariableMissingException
      */
-    public function getLtiForUserId(): ?string
+    public function getLtiForUserId(): string
     {
         return $this->getVariable(self::LTI_FOR_USER_ID);
     }
@@ -463,7 +463,7 @@ class LtiLaunchData implements \JsonSerializable
     /**
      * @throws LtiVariableMissingException
      */
-    public function getLtiForUserEmail(): ?string
+    public function getLtiForUserEmail(): string
     {
         return $this->getVariable(self::LTI_FOR_USER_EMAIL);
     }
@@ -471,7 +471,7 @@ class LtiLaunchData implements \JsonSerializable
     /**
      * @throws LtiVariableMissingException
      */
-    public function getLtiForUserFamilyName(): ?string
+    public function getLtiForUserFamilyName(): string
     {
         return $this->getVariable(self::LTI_FOR_USER_FAMILY_NAME);
     }
@@ -479,7 +479,7 @@ class LtiLaunchData implements \JsonSerializable
     /**
      * @throws LtiVariableMissingException
      */
-    public function getLtiForUserGivenName(): ?string
+    public function getLtiForUserGivenName(): string
     {
         return $this->getVariable(self::LTI_FOR_USER_GIVEN_NAME);
     }
@@ -487,7 +487,7 @@ class LtiLaunchData implements \JsonSerializable
     /**
      * @throws LtiVariableMissingException
      */
-    public function getLtiForUserName(): ?string
+    public function getLtiForUserName(): string
     {
         return $this->getVariable(self::LTI_FOR_USER_NAME);
     }
@@ -495,7 +495,7 @@ class LtiLaunchData implements \JsonSerializable
     /**
      * @throws LtiVariableMissingException
      */
-    public function getLtiForUserPersonSourcedId(): ?string
+    public function getLtiForUserPersonSourcedId(): string
     {
         return $this->getVariable(self::LTI_FOR_USER_PERSON_SOURCED_ID);
     }
@@ -503,7 +503,7 @@ class LtiLaunchData implements \JsonSerializable
     /**
      * @throws LtiVariableMissingException
      */
-    public function getLtiForUserRoles(): ?array
+    public function getLtiForUserRoles(): array
     {
         return $this->getVariable(self::LTI_FOR_USER_ROLES);
     }
