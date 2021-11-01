@@ -66,13 +66,13 @@ class LtiLaunchData implements \JsonSerializable
     public const LTI_SHOW_CORRECT = 'custom_show_correct';
 
     // for user claim
-    public const LTI_FOR_USER_ID = 'lti_for_user_id';
-    public const LTI_FOR_USER_EMAIL = 'lti_for_user_email';
-    public const LTI_FOR_USER_FAMILY_NAME = 'lti_for_user_family_name';
-    public const LTI_FOR_USER_GIVEN_NAME = 'lti_for_user_given_name';
-    public const LTI_FOR_USER_NAME = 'lti_for_user_name';
-    public const LTI_FOR_USER_PERSON_SOURCED_ID = 'lti_for_user_person_sourced_id';
-    public const LTI_FOR_USER_ROLES = 'lti_for_user_roles';
+    private const LTI_FOR_USER_ID = 'lti_for_user_id';
+    private const LTI_FOR_USER_EMAIL = 'lti_for_user_email';
+    private const LTI_FOR_USER_FAMILY_NAME = 'lti_for_user_family_name';
+    private const LTI_FOR_USER_GIVEN_NAME = 'lti_for_user_given_name';
+    private const LTI_FOR_USER_NAME = 'lti_for_user_name';
+    private const LTI_FOR_USER_PERSON_SOURCED_ID = 'lti_for_user_person_sourced_id';
+    private const LTI_FOR_USER_ROLES = 'lti_for_user_roles';
 
     // AGS
     public const AGS_CLAIMS = 'ags_claims';
