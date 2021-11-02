@@ -65,6 +65,15 @@ class LtiLaunchData implements \JsonSerializable
     public const LTI_SHOW_SCORE = 'custom_show_score';
     public const LTI_SHOW_CORRECT = 'custom_show_correct';
 
+    // for user claim
+    private const LTI_FOR_USER_ID = 'lti_for_user_id';
+    private const LTI_FOR_USER_EMAIL = 'lti_for_user_email';
+    private const LTI_FOR_USER_FAMILY_NAME = 'lti_for_user_family_name';
+    private const LTI_FOR_USER_GIVEN_NAME = 'lti_for_user_given_name';
+    private const LTI_FOR_USER_NAME = 'lti_for_user_name';
+    private const LTI_FOR_USER_PERSON_SOURCED_ID = 'lti_for_user_person_sourced_id';
+    private const LTI_FOR_USER_ROLES = 'lti_for_user_roles';
+
     // AGS
     public const AGS_CLAIMS = 'ags_claims';
 
@@ -155,6 +164,14 @@ class LtiLaunchData implements \JsonSerializable
         $variables[self::LTI_MESSAGE_TYPE] = $ltiMessagePayload->getMessageType();
         $variables[self::LIS_RESULT_SOURCEDID] = $ltiMessagePayload->getBasicOutcome() ? $ltiMessagePayload->getBasicOutcome()->getLisResultSourcedId() : null;
         $variables[self::LIS_OUTCOME_SERVICE_URL] = $ltiMessagePayload->getBasicOutcome() ? $ltiMessagePayload->getBasicOutcome()->getLisOutcomeServiceUrl() : null;
+
+        $variables[self::LTI_FOR_USER_ID] = $ltiMessagePayload->getForUser() ? $ltiMessagePayload->getForUser()->getIdentifier() : null;
+        $variables[self::LTI_FOR_USER_EMAIL] = $ltiMessagePayload->getForUser() ? $ltiMessagePayload->getForUser()->getEmail() : null;
+        $variables[self::LTI_FOR_USER_FAMILY_NAME] = $ltiMessagePayload->getForUser() ? $ltiMessagePayload->getForUser()->getFamilyName() : null;
+        $variables[self::LTI_FOR_USER_GIVEN_NAME] = $ltiMessagePayload->getForUser() ? $ltiMessagePayload->getForUser()->getGivenName() : null;
+        $variables[self::LTI_FOR_USER_NAME] = $ltiMessagePayload->getForUser() ? $ltiMessagePayload->getForUser()->getName() : null;
+        $variables[self::LTI_FOR_USER_PERSON_SOURCED_ID] = $ltiMessagePayload->getForUser() ? $ltiMessagePayload->getForUser()->getPersonSourcedId() : null;
+        $variables[self::LTI_FOR_USER_ROLES] = $ltiMessagePayload->getForUser() ? $ltiMessagePayload->getForUser()->getRoles() : null;
 
         if ($platform) {
             // we need to have inner platform ID
@@ -433,6 +450,62 @@ class LtiLaunchData implements \JsonSerializable
     public function getOauthKey()
     {
         return $this->getVariable(self::OAUTH_CONSUMER_KEY);
+    }
+
+    /**
+     * @throws LtiVariableMissingException
+     */
+    public function getLtiForUserId(): string
+    {
+        return $this->getVariable(self::LTI_FOR_USER_ID);
+    }
+
+    /**
+     * @throws LtiVariableMissingException
+     */
+    public function getLtiForUserEmail(): string
+    {
+        return $this->getVariable(self::LTI_FOR_USER_EMAIL);
+    }
+
+    /**
+     * @throws LtiVariableMissingException
+     */
+    public function getLtiForUserFamilyName(): string
+    {
+        return $this->getVariable(self::LTI_FOR_USER_FAMILY_NAME);
+    }
+
+    /**
+     * @throws LtiVariableMissingException
+     */
+    public function getLtiForUserGivenName(): string
+    {
+        return $this->getVariable(self::LTI_FOR_USER_GIVEN_NAME);
+    }
+
+    /**
+     * @throws LtiVariableMissingException
+     */
+    public function getLtiForUserName(): string
+    {
+        return $this->getVariable(self::LTI_FOR_USER_NAME);
+    }
+
+    /**
+     * @throws LtiVariableMissingException
+     */
+    public function getLtiForUserPersonSourcedId(): string
+    {
+        return $this->getVariable(self::LTI_FOR_USER_PERSON_SOURCED_ID);
+    }
+
+    /**
+     * @throws LtiVariableMissingException
+     */
+    public function getLtiForUserRoles(): array
+    {
+        return $this->getVariable(self::LTI_FOR_USER_ROLES);
     }
 
     /**
