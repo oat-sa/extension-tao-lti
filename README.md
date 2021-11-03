@@ -54,7 +54,7 @@ As a system administrator you can also install it through the TAO Extension Mana
 
 #### Configuration option `config`
 
-*Description:* this specifies a single option as the `adapter` key of the array. This adapter is to be used to authenticate LTI requests and is retrieved in [FactoryLtiAuthAdapterService](taoLti/models/classes/FactoryLtiAuthAdapterService.php).
+*Description:* this specifies a single option as the `adapter` key of the array. This adapter is to be used to authenticate LTI requests and is retrieved in [FactoryLtiAuthAdapterService](models/classes/FactoryLtiAuthAdapterService.php).
 
 *Possible values of the `adapter` key:* 
 * an instance of any class that implements the `common_user_auth_Adapter` interface
