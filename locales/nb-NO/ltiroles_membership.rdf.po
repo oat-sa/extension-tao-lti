@@ -1,0 +1,72 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: TAO 2021.10\n"
+"PO-Revision-Date: 2021-10-22T12:56:43\n"
+"Last-Translator: TAO Translation Team <translation@tao.lu>\n"
+"MIME-Version: 1.0\n"
+"Language: nb-NO\n"
+"sourceLanguage: en-US\n"
+"targetLanguage: nb-NO\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+# http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#Learner
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI Learner"
+msgstr ""
+
+# http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#Learner
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI Context Learner Role"
+msgstr ""
+
+# http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#Instructor
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI Instructor"
+msgstr ""
+
+# http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#Instructor
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI Context Instructor Role"
+msgstr ""
+
+# http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#ContentDeveloper
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI Content Developer"
+msgstr ""
+
+# http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#ContentDeveloper
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI Context Content Developer Role"
+msgstr ""
+
+# http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#TeachingAssistant
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI Teaching Assistant"
+msgstr ""
+
+# http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#TeachingAssistant
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI Context Teaching Assistant Role"
+msgstr ""
+
+# http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#Administrator
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI Administrator"
+msgstr ""
+
+# http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#Administrator
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI Context Administrator Role"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership#Learner
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI 1p3 Learner"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership#Learner
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI 1p3 Context Learner Role"
+msgstr ""
+
