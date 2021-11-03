@@ -50,7 +50,7 @@ As a system administrator you can also install it through the TAO Extension Mana
 
 ## Configuration options
 
-### auth.conf.php
+### [auth.conf.php](../config/taoLti/auth.conf.php)
 
 #### Configuration option `config`
 
@@ -63,7 +63,7 @@ As a system administrator you can also install it through the TAO Extension Mana
 * `['config' => ['adapter' => 'oat\\taoLti\\models\\classes\\LtiAuthAdapter']]`
 
 
-### CookieVerifyService.conf.php
+### [CookieVerifyService.conf.php](../config/taoLti/CookieVerifyService.conf.php)
 
 #### Configuration option `verify_cookie`
 
@@ -73,7 +73,7 @@ As a system administrator you can also install it through the TAO Extension Mana
 * `true`: enable the session check. 2 more HTTP redirects are needed
 * `false`: disable the session check
 
-### LtiUserService.conf.php
+### [LtiUserService.conf.php](../config/taoLti/LtiUserService.conf.php)
 
 #### Configuration option `factoryLtiUser`
 
@@ -104,7 +104,7 @@ As a system administrator you can also install it through the TAO Extension Mana
 *Possible values:* 
 * any unique string
 
-### LtiValidatorService.conf.php
+### [LtiValidatorService.conf.php](../config/taoLti/LtiValidatorService.conf.php)
 
 #### Configuration option `launchDataValidator`
 
