@@ -30,6 +30,7 @@ use oat\generis\model\DependencyInjection\ContainerServiceProviderInterface;
 use OAT\Library\Lti1p3Ags\Factory\Score\ScoreFactory;
 use OAT\Library\Lti1p3Ags\Factory\Score\ScoreFactoryInterface;
 use OAT\Library\Lti1p3Ags\Service\Score\Client\ScoreServiceClient;
+use OAT\Library\Lti1p3Ags\Service\Score\ScoreServiceInterface;
 use OAT\Library\Lti1p3Core\Security\Jwks\Fetcher\JwksFetcher;
 use OAT\Library\Lti1p3Core\Security\Jwks\Fetcher\JwksFetcherInterface;
 use OAT\Library\Lti1p3Core\Security\OAuth2\Entity\Scope;
@@ -124,7 +125,7 @@ class LtiServiceProvider implements ContainerServiceProviderInterface
             );
 
         $services
-            ->set(ScoreServiceClient::class, ScoreServiceClient::class)
+            ->set(ScoreServiceInterface::class, ScoreServiceClient::class)
             ->public();
 
         $services
@@ -136,7 +137,7 @@ class LtiServiceProvider implements ContainerServiceProviderInterface
             ->public()
             ->args(
                 [
-                    service(ScoreServiceClient::class),
+                    service(ScoreServiceInterface::class),
                     service(ScoreFactoryInterface::class)
                 ]
             );
