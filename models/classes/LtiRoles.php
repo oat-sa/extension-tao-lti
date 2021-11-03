@@ -26,20 +26,24 @@ namespace oat\taoLti\models\classes;
  */
 interface LtiRoles
 {
-    const CLASS_URI = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole';
+    public const CLASS_URI = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole';
 
-    const PROPERTY_URN = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#RoleURN';
+    public const PROPERTY_URN = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#RoleURN';
 
-    const INSTANCE_LTI_BASE = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiBaseRole';
+    public const INSTANCE_LTI_BASE = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiBaseRole';
 
-    const CONTEXT_TEACHING_ASSISTANT = 'http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#TeachingAssistant';
+    public const CONTEXT_TEACHING_ASSISTANT = 'http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#TeachingAssistant';
 
-    const CONTEXT_LEARNER = 'http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#Learner';
+    public const CONTEXT_LEARNER = 'http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#Learner';
 
-    const CONTEXT_INSTRUCTOR = 'http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#Instructor';
+    public const CONTEXT_INSTRUCTOR = 'http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#Instructor';
 
-    const CONTEXT_ADMINISTRATOR = 'http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#Administrator';
+    public const CONTEXT_ADMINISTRATOR = 'http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#Administrator';
 
     // LTI 1p3
-    const CONTEXT_LTI1P3_LEARNER = 'http://purl.imsglobal.org/vocab/lis/v2/membership#Learner';
+    public const CONTEXT_LTI1P3_LEARNER = 'http://purl.imsglobal.org/vocab/lis/v2/membership#Learner';
+
+    public const CONTEXT_LTI1P3_MENTOR = 'http://purl.imsglobal.org/vocab/lis/v2/membership#Mentor';
+
+    public const CONTEXT_LTI1P3_INSTRUCTOR = 'http://purl.imsglobal.org/vocab/lis/v2/membership#Instructor';
 }
