@@ -38,13 +38,18 @@ use OAT\Library\Lti1p3Core\Security\OAuth2\Factory\AuthorizationServerFactory;
 use OAT\Library\Lti1p3Core\Security\OAuth2\Repository\AccessTokenRepository;
 use OAT\Library\Lti1p3Core\Security\OAuth2\Repository\ClientRepository;
 use OAT\Library\Lti1p3Core\Security\OAuth2\Repository\ScopeRepository;
+use OAT\Library\Lti1p3Core\Service\Client\LtiServiceClient;
+use OAT\Library\Lti1p3Core\Service\Client\LtiServiceClientInterface;
+use oat\oatbox\cache\factory\CacheItemPoolFactory;
 use oat\oatbox\cache\ItemPoolSimpleCacheAdapter;
 use oat\oatbox\log\LoggerService;
 use oat\taoLti\models\classes\LtiAgs\LtiAgsScoreService;
 use oat\taoLti\models\classes\LtiAgs\LtiAgsScoreServiceInterface;
 use oat\taoLti\models\classes\Platform\Repository\Lti1p3RegistrationRepository;
+use Psr\Cache\CacheItemPoolInterface;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
+use function Symfony\Component\DependencyInjection\Loader\Configurator\inline_service;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\env;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
@@ -69,7 +74,7 @@ class LtiServiceProvider implements ContainerServiceProviderInterface
                     service(ItemPoolSimpleCacheAdapter::class),
                     null,
                     null,
-                    service(LoggerService::SERVICE_ID)
+                    service(LoggerService::SERVICE_ID),
                 ]
             );
 
@@ -80,7 +85,7 @@ class LtiServiceProvider implements ContainerServiceProviderInterface
                 [
                     service(Lti1p3RegistrationRepository::class),
                     service(JwksFetcherInterface::class),
-                    service(LoggerService::SERVICE_ID)
+                    service(LoggerService::SERVICE_ID),
                 ]
             );
 
@@ -90,7 +95,7 @@ class LtiServiceProvider implements ContainerServiceProviderInterface
             ->args(
                 [
                     service(ItemPoolSimpleCacheAdapter::class),
-                    service(LoggerService::SERVICE_ID)
+                    service(LoggerService::SERVICE_ID),
                 ]
             );
 
@@ -99,7 +104,7 @@ class LtiServiceProvider implements ContainerServiceProviderInterface
             ->public()
             ->args(
                 [
-                    param('defaultScope')
+                    param('defaultScope'),
                 ]
             );
 
@@ -108,7 +113,7 @@ class LtiServiceProvider implements ContainerServiceProviderInterface
             ->public()
             ->args(
                 [
-                    [service(ScopeEntityInterface::class)]
+                    [service(ScopeEntityInterface::class)],
                 ]
             );
 
@@ -120,13 +125,28 @@ class LtiServiceProvider implements ContainerServiceProviderInterface
                     service(ClientRepositoryInterface::class),
                     service(AccessTokenRepositoryInterface::class),
                     service(ScopeRepositoryInterface::class),
-                    env('LTI_AUTHORIZATION_SERVER_FACTORY_ENCRYPTION_KEY')
+                    env('LTI_AUTHORIZATION_SERVER_FACTORY_ENCRYPTION_KEY'),
+                ]
+            );
+
+        $services
+            ->set(LtiServiceClientInterface::class, LtiServiceClient::class)
+            ->args(
+                [
+                    inline_service(CacheItemPoolInterface::class)
+                        ->factory([service(CacheItemPoolFactory::class), 'create'])
+                        ->args([[]])
                 ]
             );
 
         $services
             ->set(ScoreServiceInterface::class, ScoreServiceClient::class)
-            ->public();
+            ->public()
+            ->args(
+                [
+                    service(LtiServiceClientInterface::class),
+                ]
+            );
 
         $services
             ->set(ScoreFactoryInterface::class, ScoreFactory::class)
@@ -138,7 +158,7 @@ class LtiServiceProvider implements ContainerServiceProviderInterface
             ->args(
                 [
                     service(ScoreServiceInterface::class),
-                    service(ScoreFactoryInterface::class)
+                    service(ScoreFactoryInterface::class),
                 ]
             );
     }
