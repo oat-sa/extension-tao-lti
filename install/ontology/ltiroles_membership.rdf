@@ -57,5 +57,418 @@
       <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiBaseRole"/>
       <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAO.rdf#DeliveryRole"/>
       <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
-    </rdf:Description>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership/Learner#ExternalLearner">
+      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+      <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 External Learner]]></rdfs:label>
+      <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context External Learner Role]]></rdfs:comment>
+      <generis:includesRole rdf:resource="http://purl.imsglobal.org/vocab/lis/v2/membership#Learner"/>
+      <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership/Learner#GuestLearner">
+      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+      <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 Guest Learner]]></rdfs:label>
+      <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context Guest Learner Role]]></rdfs:comment>
+      <generis:includesRole rdf:resource="http://purl.imsglobal.org/vocab/lis/v2/membership#Learner"/>
+      <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership/Learner#Instructor">
+      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+      <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 Instructor]]></rdfs:label>
+      <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context Instructor Role]]></rdfs:comment>
+      <generis:includesRole rdf:resource="http://purl.imsglobal.org/vocab/lis/v2/membership#Learner"/>
+      <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership/Learner#Learner">
+      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+      <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 Learner]]></rdfs:label>
+      <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context Learner Role]]></rdfs:comment>
+      <generis:includesRole rdf:resource="http://purl.imsglobal.org/vocab/lis/v2/membership#Learner"/>
+      <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership/Learner#NonCreditLearner">
+      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+      <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 Non Credit Learner]]></rdfs:label>
+      <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context Non Credit Learner Role]]></rdfs:comment>
+      <generis:includesRole rdf:resource="http://purl.imsglobal.org/vocab/lis/v2/membership#Learner"/>
+      <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership#Mentor">
+      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+      <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 Mentor]]></rdfs:label>
+      <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context Mentor Role]]></rdfs:comment>
+      <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiBaseRole"/>
+      <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAO.rdf#DeliveryRole"/>
+      <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership/Mentor#Advisor">
+      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+      <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 Advisor]]></rdfs:label>
+      <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context Advisor Role]]></rdfs:comment>
+      <generis:includesRole rdf:resource="http://purl.imsglobal.org/vocab/lis/v2/membership#Mentor"/>
+      <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership/Mentor#Auditor">
+      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+      <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 Auditor]]></rdfs:label>
+      <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context Auditor Role]]></rdfs:comment>
+      <generis:includesRole rdf:resource="http://purl.imsglobal.org/vocab/lis/v2/membership#Mentor"/>
+      <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership/Mentor#ExternalAdvisor">
+      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+      <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 External Advisor]]></rdfs:label>
+      <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context External Advisor Role]]></rdfs:comment>
+      <generis:includesRole rdf:resource="http://purl.imsglobal.org/vocab/lis/v2/membership#Mentor"/>
+      <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership/Mentor#ExternalAuditor">
+      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+      <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 External Auditor]]></rdfs:label>
+      <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context External Auditor Role]]></rdfs:comment>
+      <generis:includesRole rdf:resource="http://purl.imsglobal.org/vocab/lis/v2/membership#Mentor"/>
+      <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership/Mentor#ExternalLearningFacilitator">
+      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+      <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 External Learning Facilitator]]></rdfs:label>
+      <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context External Learning Facilitator Role]]></rdfs:comment>
+      <generis:includesRole rdf:resource="http://purl.imsglobal.org/vocab/lis/v2/membership#Mentor"/>
+      <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership/Mentor#ExternalMentor">
+      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+      <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 External Mentor]]></rdfs:label>
+      <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context External Mentor Role]]></rdfs:comment>
+      <generis:includesRole rdf:resource="http://purl.imsglobal.org/vocab/lis/v2/membership#Mentor"/>
+      <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership/Mentor#ExternalReviewer">
+      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+      <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 External Reviewer]]></rdfs:label>
+      <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context External Reviewer Role]]></rdfs:comment>
+      <generis:includesRole rdf:resource="http://purl.imsglobal.org/vocab/lis/v2/membership#Mentor"/>
+      <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership/Mentor#ExternalTutor">
+      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+      <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 External Tutor]]></rdfs:label>
+      <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context External Tutor Role]]></rdfs:comment>
+      <generis:includesRole rdf:resource="http://purl.imsglobal.org/vocab/lis/v2/membership#Mentor"/>
+      <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership/Mentor#LearningFacilitator">
+      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+      <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 Learning Facilitator]]></rdfs:label>
+      <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context Learning Facilitator Role]]></rdfs:comment>
+      <generis:includesRole rdf:resource="http://purl.imsglobal.org/vocab/lis/v2/membership#Mentor"/>
+      <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership/Mentor#Mentor">
+      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+      <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 Mentor]]></rdfs:label>
+      <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context Mentor Role]]></rdfs:comment>
+      <generis:includesRole rdf:resource="http://purl.imsglobal.org/vocab/lis/v2/membership#Mentor"/>
+      <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership/Mentor#Reviewer">
+      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+      <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 Reviewer]]></rdfs:label>
+      <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context Reviewer Role]]></rdfs:comment>
+      <generis:includesRole rdf:resource="http://purl.imsglobal.org/vocab/lis/v2/membership#Mentor"/>
+      <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership/Mentor#Tutor">
+      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+      <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 Tutor]]></rdfs:label>
+      <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context Tutor Role]]></rdfs:comment>
+      <generis:includesRole rdf:resource="http://purl.imsglobal.org/vocab/lis/v2/membership#Mentor"/>
+      <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership#Instructor">
+      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+      <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 Instructor]]></rdfs:label>
+      <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context Instructor Role]]></rdfs:comment>
+      <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiBaseRole"/>
+      <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAO.rdf#DeliveryRole"/>
+      <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership/Instructor#ExternalInstructor">
+      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+      <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 External Instructor]]></rdfs:label>
+      <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context External Instructor Role]]></rdfs:comment>
+      <generis:includesRole rdf:resource="http://purl.imsglobal.org/vocab/lis/v2/membership#Instructor"/>
+      <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership/Instructor#Grader">
+      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+      <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 Grader]]></rdfs:label>
+      <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context Grader Role]]></rdfs:comment>
+      <generis:includesRole rdf:resource="http://purl.imsglobal.org/vocab/lis/v2/membership#Instructor"/>
+      <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership/Instructor#GuestInstructor">
+      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+      <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 Guest Instructor]]></rdfs:label>
+      <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context Guest Instructor Role]]></rdfs:comment>
+      <generis:includesRole rdf:resource="http://purl.imsglobal.org/vocab/lis/v2/membership#Instructor"/>
+      <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership/Instructor#Lecturer">
+      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+      <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 Lecturer]]></rdfs:label>
+      <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context Lecturer Role]]></rdfs:comment>
+      <generis:includesRole rdf:resource="http://purl.imsglobal.org/vocab/lis/v2/membership#Instructor"/>
+      <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership/Instructor#PrimaryInstructor">
+      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+      <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 Primary Instructor]]></rdfs:label>
+      <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context Primary Instructor Role]]></rdfs:comment>
+      <generis:includesRole rdf:resource="http://purl.imsglobal.org/vocab/lis/v2/membership#Instructor"/>
+      <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership/Instructor#SecondaryInstructor">
+      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+      <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 Secondary Instructor]]></rdfs:label>
+      <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context Secondary Instructor Role]]></rdfs:comment>
+      <generis:includesRole rdf:resource="http://purl.imsglobal.org/vocab/lis/v2/membership#Instructor"/>
+      <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership/Instructor#TeachingAssistant">
+      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+      <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 Teaching Assistant]]></rdfs:label>
+      <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context Teaching Assistant Role]]></rdfs:comment>
+      <generis:includesRole rdf:resource="http://purl.imsglobal.org/vocab/lis/v2/membership#Instructor"/>
+      <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership/Instructor#TeachingAssistantGroup">
+      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+      <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 Teaching Assistant Group]]></rdfs:label>
+      <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context Teaching Assistant Group Role]]></rdfs:comment>
+      <generis:includesRole rdf:resource="http://purl.imsglobal.org/vocab/lis/v2/membership#Instructor"/>
+      <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership/Instructor#TeachingAssistantOffering">
+      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+      <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 Teaching Assistant Offering]]></rdfs:label>
+      <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context Teaching Assistant Offering Role]]></rdfs:comment>
+      <generis:includesRole rdf:resource="http://purl.imsglobal.org/vocab/lis/v2/membership#Instructor"/>
+      <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership/Instructor#TeachingAssistantSection">
+      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+      <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 Teaching Assistant Section]]></rdfs:label>
+      <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context Teaching Assistant Section Role]]></rdfs:comment>
+      <generis:includesRole rdf:resource="http://purl.imsglobal.org/vocab/lis/v2/membership#Instructor"/>
+      <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership/Instructor#TeachingAssistantSectionAssociation">
+      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+      <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 Teaching Assistant Section Association]]></rdfs:label>
+      <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context Teaching Assistant Section Association Role]]></rdfs:comment>
+      <generis:includesRole rdf:resource="http://purl.imsglobal.org/vocab/lis/v2/membership#Instructor"/>
+      <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership/Instructor#TeachingAssistantTemplate">
+      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+      <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 Teaching Assistant Template]]></rdfs:label>
+      <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context Teaching Assistant Template Role]]></rdfs:comment>
+      <generis:includesRole rdf:resource="http://purl.imsglobal.org/vocab/lis/v2/membership#Instructor"/>
+      <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership#Administrator">
+      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+      <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 Administrator]]></rdfs:label>
+      <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context Administrator Role]]></rdfs:comment>
+      <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiBaseRole"/>
+      <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAO.rdf#DeliveryRole"/>
+      <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership/Administrator#Administrator">
+      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+      <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 Administrator]]></rdfs:label>
+      <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context Administrator Role]]></rdfs:comment>
+      <generis:includesRole rdf:resource="http://purl.imsglobal.org/vocab/lis/v2/membership#Administrator"/>
+      <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership/Administrator#Developer">
+      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+      <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 Developer]]></rdfs:label>
+      <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context Developer Role]]></rdfs:comment>
+      <generis:includesRole rdf:resource="http://purl.imsglobal.org/vocab/lis/v2/membership#Administrator"/>
+      <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership/Administrator#ExternalDeveloper">
+      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+      <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 External Developer]]></rdfs:label>
+      <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context External Developer Role]]></rdfs:comment>
+      <generis:includesRole rdf:resource="http://purl.imsglobal.org/vocab/lis/v2/membership#Administrator"/>
+      <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership/Administrator#ExternalSupport">
+      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+      <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 External Support]]></rdfs:label>
+      <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context External Support Role]]></rdfs:comment>
+      <generis:includesRole rdf:resource="http://purl.imsglobal.org/vocab/lis/v2/membership#Administrator"/>
+      <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership/Administrator#ExternalSystemAdministrator">
+      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+      <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 External System Administrator]]></rdfs:label>
+      <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context External System Administrator Role]]></rdfs:comment>
+      <generis:includesRole rdf:resource="http://purl.imsglobal.org/vocab/lis/v2/membership#Administrator"/>
+      <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership/Administrator#Support">
+      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+      <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 Support]]></rdfs:label>
+      <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context Support Role]]></rdfs:comment>
+      <generis:includesRole rdf:resource="http://purl.imsglobal.org/vocab/lis/v2/membership#Administrator"/>
+      <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership/Administrator#SystemAdministrator">
+      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+      <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 System Administrator]]></rdfs:label>
+      <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context System Administrator Role]]></rdfs:comment>
+      <generis:includesRole rdf:resource="http://purl.imsglobal.org/vocab/lis/v2/membership#Administrator"/>
+      <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership#ContentDeveloper">
+      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+      <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 Content Developer]]></rdfs:label>
+      <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context Content Developer Role]]></rdfs:comment>
+      <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiBaseRole"/>
+      <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAO.rdf#DeliveryRole"/>
+      <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership/ContentDeveloper#ContentDeveloper">
+      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+      <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 Content Developer]]></rdfs:label>
+      <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context Content Developer Role]]></rdfs:comment>
+      <generis:includesRole rdf:resource="http://purl.imsglobal.org/vocab/lis/v2/membership#ContentDeveloper"/>
+      <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership/ContentDeveloper#ContentExpert">
+      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+      <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 Content Expert]]></rdfs:label>
+      <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context Content Expert Role]]></rdfs:comment>
+      <generis:includesRole rdf:resource="http://purl.imsglobal.org/vocab/lis/v2/membership#ContentDeveloper"/>
+      <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership/ContentDeveloper#ExternalContentExpert">
+      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+      <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 External Content Expert]]></rdfs:label>
+      <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context External Content Expert Role]]></rdfs:comment>
+      <generis:includesRole rdf:resource="http://purl.imsglobal.org/vocab/lis/v2/membership#ContentDeveloper"/>
+      <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership/ContentDeveloper#Librarian">
+      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+      <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 Librarian]]></rdfs:label>
+      <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context Librarian Role]]></rdfs:comment>
+      <generis:includesRole rdf:resource="http://purl.imsglobal.org/vocab/lis/v2/membership#ContentDeveloper"/>
+      <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership#Manager">
+      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+      <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 Manager]]></rdfs:label>
+      <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context Manager Role]]></rdfs:comment>
+      <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiBaseRole"/>
+      <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAO.rdf#DeliveryRole"/>
+      <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership/Manager#AreaManager">
+      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+      <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 Area Manager]]></rdfs:label>
+      <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context Area Manager Role]]></rdfs:comment>
+      <generis:includesRole rdf:resource="http://purl.imsglobal.org/vocab/lis/v2/membership#Manager"/>
+      <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership/Manager#CourseCoordinator">
+      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+      <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 Course Coordinator]]></rdfs:label>
+      <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context Course Coordinator Role]]></rdfs:comment>
+      <generis:includesRole rdf:resource="http://purl.imsglobal.org/vocab/lis/v2/membership#Manager"/>
+      <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership/Manager#ExternalObserver">
+      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+      <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 External Observer]]></rdfs:label>
+      <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context External Observer Role]]></rdfs:comment>
+      <generis:includesRole rdf:resource="http://purl.imsglobal.org/vocab/lis/v2/membership#Manager"/>
+      <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership/Manager#Manager">
+      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+      <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 Manager]]></rdfs:label>
+      <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context Manager Role]]></rdfs:comment>
+      <generis:includesRole rdf:resource="http://purl.imsglobal.org/vocab/lis/v2/membership#Manager"/>
+      <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership/Manager#Observer">
+      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+      <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 Observer]]></rdfs:label>
+      <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context Observer Role]]></rdfs:comment>
+      <generis:includesRole rdf:resource="http://purl.imsglobal.org/vocab/lis/v2/membership#Manager"/>
+      <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership#Member">
+      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+      <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 Member]]></rdfs:label>
+      <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context Member Role]]></rdfs:comment>
+      <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiBaseRole"/>
+      <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAO.rdf#DeliveryRole"/>
+      <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership/Member#Member">
+      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+      <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 Member]]></rdfs:label>
+      <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context Member Role]]></rdfs:comment>
+      <generis:includesRole rdf:resource="http://purl.imsglobal.org/vocab/lis/v2/membership#Member"/>
+      <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership#Officer">
+      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+      <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 Officer]]></rdfs:label>
+      <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context Officer Role]]></rdfs:comment>
+      <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiBaseRole"/>
+      <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAO.rdf#DeliveryRole"/>
+      <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership/Officer#Chair">
+      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+      <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 Chair]]></rdfs:label>
+      <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context Chair Role]]></rdfs:comment>
+      <generis:includesRole rdf:resource="http://purl.imsglobal.org/vocab/lis/v2/membership#Officer"/>
+      <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership/Officer#Communications">
+      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+      <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 Communications]]></rdfs:label>
+      <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context Communications Role]]></rdfs:comment>
+      <generis:includesRole rdf:resource="http://purl.imsglobal.org/vocab/lis/v2/membership#Officer"/>
+      <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership/Officer#Secretary">
+      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+      <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 Secretary]]></rdfs:label>
+      <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context Secretary Role]]></rdfs:comment>
+      <generis:includesRole rdf:resource="http://purl.imsglobal.org/vocab/lis/v2/membership#Officer"/>
+      <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership/Officer#Treasurer">
+      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+      <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 Treasurer]]></rdfs:label>
+      <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context Treasurer Role]]></rdfs:comment>
+      <generis:includesRole rdf:resource="http://purl.imsglobal.org/vocab/lis/v2/membership#Officer"/>
+      <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership/Officer#Vice-Chair">
+      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+      <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 Vice-Chair]]></rdfs:label>
+      <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context Vice-Chair Role]]></rdfs:comment>
+      <generis:includesRole rdf:resource="http://purl.imsglobal.org/vocab/lis/v2/membership#Officer"/>
+      <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
+  </rdf:Description>
  </rdf:RDF>
