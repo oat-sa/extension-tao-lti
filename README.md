@@ -50,6 +50,33 @@ As a system administrator you can also install it through the TAO Extension Mana
 
 ## Configuration options
 
+### [ServiceOptions.conf.php](../config/generis/ServiceOptions.conf.php)
+
+*Description:* this specifies LTI client configuration.
+
+If the configuration file is not present as
+[`../config/generis/ServiceOptions.conf.php`](../config/generis/ServiceOptions.conf.php), create it by copying from
+[`../generis/config/default/ServiceOptions.conf.php`](../generis/config/default/ServiceOptions.conf.php).
+
+**Example**
+```php
+<?php
+
+return new oat\generis\model\DependencyInjection\ServiceOptions(
+    [
+        oat\taoLti\models\classes\Client\LtiClientFactory::class => [
+            'config' => [    // This configuration accepts
+                'proxy' => [ // [Guzzle Request Options](https://docs.guzzlephp.org/en/stable/request-options.html)
+                    'http'  => 'http://localhost:8125',
+                    'https' => 'https://localhost:9124',
+                ],
+            ],
+        ],
+    ]
+);
+
+```
+
 ### [auth.conf.php](../config/taoLti/auth.conf.php)
 
 #### Configuration option `config`

@@ -22,11 +22,13 @@ declare(strict_types=1);
 
 namespace oat\taoLti\models\classes\ServiceProvider;
 
+use GuzzleHttp\ClientInterface;
 use League\OAuth2\Server\Entities\ScopeEntityInterface;
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
 use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
 use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
 use oat\generis\model\DependencyInjection\ContainerServiceProviderInterface;
+use oat\generis\model\DependencyInjection\ServiceOptions;
 use OAT\Library\Lti1p3Ags\Factory\Score\ScoreFactory;
 use OAT\Library\Lti1p3Ags\Factory\Score\ScoreFactoryInterface;
 use OAT\Library\Lti1p3Ags\Service\Score\Client\ScoreServiceClient;
@@ -43,6 +45,7 @@ use OAT\Library\Lti1p3Core\Service\Client\LtiServiceClientInterface;
 use oat\oatbox\cache\factory\CacheItemPoolFactory;
 use oat\oatbox\cache\ItemPoolSimpleCacheAdapter;
 use oat\oatbox\log\LoggerService;
+use oat\taoLti\models\classes\Client\LtiClientFactory;
 use oat\taoLti\models\classes\LtiAgs\LtiAgsScoreService;
 use oat\taoLti\models\classes\LtiAgs\LtiAgsScoreServiceInterface;
 use oat\taoLti\models\classes\Platform\Repository\Lti1p3RegistrationRepository;
@@ -65,6 +68,14 @@ class LtiServiceProvider implements ContainerServiceProviderInterface
             'defaultScope',
             $_ENV['LTI_DEFAULT_SCOPE'] ?? 'https://purl.imsglobal.org/spec/lti-bo/scope/basicoutcome'
         );
+
+        $services
+            ->set(LtiClientFactory::class)
+            ->args(
+                [
+                    service(ServiceOptions::class),
+                ]
+            );
 
         $services
             ->set(JwksFetcherInterface::class, JwksFetcher::class)
@@ -135,7 +146,9 @@ class LtiServiceProvider implements ContainerServiceProviderInterface
                 [
                     inline_service(CacheItemPoolInterface::class)
                         ->factory([service(CacheItemPoolFactory::class), 'create'])
-                        ->args([[]])
+                        ->args([[]]),
+                    inline_service(ClientInterface::class)
+                        ->factory([service(LtiClientFactory::class), 'create']),
                 ]
             );
 
