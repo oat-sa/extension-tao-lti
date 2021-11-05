@@ -50,11 +50,38 @@ As a system administrator you can also install it through the TAO Extension Mana
 
 ## Configuration options
 
-### auth.conf.php
+### [ServiceOptions.conf.php](../config/generis/ServiceOptions.conf.php)
+
+*Description:* this specifies LTI client configuration.
+
+If the configuration file is not present as
+[`../config/generis/ServiceOptions.conf.php`](../config/generis/ServiceOptions.conf.php), create it by copying from
+[`../generis/config/default/ServiceOptions.conf.php`](../generis/config/default/ServiceOptions.conf.php).
+
+**Example**
+```php
+<?php
+
+return new oat\generis\model\DependencyInjection\ServiceOptions(
+    [
+        oat\taoLti\models\classes\Client\LtiClientFactory::class => [
+            'config' => [    // This configuration accepts
+                'proxy' => [ // [Guzzle Request Options](https://docs.guzzlephp.org/en/stable/request-options.html)
+                    'http'  => 'http://localhost:8125',
+                    'https' => 'https://localhost:9124',
+                ],
+            ],
+        ],
+    ]
+);
+
+```
+
+### [auth.conf.php](../config/taoLti/auth.conf.php)
 
 #### Configuration option `config`
 
-*Description:* this specifies a single option as the `adapter` key of the array. This adapter is to be used to authenticate LTI requests and is retrieved in [FactoryLtiAuthAdapterService](taoLti/models/classes/FactoryLtiAuthAdapterService.php).
+*Description:* this specifies a single option as the `adapter` key of the array. This adapter is to be used to authenticate LTI requests and is retrieved in [FactoryLtiAuthAdapterService](models/classes/FactoryLtiAuthAdapterService.php).
 
 *Possible values of the `adapter` key:* 
 * an instance of any class that implements the `common_user_auth_Adapter` interface
@@ -63,7 +90,7 @@ As a system administrator you can also install it through the TAO Extension Mana
 * `['config' => ['adapter' => 'oat\\taoLti\\models\\classes\\LtiAuthAdapter']]`
 
 
-### CookieVerifyService.conf.php
+### [CookieVerifyService.conf.php](../config/taoLti/CookieVerifyService.conf.php)
 
 #### Configuration option `verify_cookie`
 
@@ -73,7 +100,7 @@ As a system administrator you can also install it through the TAO Extension Mana
 * `true`: enable the session check. 2 more HTTP redirects are needed
 * `false`: disable the session check
 
-### LtiUserService.conf.php
+### [LtiUserService.conf.php](../config/taoLti/LtiUserService.conf.php)
 
 #### Configuration option `factoryLtiUser`
 
@@ -104,7 +131,7 @@ As a system administrator you can also install it through the TAO Extension Mana
 *Possible values:* 
 * any unique string
 
-### LtiValidatorService.conf.php
+### [LtiValidatorService.conf.php](../config/taoLti/LtiValidatorService.conf.php)
 
 #### Configuration option `launchDataValidator`
 
