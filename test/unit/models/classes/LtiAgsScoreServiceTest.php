@@ -26,7 +26,7 @@ namespace oat\taoLti\models\classes;
 use oat\generis\test\TestCase;
 use OAT\Library\Lti1p3Ags\Factory\Score\ScoreFactory;
 use OAT\Library\Lti1p3Ags\Factory\Score\ScoreFactoryInterface;
-use OAT\Library\Lti1p3Ags\Service\Score\Client\ScoreServiceClient;
+use OAT\Library\Lti1p3Ags\Service\Score\ScoreServiceInterface;
 use OAT\Library\Lti1p3Core\Message\Payload\Claim\AgsClaim;
 use OAT\Library\Lti1p3Core\Registration\RegistrationInterface;
 use oat\taoLti\models\classes\LtiAgs\LtiAgsException;
@@ -36,7 +36,7 @@ class LtiAgsScoreServiceTest extends TestCase
 {
     public function testItSendsAgsClaim(): void
     {
-        $scoreServerClient = $this->createMock(ScoreServiceClient::class);
+        $scoreServerClient = $this->createMock(ScoreServiceInterface::class);
         $scoreFactory = $this->createMock(ScoreFactoryInterface::class);
         $registration = $this->createMock(RegistrationInterface::class);
         $agsClaim = $this->createMock(AgsClaim::class);
@@ -61,7 +61,7 @@ class LtiAgsScoreServiceTest extends TestCase
 
     public function testItThrowsWhenPublishMethodReturnsFalse(): void
     {
-        $scoreServerClient = $this->createMock(ScoreServiceClient::class);
+        $scoreServerClient = $this->createMock(ScoreServiceInterface::class);
         $scoreFactory = $this->createMock(ScoreFactoryInterface::class);
         $registration = $this->createMock(RegistrationInterface::class);
         $agsClaim = $this->createMock(AgsClaim::class);
