@@ -35,6 +35,9 @@ class MapLtiSectionVisibility extends AbstractAction
                         'settings_manage_lti_keys' => [
                             'FEATURE_FLAG_LTI1P3',
                         ],
+                        'settings_metadata_import' => [
+                            'FEATURE_FLAG_STATISTIC_METADATA_IMPORT'
+                        ]
                     ],
                 ]
             )
