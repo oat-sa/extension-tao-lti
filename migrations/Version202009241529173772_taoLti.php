@@ -66,18 +66,11 @@ final class Version202009241529173772_taoLti extends AbstractMigration
             )
         );
 
-        $this->getServiceManager()->register(
-            SectionVisibilityFilter::SERVICE_ID,
-            new SectionVisibilityFilter(
-                [
-                    SectionVisibilityFilter::OPTION_FEATURE_FLAG_SECTIONS => [
-                        'settings_manage_lti_keys' => [
-                            'FEATURE_FLAG_LTI1P3'
-                        ]
-                    ]
-                ]
-            )
-        );
+        $sectionVisibilityFilter = $this->getServiceManager()->get(SectionVisibilityFilter::SERVICE_ID);
+        $featureFlagSections = $sectionVisibilityFilter->getOption(SectionVisibilityFilter::OPTION_FEATURE_FLAG_SECTIONS);
+        $featureFlagSections['settings_manage_lti_keys'] = 'FEATURE_FLAG_LTI1P3';
+        $sectionVisibilityFilter->setOption(SectionVisibilityFilter::OPTION_FEATURE_FLAG_SECTIONS, $featureFlagSections);
+        $this->getServiceManager()->register(SectionVisibilityFilter::SERVICE_ID, $sectionVisibilityFilter);
     }
 
     public function down(Schema $schema): void
