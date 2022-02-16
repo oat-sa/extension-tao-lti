@@ -42,7 +42,7 @@ msgid "Delete"
 msgstr "Slett"
 
 msgid "Edit Instance"
-msgstr "Rediger forekomst"
+msgstr "Rediger egenskaper"
 
 msgid "Error"
 msgstr "Feil"
