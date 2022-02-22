@@ -195,11 +195,11 @@ class LtiLaunchData implements \JsonSerializable
 
         // review mode
         if (isset($customParams[self::LTI_SHOW_SCORE])) {
-            $variables[self::LTI_SHOW_SCORE] = true;
+            $variables[self::LTI_SHOW_SCORE] = filter_var($customParams[self::LTI_SHOW_SCORE], FILTER_VALIDATE_BOOLEAN);
         }
 
         if (isset($customParams[self::LTI_SHOW_CORRECT])) {
-            $variables[self::LTI_SHOW_CORRECT] = true;
+            $variables[self::LTI_SHOW_CORRECT] = filter_var($customParams[self::LTI_SHOW_CORRECT], FILTER_VALIDATE_BOOLEAN);
         }
 
         return new static($variables, $customParams);
