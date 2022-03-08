@@ -76,13 +76,13 @@ class LtiService extends ConfigurableService
                 $messagePayload->getMandatoryClaim(MessagePayloadInterface::CLAIM_AUD)[0]
             );
 
-            /** @var LtiPlatformRepositoryInterface $platformRepository */
-            $platformRepository = $this->getServiceLocator()->get(LtiPlatformRepositoryInterface::SERVICE_ID);
-            $platform = $platformRepository->searchById($registration->getPlatform()->getIdentifier());
+            $user = new Lti1p3User(
+                LtiLaunchData::fromLti1p3MessagePayload($messagePayload, $registration->getPlatform())
+            );
 
-            $user = new Lti1p3User(LtiLaunchData::fromLti1p3MessagePayload($messagePayload, $platform));
+            $user->setRegistrationId($registration->getIdentifier());
 
-            $session = TaoLtiSession::fromVersion1p3($user->setRegistrationId($registration->getIdentifier()));
+            $session = TaoLtiSession::fromVersion1p3($user);
 
             $this->getServiceLocator()->propagate($session);
 

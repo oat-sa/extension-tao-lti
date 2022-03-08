@@ -20,7 +20,10 @@
 
 namespace oat\taoLti\controller;
 
+use oat\generis\model\data\event\ResourceCreated;
+use oat\oatbox\event\EventManager;
 use oat\oatbox\validator\ValidatorInterface;
+use oat\taoLti\models\classes\Platform\Service\UpdatePlatformRegistrationSnapshotListener;
 use oat\taoLti\models\classes\Platform\Validation\ValidatorsFactory;
 use oat\taoLti\models\classes\Platform\Repository\RdfLtiPlatformRepository;
 use tao_actions_SaSModule;
@@ -34,6 +37,18 @@ use tao_actions_SaSModule;
  */
 class PlatformAdmin extends tao_actions_SaSModule
 {
+    public function initialize()
+    {
+        parent::initialize();
+
+        /** @var EventManager $eventManager */
+        $eventManager = $this->getServiceManager()->get(EventManager::SERVICE_ID);
+        $eventManager->attach(
+            ResourceCreated::class,
+            [UpdatePlatformRegistrationSnapshotListener::SERVICE_ID, 'whenResourceCreated']
+        );
+    }
+
     /**
      * @inheritDoc
      */
