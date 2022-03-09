@@ -49,22 +49,47 @@ class Lti1p3RegistrationSnapshotRepository extends ConfigurableService implement
     private const OAUTH_PATH = 'taoLti/Security/oauth';
     private const JWKS_PATH = 'taoLti/Security/jwks';
 
-    private const TABLE_NAME = 'lti_platform_registration';
-
     public function save(LtiPlatformRegistration $ltiPlatformRegistration): void
     {
-        $this->getPersistence()->insert(
-            self::TABLE_NAME,
+        $registration = $this->find($ltiPlatformRegistration->getIdentifier());
+
+        if ($registration === null) {
+            $this->getPersistence()->insert(
+                'lti_platform_registration',
+                [
+                    'statement_id'=> $ltiPlatformRegistration->getIdentifier(),
+                    'name' => $ltiPlatformRegistration->getName(),
+                    'audience' => $ltiPlatformRegistration->getAudience(),
+                    'client_id' => $ltiPlatformRegistration->getClientId(),
+                    'deployment_id' => $ltiPlatformRegistration->getDeploymentId(),
+                    'oidc_authentication_url' => $ltiPlatformRegistration->getOidcAuthenticationUrl(),
+                    'oauth2_access_token_url' => $ltiPlatformRegistration->getOAuth2AccessTokenUrl(),
+                    'jwks_url' => $ltiPlatformRegistration->getJwksUrl(),
+                    'updated_at' => date('Y-m-d H:i:s')
+                ]
+            );
+
+            return;
+        }
+
+        $this->getPersistence()->updateMultiple(
+            'lti_platform_registration',
             [
-                'statement_id'=> $ltiPlatformRegistration->getIdentifier(),
-                'name' => $ltiPlatformRegistration->getName(),
-                'audience' => $ltiPlatformRegistration->getAudience(),
-                'client_id' => $ltiPlatformRegistration->getClientId(),
-                'deployment_id' => $ltiPlatformRegistration->getDeploymentId(),
-                'oidc_authentication_url' => $ltiPlatformRegistration->getOidcAuthenticationUrl(),
-                'oauth2_access_token_url' => $ltiPlatformRegistration->getOAuth2AccessTokenUrl(),
-                'jwks_url' => $ltiPlatformRegistration->getJwksUrl(),
-                'updated_at' => date('Y-m-d H:i:s')
+                [
+                    'conditions' => [
+                        'statement_id'=> $ltiPlatformRegistration->getIdentifier()
+                    ],
+                    'updateValues' => [
+                        'name' => $ltiPlatformRegistration->getName(),
+                        'audience' => $ltiPlatformRegistration->getAudience(),
+                        'client_id' => $ltiPlatformRegistration->getClientId(),
+                        'deployment_id' => $ltiPlatformRegistration->getDeploymentId(),
+                        'oidc_authentication_url' => $ltiPlatformRegistration->getOidcAuthenticationUrl(),
+                        'oauth2_access_token_url' => $ltiPlatformRegistration->getOAuth2AccessTokenUrl(),
+                        'jwks_url' => $ltiPlatformRegistration->getJwksUrl(),
+                        'updated_at' => date('Y-m-d H:i:s')
+                    ]
+                ]
             ]
         );
     }
@@ -149,7 +174,15 @@ class Lti1p3RegistrationSnapshotRepository extends ConfigurableService implement
             $queryParams
         );
 
-        return $statement->fetch();
+        return $statement->fetch() ?: [];
+    }
+
+    public function deleteByStatementId(string $statementId): void
+    {
+        $this->getPersistence()->exec(
+            'DELETE FROM lti_platform_registration WHERE statement_id = :statement_id',
+            ['statement_id' => $statementId]
+        );
     }
 
     private function getTool(LtiProvider $ltiProvider): Tool
