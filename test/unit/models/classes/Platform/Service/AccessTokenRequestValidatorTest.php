@@ -31,7 +31,6 @@ use oat\taoLti\models\classes\LtiProvider\InvalidLtiProviderException;
 use oat\taoLti\models\classes\LtiProvider\LtiProvider;
 use oat\taoLti\models\classes\LtiProvider\LtiProviderService;
 use oat\taoLti\models\classes\Security\AccessTokenRequestValidator;
-use oat\taoLti\models\classes\Security\MissingScopeException;
 use Psr\Http\Message\ServerRequestInterface;
 use tao_models_classes_UserException;
 
@@ -65,15 +64,6 @@ class AccessTokenRequestValidatorTest extends TestCase
 
         $this->subject = new AccessTokenRequestValidator();
         $this->subject->withValidator($this->validator);
-    }
-
-    public function testInvalidRole(): void
-    {
-        $this->expectException(MissingScopeException::class);
-
-        $this->subject
-            ->withRole('NonExistingScope')
-            ->validate($this->request);
     }
 
     public function testResultHasErrors(): void

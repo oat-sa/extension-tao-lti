@@ -61,16 +61,12 @@ class AccessTokenRequestValidator extends ConfigurableService implements AccessT
 
     /**
      * @throws InvalidLtiProviderException
-     * @throws MissingScopeException
      * @throws tao_models_classes_UserException
      */
     public function validate(ServerRequestInterface $request): void
     {
-        $result = $this->getAccessTokenRequestValidator()->validate($request);
-
-        if ($this->role !== null && !in_array($this->role, $result->getScopes(), true)) {
-            throw new MissingScopeException(sprintf('Scope %s is not allowed', $this->role));
-        }
+        $allowedScopes = $this->role !== null ? [$this->role] : [];
+        $result = $this->getAccessTokenRequestValidator()->validate($request, $allowedScopes);
 
         if ($result->hasError() || $result->getRegistration() === null) {
             throw new tao_models_classes_UserException(
