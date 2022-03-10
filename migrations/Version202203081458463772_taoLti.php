@@ -12,22 +12,10 @@ final class Version202203081458463772_taoLti extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return 'Apply optimized query storage for LTI 1.3 platform registrations';
+        return 'Create optimized table for querying LTI 1.3 platform registrations';
     }
 
     public function up(Schema $schema): void
-    {
-        $this->createTable($schema);
-
-//        $this->syncSnapshotsWithExistingPlatformRegistrations($schema);
-    }
-
-    public function down(Schema $schema): void
-    {
-        $schema->dropTable('lti_platform_registration');
-    }
-
-    private function createTable(Schema $schema): void
     {
         $table = $schema->createTable('lti_platform_registration');
 
@@ -50,8 +38,8 @@ final class Version202203081458463772_taoLti extends AbstractMigration
         $table->addUniqueIndex(['statement_id'], 'UNQ_statement_id');
     }
 
-    private function syncSnapshotsWithExistingPlatformRegistrations(Schema $schema): void
+    public function down(Schema $schema): void
     {
-
+        $schema->dropTable('lti_platform_registration');
     }
 }
