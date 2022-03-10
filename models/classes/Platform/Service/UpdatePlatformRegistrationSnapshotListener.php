@@ -24,11 +24,14 @@ declare(strict_types=1);
 
 namespace oat\taoLti\models\classes\Platform\Service;
 
+use core_kernel_classes_Class;
+use core_kernel_classes_Resource as Resource;
 use oat\generis\model\data\event\ResourceCreated;
 use oat\generis\model\data\event\ResourceDeleted;
 use oat\generis\model\data\event\ResourceUpdated;
 use oat\taoLti\models\classes\Platform\Repository\Lti1p3RegistrationSnapshotRepository;
 use oat\taoLti\models\classes\Platform\Repository\LtiPlatformFactory;
+use oat\taoLti\models\classes\Platform\Repository\RdfLtiPlatformRepository;
 
 class UpdatePlatformRegistrationSnapshotListener
 {
@@ -48,6 +51,10 @@ class UpdatePlatformRegistrationSnapshotListener
 
     public function whenResourceCreated(ResourceCreated $event): void
     {
+        if (!$this->supports($event->getResource())) {
+            return;
+        }
+
         $ltiPlatformRegistration = $this->ltiPlatformFactory->createFromResource($event->getResource());
 
         $this->registrationSnapshotRepository->save($ltiPlatformRegistration);
@@ -55,6 +62,10 @@ class UpdatePlatformRegistrationSnapshotListener
 
     public function whenResourceUpdated(ResourceUpdated $event): void
     {
+        if (!$this->supports($event->getResource())) {
+            return;
+        }
+
         $ltiPlatformRegistration = $this->ltiPlatformFactory->createFromResource($event->getResource());
 
         $this->registrationSnapshotRepository->save($ltiPlatformRegistration);
@@ -63,5 +74,12 @@ class UpdatePlatformRegistrationSnapshotListener
     public function whenResourceDeleted(ResourceDeleted $event): void
     {
         $this->registrationSnapshotRepository->deleteByStatementId($event->getId());
+    }
+
+    private function supports(Resource $resource): bool
+    {
+        return $resource->hasType(
+            new core_kernel_classes_Class(RdfLtiPlatformRepository::CLASS_URI)
+        );
     }
 }
