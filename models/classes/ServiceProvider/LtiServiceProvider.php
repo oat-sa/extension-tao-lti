@@ -29,12 +29,15 @@ use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
 use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
 use oat\generis\model\DependencyInjection\ContainerServiceProviderInterface;
 use oat\generis\model\DependencyInjection\ServiceOptions;
+use oat\generis\persistence\PersistenceManager;
 use OAT\Library\Lti1p3Ags\Factory\Score\ScoreFactory;
 use OAT\Library\Lti1p3Ags\Factory\Score\ScoreFactoryInterface;
 use OAT\Library\Lti1p3Ags\Service\Score\Client\ScoreServiceClient;
 use OAT\Library\Lti1p3Ags\Service\Score\ScoreServiceInterface;
+use OAT\Library\Lti1p3Core\Registration\RegistrationRepositoryInterface;
 use OAT\Library\Lti1p3Core\Security\Jwks\Fetcher\JwksFetcher;
 use OAT\Library\Lti1p3Core\Security\Jwks\Fetcher\JwksFetcherInterface;
+use OAT\Library\Lti1p3Core\Security\Key\KeyChainRepositoryInterface;
 use OAT\Library\Lti1p3Core\Security\OAuth2\Entity\Scope;
 use OAT\Library\Lti1p3Core\Security\OAuth2\Factory\AuthorizationServerFactory;
 use OAT\Library\Lti1p3Core\Security\OAuth2\Repository\AccessTokenRepository;
@@ -48,7 +51,14 @@ use oat\oatbox\log\LoggerService;
 use oat\taoLti\models\classes\Client\LtiClientFactory;
 use oat\taoLti\models\classes\LtiAgs\LtiAgsScoreService;
 use oat\taoLti\models\classes\LtiAgs\LtiAgsScoreServiceInterface;
+use oat\taoLti\models\classes\Platform\Repository\DefaultToolConfig;
+use oat\taoLti\models\classes\Platform\Repository\DefaultToolConfigFactory;
 use oat\taoLti\models\classes\Platform\Repository\Lti1p3RegistrationRepository;
+use oat\taoLti\models\classes\Platform\Repository\Lti1p3RegistrationSnapshotRepository;
+use oat\taoLti\models\classes\Platform\Repository\LtiPlatformFactory;
+use oat\taoLti\models\classes\Platform\Service\UpdatePlatformRegistrationSnapshotListener;
+use oat\taoLti\models\classes\Security\DataAccess\Repository\CachedPlatformKeyChainRepository;
+use oat\taoLti\models\classes\Security\DataAccess\Repository\PlatformKeyChainRepository;
 use Psr\Cache\CacheItemPoolInterface;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
@@ -172,6 +182,29 @@ class LtiServiceProvider implements ContainerServiceProviderInterface
                 [
                     service(ScoreServiceInterface::class),
                     service(ScoreFactoryInterface::class),
+                ]
+            );
+
+        $services
+            ->set(RegistrationRepositoryInterface::class, Lti1p3RegistrationSnapshotRepository::class)
+            ->public()
+            ->args(
+                [
+                    service(PersistenceManager::SERVICE_ID),
+                    service(CachedPlatformKeyChainRepository::class),
+                    service(PlatformKeyChainRepository::class),
+                    inline_service(DefaultToolConfig::class)->arg('$baseUri', ROOT_URL),
+                    'default'
+                ]
+            );
+
+        $services
+            ->set(UpdatePlatformRegistrationSnapshotListener::class, UpdatePlatformRegistrationSnapshotListener::class)
+            ->public()
+            ->args(
+                [
+                    service(RegistrationRepositoryInterface::class),
+                    service(LtiPlatformFactory::class)
                 ]
             );
     }

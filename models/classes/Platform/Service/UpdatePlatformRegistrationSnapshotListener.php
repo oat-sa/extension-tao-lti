@@ -27,43 +27,41 @@ namespace oat\taoLti\models\classes\Platform\Service;
 use oat\generis\model\data\event\ResourceCreated;
 use oat\generis\model\data\event\ResourceDeleted;
 use oat\generis\model\data\event\ResourceUpdated;
-use oat\oatbox\service\ConfigurableService;
-use oat\taoLti\models\classes\Platform\Repository\Lti1p3RegistrationRepository;
 use oat\taoLti\models\classes\Platform\Repository\Lti1p3RegistrationSnapshotRepository;
 use oat\taoLti\models\classes\Platform\Repository\LtiPlatformFactory;
 
-class UpdatePlatformRegistrationSnapshotListener extends ConfigurableService
+class UpdatePlatformRegistrationSnapshotListener
 {
-    public const SERVICE_ID = 'taoLti/UpdatePlatformRegistrationSnapshotListener';
+    /** @var Lti1p3RegistrationSnapshotRepository */
+    private $registrationSnapshotRepository;
+
+    /** @var LtiPlatformFactory */
+    private $ltiPlatformFactory;
+
+    public function __construct(
+        Lti1p3RegistrationSnapshotRepository $registrationSnapshotRepository,
+        LtiPlatformFactory $ltiPlatformFactory
+    ) {
+        $this->registrationSnapshotRepository = $registrationSnapshotRepository;
+        $this->ltiPlatformFactory = $ltiPlatformFactory;
+    }
 
     public function whenResourceCreated(ResourceCreated $event): void
     {
-        $ltiPlatformRegistration = $this->getLtiPlatformFactory()
-            ->createFromResource($event->getResource());
+        $ltiPlatformRegistration = $this->ltiPlatformFactory->createFromResource($event->getResource());
 
-        $this->getRepository()->save($ltiPlatformRegistration);
+        $this->registrationSnapshotRepository->save($ltiPlatformRegistration);
     }
 
     public function whenResourceUpdated(ResourceUpdated $event): void
     {
-        $ltiPlatformRegistration = $this->getLtiPlatformFactory()
-            ->createFromResource($event->getResource());
+        $ltiPlatformRegistration = $this->ltiPlatformFactory->createFromResource($event->getResource());
 
-        $this->getRepository()->save($ltiPlatformRegistration);
+        $this->registrationSnapshotRepository->save($ltiPlatformRegistration);
     }
 
     public function whenResourceDeleted(ResourceDeleted $event): void
     {
-        $this->getRepository()->deleteByStatementId($event->getId());
-    }
-
-    private function getLtiPlatformFactory(): LtiPlatformFactory
-    {
-        return $this->getServiceLocator()->get(LtiPlatformFactory::class);
-    }
-
-    private function getRepository(): Lti1p3RegistrationSnapshotRepository
-    {
-        return $this->getServiceLocator()->get(Lti1p3RegistrationRepository::SERVICE_ID);
+        $this->registrationSnapshotRepository->deleteByStatementId($event->getId());
     }
 }

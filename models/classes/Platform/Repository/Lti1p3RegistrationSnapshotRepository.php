@@ -22,32 +22,46 @@ declare(strict_types=1);
 
 namespace oat\taoLti\models\classes\Platform\Repository;
 
-use common_persistence_SqlPersistence;
+use common_persistence_SqlPersistence as SqlPersistence;
 use oat\generis\persistence\PersistenceManager;
 use OAT\Library\Lti1p3Core\Platform\Platform;
 use OAT\Library\Lti1p3Core\Registration\Registration;
 use OAT\Library\Lti1p3Core\Registration\RegistrationInterface;
 use OAT\Library\Lti1p3Core\Registration\RegistrationRepositoryInterface;
 use OAT\Library\Lti1p3Core\Security\Key\KeyChainRepositoryInterface;
-use OAT\Library\Lti1p3Core\Tool\Tool;
-use oat\oatbox\service\ConfigurableService;
-use oat\taoLti\models\classes\LtiProvider\LtiProvider;
-use oat\taoLti\models\classes\LtiProvider\LtiProviderService;
 use oat\taoLti\models\classes\Platform\LtiPlatformRegistration;
-use oat\taoLti\models\classes\Security\DataAccess\Repository\CachedPlatformKeyChainRepository;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\PlatformKeyChainRepository;
-use oat\taoLti\models\classes\Security\DataAccess\Repository\ToolKeyChainRepository;
 
-class Lti1p3RegistrationSnapshotRepository extends ConfigurableService implements RegistrationRepositoryInterface
+class Lti1p3RegistrationSnapshotRepository implements RegistrationRepositoryInterface
 {
-    public const OPTION_ROOT_URL = 'rootUrl';
-    public const OPTION_PERSISTENCE_ID = 'persistenceId';
+    /** @var PersistenceManager */
+    private $persistenceManager;
 
-    private const PLATFORM_ID = 'tao';
-    private const TOOL_ID = 'tao_tool';
-    private const OIDC_PATH = 'taoLti/Security/oidc';
-    private const OAUTH_PATH = 'taoLti/Security/oauth';
-    private const JWKS_PATH = 'taoLti/Security/jwks';
+    /** @var KeyChainRepositoryInterface */
+    private $keyChainRepository;
+
+    /** @var PlatformKeyChainRepository */
+    private $platformKeyChainRepository;
+
+    /** @var DefaultToolConfig */
+    private $defaultToolConfig;
+
+    /** @var string */
+    private $persistenceId;
+
+    public function __construct(
+        PersistenceManager $persistenceManager,
+        KeyChainRepositoryInterface $keyChainRepository,
+        PlatformKeyChainRepository $platformKeyChainRepository,
+        DefaultToolConfig $defaultToolConfig,
+        string $persistenceId
+    ) {
+        $this->persistenceManager = $persistenceManager;
+        $this->keyChainRepository = $keyChainRepository;
+        $this->platformKeyChainRepository = $platformKeyChainRepository;
+        $this->defaultToolConfig = $defaultToolConfig;
+        $this->persistenceId = $persistenceId;
+    }
 
     public function save(LtiPlatformRegistration $ltiPlatformRegistration): void
     {
@@ -185,42 +199,10 @@ class Lti1p3RegistrationSnapshotRepository extends ConfigurableService implement
         );
     }
 
-    private function getTool(LtiProvider $ltiProvider): Tool
-    {
-        return new Tool(
-            $ltiProvider->getToolIdentifier(),
-            $ltiProvider->getToolName(),
-            $ltiProvider->getToolAudience(),
-            $ltiProvider->getToolOidcLoginInitiationUrl(),
-            $ltiProvider->getToolLaunchUrl()
-        );
-    }
-
-    private function getDefaultPlatform(): Platform
-    {
-        return new Platform(
-            self::PLATFORM_ID,
-            self::PLATFORM_ID,
-            rtrim($this->getOption(self::OPTION_ROOT_URL), '/'),
-            $this->getOption(self::OPTION_ROOT_URL) . self::OIDC_PATH,
-            $this->getOption(self::OPTION_ROOT_URL) . self::OAUTH_PATH
-        );
-    }
-
-    private function getDefaultTool(): Tool
-    {
-        return new Tool(
-            self::TOOL_ID,
-            self::TOOL_ID,
-            rtrim($this->getOption(self::OPTION_ROOT_URL), '/'),
-            $this->getOption(self::OPTION_ROOT_URL) . self::OIDC_PATH
-        );
-    }
-
     private function toRegistration(array $row): ?Registration
     {
-        $toolKeyChain = $this->getCachedPlatformKeyChainRepository()
-            ->find($this->getPlatformKeyChainRepository()->getDefaultKeyId());
+        $toolKeyChain = $this->keyChainRepository
+            ->find($this->platformKeyChainRepository->getDefaultKeyId());
 
         $platform = new Platform(
             $row['statement_id'],
@@ -234,28 +216,17 @@ class Lti1p3RegistrationSnapshotRepository extends ConfigurableService implement
             $platform->getIdentifier(),
             $row['client_id'],
             $platform,
-            $this->getDefaultTool(),
+            $this->defaultToolConfig->getTool(),
             [$row['deployment_id']],
             null,
             $toolKeyChain,
             $row['jwks_url'],
-            $this->getOption(self::OPTION_ROOT_URL) . self::JWKS_PATH
+            $this->defaultToolConfig->getJwksUrl()
         );
     }
 
-    private function getPersistence(): common_persistence_SqlPersistence
+    private function getPersistence(): SqlPersistence
     {
-        return $this->getServiceLocator()->get(PersistenceManager::SERVICE_ID)
-            ->getPersistenceById($this->getOption(self::OPTION_PERSISTENCE_ID));
-    }
-
-    private function getCachedPlatformKeyChainRepository(): KeyChainRepositoryInterface
-    {
-        return $this->getServiceLocator()->get(CachedPlatformKeyChainRepository::class);
-    }
-
-    private function getPlatformKeyChainRepository(): PlatformKeyChainRepository
-    {
-        return $this->getServiceLocator()->get(PlatformKeyChainRepository::class);
+        return $this->persistenceManager->getPersistenceById($this->persistenceId);
     }
 }

@@ -46,21 +46,21 @@ class PlatformAdmin extends tao_actions_SaSModule
         parent::initialize();
 
         /** @var EventManager $eventManager */
-        $eventManager = $this->getServiceManager()->get(EventManager::SERVICE_ID);
+        $eventManager = $this->getPsrContainer()->get(EventManager::class);
 
         $eventManager->attach(
             ResourceCreated::class,
-            [UpdatePlatformRegistrationSnapshotListener::SERVICE_ID, 'whenResourceCreated']
+            [UpdatePlatformRegistrationSnapshotListener::class, 'whenResourceCreated']
         );
 
         $eventManager->attach(
             ResourceUpdated::class,
-            [UpdatePlatformRegistrationSnapshotListener::SERVICE_ID, 'whenResourceUpdated']
+            [UpdatePlatformRegistrationSnapshotListener::class, 'whenResourceUpdated']
         );
 
         $eventManager->attach(
             ResourceDeleted::class,
-            [UpdatePlatformRegistrationSnapshotListener::SERVICE_ID, 'whenResourceDeleted']
+            [UpdatePlatformRegistrationSnapshotListener::class, 'whenResourceDeleted']
         );
     }
 

@@ -7,9 +7,6 @@ namespace oat\taoLti\migrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Types;
 use oat\tao\scripts\tools\migrations\AbstractMigration;
-use oat\taoLti\models\classes\Platform\Repository\Lti1p3RegistrationRepository;
-use oat\taoLti\models\classes\Platform\Repository\Lti1p3RegistrationSnapshotRepository;
-use oat\taoLti\models\classes\Platform\Service\UpdatePlatformRegistrationSnapshotListener;
 
 final class Version202203081458463772_taoLti extends AbstractMigration
 {
@@ -22,36 +19,12 @@ final class Version202203081458463772_taoLti extends AbstractMigration
     {
         $this->createTable($schema);
 
-        $this->getServiceManager()->register(
-            Lti1p3RegistrationRepository::SERVICE_ID,
-            new Lti1p3RegistrationSnapshotRepository(
-                [
-                    Lti1p3RegistrationSnapshotRepository::OPTION_ROOT_URL => ROOT_URL,
-                    Lti1p3RegistrationSnapshotRepository::OPTION_PERSISTENCE_ID => 'default'
-                ]
-            )
-        );
-
-        $this->getServiceManager()->register(
-            UpdatePlatformRegistrationSnapshotListener::SERVICE_ID,
-            new UpdatePlatformRegistrationSnapshotListener()
-        );
+//        $this->syncSnapshotsWithExistingPlatformRegistrations($schema);
     }
 
     public function down(Schema $schema): void
     {
         $schema->dropTable('lti_platform_registration');
-
-        $this->getServiceManager()->register(
-            Lti1p3RegistrationRepository::SERVICE_ID,
-            new Lti1p3RegistrationRepository(
-                [
-                    Lti1p3RegistrationRepository::OPTION_ROOT_URL => ROOT_URL,
-                ]
-            )
-        );
-
-        $this->getServiceManager()->unregister(UpdatePlatformRegistrationSnapshotListener::SERVICE_ID);
     }
 
     private function createTable(Schema $schema): void
@@ -75,5 +48,10 @@ final class Version202203081458463772_taoLti extends AbstractMigration
         $table->addIndex(['audience', 'client_id'], "IDX_audience_client_id");
         $table->addIndex(['client_id'], "IDX_client_id");
         $table->addUniqueIndex(['statement_id'], 'UNQ_statement_id');
+    }
+
+    private function syncSnapshotsWithExistingPlatformRegistrations(Schema $schema): void
+    {
+
     }
 }
