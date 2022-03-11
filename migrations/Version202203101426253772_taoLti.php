@@ -30,7 +30,6 @@ use oat\taoLti\models\classes\Platform\Repository\LtiPlatformRepositoryInterface
 
 final class Version202203101426253772_taoLti extends AbstractMigration
 {
-
     public function getDescription(): string
     {
         return 'Populate LTI 1.3 platform registration table';
@@ -38,10 +37,10 @@ final class Version202203101426253772_taoLti extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        /** @var LtiPlatformRepositoryInterface $rdfRepository */
+        /** @var LtiPlatformRepositoryInterface $ltiRepository */
         $ltiRepository = $this->getServiceLocator()->get(LtiPlatformRepositoryInterface::SERVICE_ID);
 
-        /** @var Lti1p3RegistrationSnapshotRepository $snaptshotRepository */
+        /** @var Lti1p3RegistrationSnapshotRepository $snapshotRepository */
         $snapshotRepository = $this->getServiceLocator()->getContainer()->get(RegistrationRepositoryInterface::class);
 
         foreach ($ltiRepository->findAll() as $registration) {
