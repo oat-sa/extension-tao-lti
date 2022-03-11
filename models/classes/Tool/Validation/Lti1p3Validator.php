@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2021 (original work) Open Assessment Technologies SA;
+ * Copyright (c) 2021-2022 (original work) Open Assessment Technologies SA;
  */
 
 declare(strict_types=1);
@@ -31,7 +31,6 @@ use OAT\Library\Lti1p3Core\Security\Nonce\NonceRepository;
 use oat\oatbox\cache\ItemPoolSimpleCacheAdapter;
 use oat\oatbox\service\ConfigurableService;
 use oat\taoLti\models\classes\LtiException;
-use oat\taoLti\models\classes\Platform\Repository\Lti1p3RegistrationRepository;
 use Psr\Http\Message\ServerRequestInterface;
 
 class Lti1p3Validator extends ConfigurableService

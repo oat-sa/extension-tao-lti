@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2021 (original work) Open Assessment Technologies SA;
+ * Copyright (c) 2021-2022 (original work) Open Assessment Technologies SA;
  */
 
 declare(strict_types=1);
@@ -37,7 +37,6 @@ use OAT\Library\Lti1p3Ags\Service\Score\ScoreServiceInterface;
 use OAT\Library\Lti1p3Core\Registration\RegistrationRepositoryInterface;
 use OAT\Library\Lti1p3Core\Security\Jwks\Fetcher\JwksFetcher;
 use OAT\Library\Lti1p3Core\Security\Jwks\Fetcher\JwksFetcherInterface;
-use OAT\Library\Lti1p3Core\Security\Key\KeyChainRepositoryInterface;
 use OAT\Library\Lti1p3Core\Security\OAuth2\Entity\Scope;
 use OAT\Library\Lti1p3Core\Security\OAuth2\Factory\AuthorizationServerFactory;
 use OAT\Library\Lti1p3Core\Security\OAuth2\Repository\AccessTokenRepository;
@@ -52,7 +51,6 @@ use oat\taoLti\models\classes\Client\LtiClientFactory;
 use oat\taoLti\models\classes\LtiAgs\LtiAgsScoreService;
 use oat\taoLti\models\classes\LtiAgs\LtiAgsScoreServiceInterface;
 use oat\taoLti\models\classes\Platform\Repository\DefaultToolConfig;
-use oat\taoLti\models\classes\Platform\Repository\DefaultToolConfigFactory;
 use oat\taoLti\models\classes\Platform\Repository\Lti1p3RegistrationRepository;
 use oat\taoLti\models\classes\Platform\Repository\Lti1p3RegistrationSnapshotRepository;
 use oat\taoLti\models\classes\Platform\Repository\LtiPlatformFactory;
