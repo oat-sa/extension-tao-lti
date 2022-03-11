@@ -15,7 +15,9 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2020 (original work) Open Assessment Technologies SA;
+ * Copyright (c) 2022 (original work) Open Assessment Technologies SA;
+ *
+ * @author Ricardo Quintanilha <ricardo.quintanilha@taotesting.com>
  */
 
 declare(strict_types=1);
@@ -31,6 +33,7 @@ use OAT\Library\Lti1p3Core\Registration\RegistrationRepositoryInterface;
 use OAT\Library\Lti1p3Core\Security\Key\KeyChainRepositoryInterface;
 use oat\taoLti\models\classes\Platform\LtiPlatformRegistration;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\PlatformKeyChainRepository;
+use RuntimeException;
 
 class Lti1p3RegistrationSnapshotRepository implements RegistrationRepositoryInterface
 {
@@ -108,6 +111,14 @@ class Lti1p3RegistrationSnapshotRepository implements RegistrationRepositoryInte
         );
     }
 
+    public function deleteByStatementId(string $statementId): void
+    {
+        $this->getPersistence()->exec(
+            'DELETE FROM lti_platform_registration WHERE statement_id = :statement_id',
+            ['statement_id' => $statementId]
+        );
+    }
+
     public function find(string $identifier): ?RegistrationInterface
     {
         $row = $this->getRow(['statement_id' => $identifier]);
@@ -162,6 +173,7 @@ class Lti1p3RegistrationSnapshotRepository implements RegistrationRepositoryInte
 
     public function findByToolIssuer(string $issuer, string $clientId = null): ?RegistrationInterface
     {
+        throw new RuntimeException('Find registration by tool is not supported');
     }
 
     private function getRow(array $queryParams = []): array
@@ -189,14 +201,6 @@ class Lti1p3RegistrationSnapshotRepository implements RegistrationRepositoryInte
         );
 
         return $statement->fetch() ?: [];
-    }
-
-    public function deleteByStatementId(string $statementId): void
-    {
-        $this->getPersistence()->exec(
-            'DELETE FROM lti_platform_registration WHERE statement_id = :statement_id',
-            ['statement_id' => $statementId]
-        );
     }
 
     private function toRegistration(array $row): ?Registration
