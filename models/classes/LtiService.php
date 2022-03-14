@@ -28,6 +28,7 @@ use core_kernel_classes_Class;
 use core_kernel_classes_Resource;
 use OAT\Library\Lti1p3Core\Message\Payload\LtiMessagePayloadInterface;
 use OAT\Library\Lti1p3Core\Message\Payload\MessagePayloadInterface;
+use OAT\Library\Lti1p3Core\Registration\RegistrationRepositoryInterface;
 use oat\oatbox\log\LoggerService;
 use oat\oatbox\service\ConfigurableService;
 use oat\oatbox\service\ServiceManager;
@@ -69,27 +70,36 @@ class LtiService extends ConfigurableService
     public function createLti1p3Session(LtiMessagePayloadInterface $messagePayload)
     {
         try {
-            /** @var Lti1p3RegistrationRepository $repository */
-            $repository = $this->getServiceLocator()->get(Lti1p3RegistrationRepository::SERVICE_ID);
-            $registration = $repository->findByPlatformIssuer(
-                $messagePayload->getMandatoryClaim(MessagePayloadInterface::CLAIM_ISS),
-                $messagePayload->getMandatoryClaim(MessagePayloadInterface::CLAIM_AUD)[0]
+            /** @var RegistrationRepositoryInterface $registrationRepository */
+            $registrationRepository = $this->getServiceLocator()
+                ->getContainer()
+                ->get(RegistrationRepositoryInterface::class);
+
+            $issuer = $messagePayload->getMandatoryClaim(MessagePayloadInterface::CLAIM_ISS);
+            $clientId = $messagePayload->getMandatoryClaim(MessagePayloadInterface::CLAIM_AUD)[0];
+
+            $registration = $registrationRepository->findByPlatformIssuer($issuer, $clientId);
+
+            if ($registration === null) {
+                throw new LtiException(
+                    sprintf('Cannot find a registration with issuer "%s" and client ID "%s"', $issuer, $clientId),
+                    LtiErrorMessage::ERROR_UNAUTHORIZED
+                );
+            }
+
+            $user = new Lti1p3User(
+                LtiLaunchData::fromLti1p3MessagePayload($messagePayload, $registration->getPlatform())
             );
 
-            /** @var LtiPlatformRepositoryInterface $platformRepository */
-            $platformRepository = $this->getServiceLocator()->get(LtiPlatformRepositoryInterface::SERVICE_ID);
-            $platform = $platformRepository->searchById($registration->getPlatform()->getIdentifier());
+            $user->setRegistrationId($registration->getIdentifier());
 
-            $user = new Lti1p3User(LtiLaunchData::fromLti1p3MessagePayload($messagePayload, $platform));
-
-            $session = TaoLtiSession::fromVersion1p3($user->setRegistrationId($registration->getIdentifier()));
+            $session = TaoLtiSession::fromVersion1p3($user);
 
             $this->getServiceLocator()->propagate($session);
 
             return $session;
         } catch (LtiInvalidVariableException $e) {
-            $this->getServiceLocator()->get(LoggerService::SERVICE_ID)
-                ->log(LogLevel::INFO, $e->getMessage());
+            $this->logInfo($e->getMessage());
 
             throw new LtiException(
                 $e->getMessage(),
