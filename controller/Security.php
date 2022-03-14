@@ -77,7 +77,9 @@ class Security extends Controller implements ServiceLocatorAwareInterface
     public function oidcInitiation(): void
     {
         // Create the OIDC initiator
-        $initiator = new OidcInitiator($this->getLti1p3RegistrationRepository());
+        $initiator = new OidcInitiator(
+            $this->getPsrContainer()->get(RegistrationRepositoryInterface::class)
+        );
 
         // Perform the OIDC initiation (including state generation)
         $message = $initiator->initiate($this->getPsrRequest());
@@ -108,11 +110,6 @@ class Security extends Controller implements ServiceLocatorAwareInterface
     private function getOidcLoginAuthenticator(): OidcLoginAuthenticatorInterface
     {
         return $this->getServiceLocator()->get(OidcLoginAuthenticatorProxy::class);
-    }
-
-    private function getLti1p3RegistrationRepository(): RegistrationRepositoryInterface
-    {
-        return $this->getServiceLocator()->get(Lti1p3RegistrationRepository::class);
     }
 
     private function getAccessTokenGenerator(): AccessTokenResponseGeneratorInterface
