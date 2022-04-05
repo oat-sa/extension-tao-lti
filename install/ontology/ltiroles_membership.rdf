@@ -24,6 +24,7 @@
     <rdfs:comment xml:lang="en-US"><![CDATA[The LTI Context Instructor Role]]></rdfs:comment>
     <taolti:RoleURN><![CDATA[urn:lti:role:ims/lis/Instructor]]></taolti:RoleURN>
     <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiBaseRole"/>
+    <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#QTIManagerRole"/>
     <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#ContentDeveloper">
