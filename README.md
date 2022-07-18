@@ -5,6 +5,7 @@
 ![GitHub](https://img.shields.io/github/license/oat-sa/extension-tao-lti.svg)
 ![GitHub release](https://img.shields.io/github/release/oat-sa/extension-tao-lti.svg)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/y/oat-sa/extension-tao-lti.svg)
+[![codecov](https://codecov.io/gh/oat-sa/extension-tao-lti/branch/master/graph/badge.svg)](https://codecov.io/gh/oat-sa/extension-tao-lti)
 
 > Extension to manage LTI services for TAO
 
