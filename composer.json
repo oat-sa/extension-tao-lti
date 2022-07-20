@@ -68,6 +68,10 @@
             "oat\\taoLti\\" : ""
         }
     },
+    "require-dev": {
+      "oat-sa/generis": "dev-php8-migration as v16.0.0",
+      "oat-sa/tao-core": "dev-php8-migration as v51.0.0"
+    },
     "autoload-dev" : {
       "psr-4" : {
         "OAT\\Library\\Lti1p3Core\\Tests\\": "../vendor/oat-sa/lib-lti1p3-core/tests/"
