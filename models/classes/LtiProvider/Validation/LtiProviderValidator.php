@@ -55,7 +55,7 @@ class LtiProviderValidator extends ConfigurableService
         if (!empty($this->errors)) {
             $errors = $this->errors;
             $this->errors = [];
-            throw new InvalidArgumentException(implode($errors, PHP_EOL));
+            throw new InvalidArgumentException(implode(PHP_EOL, $errors));
         }
     }
 
