@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 3.4.0-sprint133\n"
-"PO-Revision-Date: 2020-07-17T08:39:56\n"
+"Project-Id-Version: TAO 2022.09\n"
+"PO-Revision-Date: 2022-08-12T16:45:48\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: ja-JP\n"
@@ -23,7 +23,7 @@ msgstr "LTI　コンシューマ"
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIProvider
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "LTI Provider"
-msgstr ""
+msgstr "LTIプロバイダ"
 
 # http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIUser
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
@@ -134,4 +134,184 @@ msgstr "LTI コンシューマ Uri"
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "LTI Consumer service calls an LTI Producer"
 msgstr "LTI プロデューサを呼び出すLTIコンシューマサービス"
+
+# http://www.tao.lu/Ontologies/TAOLTI.rdf#ltiVersion
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI Version"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOLTI.rdf#ltiVersion
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "LTI Version"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOLTI.rdf#lti1p1
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "1.1"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOLTI.rdf#lti1p3
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "1.3"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOLTI.rdf#toolIdentifier
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Tool identifier"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOLTI.rdf#toolIdentifier
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Tool identifier"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOLTI.rdf#toolName
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Tool name"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOLTI.rdf#toolName
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Tool name"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOLTI.rdf#toolClientId
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Tool client id"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOLTI.rdf#toolClientId
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Tool client id"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOLTI.rdf#toolAudience
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Tool audience"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOLTI.rdf#toolAudience
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Tool audience"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOLTI.rdf#toolDeploymentIds
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Tool deployment ids"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOLTI.rdf#toolDeploymentIds
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Tool deployment ids"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOLTI.rdf#toolOidcLoginInitiationUrl
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Tool OIDC Login Initiation Url"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOLTI.rdf#toolOidcLoginInitiationUrl
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Tool OIDC Login Initiation Url"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOLTI.rdf#toolLaunchUrl
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Tool launch url"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOLTI.rdf#toolLaunchUrl
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Tool launch url"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOLTI.rdf#ToolJwksUrl
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Tool JWKS url"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOLTI.rdf#ToolJwksUrl
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Tool JWKS url"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOLTI.rdf#toolPublicKey
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Tool public key"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOLTI.rdf#toolPublicKey
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Tool public key"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOLTI.rdf#Platform
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI Platform"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOLTI.rdf#Platform
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "LTI Platform"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOLTI.rdf#PlatformClientId
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Client ID"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOLTI.rdf#PlatformClientId
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Client ID"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOLTI.rdf#PlatformDeploymentId
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Deployment ID"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOLTI.rdf#PlatformDeploymentId
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Deployment ID"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOLTI.rdf#PlatformAudience
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Audience"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOLTI.rdf#PlatformAudience
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Audience"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOLTI.rdf#PlatformOuath2AccessTokenUrl
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Ouath2 Access Token URL"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOLTI.rdf#PlatformOuath2AccessTokenUrl
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Ouath2 Access Token URL"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOLTI.rdf#PlatformOidcAuthenticationUrl
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "OIDC Authentication URL"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOLTI.rdf#PlatformOidcAuthenticationUrl
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "OIDC Authentication URL"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOLTI.rdf#PlatformJwksUrl
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "JSON Web Key Sets URL"
+msgstr ""
+
+# http://www.tao.lu/Ontologies/TAOLTI.rdf#PlatformJwksUrl
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "JSON Web Key Sets URL"
+msgstr ""
 

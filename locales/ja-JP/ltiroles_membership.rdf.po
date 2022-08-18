@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 3.4.0-sprint133\n"
-"PO-Revision-Date: 2020-07-17T08:39:56\n"
+"Project-Id-Version: TAO 2022.09\n"
+"PO-Revision-Date: 2022-08-12T16:45:48\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: ja-JP\n"
@@ -59,4 +59,524 @@ msgstr "LTI　アドミンストレータ"
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "The LTI Context Administrator Role"
 msgstr "LTI　アドミンストレータ権限コンテキスト"
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Learner#Learner
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI 1p3 Learner"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Learner#Learner
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI 1p3 Context Learner Role"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Learner#ExternalLearner
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI 1p3 External Learner"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Learner#ExternalLearner
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI 1p3 Context External Learner Role"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Learner#GuestLearner
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI 1p3 Guest Learner"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Learner#GuestLearner
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI 1p3 Context Guest Learner Role"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership#Instructor
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI 1p3 Instructor"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership#Instructor
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI 1p3 Context Instructor Role"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Learner#NonCreditLearner
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI 1p3 Non Credit Learner"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Learner#NonCreditLearner
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI 1p3 Context Non Credit Learner Role"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Mentor#Mentor
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI 1p3 Mentor"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Mentor#Mentor
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI 1p3 Context Mentor Role"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Mentor#Advisor
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI 1p3 Advisor"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Mentor#Advisor
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI 1p3 Context Advisor Role"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Mentor#Auditor
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI 1p3 Auditor"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Mentor#Auditor
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI 1p3 Context Auditor Role"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Mentor#ExternalAdvisor
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI 1p3 External Advisor"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Mentor#ExternalAdvisor
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI 1p3 Context External Advisor Role"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Mentor#ExternalAuditor
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI 1p3 External Auditor"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Mentor#ExternalAuditor
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI 1p3 Context External Auditor Role"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Mentor#ExternalLearningFacilitator
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI 1p3 External Learning Facilitator"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Mentor#ExternalLearningFacilitator
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI 1p3 Context External Learning Facilitator Role"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Mentor#ExternalMentor
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI 1p3 External Mentor"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Mentor#ExternalMentor
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI 1p3 Context External Mentor Role"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Mentor#ExternalReviewer
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI 1p3 External Reviewer"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Mentor#ExternalReviewer
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI 1p3 Context External Reviewer Role"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Mentor#ExternalTutor
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI 1p3 External Tutor"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Mentor#ExternalTutor
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI 1p3 Context External Tutor Role"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Mentor#LearningFacilitator
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI 1p3 Learning Facilitator"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Mentor#LearningFacilitator
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI 1p3 Context Learning Facilitator Role"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Mentor#Reviewer
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI 1p3 Reviewer"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Mentor#Reviewer
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI 1p3 Context Reviewer Role"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Mentor#Tutor
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI 1p3 Tutor"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Mentor#Tutor
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI 1p3 Context Tutor Role"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Instructor#ExternalInstructor
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI 1p3 External Instructor"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Instructor#ExternalInstructor
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI 1p3 Context External Instructor Role"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Instructor#Grader
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI 1p3 Grader"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Instructor#Grader
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI 1p3 Context Grader Role"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Instructor#GuestInstructor
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI 1p3 Guest Instructor"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Instructor#GuestInstructor
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI 1p3 Context Guest Instructor Role"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Instructor#Lecturer
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI 1p3 Lecturer"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Instructor#Lecturer
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI 1p3 Context Lecturer Role"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Instructor#PrimaryInstructor
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI 1p3 Primary Instructor"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Instructor#PrimaryInstructor
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI 1p3 Context Primary Instructor Role"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Instructor#SecondaryInstructor
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI 1p3 Secondary Instructor"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Instructor#SecondaryInstructor
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI 1p3 Context Secondary Instructor Role"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Instructor#TeachingAssistant
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI 1p3 Teaching Assistant"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Instructor#TeachingAssistant
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI 1p3 Context Teaching Assistant Role"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Instructor#TeachingAssistantGroup
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI 1p3 Teaching Assistant Group"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Instructor#TeachingAssistantGroup
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI 1p3 Context Teaching Assistant Group Role"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Instructor#TeachingAssistantOffering
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI 1p3 Teaching Assistant Offering"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Instructor#TeachingAssistantOffering
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI 1p3 Context Teaching Assistant Offering Role"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Instructor#TeachingAssistantSection
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI 1p3 Teaching Assistant Section"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Instructor#TeachingAssistantSection
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI 1p3 Context Teaching Assistant Section Role"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Instructor#TeachingAssistantSectionAssociation
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI 1p3 Teaching Assistant Section Association"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Instructor#TeachingAssistantSectionAssociation
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI 1p3 Context Teaching Assistant Section Association Role"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Instructor#TeachingAssistantTemplate
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI 1p3 Teaching Assistant Template"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Instructor#TeachingAssistantTemplate
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI 1p3 Context Teaching Assistant Template Role"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Administrator#Administrator
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI 1p3 Administrator"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Administrator#Administrator
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI 1p3 Context Administrator Role"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Administrator#Developer
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI 1p3 Developer"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Administrator#Developer
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI 1p3 Context Developer Role"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Administrator#ExternalDeveloper
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI 1p3 External Developer"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Administrator#ExternalDeveloper
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI 1p3 Context External Developer Role"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Administrator#ExternalSupport
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI 1p3 External Support"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Administrator#ExternalSupport
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI 1p3 Context External Support Role"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Administrator#ExternalSystemAdministrator
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI 1p3 External System Administrator"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Administrator#ExternalSystemAdministrator
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI 1p3 Context External System Administrator Role"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Administrator#Support
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI 1p3 Support"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Administrator#Support
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI 1p3 Context Support Role"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Administrator#SystemAdministrator
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI 1p3 System Administrator"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Administrator#SystemAdministrator
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI 1p3 Context System Administrator Role"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/ContentDeveloper#ContentDeveloper
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI 1p3 Content Developer"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/ContentDeveloper#ContentDeveloper
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI 1p3 Context Content Developer Role"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/ContentDeveloper#ContentExpert
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI 1p3 Content Expert"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/ContentDeveloper#ContentExpert
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI 1p3 Context Content Expert Role"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/ContentDeveloper#ExternalContentExpert
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI 1p3 External Content Expert"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/ContentDeveloper#ExternalContentExpert
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI 1p3 Context External Content Expert Role"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/ContentDeveloper#Librarian
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI 1p3 Librarian"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/ContentDeveloper#Librarian
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI 1p3 Context Librarian Role"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Manager#Manager
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI 1p3 Manager"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Manager#Manager
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI 1p3 Context Manager Role"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Manager#AreaManager
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI 1p3 Area Manager"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Manager#AreaManager
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI 1p3 Context Area Manager Role"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Manager#CourseCoordinator
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI 1p3 Course Coordinator"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Manager#CourseCoordinator
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI 1p3 Context Course Coordinator Role"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Manager#ExternalObserver
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI 1p3 External Observer"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Manager#ExternalObserver
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI 1p3 Context External Observer Role"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Manager#Observer
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI 1p3 Observer"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Manager#Observer
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI 1p3 Context Observer Role"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Member#Member
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI 1p3 Member"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Member#Member
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI 1p3 Context Member Role"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership#Officer
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI 1p3 Officer"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership#Officer
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI 1p3 Context Officer Role"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Officer#Chair
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI 1p3 Chair"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Officer#Chair
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI 1p3 Context Chair Role"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Officer#Communications
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI 1p3 Communications"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Officer#Communications
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI 1p3 Context Communications Role"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Officer#Secretary
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI 1p3 Secretary"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Officer#Secretary
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI 1p3 Context Secretary Role"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Officer#Treasurer
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI 1p3 Treasurer"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Officer#Treasurer
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI 1p3 Context Treasurer Role"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Officer#Vice-Chair
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI 1p3 Vice-Chair"
+msgstr ""
+
+# http://purl.imsglobal.org/vocab/lis/v2/membership/Officer#Vice-Chair
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI 1p3 Context Vice-Chair Role"
+msgstr ""
 
