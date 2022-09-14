@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2013 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
+ * Copyright (c) 2013-2022 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
  *
  *
  */
@@ -42,6 +42,8 @@ use oat\oatbox\user\UserLanguageService;
 class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface, \JsonSerializable, LtiUserInterface
 {
     use ServiceLocatorAwareTrait;
+
+    public const ANONYMOUS_USER_URI = 'anonymous';
 
     const USER_IDENTIFIER = 'identifier';
 
@@ -156,7 +158,14 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
                 $launchLanguage = $this->getLaunchData()->getLaunchLanguage();
                 $this->language = LtiUtils::mapCode2InterfaceLanguage($launchLanguage);
             } else {
-                $this->language = $this->getServiceLocator()->get(UserLanguageService::SERVICE_ID)->getDefaultLanguage();
+                if (
+                    $this->userUri == self::ANONYMOUS_USER_URI
+                    && defined('DEFAULT_ANONYMOUS_INTERFACE_LANG')
+                ) {
+                    $this->language = DEFAULT_ANONYMOUS_INTERFACE_LANG;
+                } else {
+                    $this->language = $this->getServiceLocator()->get(UserLanguageService::SERVICE_ID)->getDefaultLanguage();
+                }
             }
         }
         return $this->language;
