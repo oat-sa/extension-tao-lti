@@ -27,7 +27,7 @@ use oat\taoLti\models\classes\ServiceProvider\LtiServiceProvider;
 use oat\taoLti\scripts\install\CreateLti1p3RegistrationSnapshotSchema;
 use oat\taoLti\scripts\install\GenerateKeys;
 use oat\taoLti\scripts\install\GenerisSearchWhitelist;
-use oat\taoLti\scripts\install\InstallServices;
+use oat\taoLti\scripts\install\SetupServices;
 use oat\taoLti\scripts\install\MapLtiSectionVisibility;
 use oat\taoLti\scripts\update\Updater;
 
@@ -58,7 +58,7 @@ return [
             $extpath . 'install/ontology/ltiroles_membership.rdf'
         ],
         'php' => [
-            InstallServices::class,
+            SetupServices::class,
             GenerateKeys::class,
             MapLtiSectionVisibility::class,
             GenerisSearchWhitelist::class,

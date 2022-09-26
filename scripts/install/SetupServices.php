@@ -23,28 +23,25 @@
 namespace oat\taoLti\scripts\install;
 
 use common_Exception;
-use common_report_Report;
-use oat\oatbox\extension\AbstractAction;
+use oat\oatbox\extension\InstallAction;
 use oat\oatbox\filesystem\FileSystemService;
+use oat\oatbox\reporting\Report;
 use oat\oatbox\service\exception\InvalidServiceManagerException;
 use oat\tao\model\mvc\error\ExceptionInterpreterService;
+use oat\tao\model\search\SearchProxy;
 use oat\taoLti\models\classes\ExceptionInterpreter;
 use oat\taoLti\models\classes\LtiException;
+use oat\taoLti\models\classes\Platform\Repository\RdfLtiPlatformRepository;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\PlatformKeyChainRepository;
 use oat\taoLti\models\classes\user\UserService;
 
 /**
  * @package oat\taoLti\scripts\install
  * @author Aleh Hutnikau, <hutnikau@gmail.com>
+ * @author Ivan Klimchuk, <ivan@taotesting.com>
  */
-class InstallServices extends AbstractAction
+class SetupServices extends InstallAction
 {
-    /**
-     * @param $params
-     * @return common_report_Report
-     * @throws common_Exception
-     * @throws InvalidServiceManagerException
-     */
     public function __invoke($params)
     {
         $exceptionInterpreterService = $this->getServiceManager()->get(ExceptionInterpreterService::SERVICE_ID);
@@ -60,7 +57,9 @@ class InstallServices extends AbstractAction
 
         $this->createFileSystem();
 
-        return common_report_Report::createSuccess('Successfully installed');
+        $this->registerSearchService();
+
+        return Report::createSuccess('Successfully installed');
     }
 
     /**
@@ -74,5 +73,17 @@ class InstallServices extends AbstractAction
         $fsService->createFileSystem(PlatformKeyChainRepository::FILE_SYSTEM_ID);
 
         $this->getServiceManager()->register(FileSystemService::SERVICE_ID, $fsService);
+    }
+
+    private function registerSearchService(): void
+    {
+        /** @var SearchProxy $searchProxy */
+        $searchProxy = $this->getServiceManager()->get(SearchProxy::SERVICE_ID);
+
+        $searchProxy->extendGenerisSearchWhiteList([
+            RdfLtiPlatformRepository::CLASS_URI,
+        ]);
+
+        $this->registerService(SearchProxy::SERVICE_ID, $searchProxy);
     }
 }
