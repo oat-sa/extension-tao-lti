@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2021 (original work) Open Assessment Technologies SA;
+ * Copyright (c) 2021-2022 (original work) Open Assessment Technologies SA;
  */
 
 declare(strict_types=1);
@@ -42,7 +42,7 @@ class Lti1p3User extends LtiUser
     {
         $userUri = $launchData->hasVariable(LtiLaunchData::USER_ID)
             ? $launchData->getVariable(LtiLaunchData::USER_ID)
-            : 'anonymous';
+            : self::ANONYMOUS_USER_URI;
 
         parent::__construct($launchData, $userUri);
     }
