@@ -86,5 +86,4 @@ class LtiProviderValidator extends ConfigurableService
         /** @noinspection PhpIncompatibleReturnTypeInspection */
         return $this->getServiceLocator()->get(ValidationRegistry::class);
     }
-
 }
