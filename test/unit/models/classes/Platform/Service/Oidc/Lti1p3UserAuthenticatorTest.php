@@ -22,17 +22,21 @@ declare(strict_types=1);
 
 namespace oat\taoLti\test\unit\models\classes\Platform\Service\Oidc;
 
-use oat\generis\test\TestCase;
+use oat\generis\test\ServiceManagerMockTrait;
 use OAT\Library\Lti1p3Core\Registration\RegistrationInterface;
 use OAT\Library\Lti1p3Core\Security\User\Result\UserAuthenticationResult;
 use OAT\Library\Lti1p3Core\User\UserIdentity;
+use oat\oatbox\user\AnonymousUser;
 use oat\oatbox\user\User;
 use oat\oatbox\user\UserService;
 use oat\taoLti\models\classes\Platform\Service\Oidc\Lti1p3UserAuthenticator;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 
 class Lti1p3UserAuthenticatorTest extends TestCase
 {
+    use ServiceManagerMockTrait;
+
     /** @var Lti1p3UserAuthenticator */
     private $subject;
 
@@ -44,7 +48,7 @@ class Lti1p3UserAuthenticatorTest extends TestCase
         $this->userService = $this->createMock(UserService::class);
         $this->subject = new Lti1p3UserAuthenticator();
         $this->subject->setServiceLocator(
-            $this->getServiceLocatorMock(
+            $this->getServiceManagerMock(
                 [
                     UserService::SERVICE_ID => $this->userService
                 ]
@@ -58,6 +62,7 @@ class Lti1p3UserAuthenticatorTest extends TestCase
             [
                 'role'
             ],
+            'login',
             'first name',
             'last name',
             'email'
@@ -75,12 +80,35 @@ class Lti1p3UserAuthenticatorTest extends TestCase
                     'email'
                 )
             ),
-
-            $this->subject->authenticate($registration, 'login')
+            $this->subject->authenticate($registration, 'userId#123456')
         );
     }
 
-    private function expectUser(array $roles, string $firstName, string $lastName, string $email): void
+    public function testAnonymousOrGuestUser(): void
+    {
+        $this->expectAnonymousUser(
+            [
+                'role'
+            ]
+        );
+
+        /** @var RegistrationInterface|MockObject $registration */
+        $registration = $this->createMock(RegistrationInterface::class);
+
+        $this->assertEquals(
+            new UserAuthenticationResult(
+                true,
+                new UserIdentity(
+                    'userId#123456',
+                    '',
+                    ''
+                )
+            ),
+            $this->subject->authenticate($registration, 'userId#123456')
+        );
+    }
+
+    private function expectUser(array $roles, string $login, string $firstName, string $lastName, string $email): void
     {
         $user = $this->createMock(User::class);
 
@@ -89,10 +117,25 @@ class Lti1p3UserAuthenticatorTest extends TestCase
 
         $user->method('getPropertyValues')
             ->willReturnOnConsecutiveCalls(
+                [$login],
                 [$firstName],
                 [$lastName],
                 [$email]
             );
+
+        $this->userService
+            ->method('getUser')
+            ->willReturn($user);
+    }
+    private function expectAnonymousUser(array $roles): void
+    {
+        $user = $this->createMock(AnonymousUser::class);
+
+        $user->method('getRoles')
+            ->willReturn($roles);
+
+        $user->method('getPropertyValues')
+            ->willReturn([]);
 
         $this->userService
             ->method('getUser')
