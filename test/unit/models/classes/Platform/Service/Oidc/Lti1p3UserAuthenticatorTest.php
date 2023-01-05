@@ -127,6 +127,7 @@ class Lti1p3UserAuthenticatorTest extends TestCase
             ->method('getUser')
             ->willReturn($user);
     }
+
     private function expectAnonymousUser(array $roles): void
     {
         $user = $this->createMock(AnonymousUser::class);
