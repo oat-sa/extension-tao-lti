@@ -30,10 +30,8 @@ use OAT\Library\Lti1p3Core\Security\User\Result\UserAuthenticationResultInterfac
 use OAT\Library\Lti1p3Core\Security\User\UserAuthenticatorInterface;
 use OAT\Library\Lti1p3Core\User\UserIdentity;
 use oat\oatbox\service\ConfigurableService;
-use oat\oatbox\user\AnonymousUser;
 use oat\oatbox\user\User;
 use oat\oatbox\user\UserService;
-use oat\taoDeliveryRdf\model\guest\GuestTestUser;
 use Throwable;
 
 class Lti1p3UserAuthenticator extends ConfigurableService implements UserAuthenticatorInterface
@@ -61,9 +59,8 @@ class Lti1p3UserAuthenticator extends ConfigurableService implements UserAuthent
             throw new ErrorException(sprintf('User [%s] not found', $userId));
         }
 
-        $login = $user instanceof AnonymousUser || $user instanceof GuestTestUser ?
-            $userId :
-            $this->getPropertyValue($user, UserRdf::PROPERTY_LOGIN);
+        $login = $this->getPropertyValue($user, UserRdf::PROPERTY_LOGIN);
+        $login = empty($login) ? $userId : $login;
 
         $fullName = $this->getPropertyValue($user, UserRdf::PROPERTY_FIRSTNAME)
             . ' ' . $this->getPropertyValue($user, UserRdf::PROPERTY_LASTNAME);

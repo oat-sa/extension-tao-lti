@@ -22,12 +22,11 @@ declare(strict_types=1);
 
 namespace oat\taoLti\test\unit\models\classes\Platform\Service\Oidc;
 
+use core_kernel_users_GenerisUser;
 use oat\generis\test\ServiceManagerMockTrait;
 use OAT\Library\Lti1p3Core\Registration\RegistrationInterface;
 use OAT\Library\Lti1p3Core\Security\User\Result\UserAuthenticationResult;
 use OAT\Library\Lti1p3Core\User\UserIdentity;
-use oat\oatbox\user\AnonymousUser;
-use oat\oatbox\user\User;
 use oat\oatbox\user\UserService;
 use oat\taoLti\models\classes\Platform\Service\Oidc\Lti1p3UserAuthenticator;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -110,7 +109,7 @@ class Lti1p3UserAuthenticatorTest extends TestCase
 
     private function expectUser(array $roles, string $login, string $firstName, string $lastName, string $email): void
     {
-        $user = $this->createMock(User::class);
+        $user = $this->createMock(core_kernel_users_GenerisUser::class);
 
         $user->method('getRoles')
             ->willReturn($roles);
@@ -130,7 +129,7 @@ class Lti1p3UserAuthenticatorTest extends TestCase
 
     private function expectAnonymousUser(array $roles): void
     {
-        $user = $this->createMock(AnonymousUser::class);
+        $user = $this->createMock(core_kernel_users_GenerisUser::class);
 
         $user->method('getRoles')
             ->willReturn($roles);
