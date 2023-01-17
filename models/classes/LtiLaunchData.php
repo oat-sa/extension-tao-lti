@@ -23,6 +23,7 @@ namespace oat\taoLti\models\classes;
 
 use common_http_Request;
 use core_kernel_classes_Resource;
+use OAT\Library\Lti1p3Core\Message\Payload\Claim\AgsClaim;
 use OAT\Library\Lti1p3Core\Message\Payload\LtiMessagePayloadInterface;
 use OAT\Library\Lti1p3Core\Platform\PlatformInterface;
 use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
@@ -114,6 +115,9 @@ class LtiLaunchData implements \JsonSerializable
      */
     public static function fromJsonArray($json)
     {
+        if (isset($json['variables'][self::AGS_CLAIMS])) {
+            $json['variables'][self::AGS_CLAIMS] = AgsClaim::denormalize($json['variables'][self::AGS_CLAIMS]);
+        }
         return new static($json['variables'], $json['customParams']);
     }
 
@@ -158,7 +162,7 @@ class LtiLaunchData implements \JsonSerializable
         $variables[self::LIS_PERSON_NAME_FAMILY] = $ltiMessagePayload->getUserIdentity() ? $ltiMessagePayload->getUserIdentity()->getFamilyName() : null;
         $variables[self::LIS_PERSON_NAME_FULL] = $ltiMessagePayload->getUserIdentity() ? $ltiMessagePayload->getUserIdentity()->getName() : null;
         $variables[self::LIS_PERSON_CONTACT_EMAIL_PRIMARY] = $ltiMessagePayload->getUserIdentity() ? $ltiMessagePayload->getUserIdentity()->getEmail() : null;
-        $variables[self::LAUNCH_PRESENTATION_LOCALE] = $ltiMessagePayload->getLaunchPresentation() ? $ltiMessagePayload->getLaunchPresentation()->getLocale(): null;
+        $variables[self::LAUNCH_PRESENTATION_LOCALE] = $ltiMessagePayload->getLaunchPresentation() ? $ltiMessagePayload->getLaunchPresentation()->getLocale() : null;
         $variables[self::LAUNCH_PRESENTATION_RETURN_URL] = $ltiMessagePayload->getLaunchPresentation() ? $ltiMessagePayload->getLaunchPresentation()->getReturnUrl() : null;
         $variables[self::LTI_VERSION] = $ltiMessagePayload->getVersion();
         $variables[self::LTI_MESSAGE_TYPE] = $ltiMessagePayload->getMessageType();
@@ -184,7 +188,6 @@ class LtiLaunchData implements \JsonSerializable
                 $variables[self::TOOL_CONSUMER_INSTANCE_NAME] = $platform->getName();
                 $variables[self::TOOL_CONSUMER_INSTANCE_DESCRIPTION] = $platform->getName();
             }
-
         }
 
         if ($ags = $ltiMessagePayload->getAgs()) {
@@ -550,7 +553,9 @@ class LtiLaunchData implements \JsonSerializable
     public function jsonSerialize()
     {
         return [
-            'variables' => $this->variables,
+            'variables' => array_map(function ($var) {
+                return $var instanceof AgsClaim ? $var->normalize() : $var;
+            }, $this->variables),
             'customParams' => $this->customParams,
         ];
     }
