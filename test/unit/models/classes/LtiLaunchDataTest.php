@@ -29,7 +29,7 @@ use oat\generis\test\MockObject;
 
 class LtiLaunchDataTest extends TestCase
 {
-    const ROOT_URL = 'http://example.com/';
+    private const ROOT_URL = 'http://example.com/';
 
     public function setUp(): void
     {

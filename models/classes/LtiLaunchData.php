@@ -150,6 +150,7 @@ class LtiLaunchData implements \JsonSerializable
         LtiMessagePayloadInterface $ltiMessagePayload,
         PlatformInterface $platform = null
     ): self {
+        // phpcs:disable Generic.Files.LineLength
         $variables[self::OAUTH_CONSUMER_KEY] = '';
         $variables[self::RESOURCE_LINK_ID] = $ltiMessagePayload->getResourceLink() ? $ltiMessagePayload->getResourceLink()->getIdentifier() : null;
         $variables[self::RESOURCE_LINK_TITLE] = $ltiMessagePayload->getResourceLink() ? $ltiMessagePayload->getResourceLink()->getTitle() : null;
@@ -176,7 +177,7 @@ class LtiLaunchData implements \JsonSerializable
         $variables[self::LTI_FOR_USER_NAME] = $ltiMessagePayload->getForUser() ? $ltiMessagePayload->getForUser()->getName() : null;
         $variables[self::LTI_FOR_USER_PERSON_SOURCED_ID] = $ltiMessagePayload->getForUser() ? $ltiMessagePayload->getForUser()->getPersonSourcedId() : null;
         $variables[self::LTI_FOR_USER_ROLES] = $ltiMessagePayload->getForUser() ? $ltiMessagePayload->getForUser()->getRoles() : null;
-
+        // phpcs:enable
         if ($platform) {
             // we need to have inner platform ID
             $variables[self::TOOL_CONSUMER_INSTANCE_ID] = $platform->getIdentifier();
@@ -198,11 +199,17 @@ class LtiLaunchData implements \JsonSerializable
 
         // review mode
         if (isset($customParams[self::LTI_SHOW_SCORE])) {
-            $variables[self::LTI_SHOW_SCORE] = filter_var($customParams[self::LTI_SHOW_SCORE], FILTER_VALIDATE_BOOLEAN);
+            $variables[self::LTI_SHOW_SCORE] = filter_var(
+                $customParams[self::LTI_SHOW_SCORE],
+                FILTER_VALIDATE_BOOLEAN
+            );
         }
 
         if (isset($customParams[self::LTI_SHOW_CORRECT])) {
-            $variables[self::LTI_SHOW_CORRECT] = filter_var($customParams[self::LTI_SHOW_CORRECT], FILTER_VALIDATE_BOOLEAN);
+            $variables[self::LTI_SHOW_CORRECT] = filter_var(
+                $customParams[self::LTI_SHOW_CORRECT],
+                FILTER_VALIDATE_BOOLEAN
+            );
         }
 
         return new static($variables, $customParams);
