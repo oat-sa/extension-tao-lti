@@ -38,7 +38,7 @@ class LtiLaunchDataTest extends TestCase
         }
     }
 
-    public function testFromRequest()
+    public function testFromRequest(): void
     {
         $params = ['key1' => 'value2'];
         $extraParams = ['key2' => 'value2'];
@@ -58,17 +58,17 @@ class LtiLaunchDataTest extends TestCase
         $this->assertEquals($extraParams, $subject->getCustomParameters());
     }
 
-    public function testFromJsonArray()
+    public function testFromJsonArray(): void
     {
         $this->jsonSerialisationTest();
     }
 
-    public function testJsonSerialize()
+    public function testJsonSerialize(): void
     {
         $this->jsonSerialisationTest();
     }
 
-    private function jsonSerialisationTest()
+    private function jsonSerialisationTest(): void
     {
         $agsClaim = new AgsClaim(['scope1', 'scope2'], 'url1', 'url2');
         $subject = new LtiLaunchData([

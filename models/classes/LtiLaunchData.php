@@ -109,11 +109,7 @@ class LtiLaunchData implements \JsonSerializable
         $this->customParams = $customParameters;
     }
 
-    /**
-     * @param array $json
-     * @return LtiLaunchData
-     */
-    public static function fromJsonArray($json)
+    public static function fromJsonArray(array $json): LtiLaunchData
     {
         if (isset($json['variables'][self::AGS_CLAIMS])) {
             $json['variables'][self::AGS_CLAIMS] = AgsClaim::denormalize($json['variables'][self::AGS_CLAIMS]);
@@ -560,9 +556,10 @@ class LtiLaunchData implements \JsonSerializable
     public function jsonSerialize()
     {
         return [
-            'variables' => array_map(function ($var) {
-                return $var instanceof AgsClaim ? $var->normalize() : $var;
-            }, $this->variables),
+            'variables' => array_map(
+                fn($var) => $var instanceof AgsClaim ? $var->normalize() : $var,
+                $this->variables
+            ),
             'customParams' => $this->customParams,
         ];
     }
