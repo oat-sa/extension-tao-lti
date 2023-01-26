@@ -111,7 +111,7 @@ class LtiLaunchData implements \JsonSerializable
 
     public static function fromJsonArray(array $json): LtiLaunchData
     {
-        self::unserializeAgsClaims($json);
+        static::unserializeAgsClaims($json);
         return new static($json['variables'], $json['customParams']);
     }
 
