@@ -23,6 +23,7 @@ namespace oat\taoLti\models\classes;
 
 use common_http_Request;
 use core_kernel_classes_Resource;
+use OAT\Library\Lti1p3Core\Message\Payload\Claim\AgsClaim;
 use OAT\Library\Lti1p3Core\Message\Payload\LtiMessagePayloadInterface;
 use OAT\Library\Lti1p3Core\Platform\PlatformInterface;
 use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
@@ -108,12 +109,9 @@ class LtiLaunchData implements \JsonSerializable
         $this->customParams = $customParameters;
     }
 
-    /**
-     * @param array $json
-     * @return LtiLaunchData
-     */
-    public static function fromJsonArray($json)
+    public static function fromJsonArray(array $json): LtiLaunchData
     {
+        static::unserializeAgsClaims($json);
         return new static($json['variables'], $json['customParams']);
     }
 
@@ -143,63 +141,90 @@ class LtiLaunchData implements \JsonSerializable
     }
 
     public static function fromLti1p3MessagePayload(
-        LtiMessagePayloadInterface $ltiMessagePayload,
+        LtiMessagePayloadInterface $payload,
         PlatformInterface $platform = null
     ): self {
         $variables[self::OAUTH_CONSUMER_KEY] = '';
-        $variables[self::RESOURCE_LINK_ID] = $ltiMessagePayload->getResourceLink() ? $ltiMessagePayload->getResourceLink()->getIdentifier() : null;
-        $variables[self::RESOURCE_LINK_TITLE] = $ltiMessagePayload->getResourceLink() ? $ltiMessagePayload->getResourceLink()->getTitle() : null;
-        $variables[self::CONTEXT_ID] = $ltiMessagePayload->getContext() ? $ltiMessagePayload->getContext()->getIdentifier() : null;
-        $variables[self::CONTEXT_LABEL] = $ltiMessagePayload->getContext() ? $ltiMessagePayload->getContext()->getLabel() : null;
-        $variables[self::CONTEXT_TITLE] = $ltiMessagePayload->getContext() ? $ltiMessagePayload->getContext()->getTitle() : null;
-        $variables[self::USER_ID] = $ltiMessagePayload->getUserIdentity() ? $ltiMessagePayload->getUserIdentity()->getIdentifier() : null;
-        $variables[self::ROLES] = implode(',', $ltiMessagePayload->getRoles());
-        $variables[self::LIS_PERSON_NAME_GIVEN] = $ltiMessagePayload->getUserIdentity() ? $ltiMessagePayload->getUserIdentity()->getGivenName() : null;
-        $variables[self::LIS_PERSON_NAME_FAMILY] = $ltiMessagePayload->getUserIdentity() ? $ltiMessagePayload->getUserIdentity()->getFamilyName() : null;
-        $variables[self::LIS_PERSON_NAME_FULL] = $ltiMessagePayload->getUserIdentity() ? $ltiMessagePayload->getUserIdentity()->getName() : null;
-        $variables[self::LIS_PERSON_CONTACT_EMAIL_PRIMARY] = $ltiMessagePayload->getUserIdentity() ? $ltiMessagePayload->getUserIdentity()->getEmail() : null;
-        $variables[self::LAUNCH_PRESENTATION_LOCALE] = $ltiMessagePayload->getLaunchPresentation() ? $ltiMessagePayload->getLaunchPresentation()->getLocale(): null;
-        $variables[self::LAUNCH_PRESENTATION_RETURN_URL] = $ltiMessagePayload->getLaunchPresentation() ? $ltiMessagePayload->getLaunchPresentation()->getReturnUrl() : null;
-        $variables[self::LTI_VERSION] = $ltiMessagePayload->getVersion();
-        $variables[self::LTI_MESSAGE_TYPE] = $ltiMessagePayload->getMessageType();
-        $variables[self::LIS_RESULT_SOURCEDID] = $ltiMessagePayload->getBasicOutcome() ? $ltiMessagePayload->getBasicOutcome()->getLisResultSourcedId() : null;
-        $variables[self::LIS_OUTCOME_SERVICE_URL] = $ltiMessagePayload->getBasicOutcome() ? $ltiMessagePayload->getBasicOutcome()->getLisOutcomeServiceUrl() : null;
+        $variables[self::RESOURCE_LINK_ID] =
+            $payload->getResourceLink() ? $payload->getResourceLink()->getIdentifier() : null;
+        $variables[self::RESOURCE_LINK_TITLE] =
+            $payload->getResourceLink() ? $payload->getResourceLink()->getTitle() : null;
 
-        $variables[self::LTI_FOR_USER_ID] = $ltiMessagePayload->getForUser() ? $ltiMessagePayload->getForUser()->getIdentifier() : null;
-        $variables[self::LTI_FOR_USER_EMAIL] = $ltiMessagePayload->getForUser() ? $ltiMessagePayload->getForUser()->getEmail() : null;
-        $variables[self::LTI_FOR_USER_FAMILY_NAME] = $ltiMessagePayload->getForUser() ? $ltiMessagePayload->getForUser()->getFamilyName() : null;
-        $variables[self::LTI_FOR_USER_GIVEN_NAME] = $ltiMessagePayload->getForUser() ? $ltiMessagePayload->getForUser()->getGivenName() : null;
-        $variables[self::LTI_FOR_USER_NAME] = $ltiMessagePayload->getForUser() ? $ltiMessagePayload->getForUser()->getName() : null;
-        $variables[self::LTI_FOR_USER_PERSON_SOURCED_ID] = $ltiMessagePayload->getForUser() ? $ltiMessagePayload->getForUser()->getPersonSourcedId() : null;
-        $variables[self::LTI_FOR_USER_ROLES] = $ltiMessagePayload->getForUser() ? $ltiMessagePayload->getForUser()->getRoles() : null;
+        $variables[self::CONTEXT_ID] = $payload->getContext() ? $payload->getContext()->getIdentifier() : null;
+        $variables[self::CONTEXT_LABEL] = $payload->getContext() ? $payload->getContext()->getLabel() : null;
+        $variables[self::CONTEXT_TITLE] = $payload->getContext() ? $payload->getContext()->getTitle() : null;
+
+        $variables[self::USER_ID] =
+            $payload->getUserIdentity() ? $payload->getUserIdentity()->getIdentifier() : null;
+
+        $variables[self::ROLES] = implode(',', $payload->getRoles());
+        $variables[self::LIS_PERSON_NAME_GIVEN] =
+            $payload->getUserIdentity() ? $payload->getUserIdentity()->getGivenName() : null;
+        $variables[self::LIS_PERSON_NAME_FAMILY] =
+            $payload->getUserIdentity() ? $payload->getUserIdentity()->getFamilyName() : null;
+        $variables[self::LIS_PERSON_NAME_FULL] =
+            $payload->getUserIdentity() ? $payload->getUserIdentity()->getName() : null;
+        $variables[self::LIS_PERSON_CONTACT_EMAIL_PRIMARY] =
+            $payload->getUserIdentity() ? $payload->getUserIdentity()->getEmail() : null;
+
+        $variables[self::LAUNCH_PRESENTATION_LOCALE] =
+            $payload->getLaunchPresentation() ? $payload->getLaunchPresentation()->getLocale() : null;
+        $variables[self::LAUNCH_PRESENTATION_RETURN_URL] =
+            $payload->getLaunchPresentation() ? $payload->getLaunchPresentation()->getReturnUrl() : null;
+
+        $variables[self::LTI_VERSION] = $payload->getVersion();
+        $variables[self::LTI_MESSAGE_TYPE] = $payload->getMessageType();
+        $variables[self::LIS_RESULT_SOURCEDID] =
+            $payload->getBasicOutcome() ? $payload->getBasicOutcome()->getLisResultSourcedId() : null;
+        $variables[self::LIS_OUTCOME_SERVICE_URL] =
+            $payload->getBasicOutcome() ? $payload->getBasicOutcome()->getLisOutcomeServiceUrl() : null;
+        $variables[self::LTI_FOR_USER_ID] =
+            $payload->getForUser() ? $payload->getForUser()->getIdentifier() : null;
+        $variables[self::LTI_FOR_USER_EMAIL] =
+            $payload->getForUser() ? $payload->getForUser()->getEmail() : null;
+        $variables[self::LTI_FOR_USER_FAMILY_NAME] =
+            $payload->getForUser() ? $payload->getForUser()->getFamilyName() : null;
+        $variables[self::LTI_FOR_USER_GIVEN_NAME] =
+            $payload->getForUser() ? $payload->getForUser()->getGivenName() : null;
+        $variables[self::LTI_FOR_USER_NAME] =
+            $payload->getForUser() ? $payload->getForUser()->getName() : null;
+        $variables[self::LTI_FOR_USER_PERSON_SOURCED_ID] =
+            $payload->getForUser() ? $payload->getForUser()->getPersonSourcedId() : null;
+        $variables[self::LTI_FOR_USER_ROLES] =
+            $payload->getForUser() ? $payload->getForUser()->getRoles() : null;
 
         if ($platform) {
             // we need to have inner platform ID
             $variables[self::TOOL_CONSUMER_INSTANCE_ID] = $platform->getIdentifier();
 
-            if ($platformFromClaim = $ltiMessagePayload->getPlatformInstance()) {
+            if ($platformFromClaim = $payload->getPlatformInstance()) {
                 $variables[self::TOOL_CONSUMER_INSTANCE_NAME] = $platformFromClaim->getName();
                 $variables[self::TOOL_CONSUMER_INSTANCE_DESCRIPTION] = $platformFromClaim->getDescription();
             } else {
                 $variables[self::TOOL_CONSUMER_INSTANCE_NAME] = $platform->getName();
                 $variables[self::TOOL_CONSUMER_INSTANCE_DESCRIPTION] = $platform->getName();
             }
-
         }
 
-        if ($ags = $ltiMessagePayload->getAgs()) {
+        if ($ags = $payload->getAgs()) {
             $variables[self::AGS_CLAIMS] = $ags;
         }
 
-        $customParams = $ltiMessagePayload->getCustom();
+        $customParams = $payload->getCustom();
 
         // review mode
         if (isset($customParams[self::LTI_SHOW_SCORE])) {
-            $variables[self::LTI_SHOW_SCORE] = filter_var($customParams[self::LTI_SHOW_SCORE], FILTER_VALIDATE_BOOLEAN);
+            $variables[self::LTI_SHOW_SCORE] = filter_var(
+                $customParams[self::LTI_SHOW_SCORE],
+                FILTER_VALIDATE_BOOLEAN
+            );
         }
 
         if (isset($customParams[self::LTI_SHOW_CORRECT])) {
-            $variables[self::LTI_SHOW_CORRECT] = filter_var($customParams[self::LTI_SHOW_CORRECT], FILTER_VALIDATE_BOOLEAN);
+            $variables[self::LTI_SHOW_CORRECT] = filter_var(
+                $customParams[self::LTI_SHOW_CORRECT],
+                FILTER_VALIDATE_BOOLEAN
+            );
         }
 
         return new static($variables, $customParams);
@@ -235,6 +260,13 @@ class LtiLaunchData implements \JsonSerializable
         }
 
         return $returnValue;
+    }
+
+    private static function unserializeAgsClaims(array &$json): void
+    {
+        if (isset($json['variables'][self::AGS_CLAIMS])) {
+            $json['variables'][self::AGS_CLAIMS] = AgsClaim::denormalize($json['variables'][self::AGS_CLAIMS]);
+        }
     }
 
     /**
@@ -550,7 +582,10 @@ class LtiLaunchData implements \JsonSerializable
     public function jsonSerialize()
     {
         return [
-            'variables' => $this->variables,
+            'variables' => array_map(
+                fn($var) => $var instanceof AgsClaim ? $var->normalize() : $var,
+                $this->variables
+            ),
             'customParams' => $this->customParams,
         ];
     }
