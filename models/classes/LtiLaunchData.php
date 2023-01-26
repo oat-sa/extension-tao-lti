@@ -111,9 +111,7 @@ class LtiLaunchData implements \JsonSerializable
 
     public static function fromJsonArray(array $json): LtiLaunchData
     {
-        if (isset($json['variables'][self::AGS_CLAIMS])) {
-            $json['variables'][self::AGS_CLAIMS] = AgsClaim::denormalize($json['variables'][self::AGS_CLAIMS]);
-        }
+        self::unserializeAgsClaims($json);
         return new static($json['variables'], $json['customParams']);
     }
 
@@ -262,6 +260,13 @@ class LtiLaunchData implements \JsonSerializable
         }
 
         return $returnValue;
+    }
+
+    private static function unserializeAgsClaims(array &$json): void
+    {
+        if (isset($json['variables'][self::AGS_CLAIMS])) {
+            $json['variables'][self::AGS_CLAIMS] = AgsClaim::denormalize($json['variables'][self::AGS_CLAIMS]);
+        }
     }
 
     /**
