@@ -62,17 +62,21 @@ class Lti1p3UserAuthenticator extends ConfigurableService implements UserAuthent
         $login = $this->getPropertyValue($user, UserRdf::PROPERTY_LOGIN);
         $login = empty($login) ? $userId : $login;
 
-        $fullName = $this->getPropertyValue($user, UserRdf::PROPERTY_FIRSTNAME)
-            . ' ' . $this->getPropertyValue($user, UserRdf::PROPERTY_LASTNAME);
+        $firstName = $this->getPropertyValue($user, UserRdf::PROPERTY_FIRSTNAME);
+        $lastName = $this->getPropertyValue($user, UserRdf::PROPERTY_LASTNAME);
+
+        $fullName = "$firstName $lastName";
 
         $email = $this->getPropertyValue($user, UserRdf::PROPERTY_MAIL);
 
-        return new UserIdentity($login, trim($fullName), $email);
+        $locale = $this->getPropertyValue($user, UserRdf::PROPERTY_DEFLG);
+
+        return new UserIdentity($login, trim($fullName), $email, $firstName, $lastName, null, $locale);
     }
 
-    private function getPropertyValue(User $user, string $propertyName): string
+    private function getPropertyValue(User $user, string $propertyName): ?string
     {
-        return (string)($user->getPropertyValues($propertyName)[0] ?? null);
+        return $user->getPropertyValues($propertyName)[0] ?? null;
     }
 
     private function getUserService(): UserService
