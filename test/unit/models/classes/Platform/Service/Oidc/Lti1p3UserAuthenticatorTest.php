@@ -23,6 +23,7 @@ declare(strict_types=1);
 namespace oat\taoLti\test\unit\models\classes\Platform\Service\Oidc;
 
 use core_kernel_users_GenerisUser;
+use oat\generis\model\user\UserRdf;
 use oat\generis\test\ServiceManagerMockTrait;
 use OAT\Library\Lti1p3Core\Registration\RegistrationInterface;
 use OAT\Library\Lti1p3Core\Security\User\Result\UserAuthenticationResult;
@@ -64,7 +65,8 @@ class Lti1p3UserAuthenticatorTest extends TestCase
             'login',
             'first name',
             'last name',
-            'email'
+            'email',
+            'en-US'
         );
 
         /** @var RegistrationInterface|MockObject $registration */
@@ -76,7 +78,11 @@ class Lti1p3UserAuthenticatorTest extends TestCase
                 new UserIdentity(
                     'login',
                     'first name last name',
-                    'email'
+                    'email',
+                    'first name',
+                    'last name',
+                    null,
+                    'en-US'
                 )
             ),
             $this->subject->authenticate($registration, 'userId#123456')
@@ -107,19 +113,33 @@ class Lti1p3UserAuthenticatorTest extends TestCase
         );
     }
 
-    private function expectUser(array $roles, string $login, string $firstName, string $lastName, string $email): void
-    {
+    private function expectUser(
+        array $roles,
+        string $login,
+        string $firstName,
+        string $lastName,
+        string $email,
+        string $locale
+    ): void {
         $user = $this->createMock(core_kernel_users_GenerisUser::class);
 
         $user->method('getRoles')
             ->willReturn($roles);
 
         $user->method('getPropertyValues')
+            ->withConsecutive(
+                [UserRdf::PROPERTY_LOGIN],
+                [UserRdf::PROPERTY_FIRSTNAME],
+                [UserRdf::PROPERTY_LASTNAME],
+                [UserRdf::PROPERTY_MAIL],
+                [UserRdf::PROPERTY_DEFLG]
+            )
             ->willReturnOnConsecutiveCalls(
                 [$login],
                 [$firstName],
                 [$lastName],
-                [$email]
+                [$email],
+                [$locale],
             );
 
         $this->userService
