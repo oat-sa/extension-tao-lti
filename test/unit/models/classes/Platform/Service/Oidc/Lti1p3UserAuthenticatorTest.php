@@ -106,7 +106,13 @@ class Lti1p3UserAuthenticatorTest extends TestCase
                 new UserIdentity(
                     'userId#123456',
                     '',
-                    ''
+                    '',
+                    null,
+                    null,
+                    null,
+                    defined('DEFAULT_ANONYMOUS_INTERFACE_LANG')
+                        ? DEFAULT_ANONYMOUS_INTERFACE_LANG
+                        : DEFAULT_LANG
                 )
             ),
             $this->subject->authenticate($registration, 'userId#123456')
@@ -132,6 +138,7 @@ class Lti1p3UserAuthenticatorTest extends TestCase
                 [UserRdf::PROPERTY_FIRSTNAME],
                 [UserRdf::PROPERTY_LASTNAME],
                 [UserRdf::PROPERTY_MAIL],
+                [UserRdf::PROPERTY_LOGIN],
                 [UserRdf::PROPERTY_DEFLG]
             )
             ->willReturnOnConsecutiveCalls(
@@ -139,7 +146,8 @@ class Lti1p3UserAuthenticatorTest extends TestCase
                 [$firstName],
                 [$lastName],
                 [$email],
-                [$locale],
+                [$login],
+                [$locale]
             );
 
         $this->userService

@@ -69,7 +69,7 @@ class Lti1p3UserAuthenticator extends ConfigurableService implements UserAuthent
 
         $email = $this->getPropertyValue($user, UserRdf::PROPERTY_MAIL);
 
-        $locale = $this->getPropertyValue($user, UserRdf::PROPERTY_DEFLG);
+        $locale = $this->detectLocale($user);
 
         return new UserIdentity($login, trim($fullName), $email, $firstName, $lastName, null, $locale);
     }
@@ -77,6 +77,18 @@ class Lti1p3UserAuthenticator extends ConfigurableService implements UserAuthent
     private function getPropertyValue(User $user, string $propertyName): ?string
     {
         return $user->getPropertyValues($propertyName)[0] ?? null;
+    }
+
+    private function detectLocale(User $user): ?string
+    {
+        if (
+            !empty($this->getPropertyValue($user, UserRdf::PROPERTY_LOGIN))
+            || !defined('DEFAULT_ANONYMOUS_INTERFACE_LANG')
+        ) {
+            return $this->getPropertyValue($user, UserRdf::PROPERTY_DEFLG);
+        } else {
+            return DEFAULT_ANONYMOUS_INTERFACE_LANG;
+        }
     }
 
     private function getUserService(): UserService
