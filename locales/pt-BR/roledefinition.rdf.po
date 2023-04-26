@@ -1,0 +1,54 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: tao-3x\n"
+"PO-Revision-Date: 2023-04-21 15:46\n"
+"Last-Translator: TAO Translation Team <translation@tao.lu>\n"
+"MIME-Version: 1.0\n"
+"Language: pt\n"
+"sourceLanguage: en-US\n"
+"targetLanguage: en-US\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Crowdin-Project: tao-3x\n"
+"X-Crowdin-Project-ID: 582145\n"
+"X-Crowdin-Language: pt-BR\n"
+"X-Crowdin-File: /taoLti/locales/en-US/roledefinition.rdf.po\n"
+"X-Crowdin-File-ID: 1539\n"
+"Language-Team: Portuguese, Brazilian\n"
+
+# http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI Roles"
+msgstr "Papéis LTI"
+
+# http://www.tao.lu/Ontologies/TAOLTI.rdf#RoleURN
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "URN"
+msgstr "URSS"
+
+# http://www.tao.lu/Ontologies/TAOLTI.rdf#RoleURN
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "LTI Uniform Resource Name(deprecated)"
+msgstr "Nome de Recurso LTI Uniform (obsoleto)"
+
+# http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiBaseRole
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI Base Role"
+msgstr "Papel Base LTI"
+
+# http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiBaseRole
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI Base Role"
+msgstr "Função da Base LTI"
+
+# http://www.tao.lu/Ontologies/TAOLTI.rdf#RoleURN
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "URN"
+msgstr "URSS"
+
+# http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiBaseRole
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "LTI Base Role"
+msgstr "Papel Base LTI"
+
