@@ -74,7 +74,7 @@ class Lti1p3RegistrationSnapshotRepository implements RegistrationRepositoryInte
             $this->getPersistence()->insert(
                 'lti_platform_registration',
                 [
-                    'statement_id'=> $ltiPlatformRegistration->getIdentifier(),
+                    'statement_id' => $ltiPlatformRegistration->getIdentifier(),
                     'name' => $ltiPlatformRegistration->getName(),
                     'audience' => $ltiPlatformRegistration->getAudience(),
                     'client_id' => $ltiPlatformRegistration->getClientId(),
@@ -94,7 +94,7 @@ class Lti1p3RegistrationSnapshotRepository implements RegistrationRepositoryInte
             [
                 [
                     'conditions' => [
-                        'statement_id'=> $ltiPlatformRegistration->getIdentifier()
+                        'statement_id' => $ltiPlatformRegistration->getIdentifier()
                     ],
                     'updateValues' => [
                         'name' => $ltiPlatformRegistration->getName(),

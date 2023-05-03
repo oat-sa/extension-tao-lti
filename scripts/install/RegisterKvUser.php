@@ -32,7 +32,6 @@ use oat\taoLti\models\classes\user\KvLtiUserService;
  */
 class RegisterKvUser extends InstallAction
 {
-
     /**
      * @param $params
      * @return \common_report_Report

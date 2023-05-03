@@ -35,7 +35,7 @@ $todefine = [
 
     'CLASS_LTI_ROLES'               => 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole',
     'PROPERTY_LTI_ROLES_URN'        => 'http://www.tao.lu/Ontologies/TAOLTI.rdf#RoleURN',
-    
+
     'CLASS_LTI_TOOL'                => 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTITool',
     'PROPERTY_LTITOOL_SERVICE'      => 'http://www.tao.lu/Ontologies/TAOLTI.rdf#ToolService',
 
@@ -47,7 +47,7 @@ $todefine = [
 
     'INSTANCE_ROLE_CONTEXT_LEARNER' => 'http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#Learner',
     'INSTANCE_ROLE_LTI_BASE'        => 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiBaseRole',
-    
+
     'INSTANCE_LTI_CONSUMER_SERVICE' => 'http://www.tao.lu/Ontologies/TAOLTI.rdf#ServiceLtiConsumer',
     'INSTANCE_FORMALPARAM_LTI_CONSUMER' => 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiConsumerUri',
     'INSTANCE_FORMALPARAM_LTI_LAUNCH_URL' => 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiLaunchUrl'

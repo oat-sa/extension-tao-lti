@@ -138,13 +138,11 @@ class CachedPlatformKeyChainRepository extends ConfigurableService implements Ke
     {
         $this->getCacheService()->set(
             sprintf(self::PRIVATE_PATTERN, $identifier),
-
             $keyChain->getPrivateKey()->getContent()
         );
 
         $this->getCacheService()->set(
             sprintf(self::PUBLIC_PATTERN, $identifier),
-
             $keyChain->getPublicKey()->getContent()
         );
     }

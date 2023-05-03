@@ -50,38 +50,38 @@ class LtiConsumer extends tao_actions_ServiceModule
         }
         $ltiConsumer = new tao_models_classes_oauth_Credentials($this->getRequestParameter('ltiConsumerUri'));
         $launchUrl =  $this->getRequestParameter('ltiLaunchUrl');
-        
+
         $serviceCallId = $this->getServiceCallId() . '_c';
-        
+
         $session = common_session_SessionManager::getSession();
-        
+
         $roles = [];
         foreach ($session->getUserRoles() as $role) {
             foreach (LtiUtils::mapTaoRole2LTIRoles($role) as $ltiRole) {
                 $roles[] = $ltiRole;
             }
         }
-        
+
         $ltiData = [
             'lti_message_type' => 'basic-lti-launch-request',
             'lti_version' => 'LTI-1p0',
-            
+
             'resource_link_id' => rand(0, 9999999),
             'resource_link_title' => 'Launch Title',
             'resource_link_label' => 'Launch label',
-            
+
             'context_id' => $serviceCallId,
             'context_title' => 'Launch Title',
             'context_label' => 'Launch label',
-            
+
             'user_id' => $session->getUserUri(),
             'roles' => implode(',', $roles),
             'lis_person_name_full' => $session->getUserLabel(),
-            
+
             'tool_consumer_info_product_family_code' => PRODUCT_NAME,
             'tool_consumer_info_version' => TAO_VERSION
         ];
-        
+
         // @todo add:
         /*
         user_id:
@@ -101,7 +101,7 @@ class LtiConsumer extends tao_actions_ServiceModule
         $request = new common_http_Request($launchUrl, common_http_Request::METHOD_POST, $ltiData);
         $service = new tao_models_classes_oauth_Service();
         $signedRequest = $service->sign($request, $ltiConsumer);
-        
+
         $this->setData('launchUrl', $launchUrl);
         $this->setData('ltiData', $signedRequest->getParams());
         $this->setData('client_config_url', $this->getClientConfigUrl());

@@ -242,7 +242,7 @@ class LtiLaunchData implements \JsonSerializable
         // encoded in url
         $parts = explode('/', tao_helpers_Request::getRelativeUrl($url), 4);
         if (count($parts) == 4) {
-            list ($extension, $module, $action, $codedUri) = $parts;
+            list($extension, $module, $action, $codedUri) = $parts;
             $base64String = base64_decode($codedUri);
             if ($base64String !== false) {
                 // old serialised url
@@ -583,7 +583,7 @@ class LtiLaunchData implements \JsonSerializable
     {
         return [
             'variables' => array_map(
-                fn($var) => $var instanceof AgsClaim ? $var->normalize() : $var,
+                fn ($var) => $var instanceof AgsClaim ? $var->normalize() : $var,
                 $this->variables
             ),
             'customParams' => $this->customParams,

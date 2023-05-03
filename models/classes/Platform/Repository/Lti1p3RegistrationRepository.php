@@ -171,8 +171,13 @@ class Lti1p3RegistrationRepository extends ConfigurableService implements Regist
         $toolKeyChain = $this->getCachedPlatformKeyChainRepository()
             ->find($this->getPlatformKeyChainRepository()->getDefaultKeyId());
 
-        $platform = new Platform($ltiPlatform->getIdentifier(), $ltiPlatform->getIdentifier(), $ltiPlatform->getAudience(),
-            $ltiPlatform->getOidcAuthenticationUrl(), $ltiPlatform->getOAuth2AccessTokenUrl());
+        $platform = new Platform(
+            $ltiPlatform->getIdentifier(),
+            $ltiPlatform->getIdentifier(),
+            $ltiPlatform->getAudience(),
+            $ltiPlatform->getOidcAuthenticationUrl(),
+            $ltiPlatform->getOAuth2AccessTokenUrl()
+        );
 
         return new Registration(
             $ltiPlatform->getIdentifier(),

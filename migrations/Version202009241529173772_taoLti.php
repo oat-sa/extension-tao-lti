@@ -15,7 +15,6 @@ use oat\taoLti\models\classes\LtiProvider\RdfLtiProviderRepository;
  */
 final class Version202009241529173772_taoLti extends AbstractMigration
 {
-
     public function getDescription(): string
     {
         return 'Disable LTI 1.3 section and LtiProvider form fields base on LTI1P3 Feature flag';

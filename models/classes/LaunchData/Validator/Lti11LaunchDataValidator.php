@@ -32,9 +32,9 @@ use oat\taoLti\models\classes\LtiLaunchData;
  */
 class Lti11LaunchDataValidator extends Configurable implements LtiValidatorInterface
 {
-    const LTI_VERSION_PATTERN = '/^(LTI-)[0-9]+(p)[0-9]+$/';
-    const LTI_VERSION_1_PATTERN = '/^(LTI-1p)[0-9]+$/';
-    const LTI_MESSAGE_TYPE = 'basic-lti-launch-request';
+    public const LTI_VERSION_PATTERN = '/^(LTI-)[0-9]+(p)[0-9]+$/';
+    public const LTI_VERSION_1_PATTERN = '/^(LTI-1p)[0-9]+$/';
+    public const LTI_MESSAGE_TYPE = 'basic-lti-launch-request';
 
     /**
      * Check if provides launch data object is valid.

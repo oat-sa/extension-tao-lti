@@ -97,12 +97,12 @@ class LtiProviderServiceTest extends TestCase
 
         $this->expectsFindAll($this->repository1, [$provider]);
         $this->expectsFindAll($this->repository2, [$provider2]);
-        
+
         $provider
             ->expects($this->once())
             ->method('getToolClientId')
             ->willReturn('client_id');
-        
+
         $this->subject->searchByToolClientId('client_id');
     }
 

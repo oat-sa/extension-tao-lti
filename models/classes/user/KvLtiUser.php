@@ -35,7 +35,7 @@ class KvLtiUser extends \common_user_User implements ServiceLocatorAwareInterfac
 {
     use ServiceLocatorAwareTrait;
 
-    const USER_IDENTIFIER = 'identifier';
+    public const USER_IDENTIFIER = 'identifier';
 
     /**
      * Local representation of user

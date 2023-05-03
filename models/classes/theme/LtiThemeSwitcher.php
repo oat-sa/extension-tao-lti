@@ -32,11 +32,10 @@ use oat\taoLti\models\classes\TaoLtiSession;
  */
 class LtiThemeSwitcher extends ThemeService implements LtiHeadless
 {
+    public const OPTION_HEADLESS_PAGE = 'headless_page';
 
-    const OPTION_HEADLESS_PAGE = 'headless_page';
-
-    const LTI_VARIABLE            = 'custom_theme';
-    const LTI_PRESENTATION_TARGET = 'launch_presentation_document_target';
+    public const LTI_VARIABLE            = 'custom_theme';
+    public const LTI_PRESENTATION_TARGET = 'launch_presentation_document_target';
 
     /**
      * @return \oat\tao\model\theme\Theme

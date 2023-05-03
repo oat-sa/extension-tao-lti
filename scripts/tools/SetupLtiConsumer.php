@@ -24,7 +24,7 @@ namespace oat\taoLti\scripts\tools;
 
 use oat\generis\model\OntologyAwareTrait;
 use oat\oatbox\extension\script\ScriptAction;
-use \common_report_Report as Report;
+use common_report_Report as Report;
 use oat\tao\model\oauth\DataStore;
 use oat\taoLti\models\classes\ConsumerService;
 

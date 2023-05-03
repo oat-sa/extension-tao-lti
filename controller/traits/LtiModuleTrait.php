@@ -24,9 +24,9 @@ namespace oat\taoLti\controller\traits;
 use oat\taoLti\models\classes\LtiException;
 use oat\taoLti\models\classes\LtiLaunchData;
 use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
-use \tao_helpers_Request;
-use \common_exception_IsAjaxAction;
-use \oat\tao\model\routing\FlowController;
+use tao_helpers_Request;
+use common_exception_IsAjaxAction;
+use oat\tao\model\routing\FlowController;
 
 trait LtiModuleTrait
 {

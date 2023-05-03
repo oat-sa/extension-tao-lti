@@ -45,7 +45,7 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
 
     public const ANONYMOUS_USER_URI = 'anonymous';
 
-    const USER_IDENTIFIER = 'identifier';
+    public const USER_IDENTIFIER = 'identifier';
 
     /**
      * Data with which this session was launched

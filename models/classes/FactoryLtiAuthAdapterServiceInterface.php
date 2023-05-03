@@ -26,7 +26,7 @@ use common_user_auth_Adapter;
 
 interface FactoryLtiAuthAdapterServiceInterface
 {
-    const SERVICE_ID = 'taoLti/FactoryLtiAuthAdapter';
+    public const SERVICE_ID = 'taoLti/FactoryLtiAuthAdapter';
 
     /**
      * @param common_http_Request $request

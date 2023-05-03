@@ -33,7 +33,7 @@ use oat\tao\model\mvc\error\ResponseInterface;
  */
 class ExceptionInterpreter extends ExceptionInterpretor
 {
-    const FILESYSTEM_ID_TO_LOG = 'log';
+    public const FILESYSTEM_ID_TO_LOG = 'log';
 
     /**
      * @var LtiException

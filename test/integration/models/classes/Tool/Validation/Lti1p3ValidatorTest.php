@@ -230,7 +230,7 @@ uRQa1b83fSwj0MKYiZAHQ2xAInIWpK4bPyLOgRNKtUsNsT1HQQk=
 
     private function createArrayCache(): CacheItemPoolInterface
     {
-        return new class() implements CacheItemPoolInterface {
+        return new class () implements CacheItemPoolInterface {
             private $cache = [];
 
             public function getItem($key)
@@ -268,9 +268,13 @@ uRQa1b83fSwj0MKYiZAHQ2xAInIWpK4bPyLOgRNKtUsNsT1HQQk=
                 $this->cache[$item->getKey()] = $item;
             }
 
-            public function saveDeferred(CacheItemInterface $item) {}
+            public function saveDeferred(CacheItemInterface $item)
+            {
+            }
 
-            public function commit() {}
+            public function commit()
+            {
+            }
         };
     }
 }

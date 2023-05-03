@@ -48,5 +48,4 @@ class LtiProviderFieldsMapperTest extends TestCase
 
         $this->assertNull($this->subject->map('oooo'));
     }
-
 }

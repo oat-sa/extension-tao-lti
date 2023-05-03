@@ -39,17 +39,17 @@ use oat\taoLti\models\classes\LtiVariableMissingException;
  */
 class OntologyLtiUserService extends LtiUserService
 {
-    const CLASS_LTI_USER = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIUser';
+    public const CLASS_LTI_USER = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIUser';
 
     /**
      * @deprecated no longer serves any purpose
      */
-    const OPTION_TRANSACTION_SAFE = 'transaction-safe';
+    public const OPTION_TRANSACTION_SAFE = 'transaction-safe';
 
     /**
      * @deprecated no longer serves any purpose
      */
-    const OPTION_TRANSACTION_SAFE_RETRY = 'transaction-safe-retry';
+    public const OPTION_TRANSACTION_SAFE_RETRY = 'transaction-safe-retry';
 
     /**
      * @TODO TT-273 split method in separate action (create and update)

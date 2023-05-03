@@ -30,8 +30,8 @@ use oat\tao\model\OntologyClassService;
  */
 class ConsumerService extends OntologyClassService
 {
-    const SERVICE_ID = 'taoLti/ConsumerService';
-    const CLASS_URI = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIConsumer';
+    public const SERVICE_ID = 'taoLti/ConsumerService';
+    public const CLASS_URI = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIConsumer';
 
     /**
      * return the group top level class
