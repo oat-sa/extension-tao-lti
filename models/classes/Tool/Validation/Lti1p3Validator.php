@@ -23,18 +23,33 @@ declare(strict_types=1);
 namespace oat\taoLti\models\classes\Tool\Validation;
 
 use OAT\Library\Lti1p3Core\Exception\LtiException as Lti1p3Exception;
+use OAT\Library\Lti1p3Core\Message\Launch\Validator\AbstractLaunchValidator;
 use OAT\Library\Lti1p3Core\Message\Launch\Validator\Tool\ToolLaunchValidator;
 use OAT\Library\Lti1p3Core\Message\Payload\LtiMessagePayloadInterface;
 use OAT\Library\Lti1p3Core\Registration\RegistrationRepositoryInterface;
 use OAT\Library\Lti1p3Core\Role\RoleInterface;
 use OAT\Library\Lti1p3Core\Security\Nonce\NonceRepository;
-use oat\oatbox\cache\ItemPoolSimpleCacheAdapter;
-use oat\oatbox\service\ConfigurableService;
 use oat\taoLti\models\classes\LtiException;
+use Psr\Cache\CacheItemPoolInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
-class Lti1p3Validator extends ConfigurableService
+class Lti1p3Validator
 {
+    private ?AbstractLaunchValidator $tooLaunchValidator;
+
+    private RegistrationRepositoryInterface $registrationRepository;
+    private CacheItemPoolInterface $cacheAdapter;
+
+    public function __construct(
+        RegistrationRepositoryInterface $registrationRepository,
+        CacheItemPoolInterface $cacheAdapter,
+        AbstractLaunchValidator $tooLaunchValidator = null,
+    ) {
+        $this->registrationRepository = $registrationRepository;
+        $this->cacheAdapter = $cacheAdapter;
+        $this->tooLaunchValidator = $tooLaunchValidator;
+    }
+
     /**
      * @throws LtiException
      */
@@ -56,10 +71,7 @@ class Lti1p3Validator extends ConfigurableService
      */
     public function validateRequest(ServerRequestInterface $request): LtiMessagePayloadInterface
     {
-        $validator = new ToolLaunchValidator(
-            $this->getRegistrationRepository(),
-            new NonceRepository($this->getServiceLocator()->get(ItemPoolSimpleCacheAdapter::class))
-        );
+        $validator = $this->getToolLaunchValidator();
 
         $result = $validator->validatePlatformOriginatingLaunch($request);
 
@@ -90,6 +102,17 @@ class Lti1p3Validator extends ConfigurableService
 
     private function getRegistrationRepository(): RegistrationRepositoryInterface
     {
-        return $this->getServiceLocator()->getContainer()->get(RegistrationRepositoryInterface::class);
+        return $this->registrationRepository;
+    }
+
+    /**
+     * @return ToolLaunchValidator
+     */
+    private function getToolLaunchValidator(): AbstractLaunchValidator
+    {
+        return $this->tooLaunchValidator ?? new ToolLaunchValidator(
+            $this->getRegistrationRepository(),
+            new NonceRepository($this->cacheAdapter)
+        );
     }
 }

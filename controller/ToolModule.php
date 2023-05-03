@@ -145,6 +145,7 @@ abstract class ToolModule extends LtiModule
     protected function getValidatedLtiMessagePayload(): LtiMessagePayloadInterface
     {
         return $this->getServiceLocator()
+            ->getContainer()
             ->get(Lti1p3Validator::class)
             ->getValidatedPayload($this->getPsrRequest());
     }

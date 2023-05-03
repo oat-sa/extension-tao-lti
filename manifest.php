@@ -19,10 +19,13 @@
  * Copyright (c) 2013-2021 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
  */
 
+use oat\ltiTestReview\controller\Review;
 use oat\tao\model\accessControl\func\AccessRule;
 use oat\tao\model\user\TaoRoles;
+use oat\taoLti\controller\AuthoringTool;
 use oat\taoLti\controller\CookieUtils;
 use oat\taoLti\controller\Security;
+use oat\taoLti\models\classes\LtiRoles;
 use oat\taoLti\models\classes\ServiceProvider\LtiServiceProvider;
 use oat\taoLti\scripts\install\CreateLti1p3RegistrationSnapshotSchema;
 use oat\taoLti\scripts\install\GenerateKeys;
@@ -72,6 +75,8 @@ return [
         [AccessRule::GRANT, TaoRoles::ANONYMOUS, CookieUtils::class],
         [AccessRule::GRANT, TaoRoles::BASE_USER, ['ext' => 'taoLti','mod' => 'LtiConsumer', 'act' => 'call']],
         [AccessRule::GRANT, TaoRoles::ANONYMOUS, Security::class],
+        [AccessRule::GRANT, TaoRoles::ANONYMOUS, ['ext' => 'taoLti', 'mod' => 'AuthoringTool', 'act' => 'launch']],
+        [AccessRule::GRANT, LtiRoles::CONTEXT_LTI1P3_CONTENT_DEVELOPER, ['ext' => 'taoLti', 'mod' => 'AuthoringTool', 'act' => 'run']],
     ],
     'constants' => [
         # controller directory
