@@ -64,14 +64,14 @@ msgstr "Erro: [key %s] \"%s"
 
 #, tao-public
 msgid "Export"
-msgstr "Exportação"
+msgstr "Exportar"
 
 msgid "Generate a new secret key"
 msgstr "Gerar uma nova chave secreta"
 
 #, tao-public
 msgid "Import"
-msgstr "Importação"
+msgstr "Importar"
 
 #, tao-public
 msgid "Index"
