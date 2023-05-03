@@ -59,10 +59,16 @@ class OntologyLtiUserToKvMigration extends ScriptAction
             $ontologyLinkService = $this->getServiceLocator()->get(LtiUserService::SERVICE_ID);
 
             if (!$ontologyLinkService instanceof OntologyLtiUserService) {
-                return new \common_report_Report(\common_report_Report::TYPE_ERROR, ' LtiUserService migration must be done on a Ontology Service e.q. OntologyLtiUserService.');
+                return new \common_report_Report(
+                    \common_report_Report::TYPE_ERROR,
+                    ' LtiUserService migration must be done on a Ontology Service e.q. OntologyLtiUserService.'
+                );
             }
 
-            $userFactory = $this->getServiceLocator()->get(LtiUserService::SERVICE_ID)->getOption(LtiUserService::OPTION_FACTORY_LTI_USER);
+            $userFactory = $this
+                ->getServiceLocator()
+                ->get(LtiUserService::SERVICE_ID)
+                ->getOption(LtiUserService::OPTION_FACTORY_LTI_USER);
             $kvService = new KvLtiUserService([
                 KvLtiUserService::OPTION_PERSISTENCE => $this->getKeyValuePersistenceName(),
                 KvLtiUserService::OPTION_FACTORY_LTI_USER => $userFactory
@@ -94,11 +100,26 @@ class OntologyLtiUserToKvMigration extends ScriptAction
                 $user = [
                     LtiUser::USER_IDENTIFIER => $instance->getUri(),
                     OntologyRdfs::RDFS_LABEL => $this->getPropertyValue($properties, OntologyRdfs::RDFS_LABEL),
-                    GenerisRdf::PROPERTY_USER_ROLES => $this->getPropertyValue($properties, GenerisRdf::PROPERTY_USER_ROLES),
-                    GenerisRdf::PROPERTY_USER_UILG =>  $this->getPropertyValue($properties, GenerisRdf::PROPERTY_USER_UILG),
-                    GenerisRdf::PROPERTY_USER_FIRSTNAME => $this->getPropertyValue($properties, GenerisRdf::PROPERTY_USER_FIRSTNAME),
-                    GenerisRdf::PROPERTY_USER_LASTNAME => $this->getPropertyValue($properties, GenerisRdf::PROPERTY_USER_LASTNAME),
-                    GenerisRdf::PROPERTY_USER_MAIL => $this->getPropertyValue($properties, GenerisRdf::PROPERTY_USER_MAIL),
+                    GenerisRdf::PROPERTY_USER_ROLES => $this->getPropertyValue(
+                        $properties,
+                        GenerisRdf::PROPERTY_USER_ROLES
+                    ),
+                    GenerisRdf::PROPERTY_USER_UILG =>  $this->getPropertyValue(
+                        $properties,
+                        GenerisRdf::PROPERTY_USER_UILG
+                    ),
+                    GenerisRdf::PROPERTY_USER_FIRSTNAME => $this->getPropertyValue(
+                        $properties,
+                        GenerisRdf::PROPERTY_USER_FIRSTNAME
+                    ),
+                    GenerisRdf::PROPERTY_USER_LASTNAME => $this->getPropertyValue(
+                        $properties,
+                        GenerisRdf::PROPERTY_USER_LASTNAME
+                    ),
+                    GenerisRdf::PROPERTY_USER_MAIL => $this->getPropertyValue(
+                        $properties,
+                        GenerisRdf::PROPERTY_USER_MAIL
+                    ),
                 ];
 
                 $kvPersistence = $this->getKeyValuePersistence();
@@ -117,10 +138,14 @@ class OntologyLtiUserToKvMigration extends ScriptAction
             }
             $this->logNotice('LtiUsers migrated: ' . $i);
         } catch (\Exception $e) {
-            return \common_report_Report::createFailure('LtiUsers migration has failed with error message : ' . $e->getMessage());
+            return \common_report_Report::createFailure(
+                'LtiUsers migration has failed with error message : ' . $e->getMessage()
+            );
         }
 
-        return \common_report_Report::createSuccess('LtiUsers successfully has been migrated from Ontology to KV value. Count of LtiUsers migrated: ' . $i);
+        return \common_report_Report::createSuccess(
+            'LtiUsers successfully has been migrated from Ontology to KV value. Count of LtiUsers migrated: ' . $i
+        );
     }
 
     /**

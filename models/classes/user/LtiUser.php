@@ -164,7 +164,10 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
                 ) {
                     $this->language = DEFAULT_ANONYMOUS_INTERFACE_LANG;
                 } else {
-                    $this->language = $this->getServiceLocator()->get(UserLanguageService::SERVICE_ID)->getDefaultLanguage();
+                    $this->language = $this
+                        ->getServiceLocator()
+                        ->get(UserLanguageService::SERVICE_ID)
+                        ->getDefaultLanguage();
                 }
             }
         }

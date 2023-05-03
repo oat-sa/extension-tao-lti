@@ -155,8 +155,11 @@ class LtiProviderServiceTest extends TestCase
     /**
      * @param LtiProviderRepositoryInterface|MockObject $repository
      */
-    private function expectsSearchByLabel(LtiProviderRepositoryInterface $repository, string $label, array $result): void
-    {
+    private function expectsSearchByLabel(
+        LtiProviderRepositoryInterface $repository,
+        string $label,
+        array $result
+    ): void {
         $repository->method('searchByLabel')
             ->with($label)
             ->willReturn($result);
@@ -165,8 +168,11 @@ class LtiProviderServiceTest extends TestCase
     /**
      * @param LtiProviderRepositoryInterface|MockObject $repository
      */
-    private function expectsSearchById(LtiProviderRepositoryInterface $repository, string $id, ?LtiProvider $result): void
-    {
+    private function expectsSearchById(
+        LtiProviderRepositoryInterface $repository,
+        string $id,
+        ?LtiProvider $result
+    ): void {
         $repository
             ->method('searchById')
             ->with($id)
@@ -176,8 +182,11 @@ class LtiProviderServiceTest extends TestCase
     /**
      * @param LtiProviderRepositoryInterface|MockObject $repository
      */
-    private function expectsSearchByOauthKey(LtiProviderRepositoryInterface $repository, string $oauthKey, ?LtiProvider $result): void
-    {
+    private function expectsSearchByOauthKey(
+        LtiProviderRepositoryInterface $repository,
+        string $oauthKey,
+        ?LtiProvider $result
+    ): void {
         $repository
             ->method('searchByOauthKey')
             ->with($oauthKey)

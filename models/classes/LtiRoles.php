@@ -23,6 +23,8 @@ namespace oat\taoLti\models\classes;
 
 /**
  * Interface containing the Lti Role URIs
+ *
+ * phpcs:disable Generic.Files.LineLength
  */
 interface LtiRoles
 {

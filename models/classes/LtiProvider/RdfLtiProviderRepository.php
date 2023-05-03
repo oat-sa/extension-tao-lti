@@ -41,7 +41,9 @@ class RdfLtiProviderRepository extends OntologyClassService implements LtiProvid
     public const LTI_TOOL_NAME = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#toolName';
     public const LTI_TOOL_DEPLOYMENT_IDS = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#toolDeploymentIds';
     public const LTI_TOOL_AUDIENCE = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#toolAudience';
+    // phpcs:disable Generic.Files.LineLength
     public const LTI_TOOL_OIDC_LOGIN_INITATION_URL = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#toolOidcLoginInitiationUrl';
+    // phpcs:enable Generic.Files.LineLength
     public const LTI_TOOL_LAUNCH_URL = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#toolLaunchUrl';
 
     public const LTI_TOOL_JWKS_URL = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#ToolJwksUrl';

@@ -39,7 +39,10 @@ class RegisterKvUser extends InstallAction
     public function __invoke($params)
     {
         if (count($params) === 0) {
-            return new \common_report_Report(\common_report_Report::TYPE_ERROR, __('Please give the key value persistence id'));
+            return new \common_report_Report(
+                \common_report_Report::TYPE_ERROR,
+                __('Please give the key value persistence id')
+            );
         }
         $persistenceId = reset($params);
         $ltiUser = new KvLtiUserService([KvLtiUserService::OPTION_PERSISTENCE => $persistenceId]);

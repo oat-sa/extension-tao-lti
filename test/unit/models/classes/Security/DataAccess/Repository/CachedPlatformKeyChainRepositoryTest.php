@@ -87,8 +87,14 @@ class CachedPlatformKeyChainRepositoryTest extends TestCase
             ->expects($this->exactly(2))
             ->method('set')
             ->withConsecutive(
-                [sprintf(CachedPlatformKeyChainRepository::PRIVATE_PATTERN, self::KEY_CHAIN_ID), $keyChain->getPrivateKey()->getContent()],
-                [sprintf(CachedPlatformKeyChainRepository::PUBLIC_PATTERN, self::KEY_CHAIN_ID), $keyChain->getPublicKey()->getContent()]
+                [
+                    sprintf(CachedPlatformKeyChainRepository::PRIVATE_PATTERN, self::KEY_CHAIN_ID),
+                    $keyChain->getPrivateKey()->getContent(),
+                ],
+                [
+                    sprintf(CachedPlatformKeyChainRepository::PUBLIC_PATTERN, self::KEY_CHAIN_ID),
+                    $keyChain->getPublicKey()->getContent(),
+                ],
             );
 
         $this->platformKeyChainRepository
@@ -117,8 +123,14 @@ class CachedPlatformKeyChainRepositoryTest extends TestCase
             ->expects($this->exactly(2))
             ->method('set')
             ->withConsecutive(
-                [sprintf(CachedPlatformKeyChainRepository::PRIVATE_PATTERN, self::KEY_CHAIN_ID), $keyChain->getPrivateKey()->getContent()],
-                [sprintf(CachedPlatformKeyChainRepository::PUBLIC_PATTERN, self::KEY_CHAIN_ID), $keyChain->getPublicKey()->getContent()]
+                [
+                    sprintf(CachedPlatformKeyChainRepository::PRIVATE_PATTERN, self::KEY_CHAIN_ID),
+                    $keyChain->getPrivateKey()->getContent(),
+                ],
+                [
+                    sprintf(CachedPlatformKeyChainRepository::PUBLIC_PATTERN, self::KEY_CHAIN_ID),
+                    $keyChain->getPublicKey()->getContent(),
+                ]
             );
 
         $this->platformKeyChainRepository

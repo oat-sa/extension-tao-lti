@@ -76,7 +76,10 @@ class OntologyLtiUserService extends LtiUserService
             $hasUpdates = false;
             foreach ($properties as $key => $values) {
                 if ($values != $user->getPropertyValues($key)) {
-                    $userResource->editPropertyValues(new \core_kernel_classes_Property($key), $user->getPropertyValues($key));
+                    $userResource->editPropertyValues(
+                        new \core_kernel_classes_Property($key),
+                        $user->getPropertyValues($key)
+                    );
                     $hasUpdates = true;
                 }
             }
@@ -160,11 +163,15 @@ class OntologyLtiUserService extends LtiUserService
             foreach ($properties as $key => $values) {
                 if (count($values) > 1) {
                     foreach ($values as $value) {
-                        $userData[$key][] = ($value instanceof \core_kernel_classes_Resource) ? $value->getUri() : (string) $value;
+                        $userData[$key][] = ($value instanceof \core_kernel_classes_Resource)
+                            ? $value->getUri()
+                            : (string) $value;
                     }
                 } else {
                     $value = current($values);
-                    $userData[$key] = ($value instanceof \core_kernel_classes_Resource) ? $value->getUri() : (string) $value;
+                    $userData[$key] = ($value instanceof \core_kernel_classes_Resource)
+                        ? $value->getUri()
+                        : (string) $value;
                 }
             }
 

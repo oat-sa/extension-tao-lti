@@ -28,7 +28,8 @@ use oat\taoLti\models\classes\TaoLtiSession;
  *
  * @author Joel Bout
  *
- * @deprecated Set the LtiThemeIdProvider (ThemeIdProviderInterface) to the ThemeService as option and use getTheme method!
+ * @deprecated Set the LtiThemeIdProvider (ThemeIdProviderInterface) to the ThemeService as option and use getTheme
+ *             method!
  */
 class LtiThemeSwitcher extends ThemeService implements LtiHeadless
 {
@@ -48,7 +49,10 @@ class LtiThemeSwitcher extends ThemeService implements LtiHeadless
         $currentSession = \common_session_SessionManager::getSession();
         if ($currentSession instanceof TaoLtiSession) {
             $launchData = $currentSession->getLaunchData();
-            if ($launchData->hasVariable(self::LTI_VARIABLE) && $this->hasTheme($launchData->getVariable(self::LTI_VARIABLE))) {
+            if (
+                $launchData->hasVariable(self::LTI_VARIABLE)
+                && $this->hasTheme($launchData->getVariable(self::LTI_VARIABLE))
+            ) {
                 return $this->getThemeById($launchData->getVariable(self::LTI_VARIABLE));
             }
         }
@@ -72,7 +76,10 @@ class LtiThemeSwitcher extends ThemeService implements LtiHeadless
         $currentSession = \common_session_SessionManager::getSession();
         if ($currentSession instanceof TaoLtiSession) {
             $launchData = $currentSession->getLaunchData();
-            $presentationTarget = $launchData->hasVariable(self::LTI_PRESENTATION_TARGET) ? $launchData->getVariable(self::LTI_PRESENTATION_TARGET) : '';
+            $presentationTarget = $launchData->hasVariable(self::LTI_PRESENTATION_TARGET)
+                ? $launchData->getVariable(self::LTI_PRESENTATION_TARGET)
+                : '';
+
             return $presentationTarget == 'frame' || $presentationTarget == 'iframe';
         }
 

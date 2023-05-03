@@ -140,7 +140,10 @@ uRQa1b83fSwj0MKYiZAHQ2xAInIWpK4bPyLOgRNKtUsNsT1HQQk=
 
         $this->builder = new PlatformOriginatingLaunchBuilder();
         $this->oidcInitiator = new OidcInitiator($this->registrationRepository);
-        $this->oidcAuthenticator = new OidcAuthenticator($this->registrationRepository, $this->createTestUserAuthenticator());
+        $this->oidcAuthenticator = new OidcAuthenticator(
+            $this->registrationRepository,
+            $this->createTestUserAuthenticator()
+        );
 
 
         $this->subject = new Lti1p3Validator();

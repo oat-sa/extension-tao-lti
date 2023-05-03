@@ -51,9 +51,18 @@ class RestServiceTest extends RestTestRunner
 
         $addedInstance = end($instances);
 
-        $this->assertEquals($postData['oauth-key'], $addedInstance->getOnePropertyValue($addedInstance->getProperty(DataStore::PROPERTY_OAUTH_KEY)));
-        $this->assertEquals($postData['oauth-secret'], $addedInstance->getOnePropertyValue($addedInstance->getProperty(DataStore::PROPERTY_OAUTH_SECRET)));
-        $this->assertEquals($postData['oauth-callback-url'], $addedInstance->getOnePropertyValue($addedInstance->getProperty(DataStore::PROPERTY_OAUTH_CALLBACK)));
+        $this->assertEquals(
+            $postData['oauth-key'],
+            $addedInstance->getOnePropertyValue($addedInstance->getProperty(DataStore::PROPERTY_OAUTH_KEY))
+        );
+        $this->assertEquals(
+            $postData['oauth-secret'],
+            $addedInstance->getOnePropertyValue($addedInstance->getProperty(DataStore::PROPERTY_OAUTH_SECRET))
+        );
+        $this->assertEquals(
+            $postData['oauth-callback-url'],
+            $addedInstance->getOnePropertyValue($addedInstance->getProperty(DataStore::PROPERTY_OAUTH_CALLBACK))
+        );
 
         return $addedInstance->getUri();
     }

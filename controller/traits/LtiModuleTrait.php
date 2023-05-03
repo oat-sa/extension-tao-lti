@@ -83,7 +83,10 @@ trait LtiModuleTrait
     private function getLtiReturnUrl(LtiLaunchData $launchData, LtiException $error)
     {
         $baseUrl = $launchData->getReturnUrl();
-        $url = $baseUrl . (parse_url($baseUrl, PHP_URL_QUERY) ? '&' : '?') . http_build_query($error->getLtiMessage()->getUrlParams());
+        $url = $baseUrl
+            . (parse_url($baseUrl, PHP_URL_QUERY) ? '&' : '?')
+            . http_build_query($error->getLtiMessage()->getUrlParams());
+
         return $url;
     }
 }
