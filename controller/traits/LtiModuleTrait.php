@@ -24,9 +24,9 @@ namespace oat\taoLti\controller\traits;
 use oat\taoLti\models\classes\LtiException;
 use oat\taoLti\models\classes\LtiLaunchData;
 use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
-use \tao_helpers_Request;
-use \common_exception_IsAjaxAction;
-use \oat\tao\model\routing\FlowController;
+use tao_helpers_Request;
+use common_exception_IsAjaxAction;
+use oat\tao\model\routing\FlowController;
 
 trait LtiModuleTrait
 {
@@ -83,7 +83,10 @@ trait LtiModuleTrait
     private function getLtiReturnUrl(LtiLaunchData $launchData, LtiException $error)
     {
         $baseUrl = $launchData->getReturnUrl();
-        $url = $baseUrl . (parse_url($baseUrl, PHP_URL_QUERY) ? '&' : '?') . http_build_query($error->getLtiMessage()->getUrlParams());
+        $url = $baseUrl
+            . (parse_url($baseUrl, PHP_URL_QUERY) ? '&' : '?')
+            . http_build_query($error->getLtiMessage()->getUrlParams());
+
         return $url;
     }
 }

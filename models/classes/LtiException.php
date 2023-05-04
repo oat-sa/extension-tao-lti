@@ -60,7 +60,13 @@ class LtiException extends \common_Exception
     {
         if ($this->ltiMessage === null) {
             $message = __('Error (%s): ', $this->getCode()) . $this->getMessage();
-            $log = __('Error(%s): [key %s] %s "%s"', $this->getCode(), $this->getKey(), get_class($this), $this->getMessage());
+            $log = __(
+                'Error(%s): [key %s] %s "%s"',
+                $this->getCode(),
+                $this->getKey(),
+                get_class($this),
+                $this->getMessage()
+            );
             $this->ltiMessage = new LtiErrorMessage($message, $log);
         }
         return $this->ltiMessage;

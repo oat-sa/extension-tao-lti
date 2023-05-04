@@ -56,8 +56,7 @@ class LtiLaunchCommand implements LtiLaunchCommandInterface
         User $user,
         string $openIdLoginHint,
         string $launchUrl = null
-    )
-    {
+    ) {
         $this->ltiProvider = $ltiProvider;
         $this->roles = $roles;
         $this->claims = $claims;

@@ -25,7 +25,9 @@ namespace oat\taoLti\test\unit\models\classes\Platform\Service;
 use oat\generis\test\MockObject;
 use oat\generis\test\TestCase;
 use OAT\Library\Lti1p3Core\Registration\RegistrationInterface;
+// phpcs:disable Generic.Files.LineLength
 use OAT\Library\Lti1p3Core\Security\OAuth2\Validator\Result\RequestAccessTokenValidationResultInterface as AccessTokenRequestValidationResultInterface;
+// phpcs:enable Generic.Files.LineLength
 use OAT\Library\Lti1p3Core\Security\OAuth2\Validator\RequestAccessTokenValidator as Lti1p3AccessTokenRequestValidator;
 use oat\taoLti\models\classes\LtiProvider\InvalidLtiProviderException;
 use oat\taoLti\models\classes\LtiProvider\LtiProvider;

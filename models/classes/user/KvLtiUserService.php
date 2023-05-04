@@ -35,11 +35,11 @@ use oat\taoLti\models\classes\LtiLaunchData;
  */
 class KvLtiUserService extends LtiUserService
 {
-    const OPTION_PERSISTENCE = 'persistence';
+    public const OPTION_PERSISTENCE = 'persistence';
 
-    const LTI_USER = 'lti_ku_';
+    public const LTI_USER = 'lti_ku_';
 
-    const LTI_USER_LOOKUP = 'lti_ku_lkp_';
+    public const LTI_USER_LOOKUP = 'lti_ku_lkp_';
 
     /**
      * @var \common_persistence_KeyValuePersistence

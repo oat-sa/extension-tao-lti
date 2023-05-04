@@ -37,7 +37,7 @@ class LtiBackOfficeUserCreatedEventTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->userUriFixture= 'test';
+        $this->userUriFixture = 'test';
         $this->subject = new LtiBackOfficeUserCreatedEvent($this->userUriFixture);
     }
 

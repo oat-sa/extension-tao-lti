@@ -28,7 +28,7 @@ namespace oat\taoLti\models\classes\ResourceLink;
  */
 interface LinkService
 {
-    const SERVICE_ID = 'taoLti/ResourceLink';
+    public const SERVICE_ID = 'taoLti/ResourceLink';
 
     public function getLinkId($consumer, $resourceLink): string;
 }

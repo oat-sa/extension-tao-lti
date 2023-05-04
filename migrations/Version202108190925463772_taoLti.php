@@ -12,7 +12,6 @@ use oat\taoLti\models\classes\ProviderService;
 
 final class Version202108190925463772_taoLti extends AbstractMigration
 {
-
     public function getDescription(): string
     {
         return 'Register LTI class URI to use generic search in ' . SearchProxy::class;

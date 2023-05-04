@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -36,6 +37,7 @@ use oat\taoLti\models\classes\Security\DataAccess\Repository\CachedPlatformKeyCh
 use oat\taoLti\models\classes\Security\DataAccess\Repository\PlatformKeyChainRepository;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorAwareTrait;
+
 use function GuzzleHttp\Psr7\stream_for;
 
 class Security extends Controller implements ServiceLocatorAwareInterface

@@ -24,7 +24,7 @@ namespace oat\taoLti\models\classes\user\events;
 
 class LtiUserUpdatedEvent extends LtiUserEvent
 {
-    const EVENT_NAME = __CLASS__;
+    public const EVENT_NAME = __CLASS__;
 
     public function getName()
     {

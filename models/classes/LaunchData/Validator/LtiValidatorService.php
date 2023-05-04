@@ -25,9 +25,9 @@ use oat\taoLti\models\classes\LtiLaunchData;
 
 class LtiValidatorService extends ConfigurableService
 {
-    const SERVICE_ID = 'taoLti/LtiValidatorService';
+    public const SERVICE_ID = 'taoLti/LtiValidatorService';
 
-    const OPTION_LAUNCH_DATA_VALIDATOR = 'launchDataValidator';
+    public const OPTION_LAUNCH_DATA_VALIDATOR = 'launchDataValidator';
 
     public function validateLaunchData(LtiLaunchData $data)
     {

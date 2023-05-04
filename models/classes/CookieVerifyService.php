@@ -6,9 +6,9 @@ use oat\oatbox\service\ConfigurableService;
 
 class CookieVerifyService extends ConfigurableService
 {
-    const SERVICE_ID = 'taoLti/CookieVerifyService';
+    public const SERVICE_ID = 'taoLti/CookieVerifyService';
 
-    const OPTION_VERIFY_COOKIE = 'verify_cookie';
+    public const OPTION_VERIFY_COOKIE = 'verify_cookie';
 
     /**
      * Is verification of cookie required?

@@ -107,7 +107,10 @@ class Lti1p3UserTest extends TestCase
         if (defined('DEFAULT_ANONYMOUS_INTERFACE_LANG')) {
             self::assertEquals(DEFAULT_ANONYMOUS_INTERFACE_LANG, $subject->getLanguage());
         } else {
-            $this->userLanguageServiceMock->expects(self::once())->method('getDefaultLanguage')->willReturn(DEFAULT_LANG);
+            $this->userLanguageServiceMock
+                ->expects(self::once())
+                ->method('getDefaultLanguage')
+                ->willReturn(DEFAULT_LANG);
             self::assertEquals(DEFAULT_LANG, $subject->getLanguage());
         }
     }

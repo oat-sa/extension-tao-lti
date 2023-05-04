@@ -28,8 +28,8 @@ use oat\tao\model\oauth\DataStore;
 
 class RestService extends \tao_actions_CommonRestModule
 {
-    const LTI_USER_ID = 'lti_user_id';
-    const LTI_CONSUMER_KEY = 'lti_consumer_key';
+    public const LTI_USER_ID = 'lti_user_id';
+    public const LTI_CONSUMER_KEY = 'lti_consumer_key';
 
     /**
      * @return LtiRestApiService

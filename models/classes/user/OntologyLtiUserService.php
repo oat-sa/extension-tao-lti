@@ -39,17 +39,17 @@ use oat\taoLti\models\classes\LtiVariableMissingException;
  */
 class OntologyLtiUserService extends LtiUserService
 {
-    const CLASS_LTI_USER = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIUser';
+    public const CLASS_LTI_USER = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIUser';
 
     /**
      * @deprecated no longer serves any purpose
      */
-    const OPTION_TRANSACTION_SAFE = 'transaction-safe';
+    public const OPTION_TRANSACTION_SAFE = 'transaction-safe';
 
     /**
      * @deprecated no longer serves any purpose
      */
-    const OPTION_TRANSACTION_SAFE_RETRY = 'transaction-safe-retry';
+    public const OPTION_TRANSACTION_SAFE_RETRY = 'transaction-safe-retry';
 
     /**
      * @TODO TT-273 split method in separate action (create and update)
@@ -76,7 +76,10 @@ class OntologyLtiUserService extends LtiUserService
             $hasUpdates = false;
             foreach ($properties as $key => $values) {
                 if ($values != $user->getPropertyValues($key)) {
-                    $userResource->editPropertyValues(new \core_kernel_classes_Property($key), $user->getPropertyValues($key));
+                    $userResource->editPropertyValues(
+                        new \core_kernel_classes_Property($key),
+                        $user->getPropertyValues($key)
+                    );
                     $hasUpdates = true;
                 }
             }
@@ -160,11 +163,15 @@ class OntologyLtiUserService extends LtiUserService
             foreach ($properties as $key => $values) {
                 if (count($values) > 1) {
                     foreach ($values as $value) {
-                        $userData[$key][] = ($value instanceof \core_kernel_classes_Resource) ? $value->getUri() : (string) $value;
+                        $userData[$key][] = ($value instanceof \core_kernel_classes_Resource)
+                            ? $value->getUri()
+                            : (string) $value;
                     }
                 } else {
                     $value = current($values);
-                    $userData[$key] = ($value instanceof \core_kernel_classes_Resource) ? $value->getUri() : (string) $value;
+                    $userData[$key] = ($value instanceof \core_kernel_classes_Resource)
+                        ? $value->getUri()
+                        : (string) $value;
                 }
             }
 

@@ -11,7 +11,6 @@ use oat\taoLti\models\classes\Platform\Repository\RdfLtiPlatformRepository;
 
 final class Version202209261307433772_taoLti extends AbstractMigration
 {
-
     public function getDescription(): string
     {
         return 'Add taoLti to OPTION_GENERIS_SEARCH_WHITELIST';

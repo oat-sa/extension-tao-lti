@@ -35,7 +35,7 @@ class KvLtiUser extends \common_user_User implements ServiceLocatorAwareInterfac
 {
     use ServiceLocatorAwareTrait;
 
-    const USER_IDENTIFIER = 'identifier';
+    public const USER_IDENTIFIER = 'identifier';
 
     /**
      * Local representation of user
@@ -65,13 +65,13 @@ class KvLtiUser extends \common_user_User implements ServiceLocatorAwareInterfac
      */
     public function __construct($data)
     {
-        $this->userUri = isset($data[self::USER_IDENTIFIER]) ? $data[self::USER_IDENTIFIER] : null;
-        $this->taoRoles = isset($data[GenerisRdf::PROPERTY_USER_ROLES]) ? $data[GenerisRdf::PROPERTY_USER_ROLES] : [];
-        $this->language = isset($data[GenerisRdf::PROPERTY_USER_UILG]) ? $data[GenerisRdf::PROPERTY_USER_UILG] : null;
-        $this->label = isset($data[OntologyRdfs::RDFS_LABEL]) ? $data[OntologyRdfs::RDFS_LABEL] : null;
-        $this->firstname = isset($data[GenerisRdf::PROPERTY_USER_FIRSTNAME]) ? $data[GenerisRdf::PROPERTY_USER_FIRSTNAME] : null;
-        $this->lastname = isset($data[GenerisRdf::PROPERTY_USER_LASTNAME]) ? $data[GenerisRdf::PROPERTY_USER_LASTNAME] : null;
-        $this->email = isset($data[GenerisRdf::PROPERTY_USER_MAIL]) ? $data[GenerisRdf::PROPERTY_USER_MAIL] : null;
+        $this->userUri = $data[self::USER_IDENTIFIER] ?? null;
+        $this->taoRoles = $data[GenerisRdf::PROPERTY_USER_ROLES] ?? [];
+        $this->language = $data[GenerisRdf::PROPERTY_USER_UILG] ?? null;
+        $this->label = $data[OntologyRdfs::RDFS_LABEL] ?? null;
+        $this->firstname = $data[GenerisRdf::PROPERTY_USER_FIRSTNAME] ?? null;
+        $this->lastname = $data[GenerisRdf::PROPERTY_USER_LASTNAME] ?? null;
+        $this->email = $data[GenerisRdf::PROPERTY_USER_MAIL] ?? null;
     }
 
     /**
