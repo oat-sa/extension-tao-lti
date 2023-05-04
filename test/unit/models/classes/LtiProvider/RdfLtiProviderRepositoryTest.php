@@ -318,7 +318,8 @@ class RdfLtiProviderRepositoryTest extends OntologyMockTest
             ->method('error')
             ->with(
                 'Unable to retrieve provider properties: Argument ' . $position .
-                ' passed to ' . $class . '::' . $function . '() must be an ' . $type . ', string given', []
+                ' passed to ' . $class . '::' . $function . '() must be an ' . $type . ', string given',
+                []
             );
 
         $this->assertEquals([], $this->subject->findAll());

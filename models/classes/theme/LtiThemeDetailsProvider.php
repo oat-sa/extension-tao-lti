@@ -30,8 +30,8 @@ class LtiThemeDetailsProvider implements ThemeDetailsProviderInterface, PhpSeria
 {
     use PhpSerializeStateless;
 
-    const LTI_CUSTOM_THEME_VARIABLE = 'custom_theme';
-    const LTI_PRESENTATION_TARGET   = 'launch_presentation_document_target';
+    public const LTI_CUSTOM_THEME_VARIABLE = 'custom_theme';
+    public const LTI_PRESENTATION_TARGET   = 'launch_presentation_document_target';
 
     /**
      * @inheritdoc

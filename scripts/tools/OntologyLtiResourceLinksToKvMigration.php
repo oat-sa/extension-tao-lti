@@ -55,7 +55,10 @@ class OntologyLtiResourceLinksToKvMigration extends ScriptAction
             $ontologyLinkService = $this->getServiceLocator()->get(LinkService::SERVICE_ID);
 
             if (!$ontologyLinkService instanceof OntologyLink) {
-                return new \common_report_Report(\common_report_Report::TYPE_ERROR, ' LtiLinks migration must be done on a Ontology Service e.q. LtiDeliveryExecutionService.');
+                return new \common_report_Report(
+                    \common_report_Report::TYPE_ERROR,
+                    ' LtiLinks migration must be done on a Ontology Service e.q. LtiDeliveryExecutionService.'
+                );
             }
 
             $kvLinkService = new KeyValueLink([
@@ -97,10 +100,14 @@ class OntologyLtiResourceLinksToKvMigration extends ScriptAction
             }
             $this->logNotice('LTI links migrated: ' . $i);
         } catch (\Exception $e) {
-            return \common_report_Report::createFailure('LtiLinks migration has failed with error message : ' . $e->getMessage());
+            return \common_report_Report::createFailure(
+                'LtiLinks migration has failed with error message : ' . $e->getMessage()
+            );
         }
 
-        return \common_report_Report::createSuccess('LtiLinks successfully has been migrated from Ontology to KV value. Count of LtiLinks migrated: ' . $i);
+        return \common_report_Report::createSuccess(
+            'LtiLinks successfully has been migrated from Ontology to KV value. Count of LtiLinks migrated: ' . $i
+        );
     }
 
     /**

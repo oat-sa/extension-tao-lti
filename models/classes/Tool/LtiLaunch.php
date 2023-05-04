@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -32,8 +33,7 @@ class LtiLaunch implements LtiLaunchInterface
     public function __construct(
         string $launchUrl,
         array $launchParams
-    )
-    {
+    ) {
         $this->launchUrl = $launchUrl;
         $this->launchParams = $launchParams;
     }

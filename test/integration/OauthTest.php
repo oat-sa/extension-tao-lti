@@ -23,7 +23,9 @@
 use oat\tao\model\oauth\DataStore as OAuthDataStore;
 use oat\tao\test\TaoPhpUnitTestRunner;
 
+// phpcs:disable PSR1.Files.SideEffects
 include_once dirname(__FILE__) . '/../../includes/raw_start.php';
+// phpcs:enable PSR1.Files.SideEffects
 
 /**
  * @author Joel Bout, <joel@taotesting.com>
@@ -32,7 +34,6 @@ include_once dirname(__FILE__) . '/../../includes/raw_start.php';
  */
 class OauthTestCase extends TaoPhpUnitTestRunner
 {
-
     private $oauthCustomer;
 
     /**

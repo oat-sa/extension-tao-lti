@@ -35,7 +35,7 @@ use tao_models_classes_LanguageService;
  */
 class LtiUtils
 {
-    const LIS_CONTEXT_ROLE_NAMESPACE = 'urn:lti:role:ims/lis/';
+    public const LIS_CONTEXT_ROLE_NAMESPACE = 'urn:lti:role:ims/lis/';
 
     /**
      * Maps a fuly qualified or abbreviated lti role
@@ -57,7 +57,7 @@ class LtiUtils
             if (strtolower(substr($role, 0, 4)) !== 'urn:') {
                 $role = self::LIS_CONTEXT_ROLE_NAMESPACE . $role;
             }
-            list ($prefix, $nid, $nss) = explode(':', $role, 3);
+            list($prefix, $nid, $nss) = explode(':', $role, 3);
             if ($nid != 'lti') {
                 common_Logger::w('Non LTI URN ' . $role . ' passed via LTI');
             }

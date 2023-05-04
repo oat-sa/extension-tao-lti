@@ -32,36 +32,35 @@ namespace oat\taoLti\models\classes\LtiMessages;
  */
 class LtiErrorMessage extends LtiMessage
 {
-
     /**
      * Launch forbidden due to expiration, reaching max attempts etc
      */
-    const ERROR_LAUNCH_FORBIDDEN = 1;
+    public const ERROR_LAUNCH_FORBIDDEN = 1;
 
     /**
      * Wrong value of parameter such as `proctored`, `secure` etc.
      */
-    const ERROR_INVALID_PARAMETER = 2;
+    public const ERROR_INVALID_PARAMETER = 2;
 
     /**
      * Missed parameter
      */
-    const ERROR_MISSING_PARAMETER = 3;
+    public const ERROR_MISSING_PARAMETER = 3;
 
     /**
      * os/browser does not comply requirements, java script is disabled)
      */
-    const ERROR_CLIENT_REQUIREMENTS = 4;
+    public const ERROR_CLIENT_REQUIREMENTS = 4;
 
     /**
      * User is not authorized
      */
-    const ERROR_UNAUTHORIZED = 5;
+    public const ERROR_UNAUTHORIZED = 5;
 
     /**
      * other tao specific errors
      */
-    const ERROR_SYSTEM_ERROR = 6;
+    public const ERROR_SYSTEM_ERROR = 6;
 
     /**
      * @return array

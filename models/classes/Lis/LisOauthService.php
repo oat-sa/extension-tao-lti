@@ -37,8 +37,11 @@ class LisOauthService extends OauthService
      * @inheritDoc
      * @throws common_exception_NoImplementation
      */
-    public function sign(common_http_Request $request, common_http_Credentials $credentials, $authorizationHeader = false)
-    {
+    public function sign(
+        common_http_Request $request,
+        common_http_Credentials $credentials,
+        $authorizationHeader = false
+    ) {
         throw new common_exception_NoImplementation('Signing not implemented');
     }
 

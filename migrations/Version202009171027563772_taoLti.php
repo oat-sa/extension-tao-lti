@@ -10,7 +10,6 @@ use oat\tao\scripts\update\OntologyUpdater;
 
 final class Version202009171027563772_taoLti extends AbstractMigration
 {
-
     public function up(Schema $schema): void
     {
         OntologyUpdater::syncModels();

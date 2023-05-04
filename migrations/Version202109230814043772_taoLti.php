@@ -14,7 +14,6 @@ use oat\tao\scripts\tools\migrations\AbstractMigration;
  */
 final class Version202109230814043772_taoLti extends AbstractMigration
 {
-
     public function getDescription(): string
     {
         return 'Add LTI 1p3 Learner Role';

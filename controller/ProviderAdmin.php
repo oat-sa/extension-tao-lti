@@ -66,7 +66,9 @@ class ProviderAdmin extends tao_actions_SaSModule
     {
         $body = $this->getPsrRequest()->getParsedBody();
         $rawLtiVersion = trim($body[tao_helpers_Uri::encode(RdfLtiProviderRepository::LTI_VERSION)] ?? '');
-        $ltiVersion = empty($rawLtiVersion) ? RdfLtiProviderRepository::DEFAULT_LTI_VERSION : tao_helpers_Uri::decode($rawLtiVersion);
+        $ltiVersion = empty($rawLtiVersion)
+            ? RdfLtiProviderRepository::DEFAULT_LTI_VERSION
+            : tao_helpers_Uri::decode($rawLtiVersion);
 
         return $this->getConfigurationMapper()->map($ltiVersion);
     }

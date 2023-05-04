@@ -33,7 +33,7 @@ use tao_models_classes_Service;
  */
 abstract class LtiTool extends tao_models_classes_Service
 {
-    const PROPERTY_SERVICE = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#ToolService';
+    public const PROPERTY_SERVICE = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#ToolService';
 
     /**
      * Builds a launch url for this tool

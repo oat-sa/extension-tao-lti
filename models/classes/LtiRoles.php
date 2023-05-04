@@ -23,6 +23,8 @@ namespace oat\taoLti\models\classes;
 
 /**
  * Interface containing the Lti Role URIs
+ *
+ * phpcs:disable Generic.Files.LineLength
  */
 interface LtiRoles
 {
@@ -108,5 +110,4 @@ interface LtiRoles
     public const CONTEXT_LTI1P3_ADMINISTRATOR_SUB_EXTERNAL_SYSTEM_ADMINISTRATOR = 'http://purl.imsglobal.org/vocab/lis/v2/membership/Administrator#ExternalSystemAdministrator';
     public const CONTEXT_LTI1P3_ADMINISTRATOR_SUB_SUPPORT = 'http://purl.imsglobal.org/vocab/lis/v2/membership/Administrator#Support';
     public const CONTEXT_LTI1P3_ADMINISTRATOR_SUB_SYSTEM_ADMINISTRATOR = 'http://purl.imsglobal.org/vocab/lis/v2/membership/Administrator#SystemAdministrator';
-
 }

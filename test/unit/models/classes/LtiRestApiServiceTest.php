@@ -33,7 +33,7 @@ class LtiRestApiServiceTest extends OntologyMockTest
         $resourceProphet->getUri()->willReturn(ConsumerService::CLASS_URI);
         $consumerServiceProphet = $this->prophesize(ConsumerService::class);
         $consumerServiceProphet->getRootClass()->willReturn($resourceProphet->reveal());
-        
+
         $service = LtiRestApiService::singleton();
         $service->setModel($this->getOntologyMock());
         $service->setServiceLocator($this->getServiceLocatorMock([

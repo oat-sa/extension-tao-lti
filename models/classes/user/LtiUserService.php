@@ -44,13 +44,13 @@ abstract class LtiUserService extends ConfigurableService
 {
     use LockTrait;
 
-    const SERVICE_ID = 'taoLti/LtiUserService';
+    public const SERVICE_ID = 'taoLti/LtiUserService';
 
-    const OPTION_FACTORY_LTI_USER = 'factoryLtiUser';
+    public const OPTION_FACTORY_LTI_USER = 'factoryLtiUser';
 
-    const PROPERTY_USER_LTICONSUMER = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#UserConsumer';
+    public const PROPERTY_USER_LTICONSUMER = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#UserConsumer';
 
-    const PROPERTY_USER_LTIKEY = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#UserKey';
+    public const PROPERTY_USER_LTIKEY = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#UserKey';
 
     /**
      * Returns the existing tao User that corresponds to

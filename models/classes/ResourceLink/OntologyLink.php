@@ -35,13 +35,13 @@ class OntologyLink extends ConfigurableService implements LinkService
 {
     use OntologyAwareTrait;
 
-    const CLASS_LTI_INCOMINGLINK = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiIncomingLink';
+    public const CLASS_LTI_INCOMINGLINK = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiIncomingLink';
 
-    const PROPERTY_LINK_ID = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTILinkId';
+    public const PROPERTY_LINK_ID = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTILinkId';
 
-    const PROPERTY_CONSUMER = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTILinkConsumer';
+    public const PROPERTY_CONSUMER = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTILinkConsumer';
 
-    const PROPERTY_LAUNCH_URL = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#ResourceLinkLaunchUrl';
+    public const PROPERTY_LAUNCH_URL = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#ResourceLinkLaunchUrl';
 
     public function getLinkId($consumerId, $resourceLink): string
     {

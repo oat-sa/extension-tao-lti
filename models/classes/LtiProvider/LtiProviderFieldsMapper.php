@@ -34,7 +34,9 @@ class LtiProviderFieldsMapper extends ConfigurableService
         RdfLtiProviderRepository::LTI_TOOL_NAME => ConfigurableLtiProviderRepository::LTI_TOOL_NAME,
         RdfLtiProviderRepository::LTI_TOOL_DEPLOYMENT_IDS => ConfigurableLtiProviderRepository::LTI_TOOL_DEPLOYMENT_IDS,
         RdfLtiProviderRepository::LTI_TOOL_AUDIENCE => ConfigurableLtiProviderRepository::LTI_TOOL_AUDIENCE,
+        // phpcs:disable Generic.Files.LineLength
         RdfLtiProviderRepository::LTI_TOOL_OIDC_LOGIN_INITATION_URL => ConfigurableLtiProviderRepository::LTI_TOOL_OIDC_LOGIN_INITATION_URL,
+        // phpcs:enable Generic.Files.LineLength
         RdfLtiProviderRepository::LTI_TOOL_LAUNCH_URL => ConfigurableLtiProviderRepository::LTI_TOOL_LAUNCH_URL,
         RdfLtiProviderRepository::LTI_TOOL_JWKS_URL => ConfigurableLtiProviderRepository::LTI_TOOL_JWKS_URL,
         RdfLtiProviderRepository::LTI_TOOL_PUBLIC_KEY => ConfigurableLtiProviderRepository::LTI_TOOL_PUBLIC_KEY,

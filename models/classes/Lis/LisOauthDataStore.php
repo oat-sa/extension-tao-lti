@@ -43,6 +43,8 @@ class LisOauthDataStore extends ConfigurableService implements ImsOauthDataStore
     /**
      * @inheritDoc
      * @throws LtiOAuthException
+     *
+     * phpcs:disable PSR1.Methods.CamelCapsMethodName
      */
     public function lookup_consumer($consumer_key)
     {
@@ -52,19 +54,25 @@ class LisOauthDataStore extends ConfigurableService implements ImsOauthDataStore
         }
         return new LisOAuthConsumer($provider, $provider->getCallbackUrl());
     }
+    // phpcs:enable PSR1.Methods.CamelCapsMethodName
 
     /**
      * @inheritDoc
+     *
+     * phpcs:disable PSR1.Methods.CamelCapsMethodName
      */
     public function lookup_token($consumer, $token_type, $token)
     {
         return new OAuthToken($consumer, '');
     }
+    // phpcs:enable PSR1.Methods.CamelCapsMethodName
 
     /**
      * @inheritDoc
      * @throws InvalidService
      * @throws InvalidServiceManagerException
+     *
+     * phpcs:disable PSR1.Methods.CamelCapsMethodName
      */
     public function lookup_nonce($consumer, $token, $nonce, $timestamp)
     {
@@ -72,22 +80,29 @@ class LisOauthDataStore extends ConfigurableService implements ImsOauthDataStore
         $store = $this->getSubService(self::OPTION_NONCE_STORE, NonceStore::class);
         return !$store->isValid($timestamp . '_' . $consumer->key . '_' . $nonce);
     }
+    // phpcs:enable PSR1.Methods.CamelCapsMethodName
 
     /**
      * @inheritDoc
+     *
+     * phpcs:disable PSR1.Methods.CamelCapsMethodName
      */
     public function new_request_token($consumer, $callback = null)
     {
         return null;
     }
+    // phpcs:enable PSR1.Methods.CamelCapsMethodName
 
     /**
      * @inheritDoc
+     *
+     * phpcs:disable PSR1.Methods.CamelCapsMethodName
      */
     public function new_access_token($token, $consumer, $verifier = null)
     {
         return null;
     }
+    // phpcs:enable PSR1.Methods.CamelCapsMethodName
 
     /**
      * @return LtiProviderService

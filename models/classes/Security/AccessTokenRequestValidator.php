@@ -81,7 +81,12 @@ class AccessTokenRequestValidator extends ConfigurableService implements AccessT
             );
 
             if ($ltiProvider === null) {
-                throw new InvalidLtiProviderException(sprintf('Lti provider with client id %s does not exist', $requestClientId));
+                throw new InvalidLtiProviderException(
+                    sprintf(
+                        'Lti provider with client id %s does not exist',
+                        $requestClientId
+                    )
+                );
             }
 
             if (!$this->isSameLtiProvider($ltiProvider)) {

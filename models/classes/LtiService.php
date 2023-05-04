@@ -42,9 +42,9 @@ use Psr\Log\LogLevel;
 
 class LtiService extends ConfigurableService
 {
-    const LIS_CONTEXT_ROLE_NAMESPACE = 'urn:lti:role:ims/lis/';
+    public const LIS_CONTEXT_ROLE_NAMESPACE = 'urn:lti:role:ims/lis/';
 
-    const LTICONTEXT_SESSION_KEY = 'LTICONTEXT';
+    public const LTICONTEXT_SESSION_KEY = 'LTICONTEXT';
 
     public function createLtiSession(common_http_Request $request)
     {
@@ -140,7 +140,7 @@ class LtiService extends ConfigurableService
     {
         $session = common_session_SessionManager::getSession();
         if (!$session instanceof TaoLtiSession) {
-            throw new LtiException(__FUNCTION__.' called on a non LTI session', LtiErrorMessage::ERROR_SYSTEM_ERROR);
+            throw new LtiException(__FUNCTION__ . ' called on a non LTI session', LtiErrorMessage::ERROR_SYSTEM_ERROR);
         }
         $this->getServiceLocator()->propagate($session);
 
@@ -157,11 +157,11 @@ class LtiService extends ConfigurableService
         $class = new core_kernel_classes_Class(ConsumerService::CLASS_URI);
         $instances = $class->searchInstances([TaoOntology::PROPERTY_OAUTH_KEY => $key], ['like' => false]);
         if (count($instances) == 0) {
-            throw new LtiException('No Credentials for consumer key '.$key, LtiErrorMessage::ERROR_UNAUTHORIZED);
+            throw new LtiException('No Credentials for consumer key ' . $key, LtiErrorMessage::ERROR_UNAUTHORIZED);
         }
         if (count($instances) > 1) {
             throw new LtiException(
-                'Multiple Credentials for consumer key '.$key,
+                'Multiple Credentials for consumer key ' . $key,
                 LtiErrorMessage::ERROR_INVALID_PARAMETER
             );
         }

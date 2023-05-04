@@ -26,7 +26,7 @@ use oat\taoLti\models\classes\LtiLaunchData;
 
 class LtiUserFactoryService extends ConfigurableService implements LtiUserFactoryInterface
 {
-    const SERVICE_ID = 'taoLti/LtiUserFactory';
+    public const SERVICE_ID = 'taoLti/LtiUserFactory';
 
     /**
      * @param LtiLaunchData $ltiContext
