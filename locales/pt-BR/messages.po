@@ -1,0 +1,149 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: tao-3x\n"
+"PO-Revision-Date: 2023-04-21 15:46\n"
+"Last-Translator: TAO Translation Team <translation@tao.lu>\n"
+"MIME-Version: 1.0\n"
+"Language: pt\n"
+"sourceLanguage: en-US\n"
+"targetLanguage: en-US\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Basepath: ../../\n"
+"X-Poedit-KeywordsList: __\n"
+"X-Poedit-SearchPath-0: .\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Crowdin-Project: tao-3x\n"
+"X-Crowdin-Project-ID: 582145\n"
+"X-Crowdin-Language: pt-BR\n"
+"X-Crowdin-File: /taoLti/locales/en-US/messages.po\n"
+"X-Crowdin-File-ID: 1535\n"
+"Language-Team: Portuguese, Brazilian\n"
+
+msgid "%s created"
+msgstr "%s criado"
+
+#, tao-public
+msgid "Add Consumer"
+msgstr "Adicionar Consumidor"
+
+#, tao-public
+msgid "Add Provider"
+msgstr "Adicionar provedor"
+
+msgid "Authorization failed"
+msgstr "Falha na autorização"
+
+msgid "Back"
+msgstr "Anterior"
+
+msgid "Create instance of "
+msgstr "Criar instância de "
+
+#, tao-public
+msgid "Delete"
+msgstr "excluir"
+
+msgid "Edit Instance"
+msgstr "Editar instância"
+
+msgid "Error"
+msgstr "ERRO"
+
+msgid "Error (%s): "
+msgstr "Erro (%s): "
+
+msgid "Error(%s): [key %s] %s \"%s"
+msgstr "Erro(%s): [chave %s] %s \"%s"
+
+msgid "Error: "
+msgstr "Erro: "
+
+msgid "Error: [key %s] \"%s"
+msgstr "Erro: [key %s] \"%s"
+
+#, tao-public
+msgid "Export"
+msgstr "Exportar"
+
+msgid "Generate a new secret key"
+msgstr "Gerar uma nova chave secreta"
+
+#, tao-public
+msgid "Import"
+msgstr "Importar"
+
+#, tao-public
+msgid "Index"
+msgstr "Indexação"
+
+msgid "Instance saved"
+msgstr "Instância salva"
+
+msgid "Learning Tools Interoperability"
+msgstr "Ferramentas de Aprendizagem Interoperabilidade"
+
+msgid "link"
+msgstr "ligação"
+
+#, tao-public
+msgid "LTI Consumers"
+msgstr "Consumidores LTI"
+
+#, tao-public
+msgid "LTI Providers"
+msgstr "Provedores LTI"
+
+msgid "Oauth consumer secret has been copied to the clipboard"
+msgstr "Oauth consumer secret foi copiado para a área de transferência"
+
+msgid "Open in a new window"
+msgstr "Abrir em uma nova janela"
+
+msgid "Please consider that generating a new key will replace the previously generated one."
+msgstr "Por favor considere que gerar uma nova chave irá substituir a gerada anteriormente."
+
+msgid "Please give the key value persistence id"
+msgstr "Por favor, informe o ID de persistência do valor chave"
+
+#, tao-public
+msgid "Properties"
+msgstr "propriedades"
+
+msgid "Registered Lti user in Key value"
+msgstr "Usuário Lti registrado na chave"
+
+msgid "Registered Lti user in ontology"
+msgstr "Usuário Lti registrado em ontologia"
+
+msgid "Return to %s."
+msgstr "Voltar para %s."
+
+msgid "Server Error"
+msgstr "Erro no Servidor"
+
+#, tao-public
+msgid "Settings"
+msgstr "Confirgurações"
+
+msgid "The LTI connection could not be established"
+msgstr "A conexão LTI não pôde ser estabelecida"
+
+msgid "The LTI Provider library."
+msgstr "A biblioteca de provedor LTI."
+
+msgid "The LTI tool could not be opened in the current window. Please click on the button to open it in a new window."
+msgstr "A ferramenta LTI não pôde ser aberta na janela atual. Por favor, clique no botão para abri-la em uma nova janela."
+
+msgid "Third party cookies are not supported by your browser"
+msgstr "Cookies de terceiros não são suportados pelo seu navegador"
+
+msgid "Unable to restore Session"
+msgstr "Não foi possível restaurar a sessão"
+
+msgid "user"
+msgstr "usuário"
+
+msgid "You are not authorized to use this system"
+msgstr "Você não está autorizado a usar este sistema"
+
