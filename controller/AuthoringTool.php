@@ -23,13 +23,20 @@ declare(strict_types=1);
 namespace oat\taoLti\controller;
 
 use common_exception_Error;
+use core_kernel_classes_Class;
+use core_kernel_classes_Resource;
 use InterruptedActionException;
 use OAT\Library\Lti1p3Core\Message\Payload\LtiMessagePayloadInterface;
+use oat\oatbox\user\User;
 use oat\taoLti\models\classes\LtiException;
 use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
 use oat\taoLti\models\classes\LtiService;
+use oat\taoLti\models\classes\TaoLtiSession;
 use oat\taoLti\models\classes\Tool\Validation\Lti1p3Validator;
+use oat\taoLti\models\classes\user\LtiUser;
+use oat\taoLti\models\classes\user\OntologyLtiUserService;
 use tao_actions_Main;
+use tao_models_classes_UserService;
 
 class AuthoringTool extends ToolModule
 {
@@ -66,7 +73,18 @@ class AuthoringTool extends ToolModule
     public function launch(): void
     {
         $message = $this->getValidatedLtiMessagePayload();
-        LtiService::singleton()->startLti1p3Session($message);
+
+        $user = $this->getServiceLocator()
+            ->getContainer()
+            ->get(tao_models_classes_UserService::class)
+            ->addUser(
+                $message->getUserIdentity()->getIdentifier(),
+                'this-is-fake',
+                new core_kernel_classes_Resource(current($message->getRoles()))
+            );
+
+        LtiService::singleton()->startLti1p3Session($message, $user->getUri());
+
         $this->forward('run', null, null, $_GET);
     }
 }

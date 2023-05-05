@@ -38,11 +38,13 @@ class Lti1p3User extends LtiUser
      * @throws \common_exception_Error
      * @throws LtiVariableMissingException
      */
-    public function __construct($launchData)
+    public function __construct($launchData, string $userUri = null)
     {
-        $userUri = $launchData->hasVariable(LtiLaunchData::USER_ID)
-            ? $launchData->getVariable(LtiLaunchData::USER_ID)
-            : self::ANONYMOUS_USER_URI;
+        if ($userUri === null) {
+            $userUri = $launchData->hasVariable(LtiLaunchData::USER_ID)
+                ? $launchData->getVariable(LtiLaunchData::USER_ID)
+                : self::ANONYMOUS_USER_URI;
+        }
 
         parent::__construct($launchData, $userUri);
     }

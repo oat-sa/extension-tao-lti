@@ -22,6 +22,8 @@
 
 namespace oat\taoLti\models\classes\user;
 
+use core_kernel_classes_Class as TypeClass;
+use core_kernel_classes_Resource as Resource;
 use oat\oatbox\user\User;
 
 /**
@@ -47,5 +49,21 @@ class UserService extends \tao_models_classes_UserService
             }
         }
         return $user;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function addUser(
+        $login,
+        $password,
+        Resource $role = null,
+        TypeClass $class = null
+    ) {
+        $user = $this->getOneUser($login);
+        if ($user !== null) {
+            return $user;
+        }
+        return parent::addUser($login, $password, $role);
     }
 }

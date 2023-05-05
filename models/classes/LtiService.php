@@ -67,7 +67,7 @@ class LtiService extends ConfigurableService
         }
     }
 
-    public function createLti1p3Session(LtiMessagePayloadInterface $messagePayload)
+    public function createLti1p3Session(LtiMessagePayloadInterface $messagePayload, string $userUri = null)
     {
         try {
             /** @var RegistrationRepositoryInterface $registrationRepository */
@@ -88,7 +88,8 @@ class LtiService extends ConfigurableService
             }
 
             $user = new Lti1p3User(
-                LtiLaunchData::fromLti1p3MessagePayload($messagePayload, $registration->getPlatform())
+                LtiLaunchData::fromLti1p3MessagePayload($messagePayload, $registration->getPlatform()),
+                $userUri
             );
 
             $user->setRegistrationId($registration->getIdentifier());
@@ -122,10 +123,10 @@ class LtiService extends ConfigurableService
         $this->getServiceLocator()->get(SessionService::SERVICE_ID)->setSession($this->createLtiSession($request));
     }
 
-    public function startLti1p3Session(LtiMessagePayloadInterface $messagePayload)
+    public function startLti1p3Session(LtiMessagePayloadInterface $messagePayload, string $userUri = null)
     {
         $this->getServiceLocator()->get(SessionService::SERVICE_ID)->setSession(
-            $this->createLti1p3Session($messagePayload)
+            $this->createLti1p3Session($messagePayload, $userUri)
         );
     }
 
