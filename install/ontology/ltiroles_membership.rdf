@@ -340,7 +340,9 @@
       <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 Content Developer]]></rdfs:label>
       <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context Content Developer Role]]></rdfs:comment>
       <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiBaseRole"/>
-      <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAO.rdf#DeliveryRole"/>
+      <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#taoDeliveryRdfManager"/>
+      <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOResult.rdf#ResultsManagerRole"/>
+      <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#TestXMLEditor"/>
       <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemAuthor"/>
       <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#TestAuthor"/>
       <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
