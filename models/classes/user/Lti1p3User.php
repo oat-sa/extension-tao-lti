@@ -22,6 +22,7 @@ declare(strict_types=1);
 
 namespace oat\taoLti\models\classes\user;
 
+use oat\tao\model\TaoOntology;
 use oat\taoLti\models\classes\LtiLaunchData;
 use oat\taoLti\models\classes\LtiRoles;
 use oat\taoLti\models\classes\LtiUtils;
@@ -31,6 +32,8 @@ class Lti1p3User extends LtiUser
 {
     /** @var string */
     private $registrationId = null;
+    private ?string $userFirstTimeUri;
+    private ?string $userLatestExtension;
 
     /**
      * @param LtiLaunchData $launchData
@@ -57,6 +60,20 @@ class Lti1p3User extends LtiUser
     public function setRegistrationId(string $registrationId): self
     {
         $this->registrationId = $registrationId;
+
+        return $this;
+    }
+
+    public function setUserFirstTimeUri(string $userFirstTimeUri): self
+    {
+        $this->userFirstTimeUri = $userFirstTimeUri;
+
+        return $this;
+    }
+
+    public function setUserLatestExtension(string $userLatestExtension): self
+    {
+        $this->userLatestExtension = $userLatestExtension;
 
         return $this;
     }
@@ -90,5 +107,18 @@ class Lti1p3User extends LtiUser
         }
 
         return array_merge($roles, $ltiRoles);
+    }
+
+    public function getPropertyValues($property)
+    {
+        if ($property === TaoOntology::PROPERTY_USER_FIRST_TIME) {
+            return [$this->userFirstTimeUri];
+        }
+
+        if ($property === TaoOntology::PROPERTY_USER_LAST_EXTENSION) {
+            return [$this->userLatestExtension];
+        }
+
+        return parent::getPropertyValues($property);
     }
 }

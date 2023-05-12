@@ -82,8 +82,7 @@ class AuthoringTool extends ToolModule
                 'this-is-fake',
                 new core_kernel_classes_Resource(current($message->getRoles()))
             );
-
-        LtiService::singleton()->startLti1p3Session($message, $user->getUri());
+        LtiService::singleton()->startLti1p3Session($message, $user);
 
         $this->forward('run', null, null, $_GET);
     }
