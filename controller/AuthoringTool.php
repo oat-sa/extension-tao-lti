@@ -22,6 +22,7 @@ declare(strict_types=1);
 
 namespace oat\taoLti\controller;
 
+use ActionEnforcingException;
 use common_exception_Error;
 use core_kernel_classes_Resource;
 use helpers_Random;
@@ -37,8 +38,6 @@ use tao_models_classes_UserService;
 
 class AuthoringTool extends ToolModule
 {
-    const PASSWORD_LENGTH = 24;
-
     /**
      * @throws LtiException
      * @throws InterruptedActionException
@@ -81,7 +80,10 @@ class AuthoringTool extends ToolModule
                 helpers_Random::generateString(UserService::PASSWORD_LENGTH),
                 new core_kernel_classes_Resource(current($message->getRoles()))
             );
-        LtiService::singleton()->startLti1p3Session($message, $user);
+        $this->getServiceLocator()
+            ->getContainer()
+            ->get(LtiService::class)
+            ->startLti1p3Session($message, $user);
 
         $this->forward('run', null, null, $_GET);
     }
