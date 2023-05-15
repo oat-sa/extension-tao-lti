@@ -108,7 +108,7 @@ class Lti1p3Validator
     /**
      * @return ToolLaunchValidator
      */
-    private function getToolLaunchValidator(): AbstractLaunchValidator
+    public function getToolLaunchValidator(): AbstractLaunchValidator
     {
         return $this->tooLaunchValidator ?? new ToolLaunchValidator(
             $this->getRegistrationRepository(),

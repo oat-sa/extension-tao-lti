@@ -25,6 +25,7 @@ namespace oat\taoLti\controller;
 use common_exception_Error;
 use core_kernel_classes_Class;
 use core_kernel_classes_Resource;
+use helpers_Random;
 use InterruptedActionException;
 use OAT\Library\Lti1p3Core\Message\Payload\LtiMessagePayloadInterface;
 use oat\oatbox\user\User;
@@ -35,11 +36,14 @@ use oat\taoLti\models\classes\TaoLtiSession;
 use oat\taoLti\models\classes\Tool\Validation\Lti1p3Validator;
 use oat\taoLti\models\classes\user\LtiUser;
 use oat\taoLti\models\classes\user\OntologyLtiUserService;
+use oat\taoLti\models\classes\user\UserService;
 use tao_actions_Main;
 use tao_models_classes_UserService;
 
 class AuthoringTool extends ToolModule
 {
+    const PASSWORD_LENGTH = 24;
+
     /**
      * @throws LtiException
      * @throws InterruptedActionException
@@ -51,7 +55,7 @@ class AuthoringTool extends ToolModule
             $this->redirect(_url('entry', 'Main', 'tao', $_GET));
         } else {
             throw new LtiException(
-                'You are not authorized to access this resource',
+                __('You are not authorized to access this resource'),
                 LtiErrorMessage::ERROR_UNAUTHORIZED
             );
         }
@@ -79,7 +83,7 @@ class AuthoringTool extends ToolModule
             ->get(tao_models_classes_UserService::class)
             ->addUser(
                 $message->getUserIdentity()->getIdentifier(),
-                'this-is-fake',
+                helpers_Random::generateString(UserService::PASSWORD_LENGTH),
                 new core_kernel_classes_Resource(current($message->getRoles()))
             );
         LtiService::singleton()->startLti1p3Session($message, $user);

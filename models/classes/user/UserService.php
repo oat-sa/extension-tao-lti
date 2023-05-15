@@ -32,6 +32,8 @@ use oat\oatbox\user\User;
  */
 class UserService extends \tao_models_classes_UserService
 {
+    public const PASSWORD_LENGTH = 255;
+
     /**
      * @param $userId
      * @return User|array
