@@ -88,7 +88,7 @@ class LtiService extends ConfigurableService
 
             $ltiUser = new Lti1p3User(
                 LtiLaunchData::fromLti1p3MessagePayload($messagePayload, $registration->getPlatform()),
-                $user->getUri()
+                $user ? $user->getUri() : null
             );
 
             if ($user !== null) {
