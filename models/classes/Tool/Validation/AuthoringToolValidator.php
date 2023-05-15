@@ -18,7 +18,7 @@
  * Copyright (c) 2023 (original work) Open Assessment Technologies SA;
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace oat\taoLti\models\classes\Tool\Validation;
 

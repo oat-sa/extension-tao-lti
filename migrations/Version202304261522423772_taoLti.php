@@ -7,14 +7,12 @@ namespace oat\taoLti\migrations;
 use core_kernel_classes_Resource;
 use core_kernel_users_Cache;
 use Doctrine\DBAL\Schema\Schema;
-use oat\ltiTestReview\controller\Review;
 use oat\oatbox\reporting\Report;
 use oat\tao\model\accessControl\func\AccessRule;
 use oat\tao\model\accessControl\func\AclProxy;
 use oat\tao\model\user\TaoRoles;
 use oat\tao\scripts\tools\migrations\AbstractMigration;
 use oat\tao\scripts\update\OntologyUpdater;
-use oat\taoLti\controller\AuthoringTool;
 use oat\taoLti\models\classes\LtiRoles;
 
 /**
@@ -32,7 +30,11 @@ final class Version202304261522423772_taoLti extends AbstractMigration
         AclProxy::applyRule($this->getLaunchActionRule());
         AclProxy::applyRule($this->getRunActionRule());
 
-        $this->addReport(Report::createInfo(sprintf('Clearing Generis cache for role %s', LtiRoles::CONTEXT_LTI1P3_CONTENT_DEVELOPER)));
+        $this->addReport(
+            Report::createInfo(
+                sprintf('Clearing Generis cache for role %s', LtiRoles::CONTEXT_LTI1P3_CONTENT_DEVELOPER)
+            )
+        );
         core_kernel_users_Cache::removeIncludedRoles(
             new core_kernel_classes_Resource(LtiRoles::CONTEXT_LTI1P3_CONTENT_DEVELOPER)
         );
@@ -52,11 +54,19 @@ final class Version202304261522423772_taoLti extends AbstractMigration
 
     private function getLaunchActionRule(): AccessRule
     {
-        return new AccessRule(AccessRule::GRANT, TaoRoles::ANONYMOUS, ['ext' => 'taoLti', 'mod' => 'AuthoringTool', 'act' => 'launch']);
+        return new AccessRule(
+            AccessRule::GRANT,
+            TaoRoles::ANONYMOUS,
+            ['ext' => 'taoLti', 'mod' => 'AuthoringTool', 'act' => 'launch']
+        );
     }
 
     private function getRunActionRule(): AccessRule
     {
-        return new AccessRule(AccessRule::GRANT, LtiRoles::CONTEXT_LTI1P3_CONTENT_DEVELOPER, ['ext' => 'taoLti', 'mod' => 'AuthoringTool', 'act' => 'run']);
+        return new AccessRule(
+            AccessRule::GRANT,
+            LtiRoles::CONTEXT_LTI1P3_CONTENT_DEVELOPER,
+            ['ext' => 'taoLti', 'mod' => 'AuthoringTool', 'act' => 'run']
+        );
     }
 }
