@@ -21,40 +21,48 @@
 
 namespace oat\taoLti\models\classes;
 
-use oat\generis\test\TestCase;
+use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
-use Prophecy\Argument;
 
 class LaunchDataTest extends TestCase
 {
-    public function testInvalidReturnUrl()
+    /**
+     * @throws LtiException
+     */
+    public function testInvalidReturnUrl(): void
     {
-        $logger = $this->prophesize(LoggerInterface::class);
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects($this->once())->method('warning')->with("Invalid LTI Return URL 'notAurl'.");
         $emptyLaunch = new LtiLaunchData([LtiLaunchData::LAUNCH_PRESENTATION_RETURN_URL => 'notAurl'], []);
-        $emptyLaunch->setLogger($logger->reveal());
+        $emptyLaunch->setLogger($logger);
         $this->assertFalse($emptyLaunch->hasReturnUrl());
-        $logger->warning("Invalid LTI Return URL 'notAurl'.", Argument::any())->shouldHaveBeenCalled();
     }
 
-    public function testNoReturnUrl()
+    /**
+     * @throws LtiException
+     */
+    public function testNoReturnUrl(): void
     {
-        $logger = $this->prophesize(LoggerInterface::class);
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects($this->never())->method('warning');
         $emptyLaunch = new LtiLaunchData([], []);
-        $emptyLaunch->setLogger($logger->reveal());
+        $emptyLaunch->setLogger($logger);
         $this->assertFalse($emptyLaunch->hasReturnUrl());
-        $logger->warning(Argument::any(), Argument::any())->shouldNotHaveBeenCalled();
     }
 
-    public function testGoodReturnUrl()
+    /**
+     * @throws LtiException
+     */
+    public function testGoodReturnUrl(): void
     {
-        $logger = $this->prophesize(LoggerInterface::class);
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects($this->never())->method('warning');
         $emptyLaunch = new LtiLaunchData([LtiLaunchData::LAUNCH_PRESENTATION_RETURN_URL => 'http://valid.url.com'], []);
-        $emptyLaunch->setLogger($logger->reveal());
+        $emptyLaunch->setLogger($logger);
         $this->assertTrue($emptyLaunch->hasReturnUrl());
-        $logger->warning(Argument::any(), Argument::any())->shouldNotHaveBeenCalled();
     }
 
-    public function testJsonEncode()
+    public function testJsonEncode(): void
     {
         $sampleLaunch = new LtiLaunchData(['a$%' => '!@#$%^&*()_', 'b' => 'c'], ['\\\'s' => '+++']);
         $unserialized = LtiLaunchData::fromJsonArray(json_decode(json_encode($sampleLaunch), true));
@@ -73,7 +81,7 @@ class LaunchDataTest extends TestCase
      * @throws LtiException
      * @throws LtiVariableMissingException
      */
-    public function testGetBooleanVariableInvalidValueThrowsException(array $ltiVariables)
+    public function testGetBooleanVariableInvalidValueThrowsException(array $ltiVariables): void
     {
         $customParameters = [];
         $boolVariableKey = 'boolVariableKey';
@@ -93,7 +101,7 @@ class LaunchDataTest extends TestCase
      * @throws LtiException
      * @throws LtiVariableMissingException
      */
-    public function testGetBooleanVariable(array $ltiVariables, $expectedResult)
+    public function testGetBooleanVariable(array $ltiVariables, bool $expectedResult): void
     {
         $customParameters = [];
         $boolVariableKey = 'boolVariableKey';
@@ -104,7 +112,7 @@ class LaunchDataTest extends TestCase
         $this->assertEquals($expectedResult, $result, "Method must return correct boolean value");
     }
 
-    public function dataProviderTestGetBooleanVariableInvalidValueThrowsException()
+    public function dataProviderTestGetBooleanVariableInvalidValueThrowsException(): array
     {
         return [
             'Value integer 1' => [
@@ -135,7 +143,7 @@ class LaunchDataTest extends TestCase
         ];
     }
 
-    public function dataProviderTestGetBooleanVariable()
+    public function dataProviderTestGetBooleanVariable(): array
     {
         return [
             'Value capital "TRUE"' => [
