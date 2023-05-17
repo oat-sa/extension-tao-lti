@@ -21,12 +21,31 @@
 
 namespace oat\taoLti\test\unit\models\classes;
 
+use common_session_Session;
 use core_kernel_classes_Class;
-use oat\generis\test\unit\OntologyMockTest;
+use core_kernel_persistence_smoothsql_SmoothModel;
+use oat\generis\model\data\Ontology;
+use oat\generis\model\kernel\uri\Bin2HexUriProvider;
+use oat\generis\model\kernel\uri\UriProvider;
+use oat\generis\persistence\DriverConfigurationFeeder;
+use oat\generis\persistence\PersistenceManager;
+use oat\generis\persistence\sql\SchemaProviderInterface;
+use oat\generis\test\ServiceManagerMockTrait;
+use oat\oatbox\cache\NoCache;
+use oat\oatbox\cache\SimpleCache;
+use oat\oatbox\event\EventAggregator;
+use oat\oatbox\event\EventManager;
+use oat\oatbox\log\LoggerService;
+use oat\oatbox\session\SessionService;
+use oat\oatbox\user\UserLanguageServiceInterface;
 use oat\taoLti\models\classes\ConsumerService;
+use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
 
-class ConsumerServiceTest extends OntologyMockTest
+class ConsumerServiceTest extends TestCase
 {
+    use ServiceManagerMockTrait;
+
     public function testGetRootClass()
     {
         $subject = new ConsumerService();
@@ -36,5 +55,23 @@ class ConsumerServiceTest extends OntologyMockTest
 
         $this->assertInstanceOf(core_kernel_classes_Class::class, $rootClass);
         $this->assertEquals(ConsumerService::CLASS_URI, $rootClass->getUri());
+    }
+
+    /**
+     * @return core_kernel_persistence_smoothsql_SmoothModel
+     */
+    protected function getOntologyMock()
+    {
+        $model = new core_kernel_persistence_smoothsql_SmoothModel([
+            core_kernel_persistence_smoothsql_SmoothModel::OPTION_PERSISTENCE => 'mockSql',
+            core_kernel_persistence_smoothsql_SmoothModel::OPTION_READABLE_MODELS => [2,3],
+            core_kernel_persistence_smoothsql_SmoothModel::OPTION_WRITEABLE_MODELS => [2],
+            core_kernel_persistence_smoothsql_SmoothModel::OPTION_NEW_TRIPLE_MODEL => 2,
+        ]);
+        $this->getServiceManagerMock([
+            Ontology::SERVICE_ID => $model,
+        ]);
+
+        return $model;
     }
 }
