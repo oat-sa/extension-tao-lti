@@ -22,11 +22,17 @@
 namespace oat\taoLti\test\unit\models\classes;
 
 use core_kernel_classes_Class;
+use core_kernel_persistence_smoothsql_SmoothModel;
+use oat\generis\model\data\Ontology;
+use oat\generis\test\ServiceManagerMockTrait;
 use oat\generis\test\unit\OntologyMockTest;
 use oat\taoLti\models\classes\ProviderService;
+use PHPUnit\Framework\TestCase;
 
-class ProviderServiceTest extends OntologyMockTest
+class ProviderServiceTest extends TestCase
 {
+    use ServiceManagerMockTrait;
+
     public function testGetRootClass()
     {
         $subject = new ProviderService();
@@ -36,5 +42,23 @@ class ProviderServiceTest extends OntologyMockTest
 
         $this->assertInstanceOf(core_kernel_classes_Class::class, $rootClass);
         $this->assertEquals(ProviderService::CLASS_URI, $rootClass->getUri());
+    }
+
+    /**
+     * @return core_kernel_persistence_smoothsql_SmoothModel
+     */
+    protected function getOntologyMock(): core_kernel_persistence_smoothsql_SmoothModel
+    {
+        $model = new core_kernel_persistence_smoothsql_SmoothModel([
+            core_kernel_persistence_smoothsql_SmoothModel::OPTION_PERSISTENCE => 'mockSql',
+            core_kernel_persistence_smoothsql_SmoothModel::OPTION_READABLE_MODELS => [2,3],
+            core_kernel_persistence_smoothsql_SmoothModel::OPTION_WRITEABLE_MODELS => [2],
+            core_kernel_persistence_smoothsql_SmoothModel::OPTION_NEW_TRIPLE_MODEL => 2,
+        ]);
+        $this->getServiceManagerMock([
+            Ontology::SERVICE_ID => $model,
+        ]);
+
+        return $model;
     }
 }

@@ -23,7 +23,8 @@ declare(strict_types=1);
 namespace oat\taoLti\test\unit\models\classes\Tool\Factory;
 
 use ErrorException;
-use oat\generis\test\TestCase;
+use oat\generis\test\ServiceManagerMockTrait;
+use OAT\Library\Lti1p3Core\Exception\LtiExceptionInterface;
 use OAT\Library\Lti1p3Core\Message\Launch\Builder\LtiResourceLinkLaunchRequestBuilder;
 use OAT\Library\Lti1p3Core\Message\LtiMessageInterface;
 use OAT\Library\Lti1p3Core\Registration\RegistrationInterface;
@@ -35,17 +36,20 @@ use oat\taoLti\models\classes\Platform\Repository\Lti1p3RegistrationRepository;
 use oat\taoLti\models\classes\Tool\Factory\Lti1p3LaunchRequestFactory;
 use oat\taoLti\models\classes\Tool\LtiLaunchCommand;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 
 class Lti1p3LaunchRequestFactoryTest extends TestCase
 {
+    use ServiceManagerMockTrait;
+
     /** @var RegistrationRepositoryInterface|MockObject */
-    private $registrationRepository;
+    private RegistrationRepositoryInterface $registrationRepository;
 
     /** @var Lti1p3LaunchRequestFactory */
-    private $subject;
+    private Lti1p3LaunchRequestFactory $subject;
 
     /** @var LtiResourceLinkLaunchRequestBuilder|MockObject */
-    private $ltiLaunchRequestBuilder;
+    private LtiResourceLinkLaunchRequestBuilder $ltiLaunchRequestBuilder;
 
     public function setUp(): void
     {
@@ -54,7 +58,7 @@ class Lti1p3LaunchRequestFactoryTest extends TestCase
         $this->subject = new Lti1p3LaunchRequestFactory();
         $this->subject->withLtiLaunchRequestBuilder($this->ltiLaunchRequestBuilder);
         $this->subject->setServiceLocator(
-            $this->getServiceLocatorMock(
+            $this->getServiceManagerMock(
                 [
                     Lti1p3RegistrationRepository::SERVICE_ID => $this->registrationRepository
                 ]
@@ -62,6 +66,9 @@ class Lti1p3LaunchRequestFactoryTest extends TestCase
         );
     }
 
+    /**
+     * @throws LtiExceptionInterface
+     */
     public function testWillThrowExceptionIfRegistrationNotFound(): void
     {
         $this->registrationRepository
@@ -74,6 +81,10 @@ class Lti1p3LaunchRequestFactoryTest extends TestCase
         $this->subject->create($this->createCommand());
     }
 
+    /**
+     * @throws LtiExceptionInterface
+     * @throws ErrorException
+     */
     public function testCreateOidcRequest(): void
     {
         $registration = $this->expectRegistration();

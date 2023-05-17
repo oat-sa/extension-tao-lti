@@ -23,7 +23,7 @@ declare(strict_types=1);
 namespace oat\taoLti\test\unit\models\classes\Platform\Service;
 
 use oat\generis\test\MockObject;
-use oat\generis\test\TestCase;
+use oat\generis\test\ServiceManagerMockTrait;
 use OAT\Library\Lti1p3Core\Registration\RegistrationInterface;
 use OAT\Library\Lti1p3Core\Security\OAuth2\Validator\Result\RequestAccessTokenValidationResultInterface as AccessTokenRequestValidationResultInterface;
 use OAT\Library\Lti1p3Core\Security\OAuth2\Validator\RequestAccessTokenValidator as Lti1p3AccessTokenRequestValidator;
@@ -31,22 +31,25 @@ use oat\taoLti\models\classes\LtiProvider\InvalidLtiProviderException;
 use oat\taoLti\models\classes\LtiProvider\LtiProvider;
 use oat\taoLti\models\classes\LtiProvider\LtiProviderService;
 use oat\taoLti\models\classes\Security\AccessTokenRequestValidator;
+use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
 use tao_models_classes_UserException;
 
 class AccessTokenRequestValidatorTest extends TestCase
 {
+    use ServiceManagerMockTrait;
+
     /** @var AccessTokenRequestValidator */
-    private $subject;
+    private AccessTokenRequestValidator $subject;
 
     /** @var Lti1p3AccessTokenRequestValidator|MockObject */
-    private $validator;
+    private Lti1p3AccessTokenRequestValidator $validator;
 
     /** @var AccessTokenRequestValidationResultInterface|MockObject */
-    private $validatorResult;
+    private AccessTokenRequestValidationResultInterface $validatorResult;
 
     /** @var MockObject|ServerRequestInterface  */
-    private $request;
+    private ServerRequestInterface $request;
 
     public function setUp(): void
     {
@@ -118,7 +121,7 @@ class AccessTokenRequestValidatorTest extends TestCase
             ->willReturn($requestLtiProvider);
 
         $this->subject->setServiceLocator(
-            $this->getServiceLocatorMock(
+            $this->getServiceManagerMock(
                 [
                     LtiProviderService::SERVICE_ID => $ltiProviderService,
                 ]

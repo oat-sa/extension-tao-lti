@@ -22,28 +22,31 @@ declare(strict_types=1);
 
 namespace oat\taoLti\test\unit\models\classes\Security\DataAccess\Repository;
 
-use oat\generis\test\TestCase;
+use oat\generis\test\ServiceManagerMockTrait;
 use OAT\Library\Lti1p3Core\Security\Key\Key;
 use OAT\Library\Lti1p3Core\Security\Key\KeyChain;
 use oat\taoLti\models\classes\LtiProvider\LtiProvider;
 use oat\taoLti\models\classes\LtiProvider\LtiProviderService;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\ToolKeyChainRepository;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 
 class ToolKeyChainRepositoryTest extends TestCase
 {
+    use ServiceManagerMockTrait;
+
     /** @var ToolKeyChainRepository */
-    private $subject;
+    private ToolKeyChainRepository $subject;
 
     /** @var LtiProviderService|MockObject */
-    private $ltiProviderService;
+    private LtiProviderService $ltiProviderService;
 
     public function setUp(): void
     {
         $this->ltiProviderService = $this->createMock(LtiProviderService::class);
         $this->subject = new ToolKeyChainRepository();
         $this->subject->setServiceLocator(
-            $this->getServiceLocatorMock(
+            $this->getServiceManagerMock(
                 [
                     LtiProviderService::SERVICE_ID => $this->ltiProviderService
                 ]
