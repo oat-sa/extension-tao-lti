@@ -83,7 +83,9 @@ class Lti1p3RegistrationRepositoryTest extends TestCase
         $this->toolKeyChainRepository = $this->createMock(KeyChainRepositoryInterface::class);
         $this->cachedPlatformKeyChainRepository = $this->createMock(KeyChainRepositoryInterface::class);
         $platformKeyChainRepository = $this->createMock(PlatformKeyChainRepository::class);
-        $this->subject = new Lti1p3RegistrationRepository([Lti1p3RegistrationRepository::OPTION_ROOT_URL => 'ROOT_URL']);
+        $this->subject = new Lti1p3RegistrationRepository(
+            [Lti1p3RegistrationRepository::OPTION_ROOT_URL => 'ROOT_URL']
+        );
         $this->subject->setServiceLocator(
             $this->getServiceManagerMock(
                 [
@@ -139,8 +141,14 @@ class Lti1p3RegistrationRepositoryTest extends TestCase
         $this->assertSame($platform->getAudience(), $registration->getPlatform()->getAudience());
         $this->assertSame([$platform->getDeploymentId()], $registration->getDeploymentIds());
         $this->assertSame($platform->getJwksUrl(), $registration->getPlatformJwksUrl());
-        $this->assertSame($platform->getOidcAuthenticationUrl(), $registration->getPlatform()->getOidcAuthenticationUrl());
-        $this->assertSame($platform->getOAuth2AccessTokenUrl(), $registration->getPlatform()->getOAuth2AccessTokenUrl());
+        $this->assertSame(
+            $platform->getOidcAuthenticationUrl(),
+            $registration->getPlatform()->getOidcAuthenticationUrl()
+        );
+        $this->assertSame(
+            $platform->getOAuth2AccessTokenUrl(),
+            $registration->getPlatform()->getOAuth2AccessTokenUrl()
+        );
     }
 
     public function testFindWillReturnRegistrationForTool(): void
@@ -156,19 +164,40 @@ class Lti1p3RegistrationRepositoryTest extends TestCase
         $this->assertSame('tao', $registration->getPlatform()->getIdentifier());
         $this->assertSame('tao', $registration->getPlatform()->getName());
         $this->assertSame(rtrim('ROOT_URL', '/'), $registration->getPlatform()->getAudience());
-        $this->assertSame('ROOT_URL' . 'taoLti/Security/oidc', $registration->getPlatform()->getOidcAuthenticationUrl());
+        $this->assertSame(
+            'ROOT_URL' . 'taoLti/Security/oidc',
+            $registration->getPlatform()->getOidcAuthenticationUrl()
+        );
         $this->assertSame('ROOT_URL' . 'taoLti/Security/jwks', $registration->getPlatformJwksUrl());
 
-        $this->assertSame($this->platformKeyChain->getIdentifier(), $registration->getPlatformKeyChain()->getIdentifier());
-        $this->assertSame($this->platformKeyChain->getKeySetName(), $registration->getPlatformKeyChain()->getKeySetName());
+        $this->assertSame(
+            $this->platformKeyChain->getIdentifier(),
+            $registration->getPlatformKeyChain()->getIdentifier()
+        );
+        $this->assertSame(
+            $this->platformKeyChain->getKeySetName(),
+            $registration->getPlatformKeyChain()->getKeySetName()
+        );
 
-        $this->assertSame($this->platformKeyChain->getPublicKey()->getContent(), $registration->getPlatformKeyChain()->getPublicKey()->getContent());
-        $this->assertSame($this->platformKeyChain->getPrivateKey()->getContent(), $registration->getPlatformKeyChain()->getPrivateKey()->getContent());
+        $this->assertSame(
+            $this->platformKeyChain->getPublicKey()->getContent(),
+            $registration->getPlatformKeyChain()->getPublicKey()->getContent()
+        );
+        $this->assertSame(
+            $this->platformKeyChain->getPrivateKey()->getContent(),
+            $registration->getPlatformKeyChain()->getPrivateKey()->getContent()
+        );
 
         $this->assertSame($this->toolKeyChain->getIdentifier(), $registration->getToolKeyChain()->getIdentifier());
         $this->assertSame($this->toolKeyChain->getKeySetName(), $registration->getToolKeyChain()->getKeySetName());
-        $this->assertSame($this->toolKeyChain->getPublicKey()->getContent(), $registration->getToolKeyChain()->getPublicKey()->getContent());
-        $this->assertSame($this->toolKeyChain->getPrivateKey()->getContent(), $registration->getToolKeyChain()->getPrivateKey()->getContent());
+        $this->assertSame(
+            $this->toolKeyChain->getPublicKey()->getContent(),
+            $registration->getToolKeyChain()->getPublicKey()->getContent()
+        );
+        $this->assertSame(
+            $this->toolKeyChain->getPrivateKey()->getContent(),
+            $registration->getToolKeyChain()->getPrivateKey()->getContent()
+        );
 
         $this->assertSame('client_id', $registration->getClientId());
         $this->assertSame('ltiId', $registration->getIdentifier());
@@ -326,8 +355,10 @@ class Lti1p3RegistrationRepositoryTest extends TestCase
         return $ltiProvider;
     }
 
-    private function expectToolAndPlatformKeys(?KeyChainInterface $toolKeyChain, ?KeyChainInterface $platformKeyChain): void
-    {
+    private function expectToolAndPlatformKeys(
+        ?KeyChainInterface $toolKeyChain,
+        ?KeyChainInterface $platformKeyChain
+    ): void {
         $this->toolKeyChainRepository
             ->method('find')
             ->willReturn($toolKeyChain);
