@@ -23,7 +23,7 @@
 namespace oat\taoLti\controller;
 
 use oat\taoLti\models\classes\LtiException;
-use \tao_actions_CommonModule;
+use tao_actions_CommonModule;
 use oat\taoLti\controller\traits\LtiModuleTrait;
 
 /**

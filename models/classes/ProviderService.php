@@ -30,8 +30,8 @@ use oat\tao\model\OntologyClassService;
  */
 class ProviderService extends OntologyClassService
 {
-    const SERVICE_ID = 'taoLti/ProviderService';
-    const CLASS_URI = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIProvider';
+    public const SERVICE_ID = 'taoLti/ProviderService';
+    public const CLASS_URI = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIProvider';
 
     /**
      * return the group top level class

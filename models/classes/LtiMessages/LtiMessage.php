@@ -32,7 +32,6 @@ namespace oat\taoLti\models\classes\LtiMessages;
  */
 class LtiMessage
 {
-
     /**
      * @var string
      */

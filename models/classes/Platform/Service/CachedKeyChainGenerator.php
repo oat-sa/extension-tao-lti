@@ -74,5 +74,4 @@ class CachedKeyChainGenerator extends ConfigurableService implements KeyChainGen
     {
         return $this->getServiceLocator()->get(SimpleCache::SERVICE_ID);
     }
-
 }

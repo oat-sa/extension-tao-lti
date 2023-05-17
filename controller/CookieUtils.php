@@ -67,7 +67,7 @@ class CookieUtils extends tao_actions_CommonModule
             common_Logger::i('Changing session to ' . $sessId);
             session_unset();
             session_destroy();
-            
+
             session_id($sessId);
             session_start();
             if (session_id() != $sessId) {

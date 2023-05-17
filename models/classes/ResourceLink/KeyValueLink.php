@@ -32,9 +32,9 @@ use oat\oatbox\service\ConfigurableService;
  */
 class KeyValueLink extends ConfigurableService implements LinkService
 {
-    const OPTION_PERSISTENCE = 'persistence';
+    public const OPTION_PERSISTENCE = 'persistence';
 
-    const PREFIX = 'lti_link_';
+    public const PREFIX = 'lti_link_';
 
     public function getLinkId($consumerId, $resourceLink): string
     {

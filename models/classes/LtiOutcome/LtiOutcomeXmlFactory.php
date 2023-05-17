@@ -31,8 +31,8 @@ class LtiOutcomeXmlFactory extends ConfigurableService
         string $sourcedId,
         string $grade,
         string $messageIdentifier,
-        string $language = self::OUTCOME_DEFAULT_LANG): string
-    {
+        string $language = self::OUTCOME_DEFAULT_LANG
+    ): string {
         $language = $language ?? $this->getDefaultLang();
         return '<?xml version = "1.0" encoding = "UTF-8"?>
                 <imsx_POXEnvelopeRequest xmlns = "http://www.imsglobal.org/services/ltiv1p1/xsd/imsoms_v1p0">

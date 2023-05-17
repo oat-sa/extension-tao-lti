@@ -24,7 +24,7 @@ namespace oat\taoLti\scripts\tools;
 
 use oat\generis\model\OntologyAwareTrait;
 use oat\oatbox\extension\script\ScriptAction;
-use \common_report_Report as Report;
+use common_report_Report as Report;
 use oat\tao\model\oauth\DataStore;
 use oat\taoLti\models\classes\ConsumerService;
 
@@ -108,7 +108,10 @@ class SetupLtiConsumer extends ScriptAction
     protected function run()
     {
         if (empty($this->getOption('key')) || empty($this->getOption('secret'))) {
-            return new Report(Report::TYPE_ERROR, 'Not all arguments were provided. Try to run the script with -h option');
+            return new Report(
+                Report::TYPE_ERROR,
+                'Not all arguments were provided. Try to run the script with -h option'
+            );
         }
 
         $consumerService = $this->getClassService();
@@ -119,17 +122,29 @@ class SetupLtiConsumer extends ScriptAction
         try {
             $consumer = $consumerService->createInstance($clazz, $label);
         } catch (\Exception $e) {
-            return new Report(Report::TYPE_ERROR, 'Error while creating consumer. Actual message is: ' . $e->getMessage());
+            return new Report(
+                Report::TYPE_ERROR,
+                'Error while creating consumer. Actual message is: ' . $e->getMessage()
+            );
         }
 
         $consumer->setPropertyValue($this->getProperty(DataStore::PROPERTY_OAUTH_KEY), $this->getOption('key'));
         $consumer->setPropertyValue($this->getProperty(DataStore::PROPERTY_OAUTH_SECRET), $this->getOption('secret'));
 
         if ($this->hasOption('callbackUrl')) {
-            $consumer->setPropertyValue($this->getProperty(DataStore::PROPERTY_OAUTH_CALLBACK), $this->getOption('callbackUrl'));
+            $consumer->setPropertyValue(
+                $this->getProperty(DataStore::PROPERTY_OAUTH_CALLBACK),
+                $this->getOption('callbackUrl')
+            );
         }
 
-        return new Report(Report::TYPE_SUCCESS, sprintf('Lti consumer "%s" was created. Check GUI to edit its properties', $consumer->getLabel()));
+        return new Report(
+            Report::TYPE_SUCCESS,
+            sprintf(
+                'Lti consumer "%s" was created. Check GUI to edit its properties',
+                $consumer->getLabel()
+            )
+        );
     }
 
     /**

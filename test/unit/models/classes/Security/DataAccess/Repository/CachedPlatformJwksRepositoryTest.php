@@ -129,5 +129,4 @@ class CachedPlatformJwksRepositoryTest extends TestCase
 
         $this->subject->find();
     }
-
 }
