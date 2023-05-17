@@ -24,16 +24,19 @@ use IMSGlobal\LTI\OAuth\OAuthConsumer;
 use IMSGlobal\LTI\OAuth\OAuthException as LtiOAuthException;
 use IMSGlobal\LTI\OAuth\OAuthToken;
 use oat\generis\test\MockObject;
-use oat\generis\test\TestCase;
+use oat\generis\test\ServiceManagerMockTrait;
 use oat\oatbox\log\LoggerService;
 use oat\tao\model\oauth\nonce\NoNonce;
 use oat\taoLti\models\classes\Lis\LisOauthDataStore;
 use oat\taoLti\models\classes\LtiProvider\LtiProvider;
 use oat\taoLti\models\classes\LtiProvider\LtiProviderService;
+use PHPUnit\Framework\TestCase;
 
 class LisOauthDataStoreTest extends TestCase
 {
-    public function testLookupConsumer()
+    use ServiceManagerMockTrait;
+
+    public function testLookupConsumer(): void
     {
         $ltiProviderMock = $this->createMock(LtiProvider::class);
         $ltiProviderMock->method('getCallbackUrl')->willReturn('clb_url');
@@ -46,7 +49,7 @@ class LisOauthDataStoreTest extends TestCase
             ->willReturn($ltiProviderMock);
 
         $dataStore = new LisOauthDataStore();
-        $dataStore->setServiceLocator($this->getServiceLocatorMock([
+        $dataStore->setServiceLocator($this->getServiceManagerMock([
             LtiProviderService::SERVICE_ID => $ltiProviderServiceMock
         ]));
 
@@ -56,7 +59,7 @@ class LisOauthDataStoreTest extends TestCase
         $this->assertSame('clb_url', $consumer->callback_url);
     }
 
-    public function testLookupConsumerNotFound()
+    public function testLookupConsumerNotFound(): void
     {
         /** @var LtiProviderService|MockObject $ltiProviderServiceMock */
         $ltiProviderServiceMock = $this->createMock(LtiProviderService::class);
@@ -66,7 +69,7 @@ class LisOauthDataStoreTest extends TestCase
             ->willReturn(null);
 
         $dataStore = new LisOauthDataStore();
-        $dataStore->setServiceLocator($this->getServiceLocatorMock([
+        $dataStore->setServiceLocator($this->getServiceManagerMock([
             LtiProviderService::SERVICE_ID => $ltiProviderServiceMock
         ]));
 
@@ -75,7 +78,7 @@ class LisOauthDataStoreTest extends TestCase
         $dataStore->lookup_consumer('key1');
     }
 
-    public function testLookupToken()
+    public function testLookupToken(): void
     {
         /** @var OAuthConsumer|MockObject $oauthConsumerMock */
         $oauthConsumerMock = $this->createMock(OAuthConsumer::class);
@@ -84,7 +87,7 @@ class LisOauthDataStoreTest extends TestCase
         $this->assertInstanceOf(OAuthToken::class, $token);
     }
 
-    public function testLookupNonce()
+    public function testLookupNonce(): void
     {
         /** @var NoNonce|MockObject $nonceStoreMock */
         $nonceStoreMock = $this->createMock(NoNonce::class);
@@ -99,7 +102,7 @@ class LisOauthDataStoreTest extends TestCase
 
         $dataStore = new LisOauthDataStore();
         $dataStore->setOption(LisOauthDataStore::OPTION_NONCE_STORE, $nonceStoreMock);
-        $dataStore->setServiceLocator($this->getServiceLocatorMock([
+        $dataStore->setServiceLocator($this->getServiceManagerMock([
             LoggerService::SERVICE_ID => $this->createMock(LoggerService::class),
         ]));
 
