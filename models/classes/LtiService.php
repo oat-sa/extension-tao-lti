@@ -66,8 +66,10 @@ class LtiService extends ConfigurableService
         }
     }
 
-    public function createLti1p3Session(LtiMessagePayloadInterface $messagePayload, core_kernel_classes_Resource $user = null)
-    {
+    public function createLti1p3Session(
+        LtiMessagePayloadInterface $messagePayload,
+        core_kernel_classes_Resource $user = null
+    ) {
         try {
             /** @var RegistrationRepositoryInterface $registrationRepository */
             $registrationRepository = $this->getServiceLocator()
@@ -130,8 +132,10 @@ class LtiService extends ConfigurableService
         $this->getServiceLocator()->get(SessionService::SERVICE_ID)->setSession($this->createLtiSession($request));
     }
 
-    public function startLti1p3Session(LtiMessagePayloadInterface $messagePayload, core_kernel_classes_Resource $user = null)
-    {
+    public function startLti1p3Session(
+        LtiMessagePayloadInterface $messagePayload,
+        core_kernel_classes_Resource $user = null
+    ) {
         $this->getServiceLocator()->get(SessionService::SERVICE_ID)->setSession(
             $this->createLti1p3Session($messagePayload, $user)
         );
