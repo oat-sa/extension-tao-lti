@@ -32,7 +32,7 @@ class ConsumerServiceTest extends TestCase
 {
     use ServiceManagerMockTrait;
 
-    public function testGetRootClass()
+    public function testGetRootClass(): void
     {
         $subject = new ConsumerService();
         $subject->setModel($this->getOntologyMock());
@@ -46,7 +46,7 @@ class ConsumerServiceTest extends TestCase
     /**
      * @return core_kernel_persistence_smoothsql_SmoothModel
      */
-    protected function getOntologyMock()
+    protected function getOntologyMock(): core_kernel_persistence_smoothsql_SmoothModel
     {
         $model = new core_kernel_persistence_smoothsql_SmoothModel([
             core_kernel_persistence_smoothsql_SmoothModel::OPTION_PERSISTENCE => 'mockSql',

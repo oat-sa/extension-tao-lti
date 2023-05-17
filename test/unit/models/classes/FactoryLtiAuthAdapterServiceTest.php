@@ -33,7 +33,7 @@ class FactoryLtiAuthAdapterServiceTest extends TestCase
 {
     use ServiceManagerMockTrait;
 
-    public function testCreate()
+    public function testCreate(): void
     {
         $service = new FactoryLtiAuthAdapterService();
         $service->setServiceLocator($this->getServiceManagerMock([
@@ -46,7 +46,7 @@ class FactoryLtiAuthAdapterServiceTest extends TestCase
         $this->assertInstanceOf('oat\\taoLti\\models\\classes\\LtiAuthAdapter', $service->create($request));
     }
 
-    protected function mockExtensionManager()
+    protected function mockExtensionManager(): common_ext_ExtensionsManager
     {
         $extension = $this->getMockBuilder(common_ext_Extension::class)->disableOriginalConstructor()->getMock();
         $extension
