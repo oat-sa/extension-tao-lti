@@ -21,26 +21,12 @@
 
 namespace oat\taoLti\test\unit\models\classes;
 
-use common_session_Session;
 use core_kernel_classes_Class;
 use core_kernel_persistence_smoothsql_SmoothModel;
 use oat\generis\model\data\Ontology;
-use oat\generis\model\kernel\uri\Bin2HexUriProvider;
-use oat\generis\model\kernel\uri\UriProvider;
-use oat\generis\persistence\DriverConfigurationFeeder;
-use oat\generis\persistence\PersistenceManager;
-use oat\generis\persistence\sql\SchemaProviderInterface;
 use oat\generis\test\ServiceManagerMockTrait;
-use oat\oatbox\cache\NoCache;
-use oat\oatbox\cache\SimpleCache;
-use oat\oatbox\event\EventAggregator;
-use oat\oatbox\event\EventManager;
-use oat\oatbox\log\LoggerService;
-use oat\oatbox\session\SessionService;
-use oat\oatbox\user\UserLanguageServiceInterface;
 use oat\taoLti\models\classes\ConsumerService;
 use PHPUnit\Framework\TestCase;
-use Psr\Log\LoggerInterface;
 
 class ConsumerServiceTest extends TestCase
 {
