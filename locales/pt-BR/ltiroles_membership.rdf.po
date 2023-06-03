@@ -1,0 +1,84 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: tao-3x\n"
+"PO-Revision-Date: 2023-04-21 15:46\n"
+"Last-Translator: TAO Translation Team <translation@tao.lu>\n"
+"MIME-Version: 1.0\n"
+"Language: pt-BR\n"
+"sourceLanguage: en-US\n"
+"targetLanguage: pt-BR\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Crowdin-Project: tao-3x\n"
+"X-Crowdin-Project-ID: 582145\n"
+"X-Crowdin-Language: pt-BR\n"
+"X-Crowdin-File: /taoLti/locales/en-US/ltiroles_membership.rdf.po\n"
+"X-Crowdin-File-ID: 1537\n"
+"Language-Team: Portuguese, Brazilian\n"
+
+# http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#Learner
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI Learner"
+msgstr "Aluno LTI"
+
+# http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#Learner
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI Context Learner Role"
+msgstr "Papel do Contexto LTI Aluno"
+
+# http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#Instructor
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI Instructor"
+msgstr "Instrutor LTI"
+
+# http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#Instructor
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI Context Instructor Role"
+msgstr "A função do instrutor do contexto LTI"
+
+# http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#ContentDeveloper
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI Content Developer"
+msgstr "Desenvolvedor de conteúdo LTI"
+
+# http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#ContentDeveloper
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI Context Content Developer Role"
+msgstr "O papel do desenvolvedor de conteúdo de contexto LTI"
+
+# http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#TeachingAssistant
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI Teaching Assistant"
+msgstr "Assistente de ensino LTI"
+
+# http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#TeachingAssistant
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI Context Teaching Assistant Role"
+msgstr "O contexto LTI Ensinando Papel de Assistente"
+
+# http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#Administrator
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "LTI Administrator"
+msgstr "LTI Administrator"
+
+# http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#Administrator
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "The LTI Context Administrator Role"
+msgstr "A função de administrador do contexto LTI"
+
+# http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#Learner
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "LTI Learner"
+msgstr "Aluno LTI"
+
+# http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#Instructor
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "LTI Instructor"
+msgstr "Instrutor LTI"
+
+# http://www.imsglobal.org/imspurl/lis/v1/vocab/membership#Administrator
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "LTI Administrator"
+msgstr "LTI Administrator"
+
