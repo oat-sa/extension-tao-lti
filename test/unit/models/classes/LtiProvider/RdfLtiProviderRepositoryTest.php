@@ -24,8 +24,6 @@ use common_exception_Error as ErrorException;
 use common_exception_InvalidArgumentType as InvalidArgumentTypeException;
 use core_kernel_classes_Class as RdfClass;
 use core_kernel_classes_Resource as RdfResource;
-use core_kernel_persistence_smoothsql_SmoothModel;
-use oat\generis\model\data\Ontology;
 use oat\generis\model\kernel\persistence\smoothsql\search\ComplexSearchService;
 use oat\generis\model\OntologyRdfs;
 use oat\generis\test\ServiceManagerMockTrait;
@@ -34,6 +32,7 @@ use oat\search\base\QueryInterface;
 use oat\search\base\SearchGateWayInterface;
 use oat\search\Query;
 use oat\tao\model\oauth\DataStore;
+use oat\taoLti\test\unit\OntologyMockTrait;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
@@ -41,6 +40,7 @@ use Psr\Log\LoggerInterface;
 class RdfLtiProviderRepositoryTest extends TestCase
 {
     use ServiceManagerMockTrait;
+    use OntologyMockTrait;
 
     /** @var RdfLtiProviderRepository */
     private RdfLtiProviderRepository $subject;
@@ -92,25 +92,6 @@ class RdfLtiProviderRepositoryTest extends TestCase
         );
         $this->subject->setLogger($this->logger);
     }
-
-    /**
-     * @return core_kernel_persistence_smoothsql_SmoothModel
-     */
-    protected function getOntologyMock(): core_kernel_persistence_smoothsql_SmoothModel
-    {
-        $model = new core_kernel_persistence_smoothsql_SmoothModel([
-            core_kernel_persistence_smoothsql_SmoothModel::OPTION_PERSISTENCE => 'mockSql',
-            core_kernel_persistence_smoothsql_SmoothModel::OPTION_READABLE_MODELS => [2,3],
-            core_kernel_persistence_smoothsql_SmoothModel::OPTION_WRITEABLE_MODELS => [2],
-            core_kernel_persistence_smoothsql_SmoothModel::OPTION_NEW_TRIPLE_MODEL => 2,
-        ]);
-        $this->getServiceManagerMock([
-            Ontology::SERVICE_ID => $model,
-        ]);
-
-        return $model;
-    }
-
     public function testGetRootClass(): void
     {
         $this->subject->setModel($this->getOntologyMock());
