@@ -35,7 +35,7 @@ use Psr\Http\Message\ServerRequestInterface;
 
 class Lti1p3Validator
 {
-    private ?AbstractLaunchValidator $tooLaunchValidator;
+    private ?AbstractLaunchValidator $toolLaunchValidator;
 
     private RegistrationRepositoryInterface $registrationRepository;
     private CacheItemPoolInterface $cacheAdapter;
@@ -43,11 +43,11 @@ class Lti1p3Validator
     public function __construct(
         RegistrationRepositoryInterface $registrationRepository,
         CacheItemPoolInterface $cacheAdapter,
-        AbstractLaunchValidator $tooLaunchValidator = null,
+        AbstractLaunchValidator $toolLaunchValidator = null,
     ) {
         $this->registrationRepository = $registrationRepository;
         $this->cacheAdapter = $cacheAdapter;
-        $this->tooLaunchValidator = $tooLaunchValidator;
+        $this->toolLaunchValidator = $toolLaunchValidator;
     }
 
     /**
@@ -110,7 +110,7 @@ class Lti1p3Validator
      */
     public function getToolLaunchValidator(): AbstractLaunchValidator
     {
-        return $this->tooLaunchValidator ?? new ToolLaunchValidator(
+        return $this->toolLaunchValidator ?? new ToolLaunchValidator(
             $this->getRegistrationRepository(),
             new NonceRepository($this->cacheAdapter)
         );
