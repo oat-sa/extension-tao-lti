@@ -43,7 +43,7 @@ class Lti1p3Validator
     public function __construct(
         RegistrationRepositoryInterface $registrationRepository,
         CacheItemPoolInterface $cacheAdapter,
-        AbstractLaunchValidator $toolLaunchValidator = null,
+        AbstractLaunchValidator $toolLaunchValidator = null
     ) {
         $this->registrationRepository = $registrationRepository;
         $this->cacheAdapter = $cacheAdapter;
