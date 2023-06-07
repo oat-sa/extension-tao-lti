@@ -38,6 +38,9 @@ final class Version202304261522423772_taoLti extends AbstractMigration
         core_kernel_users_Cache::removeIncludedRoles(
             new core_kernel_classes_Resource(LtiRoles::CONTEXT_LTI1P3_CONTENT_DEVELOPER)
         );
+        core_kernel_users_Cache::removeIncludedRoles(
+            new core_kernel_classes_Resource(LtiRoles::CONTEXT_LTI1P3_ADMINISTRATOR)
+        );
 
         OntologyUpdater::syncModels();
 
