@@ -32,7 +32,11 @@ final class Version202304261522423772_taoLti extends AbstractMigration
 
         $this->addReport(
             Report::createInfo(
-                sprintf('Clearing Generis cache for role %s', LtiRoles::CONTEXT_LTI1P3_CONTENT_DEVELOPER)
+                sprintf(
+                    'Clearing the Generis cache for roles %s and %s',
+                    LtiRoles::CONTEXT_LTI1P3_CONTENT_DEVELOPER,
+                    LtiRoles::CONTEXT_LTI1P3_ADMINISTRATOR
+                )
             )
         );
         core_kernel_users_Cache::removeIncludedRoles(
