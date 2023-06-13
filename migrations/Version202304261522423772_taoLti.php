@@ -28,22 +28,23 @@ final class Version202304261522423772_taoLti extends AbstractMigration
     public function up(Schema $schema): void
     {
         AclProxy::applyRule($this->getLaunchActionRule());
-        AclProxy::applyRule($this->getRunActionRule());
+        AclProxy::applyRule($this->getRunActionRule(LtiRoles::CONTEXT_LTI1P3_CONTENT_DEVELOPER_SUB_CONTENT_DEVELOPER));
+        AclProxy::applyRule($this->getRunActionRule(LtiRoles::CONTEXT_LTI1P3_ADMINISTRATOR_SUB_DEVELOPER));
 
         $this->addReport(
             Report::createInfo(
                 sprintf(
                     'Clearing the Generis cache for roles %s and %s',
-                    LtiRoles::CONTEXT_LTI1P3_CONTENT_DEVELOPER,
-                    LtiRoles::CONTEXT_LTI1P3_ADMINISTRATOR
+                    LtiRoles::CONTEXT_LTI1P3_CONTENT_DEVELOPER_SUB_CONTENT_DEVELOPER,
+                    LtiRoles::CONTEXT_LTI1P3_ADMINISTRATOR_SUB_DEVELOPER
                 )
             )
         );
         core_kernel_users_Cache::removeIncludedRoles(
-            new core_kernel_classes_Resource(LtiRoles::CONTEXT_LTI1P3_CONTENT_DEVELOPER)
+            new core_kernel_classes_Resource(LtiRoles::CONTEXT_LTI1P3_CONTENT_DEVELOPER_SUB_CONTENT_DEVELOPER)
         );
         core_kernel_users_Cache::removeIncludedRoles(
-            new core_kernel_classes_Resource(LtiRoles::CONTEXT_LTI1P3_ADMINISTRATOR)
+            new core_kernel_classes_Resource(LtiRoles::CONTEXT_LTI1P3_ADMINISTRATOR_SUB_DEVELOPER)
         );
 
         OntologyUpdater::syncModels();
@@ -54,7 +55,8 @@ final class Version202304261522423772_taoLti extends AbstractMigration
     public function down(Schema $schema): void
     {
         AclProxy::revokeRule($this->getLaunchActionRule());
-        AclProxy::revokeRule($this->getRunActionRule());
+        AclProxy::revokeRule($this->getRunActionRule(LtiRoles::CONTEXT_LTI1P3_CONTENT_DEVELOPER_SUB_CONTENT_DEVELOPER));
+        AclProxy::revokeRule($this->getRunActionRule(LtiRoles::CONTEXT_LTI1P3_ADMINISTRATOR_SUB_DEVELOPER));
 
         $this->addReport(Report::createInfo('Revoke permission for AuthoringTool'));
     }
@@ -68,11 +70,11 @@ final class Version202304261522423772_taoLti extends AbstractMigration
         );
     }
 
-    private function getRunActionRule(): AccessRule
+    private function getRunActionRule(string $role): AccessRule
     {
         return new AccessRule(
             AccessRule::GRANT,
-            LtiRoles::CONTEXT_LTI1P3_CONTENT_DEVELOPER,
+            $role,
             ['ext' => 'taoLti', 'mod' => 'AuthoringTool', 'act' => 'run']
         );
     }

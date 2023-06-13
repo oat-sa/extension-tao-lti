@@ -32,8 +32,8 @@ class Lti1p3User extends LtiUser
 {
     /** @var string */
     private $registrationId = null;
-    private ?string $userFirstTimeUri;
-    private ?string $userLatestExtension;
+    private ?string $userFirstTimeUri = null;
+    private ?string $userLatestExtension = null;
 
     /**
      * @param LtiLaunchData $launchData
@@ -111,11 +111,11 @@ class Lti1p3User extends LtiUser
 
     public function getPropertyValues($property)
     {
-        if ($property === TaoOntology::PROPERTY_USER_FIRST_TIME) {
+        if ($property === TaoOntology::PROPERTY_USER_FIRST_TIME && !empty($this->userFirstTimeUri)) {
             return [$this->userFirstTimeUri];
         }
 
-        if ($property === TaoOntology::PROPERTY_USER_LAST_EXTENSION) {
+        if ($property === TaoOntology::PROPERTY_USER_LAST_EXTENSION && !empty($this->userLatestExtension)) {
             return [$this->userLatestExtension];
         }
 
