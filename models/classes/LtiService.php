@@ -97,9 +97,15 @@ class LtiService extends ConfigurableService
                 $userFirstTime = new core_kernel_classes_Property(TaoOntology::PROPERTY_USER_FIRST_TIME);
                 $userLatestExtension = new core_kernel_classes_Property(TaoOntology::PROPERTY_USER_LAST_EXTENSION);
 
-                $ltiUser->setUserFirstTimeUri($user->getOnePropertyValue($userFirstTime)
-                    ->getUri())
-                    ->setUserLatestExtension((string)$user->getOnePropertyValue($userLatestExtension));
+                $userFirstTimeUri = $user->getOnePropertyValue($userFirstTime);
+                if ($userFirstTimeUri !== null) {
+                    $ltiUser->setUserFirstTimeUri($userFirstTimeUri->getUri());
+                }
+
+                $userLatestExtensionValue = (string)$user->getOnePropertyValue($userLatestExtension);
+                if (!empty($userLatestExtensionValue)) {
+                    $ltiUser->setUserLatestExtension($userLatestExtensionValue);
+                }
             }
 
             $ltiUser->setRegistrationId($registration->getIdentifier());
