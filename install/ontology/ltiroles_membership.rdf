@@ -305,7 +305,6 @@
       <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOTest.rdf#TaoQtiTestPreviewerRole"/>
       <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#taoDeliveryRdfManager"/>
       <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOResult.rdf#LimitedResultManagerRole"/>
-      <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/taoFuncACL.rdf#FuncAclManagerRole"/>
       <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#taoCeManager"/>
       <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#taoDacSimpleManager"/>
       <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOMedia.rdf#MediaManagerRole"/>
