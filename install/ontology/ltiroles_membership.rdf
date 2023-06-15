@@ -313,6 +313,7 @@
       <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAO.rdf#DacAdministrator"/>
       <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#taoStylesManager"/>
       <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#taoBackOfficeManager"/>
+      <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#TestXMLEditor"/>
       <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership/Administrator#ExternalDeveloper">
