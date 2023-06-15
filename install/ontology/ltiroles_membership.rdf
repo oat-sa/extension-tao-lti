@@ -303,7 +303,6 @@
       <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#qtiItemPciManager"/>
       <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOTest.rdf#TaoQtiManagerRole"/>
       <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOTest.rdf#TaoQtiTestPreviewerRole"/>
-      <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#taoDeliveryRdfManager"/>
       <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOResult.rdf#LimitedResultManagerRole"/>
       <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#taoCeManager"/>
       <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#taoDacSimpleManager"/>
@@ -415,6 +414,7 @@
       <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#qtiItemPciManager"/>
       <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOTest.rdf#TestImporterRole"/>
       <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOTest.rdf#TestExporterRole"/>
+      <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#taoDeliveryRdfManager"/>
       <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership/ContentDeveloper#ContentExpert">
