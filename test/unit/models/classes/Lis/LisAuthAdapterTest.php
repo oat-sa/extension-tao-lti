@@ -23,18 +23,21 @@ namespace oat\taoLti\test\unit\models\classes\Lis;
 use common_http_InvalidSignatureException;
 use IMSGlobal\LTI\OAuth\OAuthToken;
 use oat\generis\test\MockObject;
-use oat\generis\test\TestCase;
+use oat\generis\test\ServiceManagerMockTrait;
 use oat\taoLti\models\classes\Lis\LisAuthAdapter;
 use oat\taoLti\models\classes\Lis\LisAuthAdapterException;
 use oat\taoLti\models\classes\Lis\LisOAuthConsumer;
 use oat\taoLti\models\classes\Lis\LisOauthService;
 use oat\taoLti\models\classes\Lis\LtiProviderUser;
 use oat\taoLti\models\classes\LtiProvider\LtiProvider;
+use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
 
 class LisAuthAdapterTest extends TestCase
 {
-    public function testAuthenticateSuccess()
+    use ServiceManagerMockTrait;
+
+    public function testAuthenticateSuccess(): void
     {
         /** @var ServerRequestInterface|MockObject $requestMock */
         $requestMock = $this->createMock(ServerRequestInterface::class);
@@ -57,7 +60,7 @@ class LisAuthAdapterTest extends TestCase
 
         $authAdapter = new LisAuthAdapter($requestMock);
 
-        $authAdapter->setServiceLocator($this->getServiceLocatorMock([
+        $authAdapter->setServiceLocator($this->getServiceManagerMock([
             LisOauthService::SERVICE_ID => $lisOauthServiceMock
         ]));
 
@@ -67,7 +70,7 @@ class LisAuthAdapterTest extends TestCase
         $this->assertSame($ltiProviderMock, $user->getLtiProvider());
     }
 
-    public function testAuthenticateInvalidSignature()
+    public function testAuthenticateInvalidSignature(): void
     {
         /** @var ServerRequestInterface|MockObject $requestMock */
         $requestMock = $this->createMock(ServerRequestInterface::class);
@@ -81,7 +84,7 @@ class LisAuthAdapterTest extends TestCase
 
         $authAdapter = new LisAuthAdapter($requestMock);
 
-        $authAdapter->setServiceLocator($this->getServiceLocatorMock([
+        $authAdapter->setServiceLocator($this->getServiceManagerMock([
             LisOauthService::SERVICE_ID => $lisOauthServiceMock
         ]));
 

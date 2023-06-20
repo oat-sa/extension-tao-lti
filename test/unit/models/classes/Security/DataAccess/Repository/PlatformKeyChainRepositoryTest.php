@@ -23,7 +23,7 @@ declare(strict_types=1);
 namespace oat\taoLti\test\unit\models\classes\Security\DataAccess\Repository;
 
 use ErrorException;
-use oat\generis\test\TestCase;
+use oat\generis\test\ServiceManagerMockTrait;
 use OAT\Library\Lti1p3Core\Security\Key\Key;
 use OAT\Library\Lti1p3Core\Security\Key\KeyChain;
 use OAT\Library\Lti1p3Core\Security\Key\KeyChainInterface;
@@ -31,14 +31,17 @@ use oat\oatbox\filesystem\FileSystem;
 use oat\oatbox\filesystem\FileSystemService;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\PlatformKeyChainRepository;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 
 class PlatformKeyChainRepositoryTest extends TestCase
 {
+    use ServiceManagerMockTrait;
+
     /** @var PlatformKeyChainRepository */
-    private $subject;
+    private PlatformKeyChainRepository $subject;
 
     /** @var FileSystem|MockObject */
-    private $fileSystem;
+    private FileSystem $fileSystem;
 
     public function setUp(): void
     {
@@ -57,7 +60,7 @@ class PlatformKeyChainRepositoryTest extends TestCase
             ]
         );
         $this->subject->setServiceLocator(
-            $this->getServiceLocatorMock(
+            $this->getServiceManagerMock(
                 [
                     FileSystemService::SERVICE_ID => $fileSystem
                 ]

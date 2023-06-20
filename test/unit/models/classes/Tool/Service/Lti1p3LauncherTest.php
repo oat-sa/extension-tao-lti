@@ -22,33 +22,36 @@ declare(strict_types=1);
 
 namespace oat\taoLti\test\unit\models\classes\Tool\Service;
 
-use oat\generis\test\TestCase;
+use oat\generis\test\ServiceManagerMockTrait;
 use OAT\Library\Lti1p3Core\Message\LtiMessage;
 use oat\taoLti\models\classes\Tool\Factory\Lti1p3LaunchRequestFactory;
 use oat\taoLti\models\classes\Tool\LtiLaunch;
 use oat\taoLti\models\classes\Tool\LtiLaunchCommand;
 use oat\taoLti\models\classes\Tool\Service\Lti1p3Launcher;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 
 class Lti1p3LauncherTest extends TestCase
 {
+    use ServiceManagerMockTrait;
+
     private const LAUNCH_URL = 'launchUrl';
     private const LAUNCH_PARAMS = [
         'some' => 'thing'
     ];
 
     /** @var Lti1p3LaunchRequestFactory|MockObject */
-    private $launchRequestFactory;
+    private Lti1p3LaunchRequestFactory $launchRequestFactory;
 
     /** @var Lti1p3Launcher */
-    private $subject;
+    private Lti1p3Launcher $subject;
 
     public function setUp(): void
     {
         $this->launchRequestFactory = $this->createMock(Lti1p3LaunchRequestFactory::class);
         $this->subject = new Lti1p3Launcher();
         $this->subject->setServiceLocator(
-            $this->getServiceLocatorMock(
+            $this->getServiceManagerMock(
                 [
                     Lti1p3LaunchRequestFactory::class => $this->launchRequestFactory
                 ]

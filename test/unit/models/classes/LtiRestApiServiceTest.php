@@ -21,24 +21,45 @@
 
 namespace oat\taoLti\test\unit\models\classes;
 
-use oat\generis\test\unit\OntologyMockTest;
-use oat\taoLti\models\classes\LtiRestApiService;
+use core_kernel_classes_Class;
+use core_kernel_persistence_smoothsql_SmoothModel;
+use oat\generis\model\data\Ontology;
+use oat\generis\test\ServiceManagerMockTrait;
 use oat\taoLti\models\classes\ConsumerService;
+use oat\taoLti\models\classes\LtiRestApiService;
+use oat\taoLti\test\unit\OntologyMockTrait;
+use PHPUnit\Framework\TestCase;
+use ReflectionException;
+use ReflectionMethod;
+use tao_models_classes_CrudService;
 
-class LtiRestApiServiceTest extends OntologyMockTest
+class LtiRestApiServiceTest extends TestCase
 {
-    public function testGetRootClass()
+    use ServiceManagerMockTrait;
+    use OntologyMockTrait;
+
+    /**
+     * @throws ReflectionException
+     */
+    public function testGetRootClass(): void
     {
-        $resourceProphet = $this->prophesize(\core_kernel_classes_Class::class);
-        $resourceProphet->getUri()->willReturn(ConsumerService::CLASS_URI);
-        $consumerServiceProphet = $this->prophesize(ConsumerService::class);
-        $consumerServiceProphet->getRootClass()->willReturn($resourceProphet->reveal());
+        $resourceMock = $this->createMock(core_kernel_classes_Class::class);
+        $resourceMock->method('getUri')->willReturn(ConsumerService::CLASS_URI);
+        $consumerServiceMock = $this->createMock(ConsumerService::class);
+        $consumerServiceMock->method('getRootClass')->willReturn($resourceMock);
 
         $service = LtiRestApiService::singleton();
         $service->setModel($this->getOntologyMock());
-        $service->setServiceLocator($this->getServiceLocatorMock([
-            ConsumerService::class => $consumerServiceProphet->reveal()
+        $service->setServiceLocator($this->getServiceManagerMock([
+            ConsumerService::class => $consumerServiceMock,
         ]));
-        $this->assertEquals(false, $service->isInScope(ConsumerService::CLASS_URI));
+
+        $reflection = new ReflectionMethod(tao_models_classes_CrudService::class, 'getRootClass');
+        $reflection->setAccessible(true);
+
+        $rootClass = $reflection->invoke($service);
+
+        $this->assertInstanceOf(core_kernel_classes_Class::class, $rootClass);
+        $this->assertEquals(ConsumerService::CLASS_URI, $rootClass->getUri());
     }
 }

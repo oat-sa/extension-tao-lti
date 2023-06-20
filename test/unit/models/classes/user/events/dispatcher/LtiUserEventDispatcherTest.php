@@ -23,21 +23,24 @@ declare(strict_types=1);
 namespace oat\taoLti\test\unit\models\classes\user\events\dispatcher;
 
 use oat\generis\test\MockObject;
-use oat\generis\test\TestCase;
+use oat\generis\test\ServiceManagerMockTrait;
 use oat\oatbox\event\EventManager;
 use oat\taoLti\models\classes\LtiRoles;
 use oat\taoLti\models\classes\user\events\dispatcher\LtiUserEventDispatcher;
 use oat\taoLti\models\classes\user\events\LtiBackOfficeUserCreatedEvent;
 use oat\taoLti\models\classes\user\events\LtiTestTakerCreatedEvent;
 use oat\taoLti\models\classes\user\LtiUserInterface;
+use PHPUnit\Framework\TestCase;
 
 class LtiUserEventDispatcherTest extends TestCase
 {
+    use ServiceManagerMockTrait;
+
     /** @var LtiUserEventDispatcher */
-    private $subject;
+    private LtiUserEventDispatcher $subject;
 
     /** @var EventManager|MockObject */
-    private $eventManager;
+    private EventManager $eventManager;
 
     public function setUp(): void
     {
@@ -45,7 +48,7 @@ class LtiUserEventDispatcherTest extends TestCase
 
         $this->subject = new LtiUserEventDispatcher();
         $this->subject->setServiceLocator(
-            $this->getServiceLocatorMock(
+            $this->getServiceManagerMock(
                 [
                     EventManager::SERVICE_ID => $this->eventManager
                 ]

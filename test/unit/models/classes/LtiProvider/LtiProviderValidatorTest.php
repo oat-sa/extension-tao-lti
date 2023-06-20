@@ -23,14 +23,17 @@ declare(strict_types=1);
 namespace oat\taoLti\test\unit\models\classes\LtiProvider;
 
 use InvalidArgumentException;
-use oat\generis\test\TestCase;
+use oat\generis\test\ServiceManagerMockTrait;
 use oat\taoLti\models\classes\LtiProvider\LtiProviderFieldsMapper;
 use oat\taoLti\models\classes\LtiProvider\Validation\LtiProviderValidator;
 use oat\taoLti\models\classes\LtiProvider\Validation\ValidationRegistry;
 use oat\taoLti\models\classes\LtiProvider\Validation\ValidatorsFactory;
+use PHPUnit\Framework\TestCase;
 
 class LtiProviderValidatorTest extends TestCase
 {
+    use ServiceManagerMockTrait;
+
     /**
      * @var LtiProviderValidator
      */
@@ -42,14 +45,14 @@ class LtiProviderValidatorTest extends TestCase
         $this->subject = new LtiProviderValidator();
         $factory = new ValidatorsFactory();
         $factory->setServiceLocator(
-            $this->getServiceLocatorMock(
+            $this->getServiceManagerMock(
                 [
                     ValidationRegistry::class => new ValidationRegistry()
                 ]
             )
         );
         $this->subject->setServiceLocator(
-            $this->getServiceLocatorMock(
+            $this->getServiceManagerMock(
                 [
                     ValidationRegistry::class => new ValidationRegistry(),
                     ValidatorsFactory::class => $factory,
@@ -68,15 +71,14 @@ class LtiProviderValidatorTest extends TestCase
 
     public function testValidateProperArray(): void
     {
-        $this->assertNull(
-            $this->subject->validateArray(
-                '1.1',
-                [
-                    'key' => '1',
-                    'secret' => '1',
-                    'ltiVersion' => '1',
-                ]
-            )
+        $this->expectNotToPerformAssertions();
+        $this->subject->validateArray(
+            '1.1',
+            [
+                'key' => '1',
+                'secret' => '1',
+                'ltiVersion' => '1',
+            ]
         );
     }
 }

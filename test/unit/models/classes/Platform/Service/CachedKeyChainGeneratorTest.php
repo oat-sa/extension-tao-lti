@@ -3,7 +3,7 @@
 namespace oat\taoLti\test\unit\models\classes\Platform\Service;
 
 use oat\generis\test\MockObject;
-use oat\generis\test\TestCase;
+use oat\generis\test\ServiceManagerMockTrait;
 use OAT\Library\Lti1p3Core\Security\Key\Key;
 use OAT\Library\Lti1p3Core\Security\Key\KeyChain;
 use OAT\Library\Lti1p3Core\Security\Key\KeyChainInterface;
@@ -13,23 +13,26 @@ use oat\taoLti\models\classes\Platform\Service\OpenSslKeyChainGenerator;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\CachedPlatformJwksRepository;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\CachedPlatformKeyChainRepository;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\PlatformKeyChainRepository;
+use PHPUnit\Framework\TestCase;
 
 class CachedKeyChainGeneratorTest extends TestCase
 {
+    use ServiceManagerMockTrait;
+
     /** @var CachedKeyChainGenerator */
-    private $subject;
+    private CachedKeyChainGenerator $subject;
 
     /** @var OpenSslKeyChainGenerator|MockObject */
-    private $keyChainGeneratorMock;
+    private OpenSslKeyChainGenerator $keyChainGeneratorMock;
 
     /** @var PlatformKeyChainRepository|MockObject */
-    private $platformKeyChainRepositoryMock;
+    private PlatformKeyChainRepository $platformKeyChainRepositoryMock;
 
     /** @var SimpleCache|MockObject */
-    private $simpleCacheMock;
+    private SimpleCache $simpleCacheMock;
 
     /** @var KeyChainInterface */
-    private $keyChain;
+    private KeyChainInterface $keyChain;
 
     public function setUp(): void
     {
@@ -47,7 +50,7 @@ class CachedKeyChainGeneratorTest extends TestCase
         );
 
         $this->subject->setServiceLocator(
-            $this->getServiceLocatorMock(
+            $this->getServiceManagerMock(
                 [
                     OpenSslKeyChainGenerator::class => $this->keyChainGeneratorMock,
                     PlatformKeyChainRepository::class => $this->platformKeyChainRepositoryMock,

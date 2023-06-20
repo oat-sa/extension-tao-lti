@@ -24,25 +24,28 @@ namespace oat\taoLti\test\unit\models\classes\Platform\Service\Oidc;
 
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\ServerRequest;
-use oat\generis\test\TestCase;
+use oat\generis\test\ServiceManagerMockTrait;
 use oat\taoLti\models\classes\Platform\Service\Oidc\Lti1p3OidcLoginAuthenticator;
 use oat\taoLti\models\classes\Platform\Service\Oidc\OidcLoginAuthenticatorProxy;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 
 class OidcLoginAuthenticatorProxyTest extends TestCase
 {
+    use ServiceManagerMockTrait;
+
     /** @var OidcLoginAuthenticatorProxy */
-    private $subject;
+    private OidcLoginAuthenticatorProxy $subject;
 
     /** @var Lti1p3OidcLoginAuthenticator|MockObject */
-    private $oidcLoginAuthenticator;
+    private Lti1p3OidcLoginAuthenticator $oidcLoginAuthenticator;
 
     public function setUp(): void
     {
         $this->oidcLoginAuthenticator = $this->createMock(Lti1p3OidcLoginAuthenticator::class);
         $this->subject = new OidcLoginAuthenticatorProxy();
         $this->subject->setServiceLocator(
-            $this->getServiceLocatorMock(
+            $this->getServiceManagerMock(
                 [
                     Lti1p3OidcLoginAuthenticator::class => $this->oidcLoginAuthenticator
                 ]

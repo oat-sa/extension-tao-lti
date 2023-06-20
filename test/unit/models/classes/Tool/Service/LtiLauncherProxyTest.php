@@ -23,7 +23,7 @@ declare(strict_types=1);
 namespace oat\taoLti\test\unit\models\classes\Tool\Service;
 
 use LogicException;
-use oat\generis\test\TestCase;
+use oat\generis\test\ServiceManagerMockTrait;
 use oat\taoLti\models\classes\LtiProvider\LtiProvider;
 use oat\taoLti\models\classes\Tool\LtiLaunch;
 use oat\taoLti\models\classes\Tool\LtiLaunchCommand;
@@ -33,22 +33,25 @@ use oat\taoLti\models\classes\Tool\Service\Lti1p3Launcher;
 use oat\taoLti\models\classes\Tool\Service\LtiLauncherInterface;
 use oat\taoLti\models\classes\Tool\Service\LtiLauncherProxy;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 
 class LtiLauncherProxyTest extends TestCase
 {
+    use ServiceManagerMockTrait;
+
     private const LAUNCH_URL = 'launchUrl';
     private const LAUNCH_PARAMS = [
         'some' => 'thing'
     ];
 
     /** @var LtiLauncherInterface|MockObject */
-    private $lti1p1Launcher;
+    private LtiLauncherInterface $lti1p1Launcher;
 
     /** @var LtiLauncherInterface|MockObject */
-    private $lti1p3Launcher;
+    private LtiLauncherInterface $lti1p3Launcher;
 
-    /** @var Lti1p3Launcher */
-    private $subject;
+    /** @var LtiLauncherInterface */
+    private LtiLauncherInterface $subject;
 
     public function setUp(): void
     {
@@ -56,7 +59,7 @@ class LtiLauncherProxyTest extends TestCase
         $this->lti1p3Launcher = $this->createMock(Lti1p1Launcher::class);
         $this->subject = new LtiLauncherProxy();
         $this->subject->setServiceLocator(
-            $this->getServiceLocatorMock(
+            $this->getServiceManagerMock(
                 [
                     Lti1p3Launcher::class => $this->lti1p3Launcher,
                     Lti1p1Launcher::class => $this->lti1p1Launcher
