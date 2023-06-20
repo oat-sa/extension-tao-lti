@@ -23,29 +23,30 @@ declare(strict_types=1);
 namespace oat\taoLti\test\unit\models\classes\Security\DataAccess\Repository;
 
 use oat\generis\test\MockObject;
-use oat\generis\test\TestCase;
+use oat\generis\test\ServiceManagerMockTrait;
 use OAT\Library\Lti1p3Core\Security\Key\Key;
 use OAT\Library\Lti1p3Core\Security\Key\KeyChain;
 use OAT\Library\Lti1p3Core\Security\Key\KeyChainInterface;
 use oat\oatbox\cache\SimpleCache;
-use oat\tao\model\security\Business\Domain\Key\KeyChainCollection;
-use oat\tao\model\security\Business\Domain\Key\KeyChainQuery;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\CachedPlatformKeyChainRepository;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\PlatformKeyChainRepository;
+use PHPUnit\Framework\TestCase;
 
 class CachedPlatformKeyChainRepositoryTest extends TestCase
 {
+    use ServiceManagerMockTrait;
+
     private const KEY_CHAIN_ID = 'id';
     private const KEY_CHAIN_NAME = 'name';
 
     /** @var CachedPlatformKeyChainRepository */
-    private $subject;
+    private CachedPlatformKeyChainRepository $subject;
 
     /** @var SimpleCache|MockObject */
-    private $cache;
+    private SimpleCache $cache;
 
     /** @var PlatformKeyChainRepository|MockObject */
-    private $platformKeyChainRepository;
+    private PlatformKeyChainRepository $platformKeyChainRepository;
 
     public function setUp(): void
     {
@@ -70,7 +71,7 @@ class CachedPlatformKeyChainRepositoryTest extends TestCase
             );
 
         $this->subject->setServiceLocator(
-            $this->getServiceLocatorMock(
+            $this->getServiceManagerMock(
                 [
                     SimpleCache::SERVICE_ID => $this->cache,
                     PlatformKeyChainRepository::SERVICE_ID => $this->platformKeyChainRepository,

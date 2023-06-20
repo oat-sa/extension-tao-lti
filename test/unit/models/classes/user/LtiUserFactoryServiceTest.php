@@ -21,17 +21,20 @@
 
 namespace oat\taoLti\test\models\classes\user;
 
-use oat\generis\test\TestCase;
+use oat\generis\test\ServiceManagerMockTrait;
 use oat\taoLti\models\classes\LtiLaunchData;
 use oat\taoLti\models\classes\user\LtiUserFactoryService;
 use oat\taoLti\models\classes\user\LtiUserInterface;
+use PHPUnit\Framework\TestCase;
 
 class LtiUserFactoryServiceTest extends TestCase
 {
+    use ServiceManagerMockTrait;
+
     public function testCreate()
     {
         $ltiUserFactory = new LtiUserFactoryService();
-        $ltiUserFactory->setServiceLocator($this->getServiceLocatorMock());
+        $ltiUserFactory->setServiceLocator($this->getServiceManagerMock());
         $launchData = $this->getMockBuilder(LtiLaunchData::class)->disableOriginalConstructor()->getMock();
 
         $this->assertInstanceOf(LtiUserInterface::class, $ltiUserFactory->create($launchData, '123'));

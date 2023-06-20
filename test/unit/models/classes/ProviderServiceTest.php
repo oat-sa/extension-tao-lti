@@ -22,11 +22,16 @@
 namespace oat\taoLti\test\unit\models\classes;
 
 use core_kernel_classes_Class;
-use oat\generis\test\unit\OntologyMockTest;
+use oat\generis\test\ServiceManagerMockTrait;
 use oat\taoLti\models\classes\ProviderService;
+use oat\taoLti\test\unit\OntologyMockTrait;
+use PHPUnit\Framework\TestCase;
 
-class ProviderServiceTest extends OntologyMockTest
+class ProviderServiceTest extends TestCase
 {
+    use ServiceManagerMockTrait;
+    use OntologyMockTrait;
+
     public function testGetRootClass()
     {
         $subject = new ProviderService();

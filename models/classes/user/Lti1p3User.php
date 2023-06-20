@@ -22,6 +22,7 @@ declare(strict_types=1);
 
 namespace oat\taoLti\models\classes\user;
 
+use oat\tao\model\TaoOntology;
 use oat\taoLti\models\classes\LtiLaunchData;
 use oat\taoLti\models\classes\LtiRoles;
 use oat\taoLti\models\classes\LtiUtils;
@@ -31,6 +32,8 @@ class Lti1p3User extends LtiUser
 {
     /** @var string */
     private $registrationId = null;
+    private ?string $userFirstTimeUri = null;
+    private ?string $userLatestExtension = null;
 
     /**
      * @param LtiLaunchData $launchData
@@ -38,11 +41,13 @@ class Lti1p3User extends LtiUser
      * @throws \common_exception_Error
      * @throws LtiVariableMissingException
      */
-    public function __construct($launchData)
+    public function __construct($launchData, string $userUri = null)
     {
-        $userUri = $launchData->hasVariable(LtiLaunchData::USER_ID)
-            ? $launchData->getVariable(LtiLaunchData::USER_ID)
-            : self::ANONYMOUS_USER_URI;
+        if ($userUri === null) {
+            $userUri = $launchData->hasVariable(LtiLaunchData::USER_ID)
+                ? $launchData->getVariable(LtiLaunchData::USER_ID)
+                : self::ANONYMOUS_USER_URI;
+        }
 
         parent::__construct($launchData, $userUri);
     }
@@ -55,6 +60,20 @@ class Lti1p3User extends LtiUser
     public function setRegistrationId(string $registrationId): self
     {
         $this->registrationId = $registrationId;
+
+        return $this;
+    }
+
+    public function setUserFirstTimeUri(string $userFirstTimeUri): self
+    {
+        $this->userFirstTimeUri = $userFirstTimeUri;
+
+        return $this;
+    }
+
+    public function setUserLatestExtension(string $userLatestExtension): self
+    {
+        $this->userLatestExtension = $userLatestExtension;
 
         return $this;
     }
@@ -88,5 +107,18 @@ class Lti1p3User extends LtiUser
         }
 
         return array_merge($roles, $ltiRoles);
+    }
+
+    public function getPropertyValues($property)
+    {
+        if ($property === TaoOntology::PROPERTY_USER_FIRST_TIME && !empty($this->userFirstTimeUri)) {
+            return [$this->userFirstTimeUri];
+        }
+
+        if ($property === TaoOntology::PROPERTY_USER_LAST_EXTENSION && !empty($this->userLatestExtension)) {
+            return [$this->userLatestExtension];
+        }
+
+        return parent::getPropertyValues($property);
     }
 }

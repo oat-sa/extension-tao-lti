@@ -26,37 +26,42 @@ use core_kernel_classes_Class as RdfClass;
 use core_kernel_classes_Resource as RdfResource;
 use oat\generis\model\kernel\persistence\smoothsql\search\ComplexSearchService;
 use oat\generis\model\OntologyRdfs;
-use oat\generis\test\unit\OntologyMockTest;
+use oat\generis\test\ServiceManagerMockTrait;
 use oat\search\base\QueryBuilderInterface;
 use oat\search\base\QueryInterface;
 use oat\search\base\SearchGateWayInterface;
 use oat\search\Query;
 use oat\tao\model\oauth\DataStore;
+use oat\taoLti\test\unit\OntologyMockTrait;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
-class RdfLtiProviderRepositoryTest extends OntologyMockTest
+class RdfLtiProviderRepositoryTest extends TestCase
 {
+    use ServiceManagerMockTrait;
+    use OntologyMockTrait;
+
     /** @var RdfLtiProviderRepository */
-    private $subject;
+    private RdfLtiProviderRepository $subject;
 
     /** @var ComplexSearchService|MockObject */
-    private $searchService;
+    private ComplexSearchService $searchService;
 
     /** @var LoggerInterface|MockObject */
-    private $logger;
+    private LoggerInterface $logger;
 
     /** @var QueryBuilderInterface|MockObject */
-    private $queryBuilder;
+    private QueryBuilderInterface $queryBuilder;
 
     /** @var QueryInterface|MockObject */
-    private $query;
+    private QueryInterface $query;
 
     /** @var SearchGateWayInterface|MockObject */
-    private $gateWay;
+    private SearchGateWayInterface $gateWay;
 
     /** @var LtiProviderFactory|MockObject */
-    private $ltiProviderFactory;
+    private LtiProviderFactory $ltiProviderFactory;
 
     public function setUp(): void
     {
@@ -78,7 +83,7 @@ class RdfLtiProviderRepositoryTest extends OntologyMockTest
 
         $this->subject = new RdfLtiProviderRepository();
         $this->subject->setServiceLocator(
-            $this->getServiceLocatorMock(
+            $this->getServiceManagerMock(
                 [
                     ComplexSearchService::SERVICE_ID => $this->searchService,
                     LtiProviderFactory::class => $this->ltiProviderFactory
@@ -87,7 +92,6 @@ class RdfLtiProviderRepositoryTest extends OntologyMockTest
         );
         $this->subject->setLogger($this->logger);
     }
-
     public function testGetRootClass(): void
     {
         $this->subject->setModel($this->getOntologyMock());
@@ -153,10 +157,8 @@ class RdfLtiProviderRepositoryTest extends OntologyMockTest
         $this->ltiProviderFactory
             ->method('createFromResource')
             ->willReturnOnConsecutiveCalls(
-                ...[
-                    $ltiProvider1,
-                    $ltiProvider2,
-                ]
+                $ltiProvider1,
+                $ltiProvider2
             );
 
         $expected = [$ltiProvider1, $ltiProvider2];
@@ -317,8 +319,15 @@ class RdfLtiProviderRepositoryTest extends OntologyMockTest
             ->expects($this->once())
             ->method('error')
             ->with(
-                'Unable to retrieve provider properties: Argument ' . $position .
-                ' passed to ' . $class . '::' . $function . '() must be an ' . $type . ', string given',
+                'Unable to retrieve provider properties: Argument '
+                . $position
+                . ' passed to '
+                . $class
+                . '::'
+                . $function
+                . '() must be an '
+                . $type
+                . ', string given',
                 []
             );
 

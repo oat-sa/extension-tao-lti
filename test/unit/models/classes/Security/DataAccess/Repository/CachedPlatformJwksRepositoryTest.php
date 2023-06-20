@@ -22,29 +22,32 @@ declare(strict_types=1);
 
 namespace oat\taoLti\test\unit\models\classes\Security\DataAccess\Repository;
 
-use oat\generis\test\TestCase;
+use oat\generis\test\ServiceManagerMockTrait;
 use oat\oatbox\cache\SimpleCache;
 use oat\tao\model\security\Business\Domain\Key\Jwk;
 use oat\tao\model\security\Business\Domain\Key\Jwks;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\CachedPlatformJwksRepository;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\PlatformJwksRepository;
+use PHPUnit\Framework\TestCase;
 
 class CachedPlatformJwksRepositoryTest extends TestCase
 {
+    use ServiceManagerMockTrait;
+
     /** @var CachedPlatformJwksRepository */
-    private $subject;
+    private CachedPlatformJwksRepository $subject;
 
     /** @var SimpleCache */
-    private $cacheMock;
+    private SimpleCache $cacheMock;
 
     /** @var PlatformJwksRepository */
-    private $platformJwksRepositoryMock;
+    private PlatformJwksRepository $platformJwksRepositoryMock;
 
     /** @var Jwks */
-    private $jwks;
+    private Jwks $jwks;
 
     /** @var Jwk */
-    private $jwk;
+    private Jwk $jwk;
 
     public function setUp(): void
     {
@@ -52,7 +55,7 @@ class CachedPlatformJwksRepositoryTest extends TestCase
         $this->cacheMock = $this->createMock(SimpleCache::class);
         $this->subject = new CachedPlatformJwksRepository();
         $this->subject->setServiceLocator(
-            $this->getServiceLocatorMock(
+            $this->getServiceManagerMock(
                 [
                     PlatformJwksRepository::class => $this->platformJwksRepositoryMock,
                     SimpleCache::SERVICE_ID => $this->cacheMock,

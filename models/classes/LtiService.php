@@ -25,6 +25,7 @@ use common_exception_Error;
 use common_http_Request;
 use common_session_SessionManager;
 use core_kernel_classes_Class;
+use core_kernel_classes_Property;
 use core_kernel_classes_Resource;
 use OAT\Library\Lti1p3Core\Message\Payload\LtiMessagePayloadInterface;
 use OAT\Library\Lti1p3Core\Message\Payload\MessagePayloadInterface;
@@ -35,8 +36,6 @@ use oat\oatbox\service\ServiceManager;
 use oat\oatbox\session\SessionService;
 use oat\tao\model\TaoOntology;
 use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
-use oat\taoLti\models\classes\Platform\Repository\Lti1p3RegistrationRepository;
-use oat\taoLti\models\classes\Platform\Repository\LtiPlatformRepositoryInterface;
 use oat\taoLti\models\classes\user\Lti1p3User;
 use Psr\Log\LogLevel;
 
@@ -67,8 +66,10 @@ class LtiService extends ConfigurableService
         }
     }
 
-    public function createLti1p3Session(LtiMessagePayloadInterface $messagePayload)
-    {
+    public function createLti1p3Session(
+        LtiMessagePayloadInterface $messagePayload,
+        core_kernel_classes_Resource $user = null
+    ) {
         try {
             /** @var RegistrationRepositoryInterface $registrationRepository */
             $registrationRepository = $this->getServiceLocator()
@@ -87,13 +88,29 @@ class LtiService extends ConfigurableService
                 );
             }
 
-            $user = new Lti1p3User(
-                LtiLaunchData::fromLti1p3MessagePayload($messagePayload, $registration->getPlatform())
+            $ltiUser = new Lti1p3User(
+                LtiLaunchData::fromLti1p3MessagePayload($messagePayload, $registration->getPlatform()),
+                $user ? $user->getUri() : null
             );
 
-            $user->setRegistrationId($registration->getIdentifier());
+            if ($user !== null) {
+                $userFirstTime = new core_kernel_classes_Property(TaoOntology::PROPERTY_USER_FIRST_TIME);
+                $userLatestExtension = new core_kernel_classes_Property(TaoOntology::PROPERTY_USER_LAST_EXTENSION);
 
-            $session = TaoLtiSession::fromVersion1p3($user);
+                $userFirstTimeUri = $user->getOnePropertyValue($userFirstTime);
+                if ($userFirstTimeUri !== null) {
+                    $ltiUser->setUserFirstTimeUri($userFirstTimeUri->getUri());
+                }
+
+                $userLatestExtensionValue = (string)$user->getOnePropertyValue($userLatestExtension);
+                if (!empty($userLatestExtensionValue)) {
+                    $ltiUser->setUserLatestExtension($userLatestExtensionValue);
+                }
+            }
+
+            $ltiUser->setRegistrationId($registration->getIdentifier());
+
+            $session = TaoLtiSession::fromVersion1p3($ltiUser);
 
             $this->getServiceLocator()->propagate($session);
 
@@ -122,10 +139,12 @@ class LtiService extends ConfigurableService
         $this->getServiceLocator()->get(SessionService::SERVICE_ID)->setSession($this->createLtiSession($request));
     }
 
-    public function startLti1p3Session(LtiMessagePayloadInterface $messagePayload)
-    {
+    public function startLti1p3Session(
+        LtiMessagePayloadInterface $messagePayload,
+        core_kernel_classes_Resource $user = null
+    ) {
         $this->getServiceLocator()->get(SessionService::SERVICE_ID)->setSession(
-            $this->createLti1p3Session($messagePayload)
+            $this->createLti1p3Session($messagePayload, $user)
         );
     }
 

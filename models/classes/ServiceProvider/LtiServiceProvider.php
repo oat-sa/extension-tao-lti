@@ -57,6 +57,8 @@ use oat\taoLti\models\classes\Platform\Repository\LtiPlatformFactory;
 use oat\taoLti\models\classes\Platform\Service\UpdatePlatformRegistrationSnapshotListener;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\CachedPlatformKeyChainRepository;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\PlatformKeyChainRepository;
+use oat\taoLti\models\classes\Tool\Validation\AuthoringToolValidator;
+use oat\taoLti\models\classes\Tool\Validation\Lti1p3Validator;
 use Psr\Cache\CacheItemPoolInterface;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
@@ -203,6 +205,37 @@ class LtiServiceProvider implements ContainerServiceProviderInterface
                 [
                     service(RegistrationRepositoryInterface::class),
                     service(LtiPlatformFactory::class)
+                ]
+            );
+
+        $services
+            ->set(Lti1p3Validator::class, Lti1p3Validator::class)
+            ->public()
+            ->args(
+                [
+                    service(RegistrationRepositoryInterface::class),
+                    service(ItemPoolSimpleCacheAdapter::class)
+                ]
+            );
+
+
+        $services
+            ->set(AuthoringToolValidator::class, AuthoringToolValidator::class)
+            ->public()
+            ->args(
+                [
+                    service(RegistrationRepositoryInterface::class),
+                ]
+            );
+
+        $services
+            ->set(Lti1p3Validator::class . 'Authoring', Lti1p3Validator::class)
+            ->public()
+            ->args(
+                [
+                    service(RegistrationRepositoryInterface::class),
+                    service(ItemPoolSimpleCacheAdapter::class),
+                    service(AuthoringToolValidator::class),
                 ]
             );
     }

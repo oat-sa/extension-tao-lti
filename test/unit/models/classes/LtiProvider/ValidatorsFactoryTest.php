@@ -22,24 +22,25 @@ declare(strict_types=1);
 
 namespace oat\taoLti\test\unit\models\classes\LtiProvider;
 
-use oat\generis\test\TestCase;
+use oat\generis\test\ServiceManagerMockTrait;
 use oat\tao\model\oauth\DataStore;
 use oat\taoLti\models\classes\LtiProvider\Validation\ValidationRegistry;
 use oat\taoLti\models\classes\LtiProvider\Validation\ValidatorsFactory;
+use PHPUnit\Framework\TestCase;
 use tao_helpers_form_validators_NotEmpty;
 
 class ValidatorsFactoryTest extends TestCase
 {
-    /**
-     * @var ValidatorsFactory
-     */
-    private $subject;
+    use ServiceManagerMockTrait;
+
+    /** @var ValidatorsFactory */
+    private ValidatorsFactory $subject;
 
     protected function setUp(): void
     {
         $this->subject = new ValidatorsFactory();
         $this->subject->setServiceLocator(
-            $this->getServiceLocatorMock(
+            $this->getServiceManagerMock(
                 [
                     ValidationRegistry::class => new ValidationRegistry()
 

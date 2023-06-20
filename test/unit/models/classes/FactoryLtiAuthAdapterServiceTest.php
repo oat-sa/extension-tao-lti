@@ -25,15 +25,18 @@ use common_ext_Extension;
 use common_ext_ExtensionsManager;
 use common_http_Request;
 use common_user_auth_Adapter;
-use oat\generis\test\TestCase;
+use oat\generis\test\ServiceManagerMockTrait;
+use PHPUnit\Framework\TestCase;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 class FactoryLtiAuthAdapterServiceTest extends TestCase
 {
-    public function testCreate()
+    use ServiceManagerMockTrait;
+
+    public function testCreate(): void
     {
         $service = new FactoryLtiAuthAdapterService();
-        $service->setServiceLocator($this->getServiceLocatorMock([
+        $service->setServiceLocator($this->getServiceManagerMock([
             common_ext_ExtensionsManager::SERVICE_ID => $this->mockExtensionManager()
         ]));
 
@@ -43,7 +46,7 @@ class FactoryLtiAuthAdapterServiceTest extends TestCase
         $this->assertInstanceOf('oat\\taoLti\\models\\classes\\LtiAuthAdapter', $service->create($request));
     }
 
-    protected function mockExtensionManager()
+    protected function mockExtensionManager(): common_ext_ExtensionsManager
     {
         $extension = $this->getMockBuilder(common_ext_Extension::class)->disableOriginalConstructor()->getMock();
         $extension
