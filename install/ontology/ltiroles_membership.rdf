@@ -314,6 +314,7 @@
       <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#taoBackOfficeManager"/>
       <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#TestXMLEditor"/>
       <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#taoDeliveryRdfManager"/>
+      <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#taoDeliverConnectManager"/>
       <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership/Administrator#ExternalDeveloper">
@@ -416,6 +417,7 @@
       <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOTest.rdf#TestImporterRole"/>
       <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOTest.rdf#TestExporterRole"/>
       <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#taoDeliveryRdfManager"/>
+      <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#taoDeliverConnectManager"/>
       <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership/ContentDeveloper#ContentExpert">
