@@ -100,7 +100,7 @@ class LtiProviderService extends ConfigurableService implements LtiProviderRepos
     private function aggregate($result, $method)
     {
         foreach ($this->getOption(self::LTI_PROVIDER_LIST_IMPLEMENTATIONS) as $implementation) {
-            $this->propagate($implementation);
+            $implementation = $this->buildService($implementation);
             $result = $method($result, $implementation);
         }
 
