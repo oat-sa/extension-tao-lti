@@ -23,6 +23,7 @@ declare(strict_types=1);
 namespace oat\taoLti\test\unit\models\classes\LtiProvider;
 
 use oat\generis\test\MockObject;
+use oat\generis\test\ServiceManagerMockTrait;
 use oat\generis\test\TestCase;
 use oat\taoLti\models\classes\LtiProvider\LtiProvider;
 use oat\taoLti\models\classes\LtiProvider\LtiProviderRepositoryInterface;
@@ -30,6 +31,8 @@ use oat\taoLti\models\classes\LtiProvider\LtiProviderService;
 
 class LtiProviderServiceTest extends TestCase
 {
+    use ServiceManagerMockTrait;
+
     /** @var LtiProviderService */
     private $subject;
 
@@ -52,6 +55,25 @@ class LtiProviderServiceTest extends TestCase
                 ],
             ]
         );
+    }
+
+    public function testImplementationDefinedAsArray(): void
+    {
+        $serviceManagerMock = $this->getServiceManagerMock();
+        $serviceManagerMock->expects($this->once())
+            ->method('build')->willReturn($this->repository1);
+        $service = new LtiProviderService(
+            [
+                LtiProviderService::LTI_PROVIDER_LIST_IMPLEMENTATIONS => [
+                    [
+                        'class' => LtiProviderService::class,
+                        'options' => [],
+                    ],
+                ],
+            ]
+        );
+        $service->setServiceManager($serviceManagerMock);
+        $service->count();
     }
     public function testCount(): void
     {
