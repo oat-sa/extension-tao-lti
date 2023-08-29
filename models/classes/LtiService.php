@@ -27,6 +27,7 @@ use common_session_SessionManager;
 use core_kernel_classes_Class;
 use core_kernel_classes_Property;
 use core_kernel_classes_Resource;
+use oat\generis\model\GenerisRdf;
 use OAT\Library\Lti1p3Core\Message\Payload\LtiMessagePayloadInterface;
 use OAT\Library\Lti1p3Core\Message\Payload\MessagePayloadInterface;
 use OAT\Library\Lti1p3Core\Registration\RegistrationRepositoryInterface;
@@ -44,6 +45,8 @@ class LtiService extends ConfigurableService
     public const LIS_CONTEXT_ROLE_NAMESPACE = 'urn:lti:role:ims/lis/';
 
     public const LTICONTEXT_SESSION_KEY = 'LTICONTEXT';
+
+    public const DEFAULT_USER_EXTENSION = 'tao/Main/index?structure=items&ext=taoItems';
 
     public function createLtiSession(common_http_Request $request)
     {
@@ -94,13 +97,11 @@ class LtiService extends ConfigurableService
             );
 
             if ($user !== null) {
-                $userFirstTime = new core_kernel_classes_Property(TaoOntology::PROPERTY_USER_FIRST_TIME);
                 $userLatestExtension = new core_kernel_classes_Property(TaoOntology::PROPERTY_USER_LAST_EXTENSION);
 
-                $userFirstTimeUri = $user->getOnePropertyValue($userFirstTime);
-                if ($userFirstTimeUri !== null) {
-                    $ltiUser->setUserFirstTimeUri($userFirstTimeUri->getUri());
-                }
+                //do not consider lti users with UserFirstTime as true because they should not see the help modal
+                $ltiUser->setUserFirstTimeUri(GenerisRdf::GENERIS_FALSE);
+                $ltiUser->setUserLatestExtension(self::DEFAULT_USER_EXTENSION);
 
                 $userLatestExtensionValue = (string)$user->getOnePropertyValue($userLatestExtension);
                 if (!empty($userLatestExtensionValue)) {
