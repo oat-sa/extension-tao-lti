@@ -20,7 +20,7 @@
 
 declare(strict_types=1);
 
-namespace oat\taoLti\scripts\install;
+namespace oat\taoLti\scripts\tools;
 
 use core_kernel_classes_Resource;
 use oat\generis\model\OntologyRdfs;
@@ -30,9 +30,9 @@ use oat\taoLti\controller\PlatformAdmin;
 use oat\taoLti\models\classes\Platform\Repository\RdfLtiPlatformRepository;
 
 /**
- * usage `sudo -u www-data php index.php 'oat\taoLti\scripts\tools\CreateLtiPlatformRecord' -l label -a http://foo.bar -tu http://foo.bar -ou http://foo.bar -ju http://foo.bar`
+ * usage `sudo -u www-data php index.php 'oat\taoLti\scripts\tools\SetupLtiPlatform' --label label --audience http://foo.bar --token_url http://foo.bar --oidc_url http://foo.bar --jwks_url http://foo.bar`
  */
-class CreateLtiPlatformRecord extends ScriptAction
+class SetupLtiPlatform extends ScriptAction
 {
     protected function provideOptions()
     {
@@ -114,7 +114,6 @@ class CreateLtiPlatformRecord extends ScriptAction
         $jwksUrl = $this->getOption('jwks_url');
 
         if (empty($label) || empty($audience) || empty($tokenUrl) || empty($jwksUrl)) {
-
             return Report::createError('Not all arguments were provided. Try to run the script with -h option');
         }
 
