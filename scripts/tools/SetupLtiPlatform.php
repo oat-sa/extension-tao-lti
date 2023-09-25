@@ -30,7 +30,7 @@ use oat\taoLti\controller\PlatformAdmin;
 use oat\taoLti\models\classes\Platform\Repository\RdfLtiPlatformRepository;
 
 /**
- * usage `sudo -u www-data php index.php 'oat\taoLti\scripts\tools\SetupLtiPlatform' --label label --audience http://foo.bar --token_url http://foo.bar --oidc_url http://foo.bar --jwks_url http://foo.bar`
+ * usage `sudo -u www-data php index.php 'oat\taoLti\scripts\tools\SetupLtiPlatform' --label label`
  */
 class SetupLtiPlatform extends ScriptAction
 {
