@@ -23,7 +23,7 @@
 					<action id="lticonsumer-delete" name="Delete" binding="removeNode" url="/taoLti/ConsumerAdmin/delete" context="instance" group="tree">
                         <icon id="icon-bin"/>
                     </action>
-					<action id="lticonsumer-import" name="Import" url="/tao/Import/index"  context="class" group="tree">
+					<action id="lticonsumer-import" name="Import" url="/taoLti/Import/index"  context="class" group="tree">
                         <icon id="icon-import"/>
                     </action>
 					<action id="lticonsumer-export" name="Export" url="/tao/Export/index"  context="resource" group="tree">
