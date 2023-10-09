@@ -114,7 +114,7 @@ class SetupLtiPlatform extends ScriptAction
         $jwksUrl = $this->getOption('jwks_url');
 
         if (empty($label) || empty($audience) || empty($tokenUrl) || empty($jwksUrl)) {
-            return Report::createError('Not all arguments were provided. Try to run the script with -h option');
+            return Report::createError('Not all required arguments were provided. Try to run the script with -h option');
         }
 
         $registrationController = $this->getRegistrationController();
