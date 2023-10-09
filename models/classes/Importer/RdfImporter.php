@@ -94,11 +94,7 @@ class RdfImporter extends tao_models_classes_import_RdfImporter
         return (string)$xml->asXML();
     }
 
-    /**
-     * @param common_report_Report $report
-     * @return common_report_Report
-     */
-    private function getMainReport(common_report_Report $report): common_report_Report
+    private function getMainReport(common_report_Report $report): Report
     {
         if ($report->contains(ReportInterface::TYPE_ERROR) && $report->contains(ReportInterface::TYPE_SUCCESS)) {
             return Report::createWarning(__("Some resources were not imported"));
@@ -108,6 +104,6 @@ class RdfImporter extends tao_models_classes_import_RdfImporter
             return Report::createError(__('Failed to import'));
         }
 
-        return $report;
+        return Report::createSuccess(__('Data imported successfully'));
     }
 }
