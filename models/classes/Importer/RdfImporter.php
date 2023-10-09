@@ -22,6 +22,7 @@ declare(strict_types=1);
 
 namespace oat\taoLti\models\classes\Importer;
 
+use common_report_Report;
 use core_kernel_classes_Class;
 use core_kernel_classes_Resource;
 use Exception;
@@ -40,15 +41,8 @@ class RdfImporter extends tao_models_classes_import_RdfImporter
      */
     protected function flatImport($content, core_kernel_classes_Class $class)
     {
-        $report = parent::flatImport($this->removeRootClassFromContent($content), $class);
-        if ($report->contains(Report::TYPE_ERROR)) {
-            $warningReport = Report::createWarning(__("Some imports were not possible"));
-            $warningReport->add($report);
-
-            return $warningReport;
-        }
-
-        return $report;
+        $parentReport = parent::flatImport($this->removeRootClassFromContent($content), $class);
+        return $this->getMainReport($parentReport)->add($parentReport->getChildren());
     }
 
     /**
@@ -97,5 +91,23 @@ class RdfImporter extends tao_models_classes_import_RdfImporter
         }
 
         return (string)$xml->asXML();
+    }
+
+    /**
+     * @param common_report_Report $report
+     * @return common_report_Report|Report
+     * @throws \common_exception_Error
+     */
+    private function getMainReport(common_report_Report $report): common_report_Report
+    {
+        if ($report->contains(Report::TYPE_ERROR) && $report->contains(Report::TYPE_SUCCESS)) {
+            return Report::createWarning(__("Some resources were not imported"));
+        }
+
+        if ($report->contains(Report::TYPE_ERROR)) {
+            return Report::createError(__('Failed to import'));
+        }
+
+        return $report;
     }
 }

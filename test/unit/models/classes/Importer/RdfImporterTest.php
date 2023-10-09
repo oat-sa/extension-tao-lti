@@ -159,9 +159,9 @@ CONTENT;
         $flatImportMethod->setAccessible(true);
         $report = $flatImportMethod->invoke($this->sut, $content, $this->resourceClassMock);
 
-        self::assertEquals('warning', $report->getType());
+        self::assertEquals('error', $report->getType());
 
-        self::assertEquals('Some imports were not possible', (string)$report);
+        self::assertEquals('Failed to import', (string)$report);
         self::assertStringContainsString(
             'Importing subclasses on this resource is not allowed. Label: LTI Consumer',
             json_encode($report)
@@ -213,7 +213,7 @@ CONTENT;
 
         self::assertEquals('warning', $report->getType());
 
-        self::assertEquals('Some imports were not possible', (string)$report);
+        self::assertEquals('Some resources were not imported', (string)$report);
         self::assertStringContainsString(
             'Importing subclasses on this resource is not allowed. Label: LTI Consumer',
             json_encode($report)
