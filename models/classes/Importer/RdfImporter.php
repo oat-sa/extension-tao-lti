@@ -42,7 +42,7 @@ class RdfImporter extends tao_models_classes_import_RdfImporter
     {
         $report = parent::flatImport($this->removeRootClassFromContent($content), $class);
         if ($report->contains(Report::TYPE_ERROR)) {
-            $warningReport = Report::createWarning(__("some imports were not possible"));
+            $warningReport = Report::createWarning(__("Some imports were not possible"));
             $warningReport->add($report);
 
             return $warningReport;
