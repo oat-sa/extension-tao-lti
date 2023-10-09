@@ -29,6 +29,7 @@ use Exception;
 use oat\generis\model\OntologyRdf;
 use oat\generis\model\OntologyRdfs;
 use oat\oatbox\reporting\Report;
+use oat\oatbox\reporting\ReportInterface;
 use oat\taoLti\models\classes\ConsumerService;
 use tao_models_classes_import_RdfImporter;
 use SimpleXMLElement;
@@ -95,16 +96,15 @@ class RdfImporter extends tao_models_classes_import_RdfImporter
 
     /**
      * @param common_report_Report $report
-     * @return common_report_Report|Report
-     * @throws \common_exception_Error
+     * @return common_report_Report
      */
     private function getMainReport(common_report_Report $report): common_report_Report
     {
-        if ($report->contains(Report::TYPE_ERROR) && $report->contains(Report::TYPE_SUCCESS)) {
+        if ($report->contains(ReportInterface::TYPE_ERROR) && $report->contains(ReportInterface::TYPE_SUCCESS)) {
             return Report::createWarning(__("Some resources were not imported"));
         }
 
-        if ($report->contains(Report::TYPE_ERROR)) {
+        if ($report->contains(ReportInterface::TYPE_ERROR)) {
             return Report::createError(__('Failed to import'));
         }
 
