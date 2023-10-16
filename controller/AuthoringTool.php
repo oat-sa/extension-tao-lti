@@ -28,16 +28,22 @@ use core_kernel_classes_Resource;
 use helpers_Random;
 use InterruptedActionException;
 use OAT\Library\Lti1p3Core\Message\Payload\LtiMessagePayloadInterface;
+use oat\tao\model\featureFlag\FeatureFlagChecker;
+use oat\tao\model\featureFlag\FeatureFlagCheckerInterface;
 use oat\taoLti\models\classes\LtiException;
 use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
 use oat\taoLti\models\classes\LtiService;
 use oat\taoLti\models\classes\Tool\Validation\Lti1p3Validator;
 use oat\taoLti\models\classes\user\UserService;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use tao_actions_Main;
 use tao_models_classes_UserService;
 
 class AuthoringTool extends ToolModule
 {
+    const LTI_NO_MATCHING_REGISTRATION_FOUND_MESSAGE = 'No matching registration found tool side';
+
     /**
      * @throws LtiException
      * @throws InterruptedActionException
@@ -55,6 +61,9 @@ class AuthoringTool extends ToolModule
         }
     }
 
+    /**
+     * @thorws LtiException
+     */
     protected function getValidatedLtiMessagePayload(): LtiMessagePayloadInterface
     {
         return $this->getServiceLocator()
@@ -64,13 +73,16 @@ class AuthoringTool extends ToolModule
     }
 
     /**
-     * @throws common_exception_Error
      * @throws ActionEnforcingException
      * @throws InterruptedActionException
+     * @throws LtiException
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws common_exception_Error
      */
     public function launch(): void
     {
-        $message = $this->getValidatedLtiMessagePayload();
+        $message = $this->getLtiMessageOrRedirectToLogin();
 
         $user = $this->getServiceLocator()
             ->getContainer()
@@ -86,5 +98,53 @@ class AuthoringTool extends ToolModule
             ->startLti1p3Session($message, $user);
 
         $this->forward('run', null, null, $_GET);
+    }
+
+    /**
+     * @return bool
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    private function isFeatureTaoAsToolEnabled(): bool
+    {
+        return $this->getServiceManager()
+            ->getContainer()
+            ->get(FeatureFlagChecker::class)
+            ->isEnabled(FeatureFlagCheckerInterface::FEATURE_FLAG_TAO_AS_A_TOOL);
+    }
+
+    /**
+     * @return LtiMessagePayloadInterface
+     * @throws ContainerExceptionInterface
+     * @throws InterruptedActionException
+     * @throws LtiException
+     * @throws NotFoundExceptionInterface
+     */
+    private function getLtiMessageOrRedirectToLogin(): LtiMessagePayloadInterface
+    {
+        if (!$this->isFeatureTaoAsToolEnabled()) {
+            $this->getLogger()->info(
+                'TAO as tool feature is disabled. The user will be redirected to the login page.'
+            );
+            $this->redirect(_url('login', 'Main', 'tao'));
+        }
+
+        try {
+            $message = $this->getValidatedLtiMessagePayload();
+        } /** @noinspection PhpRedundantCatchClauseInspection */ catch (LtiException $exception) {
+            if ($exception->getMessage() !== self::LTI_NO_MATCHING_REGISTRATION_FOUND_MESSAGE) {
+                throw $exception;
+            }
+
+            $this->getLogger()->info(
+                sprintf(
+                    'Missing registration for current audience. The user will be redirected to the login page. Exception: %s',
+                    $exception
+                )
+            );
+            $this->redirect(_url('login', 'Main', 'tao'));
+        }
+
+        return $message;
     }
 }
