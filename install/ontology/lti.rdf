@@ -289,7 +289,7 @@
     <rdfs:label xml:lang="en-US"><![CDATA[OIDC Authentication URL]]></rdfs:label>
     <rdfs:comment xml:lang="en-US"><![CDATA[OIDC Authentication URL]]></rdfs:comment>
     <rdfs:domain rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#Platform"/>
-    <rdfs:range rdf:resource="http://www.tao.lu/middleware/wfEngine.rdf#ClassCallOfservicesResources"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
     <generis:is_language_dependent rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#False"/>
     <widget:widget rdf:resource="http://www.tao.lu/datatypes/WidgetDefinitions.rdf#TextBox"/>
     <tao:TAOGUIOrder><![CDATA[500]]></tao:TAOGUIOrder>
