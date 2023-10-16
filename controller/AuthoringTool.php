@@ -42,7 +42,7 @@ use tao_models_classes_UserService;
 
 class AuthoringTool extends ToolModule
 {
-    const LTI_NO_MATCHING_REGISTRATION_FOUND_MESSAGE = 'No matching registration found tool side';
+    private const LTI_NO_MATCHING_REGISTRATION_FOUND_MESSAGE = 'No matching registration found tool side';
 
     /**
      * @throws LtiException
@@ -138,7 +138,7 @@ class AuthoringTool extends ToolModule
 
             $this->getLogger()->info(
                 sprintf(
-                    'Missing registration for current audience. The user will be redirected to the login page. Exception: %s',
+                    'Missing registration for current audience. Redirecting to the login page. Exception: %s',
                     $exception
                 )
             );
