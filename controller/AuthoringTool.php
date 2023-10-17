@@ -82,20 +82,20 @@ class AuthoringTool extends ToolModule
      */
     public function launch(): void
     {
-        $message = $this->getLtiMessageOrRedirectToLogin();
+        $ltiMessage = $this->getLtiMessageOrRedirectToLogin();
 
         $user = $this->getServiceLocator()
             ->getContainer()
             ->get(tao_models_classes_UserService::class)
             ->addUser(
-                $message->getUserIdentity()->getIdentifier(),
+                $ltiMessage->getUserIdentity()->getIdentifier(),
                 helpers_Random::generateString(UserService::PASSWORD_LENGTH),
-                new core_kernel_classes_Resource(current($message->getRoles()))
+                new core_kernel_classes_Resource(current($ltiMessage->getRoles()))
             );
         $this->getServiceLocator()
             ->getContainer()
             ->get(LtiService::class)
-            ->startLti1p3Session($message, $user);
+            ->startLti1p3Session($ltiMessage, $user);
 
         $this->forward('run', null, null, $_GET);
     }
