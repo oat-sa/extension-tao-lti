@@ -131,7 +131,7 @@ class AuthoringTool extends ToolModule
 
         try {
             $message = $this->getValidatedLtiMessagePayload();
-        } /** @noinspection PhpRedundantCatchClauseInspection */ catch (LtiException $exception) {
+        } catch (LtiException $exception) {
             if ($exception->getMessage() !== self::LTI_NO_MATCHING_REGISTRATION_FOUND_MESSAGE) {
                 throw $exception;
             }
