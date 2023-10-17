@@ -62,7 +62,7 @@ class AuthoringTool extends ToolModule
     }
 
     /**
-     * @thorws LtiException
+     * @throws LtiException
      */
     protected function getValidatedLtiMessagePayload(): LtiMessagePayloadInterface
     {
