@@ -136,7 +136,7 @@ class AuthoringTool extends ToolModule
                 throw $exception;
             }
 
-            $this->getLogger()->info(
+            $this->getLogger()->warning(
                 sprintf(
                     'Missing registration for current audience. Redirecting to the login page. Exception: %s',
                     $exception
