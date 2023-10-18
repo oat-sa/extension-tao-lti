@@ -101,7 +101,6 @@ class AuthoringTool extends ToolModule
     }
 
     /**
-     * @return bool
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
@@ -114,7 +113,6 @@ class AuthoringTool extends ToolModule
     }
 
     /**
-     * @return LtiMessagePayloadInterface
      * @throws ContainerExceptionInterface
      * @throws InterruptedActionException
      * @throws LtiException
