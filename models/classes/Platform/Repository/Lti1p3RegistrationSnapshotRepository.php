@@ -25,6 +25,7 @@ declare(strict_types=1);
 namespace oat\taoLti\models\classes\Platform\Repository;
 
 use common_persistence_SqlPersistence as SqlPersistence;
+use oat\generis\model\DependencyInjection\ServiceLink;
 use oat\generis\persistence\PersistenceManager;
 use OAT\Library\Lti1p3Core\Platform\Platform;
 use OAT\Library\Lti1p3Core\Registration\Registration;
@@ -32,7 +33,6 @@ use OAT\Library\Lti1p3Core\Registration\RegistrationInterface;
 use OAT\Library\Lti1p3Core\Registration\RegistrationRepositoryInterface;
 use OAT\Library\Lti1p3Core\Security\Key\KeyChainRepositoryInterface;
 use oat\taoLti\models\classes\Platform\LtiPlatformRegistration;
-use oat\taoLti\models\classes\Security\DataAccess\Repository\PlatformKeyChainRepository;
 use RuntimeException;
 
 class Lti1p3RegistrationSnapshotRepository implements RegistrationRepositoryInterface
@@ -43,8 +43,8 @@ class Lti1p3RegistrationSnapshotRepository implements RegistrationRepositoryInte
     /** @var KeyChainRepositoryInterface */
     private $keyChainRepository;
 
-    /** @var PlatformKeyChainRepository */
-    private $platformKeyChainRepository;
+    /** @var ServiceLink */
+    private $platformKeyChainRepositoryLink;
 
     /** @var DefaultToolConfig */
     private $defaultToolConfig;
@@ -55,13 +55,13 @@ class Lti1p3RegistrationSnapshotRepository implements RegistrationRepositoryInte
     public function __construct(
         PersistenceManager $persistenceManager,
         KeyChainRepositoryInterface $keyChainRepository,
-        PlatformKeyChainRepository $platformKeyChainRepository,
+        ServiceLink $platformKeyChainRepositoryLink,
         DefaultToolConfig $defaultToolConfig,
         string $persistenceId
     ) {
         $this->persistenceManager = $persistenceManager;
         $this->keyChainRepository = $keyChainRepository;
-        $this->platformKeyChainRepository = $platformKeyChainRepository;
+        $this->platformKeyChainRepositoryLink = $platformKeyChainRepositoryLink;
         $this->defaultToolConfig = $defaultToolConfig;
         $this->persistenceId = $persistenceId;
     }
@@ -206,7 +206,7 @@ class Lti1p3RegistrationSnapshotRepository implements RegistrationRepositoryInte
     private function toRegistration(array $row): ?Registration
     {
         $toolKeyChain = $this->keyChainRepository
-            ->find($this->platformKeyChainRepository->getDefaultKeyId());
+            ->find($this->platformKeyChainRepositoryLink->getService()->getDefaultKeyId());
 
         $platform = new Platform(
             $row['statement_id'],
