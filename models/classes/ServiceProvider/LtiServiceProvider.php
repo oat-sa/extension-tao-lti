@@ -187,7 +187,7 @@ class LtiServiceProvider implements ContainerServiceProviderInterface
             );
 
         $services
-            ->set('PlatformKeyChainRepository.link', ServiceLink::class)
+            ->set(PlatformKeyChainRepository::SERVICE_ID, ServiceLink::class)
             ->args(
                 [
                     PlatformKeyChainRepository::SERVICE_ID
@@ -201,7 +201,7 @@ class LtiServiceProvider implements ContainerServiceProviderInterface
                 [
                     service(PersistenceManager::SERVICE_ID),
                     service(CachedPlatformKeyChainRepository::class),
-                    service('PlatformKeyChainRepository.link'),
+                    service(PlatformKeyChainRepository::SERVICE_ID),
                     inline_service(DefaultToolConfig::class)->arg('$baseUri', ROOT_URL),
                     'default'
                 ]

@@ -206,7 +206,7 @@ class Lti1p3RegistrationSnapshotRepository implements RegistrationRepositoryInte
     private function toRegistration(array $row): ?Registration
     {
         $toolKeyChain = $this->keyChainRepository
-            ->find($this->platformKeyChainRepositoryLink->getService()->getDefaultKeyId());
+            ->find($this->platformKeyChainRepositoryLink->getDefaultKeyId());
 
         $platform = new Platform(
             $row['statement_id'],
