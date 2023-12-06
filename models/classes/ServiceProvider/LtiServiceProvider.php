@@ -50,6 +50,7 @@ use oat\oatbox\log\LoggerService;
 use oat\taoLti\models\classes\Client\LtiClientFactory;
 use oat\taoLti\models\classes\LtiAgs\LtiAgsScoreService;
 use oat\taoLti\models\classes\LtiAgs\LtiAgsScoreServiceInterface;
+use oat\taoLti\models\classes\LtiRoles;
 use oat\taoLti\models\classes\Platform\Repository\DefaultToolConfig;
 use oat\taoLti\models\classes\Platform\Repository\Lti1p3RegistrationRepository;
 use oat\taoLti\models\classes\Platform\Repository\Lti1p3RegistrationSnapshotRepository;
@@ -57,6 +58,7 @@ use oat\taoLti\models\classes\Platform\Repository\LtiPlatformFactory;
 use oat\taoLti\models\classes\Platform\Service\UpdatePlatformRegistrationSnapshotListener;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\CachedPlatformKeyChainRepository;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\PlatformKeyChainRepository;
+use oat\taoLti\models\classes\Tool\Service\AuthoringLtiRoleService;
 use oat\taoLti\models\classes\Tool\Validation\AuthoringToolValidator;
 use oat\taoLti\models\classes\Tool\Validation\Lti1p3Validator;
 use Psr\Cache\CacheItemPoolInterface;
@@ -77,6 +79,16 @@ class LtiServiceProvider implements ContainerServiceProviderInterface
         $parameters->set(
             'defaultScope',
             $_ENV['LTI_DEFAULT_SCOPE'] ?? 'https://purl.imsglobal.org/spec/lti-bo/scope/basicoutcome'
+        );
+
+        $parameters->set(
+            'rolesAllowed',
+            [
+                LtiRoles::CONTEXT_LTI1P3_ADMINISTRATOR_SUB_DEVELOPER,
+                LtiRoles::CONTEXT_LTI1P3_CONTENT_DEVELOPER_SUB_CONTENT_DEVELOPER,
+                LTIRoles::CONTEXT_INSTITUTION_LTI1P3_ADMINISTRATOR,
+                LtiRoles::CONTEXT_LTI1P3_INSTRUCTOR
+            ]
         );
 
         $services
@@ -236,6 +248,15 @@ class LtiServiceProvider implements ContainerServiceProviderInterface
                     service(RegistrationRepositoryInterface::class),
                     service(ItemPoolSimpleCacheAdapter::class),
                     service(AuthoringToolValidator::class),
+                ]
+            );
+
+        $services
+            ->set(AuthoringLtiRoleService::class, AuthoringLtiRoleService::class)
+            ->public()
+            ->args(
+                [
+                    param('rolesAllowed')
                 ]
             );
     }
