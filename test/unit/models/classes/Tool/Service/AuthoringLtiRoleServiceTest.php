@@ -71,8 +71,7 @@ class AuthoringLtiRoleServiceTest extends TestCase
         ];
     }
 
-    private
-    function ltiMessageRolesProvider(): array
+    private function ltiMessageRolesProvider(): array
     {
         return [
             'When one valid roles' => [
