@@ -20,27 +20,15 @@
 
 declare(strict_types=1);
 
-namespace oat\taoLti\models\classes\Tool\Service;
+namespace oat\taoLti\models\classes\Tool\Exception;
 
-use oat\taoLti\models\classes\Tool\Exception\WrongLtiRolesException;
+use Exception;
+use Throwable;
 
-class AuthoringLtiRoleService
+class WrongLtiRolesException extends Exception
 {
-    public function __construct(array $roleAllowed)
+    public function __construct(string $message = "Role not allowed", int $code = 0, ?Throwable $previous = null)
     {
-        $this->roleAllowed = $roleAllowed;
-    }
-
-    /**
-     * @throws WrongLtiRolesException
-     */
-    public function getValidRole(array $roles): string
-    {
-        $commonRoles = array_intersect($roles, $this->roleAllowed);
-
-        if (empty($commonRoles)) {
-            throw new WrongLtiRolesException();
-        }
-        return current($commonRoles);
+        parent::__construct($message, $code, $previous);
     }
 }

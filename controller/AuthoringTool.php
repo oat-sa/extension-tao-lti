@@ -79,6 +79,7 @@ class AuthoringTool extends ToolModule
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      * @throws common_exception_Error
+     * @throws WrongLtiRolesException
      */
     public function launch(): void
     {
@@ -92,6 +93,7 @@ class AuthoringTool extends ToolModule
                 helpers_Random::generateString(UserService::PASSWORD_LENGTH),
                 new core_kernel_classes_Resource(current($ltiMessage->getRoles()))
             );
+
         $this->getServiceLocator()
             ->getContainer()
             ->get(LtiService::class)
