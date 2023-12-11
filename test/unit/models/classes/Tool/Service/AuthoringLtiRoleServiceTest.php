@@ -59,7 +59,7 @@ class AuthoringLtiRoleServiceTest extends TestCase
         $this->subject->getValidRole($roles);
     }
 
-    private function invalidRolesProvider(): array
+    protected function invalidRolesProvider(): array
     {
         return [
             'Empty array' => [
@@ -71,7 +71,7 @@ class AuthoringLtiRoleServiceTest extends TestCase
         ];
     }
 
-    private function ltiMessageRolesProvider(): array
+    protected function ltiMessageRolesProvider(): array
     {
         return [
             'When one valid roles' => [
