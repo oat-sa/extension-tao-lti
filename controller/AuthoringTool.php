@@ -33,6 +33,8 @@ use oat\tao\model\featureFlag\FeatureFlagCheckerInterface;
 use oat\taoLti\models\classes\LtiException;
 use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
 use oat\taoLti\models\classes\LtiService;
+use oat\taoLti\models\classes\Tool\Exception\WrongLtiRolesException;
+use oat\taoLti\models\classes\Tool\Service\AuthoringLtiRoleService;
 use oat\taoLti\models\classes\Tool\Validation\Lti1p3Validator;
 use oat\taoLti\models\classes\user\UserService;
 use Psr\Container\ContainerExceptionInterface;
@@ -91,7 +93,9 @@ class AuthoringTool extends ToolModule
             ->addUser(
                 $ltiMessage->getUserIdentity()->getIdentifier(),
                 helpers_Random::generateString(UserService::PASSWORD_LENGTH),
-                new core_kernel_classes_Resource(current($ltiMessage->getRoles()))
+                new core_kernel_classes_Resource(
+                    $this->getAuthoringRoleService()->getValidRole($ltiMessage->getRoles())
+                )
             );
 
         $this->getServiceLocator()
@@ -146,5 +150,10 @@ class AuthoringTool extends ToolModule
         }
 
         return $message;
+    }
+
+    private function getAuthoringRoleService(): AuthoringLtiRoleService
+    {
+        return $this->getPsrContainer()->get(AuthoringLtiRoleService::class);
     }
 }
