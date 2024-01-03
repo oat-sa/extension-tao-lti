@@ -29,7 +29,7 @@ use PHPUnit\Framework\TestCase;
 
 class AuthoringLtiRoleServiceTest extends TestCase
 {
-    protected function setUp(): void
+    public function setUp(): void
     {
         $this->subject = new AuthoringLtiRoleService(
             [
@@ -59,7 +59,7 @@ class AuthoringLtiRoleServiceTest extends TestCase
         $this->subject->getValidRole($roles);
     }
 
-    protected function invalidRolesProvider(): array
+    public function invalidRolesProvider(): array
     {
         return [
             'Empty array' => [
@@ -71,7 +71,7 @@ class AuthoringLtiRoleServiceTest extends TestCase
         ];
     }
 
-    protected function ltiMessageRolesProvider(): array
+    public function ltiMessageRolesProvider(): array
     {
         return [
             'When one valid roles' => [
