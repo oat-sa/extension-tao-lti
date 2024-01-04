@@ -216,7 +216,7 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
         // nothing to do
     }
 
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return [
             self::USER_IDENTIFIER => $this->userUri,

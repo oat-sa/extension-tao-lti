@@ -191,7 +191,7 @@
       <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 Instructor]]></rdfs:label>
       <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context Instructor Role]]></rdfs:comment>
       <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiBaseRole"/>
-      <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAO.rdf#DeliveryRole"/>
+      <generis:includesRole rdf:resource="http://purl.imsglobal.org/vocab/lis/v2/membership/ContentDeveloper#ContentDeveloper"/>
       <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership/Instructor#ExternalInstructor">
