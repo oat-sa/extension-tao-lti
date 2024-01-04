@@ -81,7 +81,7 @@ class AuthoringLtiRoleServiceTest extends TestCase
                 ],
                 'expected' => 'http://purl.imsglobal.org/vocab/lis/v2/institution/person#Administrator'
             ],
-            'When more then one valid roles' => [
+            'When more than one valid roles' => [
                 'rolesProvided' => [
                     'http://purl.imsglobal.org/vocab/lis/v2/institution/person#Administrator',
                     'http://purl.imsglobal.org/vocab/lis/v2/membership/Administrator#Support',
