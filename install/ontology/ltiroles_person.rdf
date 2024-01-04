@@ -43,4 +43,13 @@
     <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
   </rdf:Description>
 
+  <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/institution/person#Administrator">
+    <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+    <rdfs:label xml:lang="en-US"><![CDATA[LTI Institution Administrator (System)]]></rdfs:label>
+    <rdfs:comment xml:lang="en-US"><![CDATA[The LTI Institution Administrator Role]]></rdfs:comment>
+    <taolti:RoleURN><![CDATA[urn:lti:sysrole:ims/lis/Administrator]]></taolti:RoleURN>
+    <generis:includesRole rdf:resource="http://purl.imsglobal.org/vocab/lis/v2/membership/Administrator#Developer"/>
+    <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
+  </rdf:Description>
+
  </rdf:RDF>
