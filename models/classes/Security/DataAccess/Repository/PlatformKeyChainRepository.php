@@ -99,7 +99,7 @@ class PlatformKeyChainRepository extends ConfigurableService implements KeyChain
         }
 
         return new KeyChain(
-            $this->getDefaultKeyId(),
+            $configs[self::OPTION_DEFAULT_KEY_ID] ?? null,
             $configs[self::OPTION_DEFAULT_KEY_NAME] ?? null,
             new Key($publicKey),
             new Key($privateKey)
@@ -119,7 +119,7 @@ class PlatformKeyChainRepository extends ConfigurableService implements KeyChain
                 $publicKey = $this->getFileSystem()->read($publicKey);
                 $privateKey = $this->getFileSystem()->read($privateKey);
 
-                $keyChains = new TaoKeyChain(
+                $keyChains[] = new TaoKeyChain(
                     $defaultKeyId,
                     $defaultKeyName,
                     new TaoKey($publicKey),

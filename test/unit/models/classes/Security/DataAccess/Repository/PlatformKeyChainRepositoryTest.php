@@ -60,6 +60,12 @@ class PlatformKeyChainRepositoryTest extends TestCase
                 PlatformKeyChainRepository::OPTION_DEFAULT_KEY_NAME => 'keyName',
                 PlatformKeyChainRepository::OPTION_DEFAULT_PUBLIC_KEY_PATH => '',
                 PlatformKeyChainRepository::OPTION_DEFAULT_PRIVATE_KEY_PATH => '',
+            ],
+            [
+                PlatformKeyChainRepository::OPTION_DEFAULT_KEY_ID => 'keyId2',
+                PlatformKeyChainRepository::OPTION_DEFAULT_KEY_NAME => 'keyName2',
+                PlatformKeyChainRepository::OPTION_DEFAULT_PUBLIC_KEY_PATH => '',
+                PlatformKeyChainRepository::OPTION_DEFAULT_PRIVATE_KEY_PATH => '',
             ]
         ]);
         $this->subject->setServiceLocator(
@@ -80,11 +86,11 @@ class PlatformKeyChainRepositoryTest extends TestCase
                 'privateKey'
             );
 
-        $keyChain = $this->subject->find('keyId');
+        $keyChain = $this->subject->find('keyId2');
 
         $this->assertInstanceOf(KeyChainInterface::class, $keyChain);
-        $this->assertEquals('keyId', $keyChain->getIdentifier());
-        $this->assertEquals('keyName', $keyChain->getKeySetName());
+        $this->assertEquals('keyId2', $keyChain->getIdentifier());
+        $this->assertEquals('keyName2', $keyChain->getKeySetName());
         $this->assertInstanceOf(KeyInterface::class, $keyChain->getPublicKey());
         $this->assertInstanceOf(KeyInterface::class, $keyChain->getPrivateKey());
     }
@@ -95,15 +101,18 @@ class PlatformKeyChainRepositoryTest extends TestCase
             ->method('read')
             ->willReturnOnConsecutiveCalls(
                 'publicKey',
+                'privateKey',
+                'publicKey',
                 'privateKey'
             );
 
         $keyChains = $this->subject->findAll(new KeyChainQuery())->getKeyChains();
 
         $this->assertIsArray($keyChains);
-        $keyChain = $keyChains[0];
-        $this->assertEquals('keyId', $keyChain->getIdentifier());
-        $this->assertEquals('keyName', $keyChain->getName());
+        $this->assertCount(2, $keyChains);
+        $keyChain = $keyChains[1];
+        $this->assertEquals('keyId2', $keyChain->getIdentifier());
+        $this->assertEquals('keyName2', $keyChain->getName());
         $this->assertInstanceOf(TaoKey::class, $keyChain->getPublicKey());
         $this->assertInstanceOf(TaoKey::class, $keyChain->getPrivateKey());
     }
