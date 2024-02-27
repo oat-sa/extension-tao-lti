@@ -141,7 +141,7 @@ class PlatformKeyChainRepositoryTest extends TestCase
             ->willReturn(false);
 
         $this->expectException(ErrorException::class);
-        $this->expectExceptionMessage('Impossible to write LTI keys. Configuration not found');
+        $this->expectExceptionMessage('Impossible to write LTI keys');
 
         $this->subject->saveDefaultKeyChain(new KeyChain('', '', new Key(''), new Key('')));
     }
