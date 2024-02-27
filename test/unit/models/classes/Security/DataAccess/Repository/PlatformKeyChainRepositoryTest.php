@@ -55,14 +55,13 @@ class PlatformKeyChainRepositoryTest extends TestCase
             ->willReturn($this->fileSystem);
 
         $this->subject = new PlatformKeyChainRepository([
-                [
-                    PlatformKeyChainRepository::OPTION_DEFAULT_KEY_ID => 'keyId',
-                    PlatformKeyChainRepository::OPTION_DEFAULT_KEY_NAME => 'keyName',
-                    PlatformKeyChainRepository::OPTION_DEFAULT_PUBLIC_KEY_PATH => '',
-                    PlatformKeyChainRepository::OPTION_DEFAULT_PRIVATE_KEY_PATH => '',
-                ]
+            [
+                PlatformKeyChainRepository::OPTION_DEFAULT_KEY_ID => 'keyId',
+                PlatformKeyChainRepository::OPTION_DEFAULT_KEY_NAME => 'keyName',
+                PlatformKeyChainRepository::OPTION_DEFAULT_PUBLIC_KEY_PATH => '',
+                PlatformKeyChainRepository::OPTION_DEFAULT_PRIVATE_KEY_PATH => '',
             ]
-        );
+        ]);
         $this->subject->setServiceLocator(
             $this->getServiceManagerMock(
                 [

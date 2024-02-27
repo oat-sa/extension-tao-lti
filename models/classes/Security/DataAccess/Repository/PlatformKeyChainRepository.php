@@ -126,7 +126,6 @@ class PlatformKeyChainRepository extends ConfigurableService implements KeyChain
                     new TaoKey($privateKey)
                 );
             }
-
         }
 
         if (empty($keyChains)) {
