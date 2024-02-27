@@ -27,11 +27,14 @@ use oat\generis\test\ServiceManagerMockTrait;
 use OAT\Library\Lti1p3Core\Security\Key\Key;
 use OAT\Library\Lti1p3Core\Security\Key\KeyChain;
 use OAT\Library\Lti1p3Core\Security\Key\KeyChainInterface;
+use OAT\Library\Lti1p3Core\Security\Key\KeyInterface;
 use oat\oatbox\filesystem\FileSystem;
 use oat\oatbox\filesystem\FileSystemService;
+use oat\tao\model\security\Business\Domain\Key\KeyChainQuery;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\PlatformKeyChainRepository;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use oat\tao\model\security\Business\Domain\Key\Key as TaoKey;
 
 class PlatformKeyChainRepositoryTest extends TestCase
 {
@@ -81,16 +84,31 @@ class PlatformKeyChainRepositoryTest extends TestCase
         $keyChain = $this->subject->find('keyId');
 
         $this->assertInstanceOf(KeyChainInterface::class, $keyChain);
-        $this->assertEquals(
-            $keyChain = new KeyChain(
-                'keyId',
-                'keyName',
-                new Key('publicKey'),
-                new Key('privateKey')
-            ),
-            $keyChain
-        );
+        $this->assertEquals('keyId', $keyChain->getIdentifier());
+        $this->assertEquals('keyName', $keyChain->getKeySetName());
+        $this->assertInstanceOf(KeyInterface::class, $keyChain->getPublicKey());
+        $this->assertInstanceOf(KeyInterface::class, $keyChain->getPrivateKey());
     }
+
+    public function testFindAll(): void
+    {
+        $this->fileSystem
+            ->method('read')
+            ->willReturnOnConsecutiveCalls(
+                'publicKey',
+                'privateKey'
+            );
+
+        $keyChains = $this->subject->findAll(new KeyChainQuery())->getKeyChains();
+
+        $this->assertIsArray($keyChains);
+        $keyChain = $keyChains[0];
+        $this->assertEquals('keyId', $keyChain->getIdentifier());
+        $this->assertEquals('keyName', $keyChain->getName());
+        $this->assertInstanceOf(TaoKey::class, $keyChain->getPublicKey());
+        $this->assertInstanceOf(TaoKey::class, $keyChain->getPrivateKey());
+    }
+
 
     public function testFindFails(): void
     {
@@ -103,29 +121,29 @@ class PlatformKeyChainRepositoryTest extends TestCase
         $this->assertNull($keyChain);
     }
 
-    public function testSave(): void
+    public function testSaveDefaultKeyChain(): void
     {
         $this->fileSystem
             ->method('put')
             ->willReturn(true);
 
-        $this->subject->save(
-            new KeyChain('', '', new Key(''), new Key(''))
+        $this->subject->saveDefaultKeyChain(
+            new KeyChain('keyId', '', new Key(''), new Key(''))
         );
 
         $this->expectNotToPerformAssertions();
     }
 
-    public function testSaveFails(): void
+    public function testSaveDefaultKeyChainFails(): void
     {
         $this->fileSystem
             ->method('put')
             ->willReturn(false);
 
         $this->expectException(ErrorException::class);
-        $this->expectExceptionMessage('Impossible to write LTI keys');
+        $this->expectExceptionMessage('Impossible to write LTI keys. Configuration not found');
 
-        $this->subject->save(new KeyChain('', '', new Key(''), new Key('')));
+        $this->subject->saveDefaultKeyChain(new KeyChain('', '', new Key(''), new Key('')));
     }
 
     public function testGetDefaultKeyId(): void

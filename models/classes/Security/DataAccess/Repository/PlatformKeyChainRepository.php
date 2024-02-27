@@ -48,25 +48,16 @@ class PlatformKeyChainRepository extends ConfigurableService implements KeyChain
     /**
      * @throws ErrorException
      */
-    public function save(KeyChainInterface $keyChain): void
+    public function saveDefaultKeyChain(KeyChainInterface $keyChain): void
     {
-        $isKeyFound = false;
+        $configs = $this->findConfiguration($this->getDefaultKeyId());
 
-        $options = $this->getOptions();
-        foreach ($options as $configs) {
-            $id = $configs[self::OPTION_DEFAULT_KEY_ID] ?? null;
-
-            if ($id === $keyChain->getIdentifier()) {
-                $publicKey = $configs[self::OPTION_DEFAULT_PUBLIC_KEY_PATH] ?? null;
-                $privateKey = $configs[self::OPTION_DEFAULT_PRIVATE_KEY_PATH] ?? null;
-                $isKeyFound = true;
-
-                break;
-            }
-        }
-        if (!$isKeyFound) {
+        if (empty($configs)) {
             throw new ErrorException('Impossible to write LTI keys. Configuration not found');
         }
+
+        $publicKey = $configs[self::OPTION_DEFAULT_PUBLIC_KEY_PATH] ?? null;
+        $privateKey = $configs[self::OPTION_DEFAULT_PRIVATE_KEY_PATH] ?? null;
 
         $isPublicKeySaved = $this->getFileSystem()
             ->put(
@@ -96,27 +87,14 @@ class PlatformKeyChainRepository extends ConfigurableService implements KeyChain
      */
     public function find(string $identifier): ?KeyChainInterface
     {
-        $isKeyFound = false;
-        $options = $this->getOptions();
-        foreach ($options as $configs) {
-            $defaultKeyId = $configs[self::OPTION_DEFAULT_KEY_ID] ?? null;
+        $configs = $this->findConfiguration($identifier);
 
-            if ($defaultKeyId === $identifier) {
-                $publicKey = $configs[self::OPTION_DEFAULT_PUBLIC_KEY_PATH] ?? null;
-                $privateKey = $configs[self::OPTION_DEFAULT_PRIVATE_KEY_PATH] ?? null;
-                $keyName = $configs[self::OPTION_DEFAULT_KEY_NAME] ?? null;
-                $isKeyFound = true;
-
-                break;
-            }
-        }
-
-        if (!$isKeyFound) {
+        if (empty($configs)) {
             return null;
         }
 
-        $publicKey = $this->getFileSystem()->read($publicKey);
-        $privateKey = $this->getFileSystem()->read($privateKey);
+        $publicKey = $this->getFileSystem()->read($configs[self::OPTION_DEFAULT_PUBLIC_KEY_PATH] ?? null);
+        $privateKey = $this->getFileSystem()->read($configs[self::OPTION_DEFAULT_PRIVATE_KEY_PATH] ?? null);
 
         if ($publicKey === false || $privateKey === false) {
             throw new ErrorException('Impossible to read LTI keys');
@@ -124,7 +102,7 @@ class PlatformKeyChainRepository extends ConfigurableService implements KeyChain
 
         return new KeyChain(
             $this->getDefaultKeyId(),
-            $keyName,
+            $configs[self::OPTION_DEFAULT_KEY_NAME] ?? null,
             new Key($publicKey),
             new Key($privateKey)
         );
@@ -176,5 +154,21 @@ class PlatformKeyChainRepository extends ConfigurableService implements KeyChain
             ->get(FileSystemService::SERVICE_ID);
 
         return $fileSystemService->getFileSystem(self::FILE_SYSTEM_ID);
+    }
+
+    /**
+     * @param string $identifier
+     * @return array|null
+     */
+    protected function findConfiguration(string $identifier): ?array
+    {
+        $options = $this->getOptions();
+        foreach ($options as $configs) {
+            if ($configs[self::OPTION_DEFAULT_KEY_ID] === $identifier) {
+                return $configs;
+            }
+        }
+
+        return null;
     }
 }

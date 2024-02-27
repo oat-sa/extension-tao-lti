@@ -36,7 +36,7 @@ class CachedKeyChainGenerator extends ConfigurableService implements KeyChainGen
     public function generate(): KeyChainInterface
     {
         $keyChain = $this->getKeyChainGenerator()->generate();
-        $this->getKeyChainRepository()->save($keyChain);
+        $this->getKeyChainRepository()->saveDefaultKeyChain($keyChain);
 
         $this->invalidateKeyChain($keyChain);
         $this->invalidateJwks();
