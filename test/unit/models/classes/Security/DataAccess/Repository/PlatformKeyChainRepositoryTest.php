@@ -22,7 +22,6 @@ declare(strict_types=1);
 
 namespace oat\taoLti\test\unit\models\classes\Security\DataAccess\Repository;
 
-use ErrorException;
 use oat\generis\test\ServiceManagerMockTrait;
 use OAT\Library\Lti1p3Core\Security\Key\Key;
 use OAT\Library\Lti1p3Core\Security\Key\KeyChain;
@@ -31,6 +30,7 @@ use OAT\Library\Lti1p3Core\Security\Key\KeyInterface;
 use oat\oatbox\filesystem\FileSystem;
 use oat\oatbox\filesystem\FileSystemService;
 use oat\tao\model\security\Business\Domain\Key\KeyChainQuery;
+use oat\taoLti\models\classes\Exception\PlatformKeyChainException;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\PlatformKeyChainRepository;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -140,7 +140,7 @@ class PlatformKeyChainRepositoryTest extends TestCase
             ->method('put')
             ->willReturn(false);
 
-        $this->expectException(ErrorException::class);
+        $this->expectException(PlatformKeyChainException::class);
         $this->expectExceptionMessage('Impossible to write LTI keys');
 
         $this->subject->saveDefaultKeyChain(new KeyChain('', '', new Key(''), new Key('')));
