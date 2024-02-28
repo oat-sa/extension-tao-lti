@@ -58,12 +58,18 @@ class PlatformKeyChainRepositoryTest extends TestCase
             [
                 PlatformKeyChainRepository::OPTION_DEFAULT_KEY_ID => 'keyId',
                 PlatformKeyChainRepository::OPTION_DEFAULT_KEY_NAME => 'keyName',
-                PlatformKeyChainRepository::OPTION_DEFAULT_PUBLIC_KEY_PATH => '',
-                PlatformKeyChainRepository::OPTION_DEFAULT_PRIVATE_KEY_PATH => '',
+                PlatformKeyChainRepository::OPTION_DEFAULT_PUBLIC_KEY_PATH => 'publicPath',
+                PlatformKeyChainRepository::OPTION_DEFAULT_PRIVATE_KEY_PATH => 'privatePath',
             ],
             [
                 PlatformKeyChainRepository::OPTION_DEFAULT_KEY_ID => 'keyId2',
                 PlatformKeyChainRepository::OPTION_DEFAULT_KEY_NAME => 'keyName2',
+                PlatformKeyChainRepository::OPTION_DEFAULT_PUBLIC_KEY_PATH => 'publicPath',
+                PlatformKeyChainRepository::OPTION_DEFAULT_PRIVATE_KEY_PATH => 'privatePath',
+            ],
+            [
+                PlatformKeyChainRepository::OPTION_DEFAULT_KEY_ID => 'keyId3',
+                PlatformKeyChainRepository::OPTION_DEFAULT_KEY_NAME => 'keyName3',
                 PlatformKeyChainRepository::OPTION_DEFAULT_PUBLIC_KEY_PATH => '',
                 PlatformKeyChainRepository::OPTION_DEFAULT_PRIVATE_KEY_PATH => '',
             ]
@@ -103,7 +109,9 @@ class PlatformKeyChainRepositoryTest extends TestCase
                 'publicKey',
                 'privateKey',
                 'publicKey',
-                'privateKey'
+                'privateKey',
+                '',
+                ''
             );
 
         $keyChains = $this->subject->findAll(new KeyChainQuery())->getKeyChains();
@@ -117,7 +125,6 @@ class PlatformKeyChainRepositoryTest extends TestCase
         $this->assertInstanceOf(TaoKey::class, $keyChain->getPrivateKey());
     }
 
-
     public function testFindFails(): void
     {
         $this->fileSystem
@@ -127,6 +134,14 @@ class PlatformKeyChainRepositoryTest extends TestCase
         $keyChain = $this->subject->find('');
 
         $this->assertNull($keyChain);
+    }
+
+    public function testFindWithEmptyPathFails(): void
+    {
+        $this->expectException(PlatformKeyChainException::class);
+        $this->expectExceptionMessage('The key path is not defined');
+
+        $this->subject->find('keyId3');
     }
 
     public function testSaveDefaultKeyChain(): void

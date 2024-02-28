@@ -56,18 +56,22 @@ class PlatformKeyChainRepository extends ConfigurableService implements KeyChain
 
         $publicKey = $configs[self::OPTION_DEFAULT_PUBLIC_KEY_PATH] ?? null;
         $privateKey = $configs[self::OPTION_DEFAULT_PRIVATE_KEY_PATH] ?? null;
+        $isPublicKeySaved = null;
+        $isPrivateKeySaved = null;
 
-        $isPublicKeySaved = $this->getFileSystem()
-            ->put(
-                ltrim($publicKey, DIRECTORY_SEPARATOR),
-                $keyChain->getPublicKey()->getContent()
-            );
+        if ($publicKey !== null && $privateKey !== null) {
+            $isPublicKeySaved = $this->getFileSystem()
+                ->put(
+                    ltrim($publicKey, DIRECTORY_SEPARATOR),
+                    $keyChain->getPublicKey()->getContent()
+                );
 
-        $isPrivateKeySaved = $this->getFileSystem()
-            ->put(
-                ltrim($privateKey, DIRECTORY_SEPARATOR),
-                $keyChain->getPrivateKey()->getContent()
-            );
+            $isPrivateKeySaved = $this->getFileSystem()
+                ->put(
+                    ltrim($privateKey, DIRECTORY_SEPARATOR),
+                    $keyChain->getPrivateKey()->getContent()
+                );
+        }
 
         if (!$isPublicKeySaved || !$isPrivateKeySaved) {
             throw new PlatformKeyChainException('Impossible to write LTI keys');
@@ -91,6 +95,13 @@ class PlatformKeyChainRepository extends ConfigurableService implements KeyChain
             return null;
         }
 
+        $publicKeyPath = $configs[self::OPTION_DEFAULT_PUBLIC_KEY_PATH] ?? null;
+        $privateKeyPath = $configs[self::OPTION_DEFAULT_PRIVATE_KEY_PATH] ?? null;
+
+        if (!$publicKeyPath || !$privateKeyPath) {
+            throw new PlatformKeyChainException('The key path is not defined');
+        }
+
         $publicKey = $this->getFileSystem()->read($configs[self::OPTION_DEFAULT_PUBLIC_KEY_PATH] ?? null);
         $privateKey = $this->getFileSystem()->read($configs[self::OPTION_DEFAULT_PRIVATE_KEY_PATH] ?? null);
 
@@ -112,12 +123,12 @@ class PlatformKeyChainRepository extends ConfigurableService implements KeyChain
         foreach ($options as $configs) {
             $defaultKeyId = $configs[self::OPTION_DEFAULT_KEY_ID] ?? null;
             $defaultKeyName = $configs[self::OPTION_DEFAULT_KEY_NAME] ?? null;
-            $publicKey = $configs[self::OPTION_DEFAULT_PUBLIC_KEY_PATH] ?? null;
-            $privateKey = $configs[self::OPTION_DEFAULT_PRIVATE_KEY_PATH] ?? null;
+            $publicKeyPath = $configs[self::OPTION_DEFAULT_PUBLIC_KEY_PATH] ?? null;
+            $privateKeyPath = $configs[self::OPTION_DEFAULT_PRIVATE_KEY_PATH] ?? null;
 
-            if ($defaultKeyId) {
-                $publicKey = $this->getFileSystem()->read($publicKey);
-                $privateKey = $this->getFileSystem()->read($privateKey);
+            if ($defaultKeyId && $publicKeyPath && $privateKeyPath) {
+                $publicKey = $this->getFileSystem()->read($publicKeyPath);
+                $privateKey = $this->getFileSystem()->read($privateKeyPath);
 
                 $keyChains[] = new TaoKeyChain(
                     $defaultKeyId,
