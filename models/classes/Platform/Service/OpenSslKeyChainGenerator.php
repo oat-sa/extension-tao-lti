@@ -30,15 +30,17 @@ use oat\taoLti\models\classes\Security\DataAccess\Repository\PlatformKeyChainRep
 
 class OpenSslKeyChainGenerator extends ConfigurableService implements KeyChainGeneratorInterface
 {
-    public function generate(): KeyChainInterface
-    {
+    public function generate(
+        string $id = PlatformKeyChainRepository::OPTION_DEFAULT_KEY_ID,
+        string $name = PlatformKeyChainRepository::OPTION_DEFAULT_KEY_NAME
+    ): KeyChainInterface {
         $resource = openssl_pkey_new($this->getOption(self::OPTION_DATA_STORE));
         openssl_pkey_export($resource, $privateKey);
         $publicKey = openssl_pkey_get_details($resource);
 
         return new KeyChain(
-            PlatformKeyChainRepository::OPTION_DEFAULT_KEY_ID,
-            PlatformKeyChainRepository::OPTION_DEFAULT_KEY_NAME,
+            $id,
+            $name,
             new Key($publicKey['key']),
             new Key($privateKey)
         );

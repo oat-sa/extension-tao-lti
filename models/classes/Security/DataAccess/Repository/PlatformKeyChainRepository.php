@@ -40,7 +40,9 @@ class PlatformKeyChainRepository extends ConfigurableService implements KeyChain
 {
     public const SERVICE_ID = 'taoLti/PlatformKeyChainRepository';
     public const OPTION_DEFAULT_KEY_ID = 'defaultKeyId';
+    public const OPTION_DEFAULT_KEY_ID_VALUE = 'defaultPlatformKeyId';
     public const OPTION_DEFAULT_KEY_NAME = 'defaultKeyName';
+    public const OPTION_DEFAULT_KEY_NAME_VALUE = 'defaultPlatformKeyName';
     public const OPTION_DEFAULT_PUBLIC_KEY_PATH = 'defaultPublicKeyPath';
     public const OPTION_DEFAULT_PRIVATE_KEY_PATH = 'defaultPrivateKeyPath';
     public const FILE_SYSTEM_ID = 'ltiKeyChain';
@@ -48,7 +50,17 @@ class PlatformKeyChainRepository extends ConfigurableService implements KeyChain
 
     public function saveDefaultKeyChain(KeyChainInterface $keyChain): void
     {
-        $configs = $this->findConfiguration($this->getDefaultKeyId());
+        $this->save($keyChain, $this->getDefaultKeyId());
+    }
+
+    public function saveKeyChain(KeyChainInterface $keyChain): void
+    {
+        $this->save($keyChain, $keyChain->getIdentifier());
+    }
+
+    protected function save(KeyChainInterface $keyChain, string $identifier): void
+    {
+        $configs = $this->findConfiguration($identifier);
 
         if (empty($configs)) {
             throw new PlatformKeyChainException('Impossible to write LTI keys. Configuration not found');
