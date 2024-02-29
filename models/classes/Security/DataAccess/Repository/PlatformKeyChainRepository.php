@@ -66,21 +66,21 @@ class PlatformKeyChainRepository extends ConfigurableService implements KeyChain
             throw new PlatformKeyChainException('Impossible to write LTI keys. Configuration not found');
         }
 
-        $publicKey = $configs[self::OPTION_DEFAULT_PUBLIC_KEY_PATH] ?? null;
-        $privateKey = $configs[self::OPTION_DEFAULT_PRIVATE_KEY_PATH] ?? null;
+        $publicKeyPath = $configs[self::OPTION_DEFAULT_PUBLIC_KEY_PATH] ?? null;
+        $privateKeyPath = $configs[self::OPTION_DEFAULT_PRIVATE_KEY_PATH] ?? null;
         $isPublicKeySaved = null;
         $isPrivateKeySaved = null;
 
-        if ($publicKey !== null && $privateKey !== null) {
+        if ($publicKeyPath !== null && $privateKeyPath !== null) {
             $isPublicKeySaved = $this->getFileSystem()
                 ->put(
-                    ltrim($publicKey, DIRECTORY_SEPARATOR),
+                    ltrim($publicKeyPath, DIRECTORY_SEPARATOR),
                     $keyChain->getPublicKey()->getContent()
                 );
 
             $isPrivateKeySaved = $this->getFileSystem()
                 ->put(
-                    ltrim($privateKey, DIRECTORY_SEPARATOR),
+                    ltrim($privateKeyPath, DIRECTORY_SEPARATOR),
                     $keyChain->getPrivateKey()->getContent()
                 );
         }
@@ -114,8 +114,8 @@ class PlatformKeyChainRepository extends ConfigurableService implements KeyChain
             throw new PlatformKeyChainException('The key path is not defined');
         }
 
-        $publicKey = $this->getFileSystem()->read($configs[self::OPTION_DEFAULT_PUBLIC_KEY_PATH] ?? null);
-        $privateKey = $this->getFileSystem()->read($configs[self::OPTION_DEFAULT_PRIVATE_KEY_PATH] ?? null);
+        $publicKey = $this->getFileSystem()->read($publicKeyPath);
+        $privateKey = $this->getFileSystem()->read($privateKeyPath);
 
         if ($publicKey === false || $privateKey === false) {
             throw new PlatformKeyChainException('Impossible to read LTI keys');
