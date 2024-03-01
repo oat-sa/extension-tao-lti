@@ -32,7 +32,8 @@ class OpenSslKeyChainGenerator extends ConfigurableService implements KeyChainGe
 {
     public function generate(
         string $id = PlatformKeyChainRepository::OPTION_DEFAULT_KEY_ID,
-        string $name = PlatformKeyChainRepository::OPTION_DEFAULT_KEY_NAME
+        string $name = PlatformKeyChainRepository::OPTION_DEFAULT_KEY_NAME,
+        ?string $keyPassword = null
     ): KeyChainInterface {
         $resource = openssl_pkey_new($this->getOption(self::OPTION_DATA_STORE));
         openssl_pkey_export($resource, $privateKey);
@@ -42,7 +43,7 @@ class OpenSslKeyChainGenerator extends ConfigurableService implements KeyChainGe
             $id,
             $name,
             new Key($publicKey['key']),
-            new Key($privateKey)
+            new Key($privateKey, $keyPassword)
         );
     }
 }

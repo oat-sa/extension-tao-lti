@@ -35,9 +35,10 @@ class CachedKeyChainGenerator extends ConfigurableService implements KeyChainGen
 
     public function generate(
         string $id = PlatformKeyChainRepository::OPTION_DEFAULT_KEY_ID_VALUE,
-        string $name = PlatformKeyChainRepository::OPTION_DEFAULT_KEY_NAME_VALUE
+        string $name = PlatformKeyChainRepository::OPTION_DEFAULT_KEY_NAME_VALUE,
+        ?string $keyPassword = null
     ): KeyChainInterface {
-        $keyChain = $this->getKeyChainGenerator()->generate($id, $name);
+        $keyChain = $this->getKeyChainGenerator()->generate($id, $name, $keyPassword);
         $this->save($keyChain);
 
         return $keyChain;

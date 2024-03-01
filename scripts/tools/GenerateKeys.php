@@ -24,6 +24,7 @@ namespace oat\taoLti\scripts\tools;
 
 use oat\oatbox\extension\script\ScriptAction;
 use oat\oatbox\reporting\Report;
+use oat\taoLti\models\classes\Platform\Service\OpenSslKeyChainGenerator;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\PlatformKeyChainRepository;
 use oat\taoLti\models\classes\Platform\Service\CachedKeyChainGenerator;
 
@@ -64,6 +65,13 @@ class GenerateKeys extends ScriptAction
                 'required' => true,
                 'cast' => 'string'
             ],
+            'private_key_password' => [
+                'prefix' => 'kpp',
+                'longPrefix' => 'private_key_password',
+                'description' => 'Lti Platform private key password',
+                'required' => false,
+                'cast' => 'string'
+            ],
         ];
     }
 
@@ -87,6 +95,7 @@ class GenerateKeys extends ScriptAction
         $keyName = $this->getOption('key_name');
         $publicKeyPath = $this->getOption('public_key_path');
         $privateKeyPath = $this->getOption('private_key_path');
+        $privateKeyPassword = $this->getOption('private_key_password');
 
         if (empty($keyId) || empty($keyName) || empty($publicKeyPath) || empty($privateKeyPath)) {
             return Report::createError(
@@ -95,12 +104,18 @@ class GenerateKeys extends ScriptAction
         }
         $platformKeyChainRepository = $this->getServiceLocator()->get(PlatformKeyChainRepository::SERVICE_ID);
         $options = $platformKeyChainRepository->getOptions();
-        $options[] = [
+        $option = [
             PlatformKeyChainRepository::OPTION_DEFAULT_KEY_ID => $keyId,
             PlatformKeyChainRepository::OPTION_DEFAULT_KEY_NAME => $keyName,
             PlatformKeyChainRepository::OPTION_DEFAULT_PUBLIC_KEY_PATH => $publicKeyPath,
             PlatformKeyChainRepository::OPTION_DEFAULT_PRIVATE_KEY_PATH => $privateKeyPath,
         ];
+
+        if (!empty($privateKeyPassword)) {
+            $option[PlatformKeyChainRepository::OPTION_DEFAULT_PRIVATE_KEY_PASSWORD] = $privateKeyPassword;
+        }
+
+        $options[] = $option;
         $platformKeyChainRepository->setOptions($options);
         $this->getServiceLocator()->register(PlatformKeyChainRepository::SERVICE_ID, $platformKeyChainRepository);
 

@@ -45,6 +45,7 @@ class PlatformKeyChainRepository extends ConfigurableService implements KeyChain
     public const OPTION_DEFAULT_KEY_NAME_VALUE = 'defaultPlatformKeyName';
     public const OPTION_DEFAULT_PUBLIC_KEY_PATH = 'defaultPublicKeyPath';
     public const OPTION_DEFAULT_PRIVATE_KEY_PATH = 'defaultPrivateKeyPath';
+    public const OPTION_DEFAULT_PRIVATE_KEY_PASSWORD = 'defaultPrivateKeyPassword';
     public const FILE_SYSTEM_ID = 'ltiKeyChain';
 
 
@@ -109,6 +110,7 @@ class PlatformKeyChainRepository extends ConfigurableService implements KeyChain
 
         $publicKeyPath = $configs[self::OPTION_DEFAULT_PUBLIC_KEY_PATH] ?? null;
         $privateKeyPath = $configs[self::OPTION_DEFAULT_PRIVATE_KEY_PATH] ?? null;
+        $privateKeyPassword = $configs[self::OPTION_DEFAULT_PRIVATE_KEY_PASSWORD] ?? null;
 
         if (!$publicKeyPath || !$privateKeyPath) {
             throw new PlatformKeyChainException('The key path is not defined');
@@ -125,7 +127,7 @@ class PlatformKeyChainRepository extends ConfigurableService implements KeyChain
             $configs[self::OPTION_DEFAULT_KEY_ID] ?? null,
             $configs[self::OPTION_DEFAULT_KEY_NAME] ?? null,
             new Key($publicKey),
-            new Key($privateKey)
+            new Key($privateKey, $privateKeyPassword)
         );
     }
 
@@ -137,6 +139,7 @@ class PlatformKeyChainRepository extends ConfigurableService implements KeyChain
             $defaultKeyName = $configs[self::OPTION_DEFAULT_KEY_NAME] ?? null;
             $publicKeyPath = $configs[self::OPTION_DEFAULT_PUBLIC_KEY_PATH] ?? null;
             $privateKeyPath = $configs[self::OPTION_DEFAULT_PRIVATE_KEY_PATH] ?? null;
+            $privateKeyPassword = $configs[self::OPTION_DEFAULT_PRIVATE_KEY_PASSWORD] ?? null;
 
             if ($defaultKeyId && $publicKeyPath && $privateKeyPath) {
                 $publicKey = $this->getFileSystem()->read($publicKeyPath);
@@ -146,7 +149,7 @@ class PlatformKeyChainRepository extends ConfigurableService implements KeyChain
                     $defaultKeyId,
                     $defaultKeyName,
                     new TaoKey($publicKey),
-                    new TaoKey($privateKey)
+                    new TaoKey($privateKey, $privateKeyPassword)
                 );
             }
         }
@@ -155,7 +158,7 @@ class PlatformKeyChainRepository extends ConfigurableService implements KeyChain
             throw new PlatformKeyChainException('Impossible to read LTI keys');
         }
 
-        return new KeyChainCollection($keyChains);
+        return new KeyChainCollection(...$keyChains);
     }
 
 
