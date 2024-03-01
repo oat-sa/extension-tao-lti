@@ -97,9 +97,6 @@ class PlatformKeyChainRepository extends ConfigurableService implements KeyChain
         return reset($options)[self::OPTION_DEFAULT_KEY_ID] ?? '';
     }
 
-    /**
-     * @throws common_exception_NoImplementation
-     */
     public function find(string $identifier): ?KeyChainInterface
     {
         $configs = $this->findConfiguration($identifier);
