@@ -65,10 +65,10 @@ class GenerateKeys extends ScriptAction
                 'required' => true,
                 'cast' => 'string'
             ],
-            'private_key_password' => [
+            'private_key_passphrase' => [
                 'prefix' => 'kpp',
-                'longPrefix' => 'private_key_password',
-                'description' => 'Lti Platform private key password',
+                'longPrefix' => 'private_key_passphrase',
+                'description' => 'Lti Platform private key passphrase',
                 'required' => false,
                 'cast' => 'string'
             ],
@@ -95,7 +95,7 @@ class GenerateKeys extends ScriptAction
         $keyName = $this->getOption('key_name');
         $publicKeyPath = $this->getOption('public_key_path');
         $privateKeyPath = $this->getOption('private_key_path');
-        $privateKeyPassword = $this->getOption('private_key_password');
+        $privateKeyPassphrase = $this->getOption('private_key_passphrase');
 
         if (empty($keyId) || empty($keyName) || empty($publicKeyPath) || empty($privateKeyPath)) {
             return Report::createError(
@@ -111,8 +111,8 @@ class GenerateKeys extends ScriptAction
             PlatformKeyChainRepository::OPTION_DEFAULT_PRIVATE_KEY_PATH => $privateKeyPath,
         ];
 
-        if (!empty($privateKeyPassword)) {
-            $option[PlatformKeyChainRepository::OPTION_DEFAULT_PRIVATE_KEY_PASSWORD] = $privateKeyPassword;
+        if (!empty($privateKeyPassphrase)) {
+            $option[PlatformKeyChainRepository::OPTION_DEFAULT_PRIVATE_KEY_PASSPHRASE] = $privateKeyPassphrase;
         }
 
         $options[] = $option;
@@ -121,7 +121,7 @@ class GenerateKeys extends ScriptAction
 
         /** @var CachedKeyChainGenerator $cachedKeyChainGenerator */
         $cachedKeyChainGenerator = $this->getServiceLocator()->get(CachedKeyChainGenerator::class);
-        $cachedKeyChainGenerator->generate($keyId, $keyName);
+        $cachedKeyChainGenerator->generate($keyId, $keyName, $privateKeyPassphrase);
 
         return Report::createSuccess('LTI Platform Key Chain generated successfully!');
     }

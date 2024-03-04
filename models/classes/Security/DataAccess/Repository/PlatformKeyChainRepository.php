@@ -45,7 +45,7 @@ class PlatformKeyChainRepository extends ConfigurableService implements KeyChain
     public const OPTION_DEFAULT_KEY_NAME_VALUE = 'defaultPlatformKeyName';
     public const OPTION_DEFAULT_PUBLIC_KEY_PATH = 'defaultPublicKeyPath';
     public const OPTION_DEFAULT_PRIVATE_KEY_PATH = 'defaultPrivateKeyPath';
-    public const OPTION_DEFAULT_PRIVATE_KEY_PASSWORD = 'defaultPrivateKeyPassword';
+    public const OPTION_DEFAULT_PRIVATE_KEY_PASSPHRASE = 'defaultPrivateKeyPassphrase';
     public const FILE_SYSTEM_ID = 'ltiKeyChain';
 
 
@@ -107,7 +107,7 @@ class PlatformKeyChainRepository extends ConfigurableService implements KeyChain
 
         $publicKeyPath = $configs[self::OPTION_DEFAULT_PUBLIC_KEY_PATH] ?? null;
         $privateKeyPath = $configs[self::OPTION_DEFAULT_PRIVATE_KEY_PATH] ?? null;
-        $privateKeyPassword = $configs[self::OPTION_DEFAULT_PRIVATE_KEY_PASSWORD] ?? null;
+        $privateKeyPassword = $configs[self::OPTION_DEFAULT_PRIVATE_KEY_PASSPHRASE] ?? null;
 
         if (!$publicKeyPath || !$privateKeyPath) {
             throw new PlatformKeyChainException('The key path is not defined');
@@ -136,7 +136,7 @@ class PlatformKeyChainRepository extends ConfigurableService implements KeyChain
             $defaultKeyName = $configs[self::OPTION_DEFAULT_KEY_NAME] ?? null;
             $publicKeyPath = $configs[self::OPTION_DEFAULT_PUBLIC_KEY_PATH] ?? null;
             $privateKeyPath = $configs[self::OPTION_DEFAULT_PRIVATE_KEY_PATH] ?? null;
-            $privateKeyPassword = $configs[self::OPTION_DEFAULT_PRIVATE_KEY_PASSWORD] ?? null;
+            $privateKeyPassword = $configs[self::OPTION_DEFAULT_PRIVATE_KEY_PASSPHRASE] ?? null;
 
             if ($defaultKeyId && $publicKeyPath && $privateKeyPath) {
                 $publicKey = $this->getFileSystem()->read($publicKeyPath);

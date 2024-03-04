@@ -28,5 +28,5 @@ interface KeyChainGeneratorInterface
 {
     public const OPTION_DATA_STORE = 'sslConfig';
 
-    public function generate(string $id, string $name, ?string $keyPassword): KeyChainInterface;
+    public function generate(string $id, string $name, ?string $passPhrase): KeyChainInterface;
 }
