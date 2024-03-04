@@ -23,7 +23,6 @@ declare(strict_types=1);
 namespace oat\taoLti\models\classes\Platform\Service;
 
 use OAT\Library\Lti1p3Core\Security\Key\KeyChainInterface;
-use OAT\Library\Lti1p3Core\Security\Key\KeyChainRepositoryInterface;
 use oat\oatbox\cache\SimpleCache;
 use oat\oatbox\service\ConfigurableService;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\CachedPlatformJwksRepository;
@@ -33,15 +32,26 @@ use Psr\SimpleCache\CacheInterface;
 
 class CachedKeyChainGenerator extends ConfigurableService implements KeyChainGeneratorInterface
 {
-    public function generate(): KeyChainInterface
+
+    public function generate(
+        string $id = PlatformKeyChainRepository::OPTION_DEFAULT_KEY_ID_VALUE,
+        string $name = PlatformKeyChainRepository::OPTION_DEFAULT_KEY_NAME_VALUE,
+        ?string $passPhrase = null
+    ): KeyChainInterface {
+        $keyChain = $this->getKeyChainGenerator()->generate($id, $name, $passPhrase);
+        $this->save($keyChain);
+
+        return $keyChain;
+    }
+
+    private function save(KeyChainInterface $keyChain): bool
     {
-        $keyChain = $this->getKeyChainGenerator()->generate();
-        $this->getKeyChainRepository()->save($keyChain);
+        $this->getKeyChainRepository()->saveKeyChain($keyChain);
 
         $this->invalidateKeyChain($keyChain);
         $this->invalidateJwks();
 
-        return $keyChain;
+        return true;
     }
 
     private function invalidateKeyChain(KeyChainInterface $keyChain): void
@@ -65,7 +75,7 @@ class CachedKeyChainGenerator extends ConfigurableService implements KeyChainGen
         return $this->getServiceLocator()->get(OpenSslKeyChainGenerator::class);
     }
 
-    private function getKeyChainRepository(): KeyChainRepositoryInterface
+    private function getKeyChainRepository(): PlatformKeyChainRepository
     {
         return $this->getServiceLocator()->get(PlatformKeyChainRepository::class);
     }
