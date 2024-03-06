@@ -69,8 +69,8 @@ class PlatformKeyChainRepository extends ConfigurableService implements KeyChain
 
         $publicKeyPath = $configs[self::OPTION_DEFAULT_PUBLIC_KEY_PATH] ?? null;
         $privateKeyPath = $configs[self::OPTION_DEFAULT_PRIVATE_KEY_PATH] ?? null;
-        $isPublicKeySaved = null;
-        $isPrivateKeySaved = null;
+        $isPublicKeySaved = false;
+        $isPrivateKeySaved = false;
 
         if ($publicKeyPath !== null && $privateKeyPath !== null) {
             $isPublicKeySaved = $this->getFileSystem()
@@ -105,9 +105,10 @@ class PlatformKeyChainRepository extends ConfigurableService implements KeyChain
             return null;
         }
 
+        $keyName = $configs[self::OPTION_DEFAULT_KEY_NAME] ?? '';
         $publicKeyPath = $configs[self::OPTION_DEFAULT_PUBLIC_KEY_PATH] ?? null;
         $privateKeyPath = $configs[self::OPTION_DEFAULT_PRIVATE_KEY_PATH] ?? null;
-        $privateKeyPassword = $configs[self::OPTION_DEFAULT_PRIVATE_KEY_PASSPHRASE] ?? null;
+        $privateKeyPassphrase = $configs[self::OPTION_DEFAULT_PRIVATE_KEY_PASSPHRASE] ?? null;
 
         if (!$publicKeyPath || !$privateKeyPath) {
             throw new PlatformKeyChainException('The key path is not defined');
@@ -121,10 +122,10 @@ class PlatformKeyChainRepository extends ConfigurableService implements KeyChain
         }
 
         return new KeyChain(
-            $configs[self::OPTION_DEFAULT_KEY_ID] ?? null,
-            $configs[self::OPTION_DEFAULT_KEY_NAME] ?? null,
+            $identifier,
+            $keyName,
             new Key($publicKey),
-            new Key($privateKey, $privateKeyPassword)
+            new Key($privateKey, $privateKeyPassphrase)
         );
     }
 
@@ -133,10 +134,10 @@ class PlatformKeyChainRepository extends ConfigurableService implements KeyChain
         $options = $this->getOptions();
         foreach ($options as $configs) {
             $defaultKeyId = $configs[self::OPTION_DEFAULT_KEY_ID] ?? null;
-            $defaultKeyName = $configs[self::OPTION_DEFAULT_KEY_NAME] ?? null;
+            $defaultKeyName = $configs[self::OPTION_DEFAULT_KEY_NAME] ?? '';
             $publicKeyPath = $configs[self::OPTION_DEFAULT_PUBLIC_KEY_PATH] ?? null;
             $privateKeyPath = $configs[self::OPTION_DEFAULT_PRIVATE_KEY_PATH] ?? null;
-            $privateKeyPassword = $configs[self::OPTION_DEFAULT_PRIVATE_KEY_PASSPHRASE] ?? null;
+            $privateKeyPassphrase = $configs[self::OPTION_DEFAULT_PRIVATE_KEY_PASSPHRASE] ?? null;
 
             if ($defaultKeyId && $publicKeyPath && $privateKeyPath) {
                 $publicKey = $this->getFileSystem()->read($publicKeyPath);
@@ -146,7 +147,7 @@ class PlatformKeyChainRepository extends ConfigurableService implements KeyChain
                     $defaultKeyId,
                     $defaultKeyName,
                     new TaoKey($publicKey),
-                    new TaoKey($privateKey, $privateKeyPassword)
+                    new TaoKey($privateKey, $privateKeyPassphrase)
                 );
             }
         }
