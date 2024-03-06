@@ -56,8 +56,14 @@ class KeyChainGeneratorTest extends TestCase
 
         $this->assertEquals('pass', $result->getPrivateKey()->getPassPhrase());
         $this->assertEmpty($result->getPublicKey()->getPassPhrase());
-        $this->assertStringContainsString('-----BEGIN ENCRYPTED PRIVATE KEY-----', $result->getPrivateKey()->getContent());
-        $this->assertStringContainsString('-----END ENCRYPTED PRIVATE KEY-----', $result->getPrivateKey()->getContent());
+        $this->assertStringContainsString(
+            '-----BEGIN ENCRYPTED PRIVATE KEY-----',
+            $result->getPrivateKey()->getContent()
+        );
+        $this->assertStringContainsString(
+            '-----END ENCRYPTED PRIVATE KEY-----',
+            $result->getPrivateKey()->getContent()
+        );
         $this->assertStringContainsString('-----BEGIN PUBLIC KEY-----', $result->getPublicKey()->getContent());
         $this->assertStringContainsString('-----END PUBLIC KEY-----', $result->getPublicKey()->getContent());
     }

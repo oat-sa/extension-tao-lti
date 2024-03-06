@@ -32,7 +32,6 @@ use Psr\SimpleCache\CacheInterface;
 
 class CachedKeyChainGenerator extends ConfigurableService implements KeyChainGeneratorInterface
 {
-
     public function generate(
         string $id = PlatformKeyChainRepository::OPTION_DEFAULT_KEY_ID_VALUE,
         string $name = PlatformKeyChainRepository::OPTION_DEFAULT_KEY_NAME_VALUE,
