@@ -35,6 +35,7 @@ use oat\oatbox\log\LoggerService;
 use oat\oatbox\service\ConfigurableService;
 use oat\oatbox\service\ServiceManager;
 use oat\oatbox\session\SessionService;
+use oat\tao\model\session\Context\TenantDataSessionContext;
 use oat\tao\model\TaoOntology;
 use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
 use oat\taoLti\models\classes\user\Lti1p3User;
@@ -114,7 +115,7 @@ class LtiService extends ConfigurableService
             $clientId = $messagePayload->getClaim(MessagePayloadInterface::CLAIM_AUD)[0] ?? null;
             $contexts = null;
             if ($clientId !== null) {
-                $contexts = [new TenantDataLtiSessionContext($clientId)];
+                $contexts = [new TenantDataSessionContext($clientId)];
             }
 
             $session = TaoLtiSession::fromVersion1p3($ltiUser, $contexts);
