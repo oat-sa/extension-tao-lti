@@ -111,9 +111,16 @@ class LtiService extends ConfigurableService
 
             $ltiUser->setRegistrationId($registration->getIdentifier());
 
-            $session = TaoLtiSession::fromVersion1p3($ltiUser);
+            $clientId = $messagePayload->getClaim(MessagePayloadInterface::CLAIM_AUD)[0] ?? null;
+            $contexts = null;
+            if ($clientId !== null) {
+                $contexts = [new TenantDataLtiSessionContext($clientId)];
+            }
+
+            $session = TaoLtiSession::fromVersion1p3($ltiUser, $contexts);
 
             $this->getServiceLocator()->propagate($session);
+
 
             return $session;
         } catch (LtiInvalidVariableException $e) {
