@@ -100,9 +100,9 @@ class CachedPlatformKeyChainRepositoryTest extends TestCase
 
         $this->platformKeyChainRepository
             ->expects($this->once())
-            ->method('save');
+            ->method('saveDefaultKeyChain');
 
-        $this->subject->save($keyChain);
+        $this->subject->saveDefaultKeyChain($keyChain);
     }
 
     public function testFindWhenCacheEmpty(): void
@@ -143,7 +143,9 @@ class CachedPlatformKeyChainRepositoryTest extends TestCase
 
         $this->assertSame(self::KEY_CHAIN_ID, $keyChain->getIdentifier());
         $this->assertSame('privateKey', $keyChain->getPrivateKey()->getContent());
+        $this->assertSame('pass', $keyChain->getPrivateKey()->getPassPhrase());
         $this->assertSame('publicKey', $keyChain->getPublicKey()->getContent());
+        $this->assertNull($keyChain->getPublicKey()->getPassPhrase());
     }
 
     public function testFind(): void
@@ -187,7 +189,7 @@ class CachedPlatformKeyChainRepositoryTest extends TestCase
             self::KEY_CHAIN_ID,
             self::KEY_CHAIN_NAME,
             new Key('publicKey'),
-            new Key('privateKey')
+            new Key('privateKey', 'pass')
         );
     }
 }

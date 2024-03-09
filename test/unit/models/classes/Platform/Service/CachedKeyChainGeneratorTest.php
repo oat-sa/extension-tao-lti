@@ -69,7 +69,7 @@ class CachedKeyChainGeneratorTest extends TestCase
 
         $this->platformKeyChainRepositoryMock
             ->expects($this->once())
-            ->method('save');
+            ->method('saveKeyChain');
 
         $this->simpleCacheMock
             ->expects($this->exactly(3))
