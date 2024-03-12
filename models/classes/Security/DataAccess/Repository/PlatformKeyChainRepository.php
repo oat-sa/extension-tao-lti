@@ -181,7 +181,7 @@ class PlatformKeyChainRepository extends ConfigurableService implements KeyChain
      * @param string $identifier
      * @return array|null
      */
-    protected function findConfiguration(string $identifier): ?array
+    public function findConfiguration(string $identifier): ?array
     {
         $options = $this->getOptions();
         foreach ($options as $configs) {
