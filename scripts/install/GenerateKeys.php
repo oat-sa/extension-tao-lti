@@ -24,11 +24,13 @@ namespace oat\taoLti\scripts\install;
 
 use oat\oatbox\extension\AbstractAction;
 use oat\taoLti\models\classes\Platform\Service\CachedKeyChainGenerator;
+use oat\taoLti\models\classes\Security\DataAccess\Repository\PlatformKeyChainRepository;
 
 class GenerateKeys extends AbstractAction
 {
     public function __invoke($params)
     {
-        $this->getServiceLocator()->get(CachedKeyChainGenerator::class)->generate();
+        $defaultKeyId = $this->getServiceLocator()->get(PlatformKeyChainRepository::SERVICE_ID)->getDefaultKeyId();
+        $this->getServiceLocator()->get(CachedKeyChainGenerator::class)->generate($defaultKeyId);
     }
 }
