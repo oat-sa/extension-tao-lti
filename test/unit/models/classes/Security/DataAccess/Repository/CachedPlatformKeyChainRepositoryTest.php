@@ -176,6 +176,11 @@ class CachedPlatformKeyChainRepositoryTest extends TestCase
                 ]
             );
 
+        $this->platformKeyChainRepository
+            ->expects($this->once())
+            ->method('findConfiguration')
+            ->willReturn([PlatformKeyChainRepository::OPTION_DEFAULT_KEY_ID => self::KEY_CHAIN_ID]);
+
         $keyChain = $this->subject->find(self::KEY_CHAIN_ID);
 
         $this->assertSame(self::KEY_CHAIN_ID, $keyChain->getIdentifier());
