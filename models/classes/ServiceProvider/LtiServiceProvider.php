@@ -28,6 +28,7 @@ use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
 use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
 use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
 use oat\generis\model\DependencyInjection\ContainerServiceProviderInterface;
+use oat\generis\model\DependencyInjection\ServiceLink;
 use oat\generis\model\DependencyInjection\ServiceOptions;
 use oat\generis\persistence\PersistenceManager;
 use OAT\Library\Lti1p3Ags\Factory\Score\ScoreFactory;
@@ -64,10 +65,10 @@ use oat\taoLti\models\classes\Tool\Validation\Lti1p3Validator;
 use Psr\Cache\CacheItemPoolInterface;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
-use function Symfony\Component\DependencyInjection\Loader\Configurator\inline_service;
-use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\env;
+use function Symfony\Component\DependencyInjection\Loader\Configurator\inline_service;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
+use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 
 class LtiServiceProvider implements ContainerServiceProviderInterface
 {
@@ -198,13 +199,21 @@ class LtiServiceProvider implements ContainerServiceProviderInterface
             );
 
         $services
+            ->set(PlatformKeyChainRepository::SERVICE_ID, ServiceLink::class)
+            ->args(
+                [
+                    PlatformKeyChainRepository::SERVICE_ID
+                ]
+            );
+
+        $services
             ->set(RegistrationRepositoryInterface::class, Lti1p3RegistrationSnapshotRepository::class)
             ->public()
             ->args(
                 [
                     service(PersistenceManager::SERVICE_ID),
                     service(CachedPlatformKeyChainRepository::class),
-                    service(PlatformKeyChainRepository::class),
+                    service(PlatformKeyChainRepository::SERVICE_ID),
                     inline_service(DefaultToolConfig::class)->arg('$baseUri', ROOT_URL),
                     'default'
                 ]
