@@ -66,6 +66,8 @@ class LtiLaunchData implements \JsonSerializable
     public const LTI_SHOW_SCORE = 'custom_show_score';
     public const LTI_SHOW_CORRECT = 'custom_show_correct';
 
+    public const LTI_REDIRECT_AFTER_LOGOUT_URL = 'authoringSettings.redirectAfterLogoutUrl';
+
     // for user claim
     private const LTI_FOR_USER_ID = 'lti_for_user_id';
     private const LTI_FOR_USER_EMAIL = 'lti_for_user_email';
