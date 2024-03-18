@@ -46,20 +46,19 @@ class CachedPlatformKeyChainRepository extends ConfigurableService implements Ke
      * @throws InvalidArgumentException
      * @throws ErrorException
      */
-    public function save(KeyChainInterface $keyChain): void
+    public function saveDefaultKeyChain(KeyChainInterface $keyChain): void
     {
         $this->setKeys(
             $keyChain,
             $keyChain->getIdentifier()
         );
 
-        $this->getPlatformKeyChainRepository()->save($keyChain);
+        $this->getPlatformKeyChainRepository()->saveDefaultKeyChain($keyChain);
     }
 
     public function find(string $identifier): ?KeyChainInterface
     {
         if ($this->exists($identifier)) {
-            //TODO: Needs to be refactor if we have multiple key chains
             $rawKeys = $this->getCacheService()->getMultiple(
                 [
                     sprintf(self::PRIVATE_PATTERN, $identifier),
@@ -67,11 +66,11 @@ class CachedPlatformKeyChainRepository extends ConfigurableService implements Ke
                 ]
             );
 
-            $platformKeyChainRepository = $this->getPlatformKeyChainRepository();
+            $configuration = $this->getPlatformKeyChainRepository()->findConfiguration($identifier);
 
             return new KeyChain(
-                $platformKeyChainRepository->getOption(PlatformKeyChainRepository::OPTION_DEFAULT_KEY_ID),
-                $platformKeyChainRepository->getOption(PlatformKeyChainRepository::OPTION_DEFAULT_KEY_NAME),
+                $configuration[PlatformKeyChainRepository::OPTION_DEFAULT_KEY_ID] ?? '',
+                $configuration[PlatformKeyChainRepository::OPTION_DEFAULT_KEY_NAME] ?? '',
                 new Key($rawKeys[sprintf(self::PUBLIC_PATTERN, $identifier)]),
                 new Key($rawKeys[sprintf(self::PRIVATE_PATTERN, $identifier)])
             );
@@ -93,7 +92,6 @@ class CachedPlatformKeyChainRepository extends ConfigurableService implements Ke
         }
 
         if ($this->exists($query->getIdentifier())) {
-            //TODO: Needs to be refactor if we have multiple key chains
             $rawKeys = $this->getCacheService()->getMultiple(
                 [
                     sprintf(self::PRIVATE_PATTERN, $query->getIdentifier()),
@@ -101,12 +99,12 @@ class CachedPlatformKeyChainRepository extends ConfigurableService implements Ke
                 ]
             );
 
-            $platformKeyChainRepository = $this->getPlatformKeyChainRepository();
+            $configuration = $this->getPlatformKeyChainRepository()->findConfiguration($query->getIdentifier());
 
             return new KeyChainCollection(
                 new TaoKeyChain(
-                    $platformKeyChainRepository->getOption(PlatformKeyChainRepository::OPTION_DEFAULT_KEY_ID),
-                    $platformKeyChainRepository->getOption(PlatformKeyChainRepository::OPTION_DEFAULT_KEY_NAME),
+                    $configuration[PlatformKeyChainRepository::OPTION_DEFAULT_KEY_ID] ?? '',
+                    $configuration[PlatformKeyChainRepository::OPTION_DEFAULT_KEY_NAME] ?? '',
                     new TaoKey($rawKeys[sprintf(self::PUBLIC_PATTERN, $query->getIdentifier())]),
                     new TaoKey($rawKeys[sprintf(self::PRIVATE_PATTERN, $query->getIdentifier())])
                 )

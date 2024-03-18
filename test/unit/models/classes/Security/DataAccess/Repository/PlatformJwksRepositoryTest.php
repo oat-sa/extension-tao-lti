@@ -63,7 +63,7 @@ class PlatformJwksRepositoryTest extends TestCase
     public function testFind(): void
     {
         $keyChain = new KeyChain('id', 'name', new Key('123456'), new Key('654321'));
-        $collection = new KeyChainCollection(...[$keyChain]);
+        $collection = new KeyChainCollection($keyChain);
 
         $this->keyChainRepository
             ->method('findAll')

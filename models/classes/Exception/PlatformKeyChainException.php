@@ -15,22 +15,13 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2020 (original work) Open Assessment Technologies SA;
+ * Copyright (c) 2024 (original work) Open Assessment Technologies SA;
  */
 
-declare(strict_types=1);
+namespace oat\taoLti\models\classes\Exception;
 
-namespace oat\taoLti\scripts\install;
+use oat\taoLti\models\classes\LtiException;
 
-use oat\oatbox\extension\AbstractAction;
-use oat\taoLti\models\classes\Platform\Service\CachedKeyChainGenerator;
-use oat\taoLti\models\classes\Security\DataAccess\Repository\PlatformKeyChainRepository;
-
-class GenerateKeys extends AbstractAction
+class PlatformKeyChainException extends LtiException
 {
-    public function __invoke($params)
-    {
-        $defaultKeyId = $this->getServiceLocator()->get(PlatformKeyChainRepository::SERVICE_ID)->getDefaultKeyId();
-        $this->getServiceLocator()->get(CachedKeyChainGenerator::class)->generate($defaultKeyId);
-    }
 }
