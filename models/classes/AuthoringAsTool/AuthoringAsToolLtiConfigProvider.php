@@ -23,7 +23,7 @@ declare(strict_types=1);
 namespace oat\taoLti\models\classes\AuthoringAsTool;
 
 use oat\oatbox\session\SessionService;
-use oat\tao\model\auth\AuthoringAsToolConfigProviderInterface;
+use oat\tao\model\AuthoringAsTool\AuthoringAsToolConfigProviderInterface;
 use oat\taoLti\models\classes\LtiLaunchData;
 use oat\taoLti\models\classes\TaoLtiSession;
 use Psr\Log\LoggerInterface;

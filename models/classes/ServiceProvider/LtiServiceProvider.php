@@ -48,7 +48,7 @@ use oat\oatbox\cache\factory\CacheItemPoolFactory;
 use oat\oatbox\cache\ItemPoolSimpleCacheAdapter;
 use oat\oatbox\log\LoggerService;
 use oat\oatbox\session\SessionService;
-use oat\tao\model\auth\AuthoringAsToolConfigProviderInterface;
+use oat\tao\model\AuthoringAsTool\AuthoringAsToolConfigProviderInterface;
 use oat\taoLti\models\classes\AuthoringAsTool\AuthoringAsToolLtiConfigProvider;
 use oat\taoLti\models\classes\Client\LtiClientFactory;
 use oat\taoLti\models\classes\LtiAgs\LtiAgsScoreService;
