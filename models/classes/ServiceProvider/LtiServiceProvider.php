@@ -47,6 +47,9 @@ use OAT\Library\Lti1p3Core\Service\Client\LtiServiceClientInterface;
 use oat\oatbox\cache\factory\CacheItemPoolFactory;
 use oat\oatbox\cache\ItemPoolSimpleCacheAdapter;
 use oat\oatbox\log\LoggerService;
+use oat\oatbox\session\SessionService;
+use oat\tao\model\auth\AuthoringAsToolConfigProviderInterface;
+use oat\taoLti\models\classes\AuthoringAsTool\AuthoringAsToolLtiConfigProvider;
 use oat\taoLti\models\classes\Client\LtiClientFactory;
 use oat\taoLti\models\classes\LtiAgs\LtiAgsScoreService;
 use oat\taoLti\models\classes\LtiAgs\LtiAgsScoreServiceInterface;
@@ -64,10 +67,10 @@ use oat\taoLti\models\classes\Tool\Validation\Lti1p3Validator;
 use Psr\Cache\CacheItemPoolInterface;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
-use function Symfony\Component\DependencyInjection\Loader\Configurator\inline_service;
-use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\env;
+use function Symfony\Component\DependencyInjection\Loader\Configurator\inline_service;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
+use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 
 class LtiServiceProvider implements ContainerServiceProviderInterface
 {
@@ -259,5 +262,18 @@ class LtiServiceProvider implements ContainerServiceProviderInterface
                     param('rolesAllowed')
                 ]
             );
+
+        $services
+            ->set(AuthoringAsToolLtiConfigProvider::class)
+            ->decorate(AuthoringAsToolConfigProviderInterface::class)
+            ->public()
+            ->args(
+                [
+                    service(AuthoringAsToolLtiConfigProvider::class.'.inner'),
+                    service(SessionService::SERVICE_ID),
+                    service(LoggerService::SERVICE_ID),
+                ]
+            );
+
     }
 }

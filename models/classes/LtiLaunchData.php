@@ -68,6 +68,8 @@ class LtiLaunchData implements \JsonSerializable
 
     public const LTI_REDIRECT_AFTER_LOGOUT_URL = 'authoringSettings.redirectAfterLogoutUrl';
 
+    public const LTI_TAO_LOGIN_URL = 'authoringSettings.taoLoginUrl';
+
     // for user claim
     private const LTI_FOR_USER_ID = 'lti_for_user_id';
     private const LTI_FOR_USER_EMAIL = 'lti_for_user_email';
