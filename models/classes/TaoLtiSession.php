@@ -23,10 +23,11 @@ namespace oat\taoLti\models\classes;
 use common_exception_Error;
 use common_session_DefaultSession;
 use core_kernel_classes_Resource;
+use oat\tao\model\auth\AuthoringAsToolConfigProviderInterface;
 use oat\taoLti\models\classes\ResourceLink\LinkService;
 use oat\taoLti\models\classes\user\LtiUserInterface;
 
-class TaoLtiSession extends common_session_DefaultSession
+class TaoLtiSession extends common_session_DefaultSession implements AuthoringAsToolConfigProviderInterface
 {
     private const VERSION_LTI_1P1 = '1.1';
     private const VERSION_LTI_1P3 = '1.3';
@@ -120,5 +121,24 @@ class TaoLtiSession extends common_session_DefaultSession
 
         return (string)$this->getLaunchData()
             ->getVariable(LtiLaunchData::TOOL_CONSUMER_INSTANCE_ID);
+    }
+
+    public function getPortalUrl(): ?string
+    {
+        $ltiLaunchData = $this->getLaunchData();
+        if ($ltiLaunchData->hasReturnUrl()) {
+            return $ltiLaunchData->getReturnUrl();
+        }
+
+        return $_ENV[self::ENV_PORTAL_URL] ?? null;
+    }
+
+    public function getConfigByName(string $name): ?string
+    {
+        if ($name !== 'logout') {
+            return null;
+        }
+
+        return $this->getLaunchData()->getCustomParameter(LtiLaunchData::LTI_REDIRECT_AFTER_LOGOUT_URL);
     }
 }
