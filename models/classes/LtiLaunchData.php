@@ -26,10 +26,10 @@ use core_kernel_classes_Resource;
 use OAT\Library\Lti1p3Core\Message\Payload\Claim\AgsClaim;
 use OAT\Library\Lti1p3Core\Message\Payload\LtiMessagePayloadInterface;
 use OAT\Library\Lti1p3Core\Platform\PlatformInterface;
-use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
-use tao_helpers_Request;
 use oat\oatbox\log\LoggerAwareTrait;
+use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
 use Psr\Http\Message\ServerRequestInterface;
+use tao_helpers_Request;
 
 class LtiLaunchData implements \JsonSerializable
 {
@@ -246,7 +246,7 @@ class LtiLaunchData implements \JsonSerializable
         // encoded in url
         $parts = explode('/', tao_helpers_Request::getRelativeUrl($url), 4);
         if (count($parts) == 4) {
-            list($extension, $module, $action, $codedUri) = $parts;
+            [$extension, $module, $action, $codedUri] = $parts;
             $base64String = base64_decode($codedUri);
             if ($base64String !== false) {
                 // old serialised url
