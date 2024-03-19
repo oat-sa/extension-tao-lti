@@ -91,7 +91,7 @@ class AuthoringAsToolLtiConfigProvider implements AuthoringAsToolConfigProviderI
             if ($name === self::PORTAL_URL_CONFIG_NAME && $ltiLaunchData->hasReturnUrl()) {
                 return $ltiLaunchData->getReturnUrl();
             }
-        } catch (Throwable$exception) {
+        } catch (Throwable $exception) {
             $this->logger->warning(
                 sprintf('It was not possible to recover return url claim. Exception: %s', $exception)
             );
