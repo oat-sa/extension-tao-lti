@@ -45,8 +45,7 @@ class AuthoringAsToolLtiConfigProvider implements AuthoringAsToolConfigProviderI
         AuthoringAsToolConfigProviderInterface $configFallback,
         SessionService $session,
         LoggerInterface $logger
-    )
-    {
+    ) {
         $this->configFallback = $configFallback;
         $this->session = $session;
         $this->logger = $logger;

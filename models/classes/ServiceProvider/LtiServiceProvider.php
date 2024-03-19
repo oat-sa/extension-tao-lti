@@ -269,11 +269,10 @@ class LtiServiceProvider implements ContainerServiceProviderInterface
             ->public()
             ->args(
                 [
-                    service(AuthoringAsToolLtiConfigProvider::class.'.inner'),
+                    service(AuthoringAsToolLtiConfigProvider::class . '.inner'),
                     service(SessionService::SERVICE_ID),
                     service(LoggerService::SERVICE_ID),
                 ]
             );
-
     }
 }
