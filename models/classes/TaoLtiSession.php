@@ -23,7 +23,6 @@ namespace oat\taoLti\models\classes;
 use common_exception_Error;
 use common_session_DefaultSession;
 use core_kernel_classes_Resource;
-use oat\tao\model\auth\AuthoringAsToolConfigProviderInterface;
 use oat\taoLti\models\classes\ResourceLink\LinkService;
 use oat\taoLti\models\classes\user\LtiUserInterface;
 
