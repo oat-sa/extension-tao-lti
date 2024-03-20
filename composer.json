@@ -72,12 +72,5 @@
       "psr-4" : {
         "OAT\\Library\\Lti1p3Core\\Tests\\": "../vendor/oat-sa/lib-lti1p3-core/tests/"
       }
-    },
-    "config": {
-        "allow-plugins": {
-            "php-http/discovery": true,
-            "oat-sa/oatbox-extension-installer": true,
-            "oat-sa/composer-npm-bridge": true
-        }
     }
 }
