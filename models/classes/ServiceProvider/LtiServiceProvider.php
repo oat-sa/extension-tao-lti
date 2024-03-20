@@ -47,6 +47,7 @@ use OAT\Library\Lti1p3Core\Service\Client\LtiServiceClientInterface;
 use oat\oatbox\cache\factory\CacheItemPoolFactory;
 use oat\oatbox\cache\ItemPoolSimpleCacheAdapter;
 use oat\oatbox\log\LoggerService;
+use oat\tao\model\accessControl\RoleBasedContextRestrictAccess;
 use oat\taoLti\models\classes\Client\LtiClientFactory;
 use oat\taoLti\models\classes\LtiAgs\LtiAgsScoreService;
 use oat\taoLti\models\classes\LtiAgs\LtiAgsScoreServiceInterface;
@@ -259,5 +260,11 @@ class LtiServiceProvider implements ContainerServiceProviderInterface
                     param('rolesAllowed')
                 ]
             );
+
+        $services
+            ->get(RoleBasedContextRestrictAccess::class)
+            ->arg('$restrictedRoles', [
+                'ltiAuthoringLaunchRestrictRoles' => param('rolesAllowed')
+            ]);
     }
 }
