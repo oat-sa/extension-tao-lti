@@ -58,9 +58,9 @@ class AuthoringAsToolLtiConfigProvider implements AuthoringAsToolConfigProviderI
 
     /**
      * @param string $name
-     * @return mixed|string|null
+     * @return string|null
      */
-    private function getConfigByLtiClaimName(string $name): mixed
+    private function getConfigByLtiClaimName(string $name): ?string
     {
         $currentSession = $this->session->getCurrentSession();
 
