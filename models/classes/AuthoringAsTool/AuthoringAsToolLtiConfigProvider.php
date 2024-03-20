@@ -31,11 +31,6 @@ use Throwable;
 
 class AuthoringAsToolLtiConfigProvider implements AuthoringAsToolConfigProviderInterface
 {
-    private const AVAILABLE_CONFIGS = [
-        self::LOGOUT_URL_CONFIG_NAME,
-        self::PORTAL_URL_CONFIG_NAME,
-        self::LOGIN_URL_CONFIG_NAME,
-    ];
     private AuthoringAsToolConfigProviderInterface $configFallback;
 
     private SessionService $session;
@@ -53,10 +48,6 @@ class AuthoringAsToolLtiConfigProvider implements AuthoringAsToolConfigProviderI
 
     public function getConfigByName(string $name): ?string
     {
-        if (!in_array($name, self::AVAILABLE_CONFIGS)) {
-            return null;
-        }
-
         return $this->getConfigByLtiClaimName($name) ?? $this->configFallback->getConfigByName($name);
     }
 
