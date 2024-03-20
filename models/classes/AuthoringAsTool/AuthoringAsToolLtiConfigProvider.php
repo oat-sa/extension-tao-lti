@@ -56,10 +56,6 @@ class AuthoringAsToolLtiConfigProvider implements AuthoringAsToolConfigProviderI
         return $this->getConfigByName(self::PORTAL_URL_CONFIG_NAME) !== null;
     }
 
-    /**
-     * @param string $name
-     * @return string|null
-     */
     private function getConfigByLtiClaimName(string $name): ?string
     {
         $currentSession = $this->session->getCurrentSession();
