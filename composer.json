@@ -61,7 +61,7 @@
         "oat-sa/lib-lti1p3-ags": "^1.2",
         "oat-sa/lib-lti1p3-core": "^6.0.0",
         "oat-sa/generis" : ">=15.22",
-        "oat-sa/tao-core" : ">=50.24.6"
+        "oat-sa/tao-core" : ">=54.6.2"
     },
     "autoload" : {
         "psr-4" : {
@@ -72,5 +72,12 @@
       "psr-4" : {
         "OAT\\Library\\Lti1p3Core\\Tests\\": "../vendor/oat-sa/lib-lti1p3-core/tests/"
       }
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true,
+            "oat-sa/oatbox-extension-installer": true,
+            "oat-sa/composer-npm-bridge": true
+        }
     }
 }
