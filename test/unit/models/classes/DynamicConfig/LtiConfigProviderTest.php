@@ -20,17 +20,17 @@
 
 declare(strict_types=1);
 
-namespace oat\taoLti\test\unit\models\classes\AuthoringAsTool;
+namespace oat\taoLti\test\unit\models\classes\DynamicConfig;
 
 use oat\oatbox\session\SessionService;
-use oat\tao\model\AuthoringAsTool\AuthoringAsToolConfigProviderInterface;
-use oat\taoLti\models\classes\AuthoringAsTool\AuthoringAsToolLtiConfigProvider;
+use oat\tao\model\DynamicConfig\DynamicConfigProviderInterface;
+use oat\taoLti\models\classes\DynamicConfig\LtiConfigProvider;
 use oat\taoLti\models\classes\LtiLaunchData;
 use oat\taoLti\models\classes\TaoLtiSession;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
-class AuthoringAsToolLtiConfigProviderTest extends TestCase
+class LtiConfigProviderTest extends TestCase
 {
     public function testGetConfigByName(): void
     {
@@ -57,34 +57,34 @@ class AuthoringAsToolLtiConfigProviderTest extends TestCase
         $session->method('getCurrentSession')
             ->willReturn($taoLtiSession);
 
-        $fallbackConfigProvider = $this->createMock(AuthoringAsToolConfigProviderInterface::class);
+        $fallbackConfigProvider = $this->createMock(DynamicConfigProviderInterface::class);
         $fallbackConfigProvider->method('getConfigByName')
             ->willReturnMap([
-                [AuthoringAsToolLtiConfigProvider::LOGOUT_URL_CONFIG_NAME, 'https://fallback.com/logout'],
-                [AuthoringAsToolLtiConfigProvider::PORTAL_URL_CONFIG_NAME, null], // Simulating no value from fallback
-                [AuthoringAsToolLtiConfigProvider::LOGIN_URL_CONFIG_NAME, 'https://fallback.com/login'],
+                [LtiConfigProvider::LOGOUT_URL_CONFIG_NAME, 'https://fallback.com/logout'],
+                [LtiConfigProvider::PORTAL_URL_CONFIG_NAME, null], // Simulating no value from fallback
+                [LtiConfigProvider::LOGIN_URL_CONFIG_NAME, 'https://fallback.com/login'],
             ]);
 
         $logger = $this->createMock(LoggerInterface::class);
         $logger->expects($this->never())->method('warning');
 
-        $ltiConfigProvider = new AuthoringAsToolLtiConfigProvider($fallbackConfigProvider, $session, $logger);
+        $ltiConfigProvider = new LtiConfigProvider($fallbackConfigProvider, $session, $logger);
 
         // Test LTI-specific configurations
         $this->assertSame(
             'https://example.com/logout',
-            $ltiConfigProvider->getConfigByName(AuthoringAsToolLtiConfigProvider::LOGOUT_URL_CONFIG_NAME)
+            $ltiConfigProvider->getConfigByName(LtiConfigProvider::LOGOUT_URL_CONFIG_NAME)
         );
         $this->assertSame(
             'https://example.com/login',
-            $ltiConfigProvider->getConfigByName(AuthoringAsToolLtiConfigProvider::LOGIN_URL_CONFIG_NAME)
+            $ltiConfigProvider->getConfigByName(LtiConfigProvider::LOGIN_URL_CONFIG_NAME)
         );
         $this->assertNull(
-            $ltiConfigProvider->getConfigByName(AuthoringAsToolLtiConfigProvider::PORTAL_URL_CONFIG_NAME)
+            $ltiConfigProvider->getConfigByName(LtiConfigProvider::PORTAL_URL_CONFIG_NAME)
         );
     }
 
-    public function testIsAuthoringAsToolEnabled(): void
+    public function testHasConfig(): void
     {
         // Simulating LTI environment where portal URL is provided
         $ltiLaunchData = $this->createMock(LtiLaunchData::class);
@@ -96,31 +96,31 @@ class AuthoringAsToolLtiConfigProviderTest extends TestCase
         $session = $this->createMock(SessionService::class);
         $session->method('getCurrentSession')->willReturn($taoLtiSession);
 
-        $fallbackConfigProvider = $this->createMock(AuthoringAsToolConfigProviderInterface::class);
+        $fallbackConfigProvider = $this->createMock(DynamicConfigProviderInterface::class);
         $fallbackConfigProvider->method('getConfigByName')->willReturnMap([
-            [AuthoringAsToolLtiConfigProvider::LOGOUT_URL_CONFIG_NAME, null],
-            [AuthoringAsToolLtiConfigProvider::PORTAL_URL_CONFIG_NAME, 'https://example.com/portal'],
-            [AuthoringAsToolLtiConfigProvider::LOGIN_URL_CONFIG_NAME, null],
+            [LtiConfigProvider::LOGOUT_URL_CONFIG_NAME, null],
+            [LtiConfigProvider::PORTAL_URL_CONFIG_NAME, 'https://example.com/portal'],
+            [LtiConfigProvider::LOGIN_URL_CONFIG_NAME, null],
         ]);
 
         $logger = $this->createMock(LoggerInterface::class);
 
-        $ltiConfigProvider = new AuthoringAsToolLtiConfigProvider($fallbackConfigProvider, $session, $logger);
-        $this->assertTrue($ltiConfigProvider->isAuthoringAsToolEnabled());
+        $ltiConfigProvider = new LtiConfigProvider($fallbackConfigProvider, $session, $logger);
+        $this->assertTrue($ltiConfigProvider->hasConfig(DynamicConfigProviderInterface::PORTAL_URL_CONFIG_NAME));
 
         // Simulating non-LTI environment
         $session = $this->createMock(SessionService::class);
         $session->method('getCurrentSession')->willReturn(null);
 
-        $fallbackConfigProvider = $this->createMock(AuthoringAsToolConfigProviderInterface::class);
+        $fallbackConfigProvider = $this->createMock(DynamicConfigProviderInterface::class);
         $fallbackConfigProvider->method('getConfigByName')->willReturnMap([
-            [AuthoringAsToolLtiConfigProvider::LOGOUT_URL_CONFIG_NAME, null],
-            [AuthoringAsToolLtiConfigProvider::PORTAL_URL_CONFIG_NAME, null],
-            [AuthoringAsToolLtiConfigProvider::LOGIN_URL_CONFIG_NAME, null],
+            [LtiConfigProvider::LOGOUT_URL_CONFIG_NAME, null],
+            [LtiConfigProvider::PORTAL_URL_CONFIG_NAME, null],
+            [LtiConfigProvider::LOGIN_URL_CONFIG_NAME, null],
         ]);
 
 
-        $ltiConfigProvider = new AuthoringAsToolLtiConfigProvider($fallbackConfigProvider, $session, $logger);
-        $this->assertFalse($ltiConfigProvider->isAuthoringAsToolEnabled());
+        $ltiConfigProvider = new LtiConfigProvider($fallbackConfigProvider, $session, $logger);
+        $this->assertFalse($ltiConfigProvider->hasConfig(DynamicConfigProviderInterface::PORTAL_URL_CONFIG_NAME));
     }
 }

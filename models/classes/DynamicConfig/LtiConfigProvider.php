@@ -20,24 +20,24 @@
 
 declare(strict_types=1);
 
-namespace oat\taoLti\models\classes\AuthoringAsTool;
+namespace oat\taoLti\models\classes\DynamicConfig;
 
 use oat\oatbox\session\SessionService;
-use oat\tao\model\AuthoringAsTool\AuthoringAsToolConfigProviderInterface;
+use oat\tao\model\DynamicConfig\DynamicConfigProviderInterface;
 use oat\taoLti\models\classes\LtiLaunchData;
 use oat\taoLti\models\classes\TaoLtiSession;
 use Psr\Log\LoggerInterface;
 use Throwable;
 
-class AuthoringAsToolLtiConfigProvider implements AuthoringAsToolConfigProviderInterface
+class LtiConfigProvider implements DynamicConfigProviderInterface
 {
-    private AuthoringAsToolConfigProviderInterface $configFallback;
+    private DynamicConfigProviderInterface $configFallback;
 
     private SessionService $session;
     private LoggerInterface $logger;
 
     public function __construct(
-        AuthoringAsToolConfigProviderInterface $configFallback,
+        DynamicConfigProviderInterface $configFallback,
         SessionService $session,
         LoggerInterface $logger
     ) {
@@ -51,9 +51,9 @@ class AuthoringAsToolLtiConfigProvider implements AuthoringAsToolConfigProviderI
         return $this->getConfigByLtiClaimName($name) ?? $this->configFallback->getConfigByName($name);
     }
 
-    public function isAuthoringAsToolEnabled(): bool
+    public function hasConfig(string $name): bool
     {
-        return $this->getConfigByName(self::PORTAL_URL_CONFIG_NAME) !== null;
+        return $this->getConfigByName($name) !== null;
     }
 
     private function getConfigByLtiClaimName(string $name): ?string
