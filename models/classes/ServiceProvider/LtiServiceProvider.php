@@ -48,9 +48,9 @@ use oat\oatbox\cache\factory\CacheItemPoolFactory;
 use oat\oatbox\cache\ItemPoolSimpleCacheAdapter;
 use oat\oatbox\log\LoggerService;
 use oat\oatbox\session\SessionService;
-use oat\tao\model\AuthoringAsTool\AuthoringAsToolConfigProviderInterface;
-use oat\taoLti\models\classes\AuthoringAsTool\AuthoringAsToolLtiConfigProvider;
+use oat\tao\model\DynamicConfig\DynamicConfigProviderInterface;
 use oat\taoLti\models\classes\Client\LtiClientFactory;
+use oat\taoLti\models\classes\DynamicConfig\LtiConfigProvider;
 use oat\taoLti\models\classes\LtiAgs\LtiAgsScoreService;
 use oat\taoLti\models\classes\LtiAgs\LtiAgsScoreServiceInterface;
 use oat\taoLti\models\classes\LtiRoles;
@@ -264,12 +264,12 @@ class LtiServiceProvider implements ContainerServiceProviderInterface
             );
 
         $services
-            ->set(AuthoringAsToolLtiConfigProvider::class)
-            ->decorate(AuthoringAsToolConfigProviderInterface::class)
+            ->set(LtiConfigProvider::class)
+            ->decorate(DynamicConfigProviderInterface::class)
             ->public()
             ->args(
                 [
-                    service(AuthoringAsToolLtiConfigProvider::class . '.inner'),
+                    service(LtiConfigProvider::class . '.inner'),
                     service(SessionService::SERVICE_ID),
                     service(LoggerService::SERVICE_ID),
                 ]
