@@ -76,7 +76,7 @@ use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 
 class LtiServiceProvider implements ContainerServiceProviderInterface
 {
-    const PORTAL_ACCESS_ROLES = [
+    private const PORTAL_ACCESS_ROLES = [
         LtiRoles::CONTEXT_LTI1P3_ADMINISTRATOR_SUB_DEVELOPER,
         LtiRoles::CONTEXT_LTI1P3_CONTENT_DEVELOPER_SUB_CONTENT_DEVELOPER,
         LTIRoles::CONTEXT_INSTITUTION_LTI1P3_ADMINISTRATOR,
