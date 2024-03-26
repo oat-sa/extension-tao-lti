@@ -26,10 +26,10 @@ use core_kernel_classes_Resource;
 use OAT\Library\Lti1p3Core\Message\Payload\Claim\AgsClaim;
 use OAT\Library\Lti1p3Core\Message\Payload\LtiMessagePayloadInterface;
 use OAT\Library\Lti1p3Core\Platform\PlatformInterface;
-use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
-use tao_helpers_Request;
 use oat\oatbox\log\LoggerAwareTrait;
+use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
 use Psr\Http\Message\ServerRequestInterface;
+use tao_helpers_Request;
 
 class LtiLaunchData implements \JsonSerializable
 {
@@ -65,6 +65,10 @@ class LtiLaunchData implements \JsonSerializable
     // review mode
     public const LTI_SHOW_SCORE = 'custom_show_score';
     public const LTI_SHOW_CORRECT = 'custom_show_correct';
+
+    public const LTI_REDIRECT_AFTER_LOGOUT_URL = 'authoringSettings.redirectAfterLogoutUrl';
+
+    public const LTI_TAO_LOGIN_URL = 'authoringSettings.taoLoginUrl';
 
     // for user claim
     private const LTI_FOR_USER_ID = 'lti_for_user_id';
@@ -242,7 +246,7 @@ class LtiLaunchData implements \JsonSerializable
         // encoded in url
         $parts = explode('/', tao_helpers_Request::getRelativeUrl($url), 4);
         if (count($parts) == 4) {
-            list($extension, $module, $action, $codedUri) = $parts;
+            [$extension, $module, $action, $codedUri] = $parts;
             $base64String = base64_decode($codedUri);
             if ($base64String !== false) {
                 // old serialised url
