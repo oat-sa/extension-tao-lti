@@ -74,7 +74,7 @@ class LtiConfigProvider implements DynamicConfigProviderInterface
         }
 
         try {
-            if ($name === self::PORTAL_URL_CONFIG_NAME && $ltiLaunchData->hasReturnUrl()) {
+            if ($name === self::PLATFORM_URL_CONFIG_NAME && $ltiLaunchData->hasReturnUrl()) {
                 return $ltiLaunchData->getReturnUrl();
             }
         } catch (Throwable $exception) {
