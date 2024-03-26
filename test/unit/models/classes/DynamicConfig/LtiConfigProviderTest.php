@@ -61,7 +61,7 @@ class LtiConfigProviderTest extends TestCase
         $fallbackConfigProvider->method('getConfigByName')
             ->willReturnMap([
                 [LtiConfigProvider::LOGOUT_URL_CONFIG_NAME, 'https://fallback.com/logout'],
-                [LtiConfigProvider::PORTAL_URL_CONFIG_NAME, null], // Simulating no value from fallback
+                [LtiConfigProvider::PLATFORM_URL_CONFIG_NAME, null], // Simulating no value from fallback
                 [LtiConfigProvider::LOGIN_URL_CONFIG_NAME, 'https://fallback.com/login'],
             ]);
 
@@ -80,7 +80,7 @@ class LtiConfigProviderTest extends TestCase
             $ltiConfigProvider->getConfigByName(LtiConfigProvider::LOGIN_URL_CONFIG_NAME)
         );
         $this->assertNull(
-            $ltiConfigProvider->getConfigByName(LtiConfigProvider::PORTAL_URL_CONFIG_NAME)
+            $ltiConfigProvider->getConfigByName(LtiConfigProvider::PLATFORM_URL_CONFIG_NAME)
         );
     }
 
@@ -99,14 +99,14 @@ class LtiConfigProviderTest extends TestCase
         $fallbackConfigProvider = $this->createMock(DynamicConfigProviderInterface::class);
         $fallbackConfigProvider->method('getConfigByName')->willReturnMap([
             [LtiConfigProvider::LOGOUT_URL_CONFIG_NAME, null],
-            [LtiConfigProvider::PORTAL_URL_CONFIG_NAME, 'https://example.com/portal'],
+            [LtiConfigProvider::PLATFORM_URL_CONFIG_NAME, 'https://example.com/portal'],
             [LtiConfigProvider::LOGIN_URL_CONFIG_NAME, null],
         ]);
 
         $logger = $this->createMock(LoggerInterface::class);
 
         $ltiConfigProvider = new LtiConfigProvider($fallbackConfigProvider, $session, $logger);
-        $this->assertTrue($ltiConfigProvider->hasConfig(DynamicConfigProviderInterface::PORTAL_URL_CONFIG_NAME));
+        $this->assertTrue($ltiConfigProvider->hasConfig(DynamicConfigProviderInterface::PLATFORM_URL_CONFIG_NAME));
 
         // Simulating non-LTI environment
         $session = $this->createMock(SessionService::class);
@@ -115,12 +115,12 @@ class LtiConfigProviderTest extends TestCase
         $fallbackConfigProvider = $this->createMock(DynamicConfigProviderInterface::class);
         $fallbackConfigProvider->method('getConfigByName')->willReturnMap([
             [LtiConfigProvider::LOGOUT_URL_CONFIG_NAME, null],
-            [LtiConfigProvider::PORTAL_URL_CONFIG_NAME, null],
+            [LtiConfigProvider::PLATFORM_URL_CONFIG_NAME, null],
             [LtiConfigProvider::LOGIN_URL_CONFIG_NAME, null],
         ]);
 
 
         $ltiConfigProvider = new LtiConfigProvider($fallbackConfigProvider, $session, $logger);
-        $this->assertFalse($ltiConfigProvider->hasConfig(DynamicConfigProviderInterface::PORTAL_URL_CONFIG_NAME));
+        $this->assertFalse($ltiConfigProvider->hasConfig(DynamicConfigProviderInterface::PLATFORM_URL_CONFIG_NAME));
     }
 }
