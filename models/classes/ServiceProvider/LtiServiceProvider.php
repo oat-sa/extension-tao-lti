@@ -49,6 +49,8 @@ use oat\oatbox\cache\ItemPoolSimpleCacheAdapter;
 use oat\oatbox\log\LoggerService;
 use oat\oatbox\session\SessionService;
 use oat\tao\model\DynamicConfig\DynamicConfigProviderInterface;
+use oat\tao\model\accessControl\RoleBasedContextRestrictAccess;
+use oat\tao\model\menu\SectionVisibilityByRoleFilter;
 use oat\taoLti\models\classes\Client\LtiClientFactory;
 use oat\taoLti\models\classes\DynamicConfig\LtiConfigProvider;
 use oat\taoLti\models\classes\LtiAgs\LtiAgsScoreService;
@@ -74,6 +76,12 @@ use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 
 class LtiServiceProvider implements ContainerServiceProviderInterface
 {
+    private const PORTAL_ACCESS_ROLES = [
+        LtiRoles::CONTEXT_LTI1P3_ADMINISTRATOR_SUB_DEVELOPER,
+        LtiRoles::CONTEXT_LTI1P3_CONTENT_DEVELOPER_SUB_CONTENT_DEVELOPER,
+        LTIRoles::CONTEXT_INSTITUTION_LTI1P3_ADMINISTRATOR,
+        LtiRoles::CONTEXT_LTI1P3_INSTRUCTOR
+    ];
     public function __invoke(ContainerConfigurator $configurator): void
     {
         $services = $configurator->services();
@@ -86,11 +94,14 @@ class LtiServiceProvider implements ContainerServiceProviderInterface
 
         $parameters->set(
             'rolesAllowed',
+            self::PORTAL_ACCESS_ROLES
+        );
+
+        $parameters->set(
+            'restrictedRolesForSectionMap',
             [
-                LtiRoles::CONTEXT_LTI1P3_ADMINISTRATOR_SUB_DEVELOPER,
-                LtiRoles::CONTEXT_LTI1P3_CONTENT_DEVELOPER_SUB_CONTENT_DEVELOPER,
-                LTIRoles::CONTEXT_INSTITUTION_LTI1P3_ADMINISTRATOR,
-                LtiRoles::CONTEXT_LTI1P3_INSTRUCTOR
+                'help' => self::PORTAL_ACCESS_ROLES,
+                'settings_my_password' => self::PORTAL_ACCESS_ROLES,
             ]
         );
 
@@ -262,6 +273,16 @@ class LtiServiceProvider implements ContainerServiceProviderInterface
                     param('rolesAllowed')
                 ]
             );
+
+        $services
+            ->get(RoleBasedContextRestrictAccess::class)
+            ->arg('$restrictedRoles', [
+                'ltiAuthoringLaunchRestrictRoles' => param('rolesAllowed')
+            ]);
+
+        $services->set(SectionVisibilityByRoleFilter::class, SectionVisibilityByRoleFilter::class)
+            ->public()
+            ->args([param('restrictedRolesForSectionMap')]);
 
         $services
             ->set(LtiConfigProvider::class)
