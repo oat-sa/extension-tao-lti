@@ -47,9 +47,12 @@ use OAT\Library\Lti1p3Core\Service\Client\LtiServiceClientInterface;
 use oat\oatbox\cache\factory\CacheItemPoolFactory;
 use oat\oatbox\cache\ItemPoolSimpleCacheAdapter;
 use oat\oatbox\log\LoggerService;
+use oat\oatbox\session\SessionService;
+use oat\tao\model\DynamicConfig\DynamicConfigProviderInterface;
 use oat\tao\model\accessControl\RoleBasedContextRestrictAccess;
 use oat\tao\model\menu\SectionVisibilityByRoleFilter;
 use oat\taoLti\models\classes\Client\LtiClientFactory;
+use oat\taoLti\models\classes\DynamicConfig\LtiConfigProvider;
 use oat\taoLti\models\classes\LtiAgs\LtiAgsScoreService;
 use oat\taoLti\models\classes\LtiAgs\LtiAgsScoreServiceInterface;
 use oat\taoLti\models\classes\LtiRoles;
@@ -66,10 +69,10 @@ use oat\taoLti\models\classes\Tool\Validation\Lti1p3Validator;
 use Psr\Cache\CacheItemPoolInterface;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
-use function Symfony\Component\DependencyInjection\Loader\Configurator\inline_service;
-use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\env;
+use function Symfony\Component\DependencyInjection\Loader\Configurator\inline_service;
 use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
+use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 
 class LtiServiceProvider implements ContainerServiceProviderInterface
 {
@@ -280,5 +283,17 @@ class LtiServiceProvider implements ContainerServiceProviderInterface
         $services->set(SectionVisibilityByRoleFilter::class, SectionVisibilityByRoleFilter::class)
             ->public()
             ->args([param('restrictedRolesForSectionMap')]);
+
+        $services
+            ->set(LtiConfigProvider::class)
+            ->decorate(DynamicConfigProviderInterface::class)
+            ->public()
+            ->args(
+                [
+                    service(LtiConfigProvider::class . '.inner'),
+                    service(SessionService::SERVICE_ID),
+                    service(LoggerService::SERVICE_ID),
+                ]
+            );
     }
 }
