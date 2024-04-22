@@ -41,10 +41,6 @@ class Lti1p3UserAuthenticator extends ConfigurableService implements UserAuthent
         string $loginHint
     ): UserAuthenticationResultInterface {
         try {
-            if ($loginHint === '') {
-                return new UserAuthenticationResult(true);
-            }
-
             return new UserAuthenticationResult(true, $this->getUserIdentity($loginHint));
         } catch (Throwable $exception) {
             return new UserAuthenticationResult(false);
@@ -54,8 +50,13 @@ class Lti1p3UserAuthenticator extends ConfigurableService implements UserAuthent
     /**
      * @throws ErrorException
      */
-    private function getUserIdentity(string $userId): UserIdentity
+    private function getUserIdentity(string $userId): ?UserIdentity
     {
+        // anonymous user without login data
+        if ($userId === '') {
+            return null;
+        }
+
         $user = $this->getUserService()
             ->getUser($userId);
 
