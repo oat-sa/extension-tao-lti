@@ -37,7 +37,7 @@ class Lti1p3UserAuthenticatorTest extends TestCase
 {
     use ServiceManagerMockTrait;
 
-    const LOGINHINT = 'userId#123456';
+    private const LOGIN_HINT = 'userId#123456';
 
     /** @var Lti1p3UserAuthenticator */
     private $subject;
@@ -87,7 +87,7 @@ class Lti1p3UserAuthenticatorTest extends TestCase
                     'en-US'
                 )
             ),
-            $this->subject->authenticate($registration, self::LOGINHINT)
+            $this->subject->authenticate($registration, self::LOGIN_HINT)
         );
     }
 
@@ -106,12 +106,12 @@ class Lti1p3UserAuthenticatorTest extends TestCase
             new UserAuthenticationResult(
                 true,
                 new UserIdentity(
-                    self::LOGINHINT,
+                    self::LOGIN_HINT,
                     '',
                     ''
                 )
             ),
-            $this->subject->authenticate($registration, self::LOGINHINT)
+            $this->subject->authenticate($registration, self::LOGIN_HINT)
         );
     }
 
