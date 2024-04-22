@@ -40,7 +40,7 @@ class Lti1p3UserAuthenticatorTest extends TestCase
     private const LOGIN_HINT = 'userId#123456';
 
     /** @var Lti1p3UserAuthenticator */
-    private $subject;
+    private Lti1p3UserAuthenticator $subject;
 
     /** @var UserService|MockObject */
     private $userService;
