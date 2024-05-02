@@ -28,6 +28,7 @@ use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
 use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
 use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
 use oat\generis\model\DependencyInjection\ContainerServiceProviderInterface;
+use oat\generis\model\DependencyInjection\ServiceLink;
 use oat\generis\model\DependencyInjection\ServiceOptions;
 use oat\generis\persistence\PersistenceManager;
 use OAT\Library\Lti1p3Ags\Factory\Score\ScoreFactory;
@@ -212,13 +213,21 @@ class LtiServiceProvider implements ContainerServiceProviderInterface
             );
 
         $services
+            ->set(PlatformKeyChainRepository::SERVICE_ID, ServiceLink::class)
+            ->args(
+                [
+                    PlatformKeyChainRepository::SERVICE_ID
+                ]
+            );
+
+        $services
             ->set(RegistrationRepositoryInterface::class, Lti1p3RegistrationSnapshotRepository::class)
             ->public()
             ->args(
                 [
                     service(PersistenceManager::SERVICE_ID),
                     service(CachedPlatformKeyChainRepository::class),
-                    service(PlatformKeyChainRepository::class),
+                    service(PlatformKeyChainRepository::SERVICE_ID),
                     inline_service(DefaultToolConfig::class)->arg('$baseUri', ROOT_URL),
                     'default'
                 ]
