@@ -33,13 +33,13 @@ class RegisterPortalTheme extends InstallAction
     public function __invoke($params = [])
     {
         /** @var ConfigurationService $previousThemeService */
-        $previousThemeService = $this->getServiceLocator()->get(ThemeServiceInterface::SERVICE_ID);
+        $previousThemeService = $this->getServiceManager()->get(ThemeServiceInterface::SERVICE_ID);
 
         /** @var ThemeServiceInterface $service */
-        $service = new PortalThemeService();
+        $service = $this->propagate(new PortalThemeService());
         $service->setOptions($previousThemeService->getOptions());
         $service->addTheme(new PortalTheme(), false);
 
-        $this->getServiceLocator()->register(ThemeServiceInterface::SERVICE_ID, $service);
+        $this->getServiceManager()->register(ThemeServiceInterface::SERVICE_ID, $service);
     }
 }
