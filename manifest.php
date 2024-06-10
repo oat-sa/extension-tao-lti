@@ -67,7 +67,6 @@ return [
             MapLtiSectionVisibility::class,
             GenerisSearchWhitelist::class,
             CreateLti1p3RegistrationSnapshotSchema::class,
-            RegisterPortalTheme::class
         ]
     ],
     'update' => Updater::class,

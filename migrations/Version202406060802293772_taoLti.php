@@ -23,7 +23,7 @@ final class Version202406060802293772_taoLti extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $this->runAction(new RegisterPortalTheme());
+        // Action removed due to conflicting with multiple instance implementations.
     }
 
     public function down(Schema $schema): void
