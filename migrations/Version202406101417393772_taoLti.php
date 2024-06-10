@@ -7,6 +7,7 @@ namespace oat\taoLti\migrations;
 use Doctrine\DBAL\Schema\Schema;
 use oat\tao\scripts\tools\migrations\AbstractMigration;
 use oat\taoLti\scripts\install\RegisterPortalTheme;
+use oat\taoLti\scripts\install\UnregisterLtiPortalTheme;
 
 /**
  * Auto-generated Migration: Please modify to your needs!
@@ -23,7 +24,7 @@ final class Version202406101417393772_taoLti extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $this->runAction(new RegisterPortalTheme());
+        $this->runAction(new UnregisterLtiPortalTheme());
     }
 
     public function down(Schema $schema): void
