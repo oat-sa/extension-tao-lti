@@ -24,17 +24,17 @@ namespace oat\taoLti\scripts\install;
 
 use common_ext_ExtensionsManager;
 use Exception;
+use oat\oatbox\extension\InstallAction;
 use oat\oatbox\service\ConfigurableService;
 use oat\tao\model\theme\DefaultTheme;
 use oat\tao\model\theme\PortalTheme;
 use oat\tao\model\theme\ThemeService;
 use oat\tao\model\theme\ThemeServiceInterface;
-use oat\taoDelivery\scripts\install\installDeliveryFields;
 use oat\taoLti\models\classes\theme\PortalThemeDetailProvider;
 use oat\taoLti\models\classes\theme\PortalThemeService;
 use oat\taoStyles\model\service\PersistenceThemeService;
 
-class UnregisterLtiPortalTheme extends installDeliveryFields
+class UnregisterLtiPortalTheme extends InstallAction
 {
     public function __invoke($params = [])
     {

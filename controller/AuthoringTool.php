@@ -102,12 +102,6 @@ class AuthoringTool extends ToolModule
             ->get(LtiService::class)
             ->startLti1p3Session($ltiMessage, $user);
 
-        $this->getServiceLocator()
-            ->getContainer()
-            ->get(ThemeService::SERVICE_ID)
-            ->setCurrentTheme('portal');
-
-
         $this->forward('run', null, null, $_GET);
     }
 

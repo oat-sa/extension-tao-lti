@@ -19,10 +19,8 @@
  * Copyright (c) 2013-2021 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
  */
 
-use oat\ltiTestReview\controller\Review;
 use oat\tao\model\accessControl\func\AccessRule;
 use oat\tao\model\user\TaoRoles;
-use oat\taoLti\controller\AuthoringTool;
 use oat\taoLti\controller\CookieUtils;
 use oat\taoLti\controller\Security;
 use oat\taoLti\models\classes\LtiRoles;
@@ -30,7 +28,7 @@ use oat\taoLti\models\classes\ServiceProvider\LtiServiceProvider;
 use oat\taoLti\scripts\install\CreateLti1p3RegistrationSnapshotSchema;
 use oat\taoLti\scripts\install\GenerateKeys;
 use oat\taoLti\scripts\install\GenerisSearchWhitelist;
-use oat\taoLti\scripts\install\RegisterPortalTheme;
+use oat\taoLti\scripts\install\RegisterPortalThemeDetailProvider;
 use oat\taoLti\scripts\install\SetupServices;
 use oat\taoLti\scripts\install\MapLtiSectionVisibility;
 use oat\taoLti\scripts\update\Updater;
@@ -67,6 +65,7 @@ return [
             MapLtiSectionVisibility::class,
             GenerisSearchWhitelist::class,
             CreateLti1p3RegistrationSnapshotSchema::class,
+            RegisterPortalThemeDetailProvider::class,
         ]
     ],
     'update' => Updater::class,
