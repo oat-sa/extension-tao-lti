@@ -28,6 +28,7 @@ use oat\tao\model\theme\DefaultTheme;
 use oat\tao\model\theme\PortalTheme;
 use oat\tao\model\theme\ThemeServiceInterface;
 use oat\taoDelivery\scripts\install\installDeliveryFields;
+use oat\taoLti\models\classes\theme\PortalThemeDetailProvider;
 use oat\taoStyles\model\service\PersistenceThemeService;
 
 class UnregisterLtiPortalTheme extends installDeliveryFields
@@ -41,10 +42,14 @@ class UnregisterLtiPortalTheme extends installDeliveryFields
         $extManager = $this->getServiceManager()->get(common_ext_ExtensionsManager::class);
         if ($extManager->isInstalled('taoStyles')) {
             unset($oldConfig['available']);
+            $oldConfig['themeDetailsProviders'] = [
+                new PortalThemeDetailProvider()
+            ];
             $revertedService = $this->propagate(new PersistenceThemeService($oldConfig));
             $this->getServiceManager()->register(ThemeServiceInterface::SERVICE_ID, $revertedService);
             $revertedService->addTheme(new PortalTheme(), false);
             $revertedService->addTheme(new DefaultTheme(), false);
+
             return;
         }
 

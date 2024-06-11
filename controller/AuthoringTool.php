@@ -28,6 +28,7 @@ use core_kernel_classes_Resource;
 use helpers_Random;
 use InterruptedActionException;
 use OAT\Library\Lti1p3Core\Message\Payload\LtiMessagePayloadInterface;
+use oat\tao\model\theme\ThemeService;
 use oat\taoLti\models\classes\LtiException;
 use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
 use oat\taoLti\models\classes\LtiService;
@@ -100,6 +101,12 @@ class AuthoringTool extends ToolModule
             ->getContainer()
             ->get(LtiService::class)
             ->startLti1p3Session($ltiMessage, $user);
+
+        $this->getServiceLocator()
+            ->getContainer()
+            ->get(ThemeService::SERVICE_ID)
+            ->setCurrentTheme('portal');
+
 
         $this->forward('run', null, null, $_GET);
     }
