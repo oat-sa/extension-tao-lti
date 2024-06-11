@@ -7,23 +7,24 @@ namespace oat\taoLti\migrations;
 use Doctrine\DBAL\Schema\Schema;
 use oat\tao\scripts\tools\migrations\AbstractMigration;
 use oat\taoLti\scripts\install\RegisterPortalTheme;
-use oat\taoQtiTest\scripts\install\RegisterQtiPackageExporter;
+use oat\taoLti\scripts\install\UnregisterLtiPortalTheme;
 
 /**
  * Auto-generated Migration: Please modify to your needs!
  *
  * phpcs:disable Squiz.Classes.ValidClassName
  */
-final class Version202406060802293772_taoLti extends AbstractMigration
+final class Version202406101417393772_taoLti extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return 'This will revert change introduced in Version202406060802293772_taoLti.php for instances 
+        with taoStyle enabled.';
     }
 
     public function up(Schema $schema): void
     {
-        // Action removed due to conflicting with multiple instance implementations.
+        $this->runAction(new UnregisterLtiPortalTheme());
     }
 
     public function down(Schema $schema): void
