@@ -69,7 +69,7 @@ class UnregisterLtiPortalTheme extends InstallAction
         }
 
         //Make sure current theme is set
-        if (!isset($oldConfig['current'])) {
+        if (!isset($oldConfig['current']) && !($service instanceof PersistenceThemeService)) {
             $oldConfig = $this->defineCurrent($oldConfig);
         }
 
