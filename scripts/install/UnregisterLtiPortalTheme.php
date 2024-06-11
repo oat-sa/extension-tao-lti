@@ -26,9 +26,12 @@ use common_ext_ExtensionsManager;
 use oat\oatbox\service\ConfigurableService;
 use oat\tao\model\theme\DefaultTheme;
 use oat\tao\model\theme\PortalTheme;
+use oat\tao\model\theme\ThemeService;
 use oat\tao\model\theme\ThemeServiceInterface;
+use oat\tao\scripts\install\RegisterTaoUpdateEventListener;
 use oat\taoDelivery\scripts\install\installDeliveryFields;
 use oat\taoLti\models\classes\theme\PortalThemeDetailProvider;
+use oat\taoLti\models\classes\theme\PortalThemeService;
 use oat\taoStyles\model\service\PersistenceThemeService;
 
 class UnregisterLtiPortalTheme extends installDeliveryFields
@@ -40,8 +43,11 @@ class UnregisterLtiPortalTheme extends installDeliveryFields
         $oldConfig = $service->getOptions();
         /** @var common_ext_ExtensionsManager $extManager */
         $extManager = $this->getServiceManager()->get(common_ext_ExtensionsManager::class);
+        //If taoStyles is installed, we had PersistenceThemeService used as theming.conf.php and we should still use it
         if ($extManager->isInstalled('taoStyles')) {
+            //On taoLtiThemeService registration we migrated all configs and we may encounter some unused configs
             unset($oldConfig['available']);
+            //This provider will allow to display Portal Theme
             $oldConfig['themeDetailsProviders'] = [
                 new PortalThemeDetailProvider()
             ];
@@ -55,9 +61,37 @@ class UnregisterLtiPortalTheme extends installDeliveryFields
 
         //Make sure current theme is set
         if (!isset($oldConfig['current'])) {
-            $oldConfig['current'] = 'default';
+            $oldConfig = $this->defineCurrent($oldConfig);
+        }
+
+        if ($service instanceof PortalThemeService) {
+            $reverseService = $this->propagate(new ThemeService($oldConfig));
+            $this->getServiceManager()->register(ThemeServiceInterface::SERVICE_ID, $reverseService);
         }
 
         $service->setOptions($oldConfig);
+    }
+
+    private function defineCurrent(array $config): array
+    {
+        if (!isset($config['available'])) {
+            $config['available'] = [
+                'default' => DefaultTheme::class,
+                'portal' => array(
+                    'class' => 'oat\\tao\\model\\theme\\PortalTheme',
+                    'options' => array()
+                )
+            ];
+        }
+
+        if (!isset($config['available']['default'])) {
+            $config['available']['default'] = DefaultTheme::class;
+        }
+
+        if (!isset($config['current'])) {
+            $config['current'] = 'default';
+        }
+
+        return $config;
     }
 }
