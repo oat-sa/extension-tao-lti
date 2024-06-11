@@ -41,6 +41,14 @@ class UnregisterLtiPortalTheme extends InstallAction
         /** @var ThemeServiceInterface|ConfigurableService $service */
         $service = $this->getServiceManager()->get(ThemeServiceInterface::SERVICE_ID);
         $oldConfig = $service->getOptions();
+
+        //This provider will allow to display Portal Theme
+        if (!isset($oldConfig['themeDetailsProviders'])) {
+            $oldConfig['themeDetailsProviders'] = [
+                new PortalThemeDetailProvider()
+            ];
+        }
+
         /** @var common_ext_ExtensionsManager $extManager */
         $extManager = $this->getServiceManager()->get(common_ext_ExtensionsManager::class);
         //If taoStyles is installed, we had PersistenceThemeService used as theming.conf.php and we should still use it
@@ -51,10 +59,7 @@ class UnregisterLtiPortalTheme extends InstallAction
                 $this->getLogger()->error($e->getMessage());
                 return;
             }
-            //This provider will allow to display Portal Theme
-            $oldConfig['themeDetailsProviders'] = [
-                new PortalThemeDetailProvider()
-            ];
+
             $revertedService = $this->propagate(new PersistenceThemeService($oldConfig));
             $this->getServiceManager()->register(ThemeServiceInterface::SERVICE_ID, $revertedService);
             $revertedService->addTheme(new PortalTheme(), false);
@@ -74,6 +79,7 @@ class UnregisterLtiPortalTheme extends InstallAction
         }
 
         $service->setOptions($oldConfig);
+        $this->getServiceManager()->register(ThemeServiceInterface::SERVICE_ID, $service);
     }
 
     private function defineCurrent(array $config): array
