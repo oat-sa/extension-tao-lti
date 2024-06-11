@@ -22,24 +22,17 @@ declare(strict_types=1);
 
 namespace oat\taoLti\scripts\install;
 
-use oat\oatbox\config\ConfigurationService;
 use oat\oatbox\extension\InstallAction;
-use oat\tao\model\theme\PortalTheme;
 use oat\tao\model\theme\ThemeServiceInterface;
-use oat\taoLti\models\classes\theme\PortalThemeService;
 
-class RegisterPortalTheme extends InstallAction
+class RegisterPortalThemeDetailProvider extends InstallAction
 {
-    public function __invoke($params = [])
+    public function __invoke($params)
     {
-        /** @var ConfigurationService $previousThemeService */
-        $previousThemeService = $this->getServiceManager()->get(ThemeServiceInterface::SERVICE_ID);
-
-        /** @var ThemeServiceInterface $service */
-        $service = $this->propagate(new PortalThemeService());
-        $service->setOptions($previousThemeService->getOptions());
-        $service->addTheme(new PortalTheme(), false);
-
-        $this->getServiceManager()->register(ThemeServiceInterface::SERVICE_ID, $service);
+        $service = $this->getServiceManager()->get(ThemeServiceInterface::SERVICE_ID);
+        $themeDetailsProviders = $service->getOption('themeDetailsProviders');
+        $themeDetailsProviders[] = new \oat\taoLti\models\classes\theme\PortalThemeDetailProvider();
+        $service->setOption('themeDetailsProviders', $themeDetailsProviders);
+        $this->registerService(ThemeServiceInterface::SERVICE_ID, $service);
     }
 }
