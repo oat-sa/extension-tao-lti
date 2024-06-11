@@ -24,6 +24,8 @@ namespace oat\taoLti\scripts\install;
 
 use common_ext_ExtensionsManager;
 use oat\oatbox\service\ConfigurableService;
+use oat\tao\model\theme\DefaultTheme;
+use oat\tao\model\theme\PortalTheme;
 use oat\tao\model\theme\ThemeServiceInterface;
 use oat\taoDelivery\scripts\install\installDeliveryFields;
 use oat\taoStyles\model\service\PersistenceThemeService;
@@ -38,8 +40,19 @@ class UnregisterLtiPortalTheme extends installDeliveryFields
         /** @var common_ext_ExtensionsManager $extManager */
         $extManager = $this->getServiceManager()->get(common_ext_ExtensionsManager::class);
         if ($extManager->isInstalled('taoStyles')) {
+            unset($oldConfig['available']);
             $revertedService = $this->propagate(new PersistenceThemeService($oldConfig));
             $this->getServiceManager()->register(ThemeServiceInterface::SERVICE_ID, $revertedService);
+            $revertedService->addTheme(new PortalTheme(), false);
+            $revertedService->addTheme(new DefaultTheme(), false);
+            return;
         }
+
+        //Make sure current theme is set
+        if (!isset($oldConfig['current'])) {
+            $oldConfig['current'] = 'default';
+        }
+
+        $service->setOptions($oldConfig);
     }
 }
