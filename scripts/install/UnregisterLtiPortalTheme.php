@@ -23,12 +23,12 @@ declare(strict_types=1);
 namespace oat\taoLti\scripts\install;
 
 use common_ext_ExtensionsManager;
+use Exception;
 use oat\oatbox\service\ConfigurableService;
 use oat\tao\model\theme\DefaultTheme;
 use oat\tao\model\theme\PortalTheme;
 use oat\tao\model\theme\ThemeService;
 use oat\tao\model\theme\ThemeServiceInterface;
-use oat\tao\scripts\install\RegisterTaoUpdateEventListener;
 use oat\taoDelivery\scripts\install\installDeliveryFields;
 use oat\taoLti\models\classes\theme\PortalThemeDetailProvider;
 use oat\taoLti\models\classes\theme\PortalThemeService;
@@ -44,9 +44,13 @@ class UnregisterLtiPortalTheme extends installDeliveryFields
         /** @var common_ext_ExtensionsManager $extManager */
         $extManager = $this->getServiceManager()->get(common_ext_ExtensionsManager::class);
         //If taoStyles is installed, we had PersistenceThemeService used as theming.conf.php and we should still use it
-        if ($extManager->isInstalled('taoStyles')) {
-            //On taoLtiThemeService registration we migrated all configs and we may encounter some unused configs
-            unset($oldConfig['available']);
+        if ($extManager->isInstalled('taoStyles') && $service instanceof PortalThemeService) {
+            try {
+                $oldConfig = $this->validateConfig($oldConfig);
+            } catch (Exception $e) {
+                $this->getLogger()->error($e->getMessage());
+                return;
+            }
             //This provider will allow to display Portal Theme
             $oldConfig['themeDetailsProviders'] = [
                 new PortalThemeDetailProvider()
@@ -93,5 +97,16 @@ class UnregisterLtiPortalTheme extends installDeliveryFields
         }
 
         return $config;
+    }
+
+    private function validateConfig(array $oldConfig): array
+    {
+        //On taoLtiThemeService registration we migrated all configs and we may encounter some unused configs
+        unset($oldConfig['available']);
+        if (!isset($oldConfig['persistence'])) {
+            throw new Exception('Missing previous config for PersistenceThemeService');
+        }
+
+        return $oldConfig;
     }
 }

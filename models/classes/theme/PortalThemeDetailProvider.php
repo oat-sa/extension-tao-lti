@@ -37,8 +37,7 @@ class PortalThemeDetailProvider implements ThemeDetailsProviderInterface
             return PortalTheme::THEME_ID;
         };
 
-        $defaultTheme = new DefaultTheme();
-        return $defaultTheme->getId();
+        return '';
     }
 
     /**
