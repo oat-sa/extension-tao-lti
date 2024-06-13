@@ -28,6 +28,7 @@ use core_kernel_classes_Class;
 use core_kernel_classes_Property;
 use core_kernel_classes_Resource;
 use oat\generis\model\GenerisRdf;
+use OAT\Library\Lti1p3Core\Message\Payload\Claim\LaunchPresentationClaim;
 use OAT\Library\Lti1p3Core\Message\Payload\LtiMessagePayloadInterface;
 use OAT\Library\Lti1p3Core\Message\Payload\MessagePayloadInterface;
 use OAT\Library\Lti1p3Core\Registration\RegistrationRepositoryInterface;
@@ -124,7 +125,7 @@ class LtiService extends ConfigurableService
                         $userId->getIdentifier(),
                         $userId->getName(),
                         $userId->getEmail(),
-                        $userId->getLocale() ?? $messagePayload->getLaunchPresentation()->getLocale()
+                        $userId->getLocale() ?? $this->getLocaleFromMessagePayload($messagePayload)
                     ),
                     new TenantDataSessionContext(end($clientIdParts))
                 ];
@@ -231,5 +232,14 @@ class LtiService extends ConfigurableService
     public static function singleton()
     {
         return ServiceManager::getServiceManager()->get(static::class);
+    }
+
+    private function getLocaleFromMessagePayload(LtiMessagePayloadInterface $messagePayload): ?string
+    {
+        if ($messagePayload && $messagePayload->getLaunchPresentation() instanceof LaunchPresentationClaim) {
+            return $messagePayload->getLaunchPresentation()->getLocale();
+        }
+
+        return null;
     }
 }
