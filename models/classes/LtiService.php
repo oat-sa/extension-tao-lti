@@ -105,6 +105,7 @@ class LtiService extends ConfigurableService
                 $ltiUser->setUserFirstTimeUri(GenerisRdf::GENERIS_FALSE);
                 $ltiUser->setUserLatestExtension(self::DEFAULT_USER_EXTENSION);
 
+
                 $userLatestExtensionValue = (string)$user->getOnePropertyValue($userLatestExtension);
                 if (!empty($userLatestExtensionValue)) {
                     $ltiUser->setUserLatestExtension($userLatestExtensionValue);
@@ -123,7 +124,7 @@ class LtiService extends ConfigurableService
                         $userId->getIdentifier(),
                         $userId->getName(),
                         $userId->getEmail(),
-                        $userId->getLocale()
+                        $userId->getLocale() ?? $messagePayload->getLaunchPresentation()->getLocale()
                     ),
                     new TenantDataSessionContext(end($clientIdParts))
                 ];
