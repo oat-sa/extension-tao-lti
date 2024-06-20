@@ -74,6 +74,7 @@ return [
         [AccessRule::GRANT, 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiManagerRole', ['ext' => 'taoLti']],
         [AccessRule::GRANT, TaoRoles::ANONYMOUS, CookieUtils::class],
         [AccessRule::GRANT, TaoRoles::BASE_USER, ['ext' => 'taoLti','mod' => 'LtiConsumer', 'act' => 'call']],
+        [AccessRule::GRANT, TaoRoles::BASE_USER, ['ext' => 'taoLti','mod' => 'Import']],
         [AccessRule::GRANT, TaoRoles::ANONYMOUS, Security::class],
         [AccessRule::GRANT, TaoRoles::ANONYMOUS, ['ext' => 'taoLti', 'mod' => 'AuthoringTool', 'act' => 'launch']],
         [
