@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2023 (original work) Open Assessment Technologies SA;
+ * Copyright (c) 2023-2024 (original work) Open Assessment Technologies SA;
  */
 
 declare(strict_types=1);
@@ -28,7 +28,6 @@ use core_kernel_classes_Resource;
 use helpers_Random;
 use InterruptedActionException;
 use OAT\Library\Lti1p3Core\Message\Payload\LtiMessagePayloadInterface;
-use oat\tao\model\theme\ThemeService;
 use oat\taoLti\models\classes\LtiException;
 use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
 use oat\taoLti\models\classes\LtiService;
@@ -53,7 +52,9 @@ class AuthoringTool extends ToolModule
     public function run(): void
     {
         if ($this->hasAccess(tao_actions_Main::class, 'entry')) {
-            $this->redirect(_url('entry', 'Main', 'tao', $_GET));
+            // Using a 301 Moved Permanently redirect prevents getting the request recorded in the browser's
+            // history, avoiding going back to the token validation when the user clicks the "Back" button
+            $this->redirect(_url('entry', 'Main', 'tao', $_GET), 301);
         } else {
             throw new LtiException(
                 __('You are not authorized to access this resource'),
@@ -67,6 +68,8 @@ class AuthoringTool extends ToolModule
      */
     protected function getValidatedLtiMessagePayload(): LtiMessagePayloadInterface
     {
+        \common_Logger::w(self::class . '::getValidatedLtiMessagePayload');
+
         return $this->getServiceLocator()
             ->getContainer()
             ->get(Lti1p3Validator::class . 'Authoring')
@@ -84,12 +87,10 @@ class AuthoringTool extends ToolModule
      */
     public function launch(): void
     {
-        $ltiMessage = $this->getLtiMessageOrRedirectToLogin();
+        try {
+            $ltiMessage = $this->getValidatedLtiMessagePayload();
 
-        $user = $this->getServiceLocator()
-            ->getContainer()
-            ->get(tao_models_classes_UserService::class)
-            ->addUser(
+            $user = $this->getUserService()->addUser(
                 $ltiMessage->getUserIdentity()->getIdentifier(),
                 helpers_Random::generateString(UserService::PASSWORD_LENGTH),
                 new core_kernel_classes_Resource(
@@ -97,43 +98,61 @@ class AuthoringTool extends ToolModule
                 )
             );
 
-        $this->getServiceLocator()
-            ->getContainer()
-            ->get(LtiService::class)
-            ->startLti1p3Session($ltiMessage, $user);
+            $this->getLtiService()->startLti1p3Session($ltiMessage, $user);
+        } catch (LtiException $exception) {
+            $this->getLogger()->warning('Caught LtiException',);
+            $this->handleLtiException($exception);
+        }
 
-        $this->forward('run', null, null, $_GET);
+        // Using a 301 Moved Permanently redirect prevents getting the request recorded in the browser's
+        // history, avoiding going back to the token validation when the user clicks the "Back" button
+        $this->redirect(_url('entry', 'Main', 'tao', $_GET), 301);
     }
 
     /**
-     * @throws ContainerExceptionInterface
      * @throws InterruptedActionException
      * @throws LtiException
-     * @throws NotFoundExceptionInterface
      */
-    private function getLtiMessageOrRedirectToLogin(): LtiMessagePayloadInterface
+    private function handleLtiException(LtiException $exception): void
     {
-        try {
-            $message = $this->getValidatedLtiMessagePayload();
-        } catch (LtiException $exception) {
-            if ($exception->getMessage() !== self::LTI_NO_MATCHING_REGISTRATION_FOUND_MESSAGE) {
-                throw $exception;
-            }
-
+        if ($exception->getMessage() === self::LTI_NO_MATCHING_REGISTRATION_FOUND_MESSAGE) {
             $this->getLogger()->warning(
                 sprintf(
                     'Missing registration for current audience. Redirecting to the login page. Exception: %s',
                     $exception
                 )
             );
-            $this->redirect(_url('login', 'Main', 'tao'));
+
+            $this->redirect(_url('login', 'Main', 'tao'));  // throws
         }
 
-        return $message;
+        throw $exception;
     }
 
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
     private function getAuthoringRoleService(): AuthoringLtiRoleService
     {
         return $this->getPsrContainer()->get(AuthoringLtiRoleService::class);
+    }
+
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    private function getLtiService(): LtiService
+    {
+        return $this->getPsrContainer()->get(LtiService::class);
+    }
+
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     */
+    private function getUserService(): tao_models_classes_UserService
+    {
+        return $this->getPsrContainer()->get(tao_models_classes_UserService::class);
     }
 }
