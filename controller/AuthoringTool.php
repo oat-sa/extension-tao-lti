@@ -68,8 +68,6 @@ class AuthoringTool extends ToolModule
      */
     protected function getValidatedLtiMessagePayload(): LtiMessagePayloadInterface
     {
-        \common_Logger::w(self::class . '::getValidatedLtiMessagePayload');
-
         return $this->getServiceLocator()
             ->getContainer()
             ->get(Lti1p3Validator::class . 'Authoring')
@@ -100,7 +98,6 @@ class AuthoringTool extends ToolModule
 
             $this->getLtiService()->startLti1p3Session($ltiMessage, $user);
         } catch (LtiException $exception) {
-            $this->getLogger()->warning('Caught LtiException',);
             $this->handleLtiException($exception);
         }
 
