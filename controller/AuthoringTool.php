@@ -45,6 +45,8 @@ class AuthoringTool extends ToolModule
     private const LTI_NO_MATCHING_REGISTRATION_FOUND_MESSAGE = 'No matching registration found tool side';
 
     /**
+     * @deprecated LTI requests to open Authoring should come through launch().
+     *
      * @throws LtiException
      * @throws InterruptedActionException
      * @throws common_exception_Error
