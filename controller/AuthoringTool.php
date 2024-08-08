@@ -82,6 +82,9 @@ class AuthoringTool extends ToolModule
      * @throws NotFoundExceptionInterface
      * @throws common_exception_Error
      * @throws WrongLtiRolesException
+     * @throws core_kernel_users_Exception
+     *
+     * @return never
      */
     public function launch(): void
     {
@@ -107,23 +110,27 @@ class AuthoringTool extends ToolModule
     }
 
     /**
+     * Handles an exception, either by rethrowing it or by throwing an instance of
+     * InterruptedActionException in order to redirect the user to the login page.
+     *
      * @throws InterruptedActionException
      * @throws LtiException
+     * @return never
      */
     private function handleLtiException(LtiException $exception): void
     {
-        if ($exception->getMessage() === self::LTI_NO_MATCHING_REGISTRATION_FOUND_MESSAGE) {
-            $this->getLogger()->warning(
-                sprintf(
-                    'Missing registration for current audience. Redirecting to the login page. Exception: %s',
-                    $exception
-                )
-            );
-
-            $this->redirect(_url('login', 'Main', 'tao'));  // throws
+        if ($exception->getMessage() !== self::LTI_NO_MATCHING_REGISTRATION_FOUND_MESSAGE) {
+            throw $exception;
         }
 
-        throw $exception;
+        $this->getLogger()->warning(
+            sprintf(
+                'Missing registration for current audience. Redirecting to the login page. Exception: %s',
+                $exception
+            )
+        );
+
+        $this->redirect(_url('login', 'Main', 'tao'));
     }
 
     /**
