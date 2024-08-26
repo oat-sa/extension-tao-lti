@@ -398,6 +398,7 @@
       <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOTest.rdf#TaoQtiTestPreviewerRole"/>
       <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAO.rdf#RestrictedItemAuthor"/>
       <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#AbstractItemAuthor"/>
+      <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemAuthor"/>
       <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemClassNavigatorRole"/>
       <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemClassEditorRole"/>
       <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemClassCreatorRole"/>
