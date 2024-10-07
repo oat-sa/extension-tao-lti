@@ -22,6 +22,8 @@ declare(strict_types=1);
 
 namespace oat\taoLti\test\unit\models\classes\Security\DataAccess\Repository;
 
+use League\Flysystem\UnableToReadFile;
+use League\Flysystem\UnableToWriteFile;
 use oat\generis\test\ServiceManagerMockTrait;
 use OAT\Library\Lti1p3Core\Security\Key\Key;
 use OAT\Library\Lti1p3Core\Security\Key\KeyChain;
@@ -129,7 +131,7 @@ class PlatformKeyChainRepositoryTest extends TestCase
     {
         $this->fileSystem
             ->method('read')
-            ->willReturn(false);
+            ->willThrowException(new UnableToReadFile());
 
         $keyChain = $this->subject->find('');
 
@@ -147,8 +149,7 @@ class PlatformKeyChainRepositoryTest extends TestCase
     public function testSaveDefaultKeyChain(): void
     {
         $this->fileSystem
-            ->method('write')
-            ->willReturn(true);
+            ->method('write');
 
         $this->subject->saveDefaultKeyChain(
             new KeyChain('keyId', '', new Key(''), new Key(''))
@@ -161,7 +162,7 @@ class PlatformKeyChainRepositoryTest extends TestCase
     {
         $this->fileSystem
             ->method('write')
-            ->willReturn(false);
+            ->willThrowException(new UnableToWriteFile());
 
         $this->expectException(PlatformKeyChainException::class);
         $this->expectExceptionMessage('Impossible to write LTI keys');
