@@ -23,7 +23,8 @@ declare(strict_types=1);
 namespace oat\taoLti\models\classes\Security\DataAccess\Repository;
 
 use common_exception_NoImplementation;
-use League\Flysystem\FilesystemInterface;
+use League\Flysystem\FilesystemException;
+use League\Flysystem\FilesystemOperator;
 use OAT\Library\Lti1p3Core\Security\Key\Key;
 use OAT\Library\Lti1p3Core\Security\Key\KeyChain;
 use OAT\Library\Lti1p3Core\Security\Key\KeyChainInterface;
@@ -69,25 +70,23 @@ class PlatformKeyChainRepository extends ConfigurableService implements KeyChain
 
         $publicKeyPath = $configs[self::OPTION_DEFAULT_PUBLIC_KEY_PATH] ?? null;
         $privateKeyPath = $configs[self::OPTION_DEFAULT_PRIVATE_KEY_PATH] ?? null;
-        $isPublicKeySaved = false;
-        $isPrivateKeySaved = false;
 
         if ($publicKeyPath !== null && $privateKeyPath !== null) {
-            $isPublicKeySaved = $this->getFileSystem()
-                ->put(
-                    ltrim($publicKeyPath, DIRECTORY_SEPARATOR),
-                    $keyChain->getPublicKey()->getContent()
-                );
+            try {
+                $this->getFileSystem()
+                    ->write(
+                        ltrim($publicKeyPath, DIRECTORY_SEPARATOR),
+                        $keyChain->getPublicKey()->getContent()
+                    );
 
-            $isPrivateKeySaved = $this->getFileSystem()
-                ->put(
-                    ltrim($privateKeyPath, DIRECTORY_SEPARATOR),
-                    $keyChain->getPrivateKey()->getContent()
-                );
-        }
-
-        if (!$isPublicKeySaved || !$isPrivateKeySaved) {
-            throw new PlatformKeyChainException('Impossible to write LTI keys');
+                $this->getFileSystem()
+                    ->write(
+                        ltrim($privateKeyPath, DIRECTORY_SEPARATOR),
+                        $keyChain->getPrivateKey()->getContent()
+                    );
+            } catch (\Exception $e) {
+                throw new PlatformKeyChainException('Impossible to write LTI keys', 0, $e);
+            }
         }
     }
 
@@ -114,8 +113,8 @@ class PlatformKeyChainRepository extends ConfigurableService implements KeyChain
             throw new PlatformKeyChainException('The key path is not defined');
         }
 
-        $publicKey = $this->getFileSystem()->read($publicKeyPath);
-        $privateKey = $this->getFileSystem()->read($privateKeyPath);
+        $publicKey = $this->readKey($publicKeyPath);
+        $privateKey = $this->readKey($privateKeyPath);
 
         if ($publicKey === false || $privateKey === false) {
             throw new PlatformKeyChainException('Impossible to read LTI keys');
@@ -140,8 +139,8 @@ class PlatformKeyChainRepository extends ConfigurableService implements KeyChain
             $privateKeyPassphrase = $configs[self::OPTION_DEFAULT_PRIVATE_KEY_PASSPHRASE] ?? null;
 
             if ($defaultKeyId && $publicKeyPath && $privateKeyPath) {
-                $publicKey = $this->getFileSystem()->read($publicKeyPath);
-                $privateKey = $this->getFileSystem()->read($privateKeyPath);
+                $publicKey = $this->readKey($publicKeyPath);
+                $privateKey = $this->readKey($privateKeyPath);
 
                 $keyChains[] = new TaoKeyChain(
                     $defaultKeyId,
@@ -168,7 +167,16 @@ class PlatformKeyChainRepository extends ConfigurableService implements KeyChain
         throw new common_exception_NoImplementation();
     }
 
-    private function getFileSystem(): FilesystemInterface
+    private function readKey(string $path): string
+    {
+        try {
+            return $this->getFileSystem()->read($path);
+        } catch (FilesystemException $e) {
+            throw new PlatformKeyChainException('Impossible to read LTI keys');
+        }
+    }
+
+    private function getFileSystem(): FilesystemOperator
     {
         /** @var FileSystemService $fileSystemService */
         $fileSystemService = $this->getServiceLocator()

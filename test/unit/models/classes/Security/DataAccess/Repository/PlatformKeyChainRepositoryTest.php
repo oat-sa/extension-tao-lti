@@ -147,7 +147,7 @@ class PlatformKeyChainRepositoryTest extends TestCase
     public function testSaveDefaultKeyChain(): void
     {
         $this->fileSystem
-            ->method('put')
+            ->method('write')
             ->willReturn(true);
 
         $this->subject->saveDefaultKeyChain(
@@ -160,7 +160,7 @@ class PlatformKeyChainRepositoryTest extends TestCase
     public function testSaveDefaultKeyChainFails(): void
     {
         $this->fileSystem
-            ->method('put')
+            ->method('write')
             ->willReturn(false);
 
         $this->expectException(PlatformKeyChainException::class);
