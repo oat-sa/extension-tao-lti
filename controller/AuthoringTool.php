@@ -28,8 +28,7 @@ use core_kernel_classes_Resource;
 use helpers_Random;
 use InterruptedActionException;
 use OAT\Library\Lti1p3Core\Message\Payload\LtiMessagePayloadInterface;
-use oat\tao\model\featureFlag\FeatureFlagChecker;
-use oat\tao\model\featureFlag\FeatureFlagCheckerInterface;
+use oat\tao\model\theme\ThemeService;
 use oat\taoLti\models\classes\LtiException;
 use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
 use oat\taoLti\models\classes\LtiService;
@@ -108,31 +107,12 @@ class AuthoringTool extends ToolModule
 
     /**
      * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     */
-    private function isFeatureTaoAsToolEnabled(): bool
-    {
-        return $this->getServiceManager()
-            ->getContainer()
-            ->get(FeatureFlagChecker::class)
-            ->isEnabled(FeatureFlagCheckerInterface::FEATURE_FLAG_TAO_AS_A_TOOL);
-    }
-
-    /**
-     * @throws ContainerExceptionInterface
      * @throws InterruptedActionException
      * @throws LtiException
      * @throws NotFoundExceptionInterface
      */
     private function getLtiMessageOrRedirectToLogin(): LtiMessagePayloadInterface
     {
-        if (!$this->isFeatureTaoAsToolEnabled()) {
-            $this->getLogger()->info(
-                'TAO as tool feature is disabled. The user will be redirected to the login page.'
-            );
-            $this->redirect(_url('login', 'Main', 'tao'));
-        }
-
         try {
             $message = $this->getValidatedLtiMessagePayload();
         } catch (LtiException $exception) {

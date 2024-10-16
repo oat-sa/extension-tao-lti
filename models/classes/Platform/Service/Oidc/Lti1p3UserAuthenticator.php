@@ -50,8 +50,13 @@ class Lti1p3UserAuthenticator extends ConfigurableService implements UserAuthent
     /**
      * @throws ErrorException
      */
-    private function getUserIdentity(string $userId): UserIdentity
+    private function getUserIdentity(string $userId): ?UserIdentity
     {
+        // anonymous user without login data
+        if ($userId === '') {
+            return null;
+        }
+
         $user = $this->getUserService()
             ->getUser($userId);
 

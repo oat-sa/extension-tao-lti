@@ -28,6 +28,7 @@ use core_kernel_classes_Class;
 use core_kernel_classes_Property;
 use core_kernel_classes_Resource;
 use oat\generis\model\GenerisRdf;
+use OAT\Library\Lti1p3Core\Message\Payload\Claim\LaunchPresentationClaim;
 use OAT\Library\Lti1p3Core\Message\Payload\LtiMessagePayloadInterface;
 use OAT\Library\Lti1p3Core\Message\Payload\MessagePayloadInterface;
 use OAT\Library\Lti1p3Core\Registration\RegistrationRepositoryInterface;
@@ -35,6 +36,8 @@ use oat\oatbox\log\LoggerService;
 use oat\oatbox\service\ConfigurableService;
 use oat\oatbox\service\ServiceManager;
 use oat\oatbox\session\SessionService;
+use oat\tao\model\session\Context\TenantDataSessionContext;
+use oat\tao\model\session\Context\UserDataSessionContext;
 use oat\tao\model\TaoOntology;
 use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
 use oat\taoLti\models\classes\user\Lti1p3User;
@@ -103,6 +106,7 @@ class LtiService extends ConfigurableService
                 $ltiUser->setUserFirstTimeUri(GenerisRdf::GENERIS_FALSE);
                 $ltiUser->setUserLatestExtension(self::DEFAULT_USER_EXTENSION);
 
+
                 $userLatestExtensionValue = (string)$user->getOnePropertyValue($userLatestExtension);
                 if (!empty($userLatestExtensionValue)) {
                     $ltiUser->setUserLatestExtension($userLatestExtensionValue);
@@ -111,9 +115,26 @@ class LtiService extends ConfigurableService
 
             $ltiUser->setRegistrationId($registration->getIdentifier());
 
-            $session = TaoLtiSession::fromVersion1p3($ltiUser);
+            $contexts = [];
+            if ($clientId) {
+                $userId = $messagePayload->getUserIdentity();
+                $clientIdParts = explode('-', $clientId);
+                $contexts = [
+                    new UserDataSessionContext(
+                        $userId->getIdentifier(),
+                        $userId->getIdentifier(),
+                        $userId->getName(),
+                        $userId->getEmail(),
+                        $userId->getLocale() ?? $this->getLocaleFromMessagePayload($messagePayload)
+                    ),
+                    new TenantDataSessionContext(end($clientIdParts))
+                ];
+            }
+
+            $session = TaoLtiSession::fromVersion1p3($ltiUser, $contexts);
 
             $this->getServiceLocator()->propagate($session);
+
 
             return $session;
         } catch (LtiInvalidVariableException $e) {
@@ -211,5 +232,14 @@ class LtiService extends ConfigurableService
     public static function singleton()
     {
         return ServiceManager::getServiceManager()->get(static::class);
+    }
+
+    private function getLocaleFromMessagePayload(LtiMessagePayloadInterface $messagePayload): ?string
+    {
+        if ($messagePayload && $messagePayload->getLaunchPresentation() instanceof LaunchPresentationClaim) {
+            return $messagePayload->getLaunchPresentation()->getLocale();
+        }
+
+        return null;
     }
 }

@@ -37,8 +37,10 @@ class Lti1p3UserAuthenticatorTest extends TestCase
 {
     use ServiceManagerMockTrait;
 
+    private const LOGIN_HINT = 'userId#123456';
+
     /** @var Lti1p3UserAuthenticator */
-    private $subject;
+    private Lti1p3UserAuthenticator $subject;
 
     /** @var UserService|MockObject */
     private $userService;
@@ -85,7 +87,7 @@ class Lti1p3UserAuthenticatorTest extends TestCase
                     'en-US'
                 )
             ),
-            $this->subject->authenticate($registration, 'userId#123456')
+            $this->subject->authenticate($registration, self::LOGIN_HINT)
         );
     }
 
@@ -104,12 +106,32 @@ class Lti1p3UserAuthenticatorTest extends TestCase
             new UserAuthenticationResult(
                 true,
                 new UserIdentity(
-                    'userId#123456',
+                    self::LOGIN_HINT,
                     '',
                     ''
                 )
             ),
-            $this->subject->authenticate($registration, 'userId#123456')
+            $this->subject->authenticate($registration, self::LOGIN_HINT)
+        );
+    }
+
+    public function testAnonymousWithoutLoginHintData(): void
+    {
+        $this->expectAnonymousUser(
+            [
+                'role'
+            ]
+        );
+
+        /** @var RegistrationInterface|MockObject $registration */
+        $registration = $this->createMock(RegistrationInterface::class);
+
+        $this->assertEquals(
+            new UserAuthenticationResult(
+                true,
+                null
+            ),
+            $this->subject->authenticate($registration, '')
         );
     }
 
