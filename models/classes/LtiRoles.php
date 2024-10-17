@@ -81,6 +81,7 @@ interface LtiRoles
     //ContentDeveloper roles set
     public const CONTEXT_LTI1P3_CONTENT_DEVELOPER = 'http://purl.imsglobal.org/vocab/lis/v2/membership#ContentDeveloper';
     public const CONTEXT_LTI1P3_CONTENT_DEVELOPER_SUB_CONTENT_DEVELOPER = 'http://purl.imsglobal.org/vocab/lis/v2/membership/ContentDeveloper#ContentDeveloper';
+    public const CONTEXT_LTI1P3_CONTENT_DEVELOPER_SUB_CONTENT_CREATOR= 'http://purl.imsglobal.org/vocab/lis/v2/membership/ContentDeveloper#ContentCreator';
     public const CONTEXT_LTI1P3_CONTENT_DEVELOPER_SUB_CONTENT_EXPERT = 'http://purl.imsglobal.org/vocab/lis/v2/membership/ContentDeveloper#ContentExpert';
     public const CONTEXT_LTI1P3_CONTENT_DEVELOPER_SUB_EXTERNAL_CONTENT_EXPERT = 'http://purl.imsglobal.org/vocab/lis/v2/membership/ContentDeveloper#ExternalContentExpert';
     public const CONTEXT_LTI1P3_CONTENT_DEVELOPER_SUB_LIBRARIAN = 'http://purl.imsglobal.org/vocab/lis/v2/membership/ContentDeveloper#Librarian';
