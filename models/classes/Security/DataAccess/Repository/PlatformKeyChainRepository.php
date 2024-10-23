@@ -23,12 +23,12 @@ declare(strict_types=1);
 namespace oat\taoLti\models\classes\Security\DataAccess\Repository;
 
 use common_exception_NoImplementation;
-use League\Flysystem\FilesystemException;
-use League\Flysystem\FilesystemOperator;
 use OAT\Library\Lti1p3Core\Security\Key\Key;
 use OAT\Library\Lti1p3Core\Security\Key\KeyChain;
 use OAT\Library\Lti1p3Core\Security\Key\KeyChainInterface;
 use OAT\Library\Lti1p3Core\Security\Key\KeyChainRepositoryInterface;
+use oat\oatbox\filesystem\FilesystemException;
+use oat\oatbox\filesystem\FilesystemInterface;
 use oat\oatbox\filesystem\FileSystemService;
 use oat\oatbox\service\ConfigurableService;
 use oat\tao\model\security\Business\Domain\Key\Key as TaoKey;
@@ -176,7 +176,7 @@ class PlatformKeyChainRepository extends ConfigurableService implements KeyChain
         }
     }
 
-    private function getFileSystem(): FilesystemOperator
+    private function getFileSystem(): FilesystemInterface
     {
         /** @var FileSystemService $fileSystemService */
         $fileSystemService = $this->getServiceLocator()
