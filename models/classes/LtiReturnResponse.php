@@ -36,6 +36,8 @@ use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
  */
 class LtiReturnResponse extends ResponseAbstract
 {
+    protected $httpCode = 302;
+
     /**
      * @var LtiException
      */
@@ -64,7 +66,7 @@ class LtiReturnResponse extends ResponseAbstract
      */
     public function setHttpCode($code)
     {
-        $this->httpCode = 302;
+        $this->httpCode = $code;
         return $this;
     }
 
@@ -81,7 +83,7 @@ class LtiReturnResponse extends ResponseAbstract
             if ($this->requiresRedirect() && !empty($this->getReturnBaseUrl())) {
                 $this->errorRedirectResponse();
             } else {
-                echo $this->showLtiErrorPage();
+                $this->responseWithCode(400, $this->showLtiErrorPage());
             }
         } catch (\Exception $e) {
             $this->renderer->setTemplate(Template::getTemplate('error/error500.tpl', 'tao'));
@@ -119,7 +121,7 @@ class LtiReturnResponse extends ResponseAbstract
      * @throws LtiVariableMissingException
      * @throws \common_Exception
      */
-    protected function showLtiErrorPage()
+    protected function showLtiErrorPage(): string
     {
         if (isset($this->requestParams[LtiLaunchData::TOOL_CONSUMER_INSTANCE_NAME])) {
             $this->renderer->setData(
@@ -160,7 +162,7 @@ class LtiReturnResponse extends ResponseAbstract
      * @throws LtiVariableMissingException
      * @throws \common_Exception
      */
-    protected function renderLtiErrorPage(LtiException $error, $returnLink = true)
+    protected function renderLtiErrorPage(LtiException $error, $returnLink = true): string
     {
         // In regard of the IMS LTI standard, we have to show a back button that refer to the
         // launch_presentation_return_url url param. So we have to retrieve this parameter before trying to start
@@ -244,5 +246,13 @@ class LtiReturnResponse extends ResponseAbstract
     {
         header(HTTPToolkit::statusCodeHeader($statusCode));
         header(HTTPToolkit::locationHeader($url));
+    }
+
+    private function responseWithCode(int $statusCode, string $data, string $contentType = 'text/html'): void
+    {
+        $this->setHttpCode($statusCode);
+        $this->contentType = $contentType;
+        $this->sendHeaders();
+        echo $data;
     }
 }
