@@ -21,6 +21,7 @@
 namespace oat\taoLti\controller;
 
 use League\OAuth2\Server\Exception\OAuthServerException;
+use OAT\Library\Lti1p3Core\Exception\LtiBadRequestException;
 use OAT\Library\Lti1p3Core\Registration\RegistrationRepositoryInterface;
 use OAT\Library\Lti1p3Core\Security\Key\KeyChainRepositoryInterface;
 use OAT\Library\Lti1p3Core\Security\OAuth2\Factory\AuthorizationServerFactory;
@@ -70,10 +71,14 @@ class Security extends Controller implements ServiceLocatorAwareInterface
 
     public function oidc(): void
     {
-        $response = $this->getOidcLoginAuthenticator()
-            ->authenticate($this->getPsrRequest(), $this->getPsrResponse());
+        try {
+            $response = $this->getOidcLoginAuthenticator()
+                ->authenticate($this->getPsrRequest(), $this->getPsrResponse());
 
-        $this->setResponse($response);
+            $this->setResponse($response);
+        } catch (LtiBadRequestException $exception) {
+            $this->setResponse($this->getPsrResponse()->withStatus(400));
+        }
     }
 
     public function oidcInitiation(): void
