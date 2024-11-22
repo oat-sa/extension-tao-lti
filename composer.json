@@ -55,6 +55,7 @@
     	"tao-extension-name" : "taoLti"
     },
     "require": {
+        "php": "~8",
         "ext-openssl": "*",
         "guzzlehttp/guzzle": "^6.5 || ^7.0",
         "oat-sa/oatbox-extension-installer": "~1.1||dev-master",
