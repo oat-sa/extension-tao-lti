@@ -77,6 +77,6 @@ class ExceptionInterpreter extends ExceptionInterpretor
             ->get(FileSystemService::SERVICE_ID)
             ->getFileSystem(self::FILESYSTEM_ID_TO_LOG);
 
-        $fs->put('lti_' . $this->exception->getKey() . '.log', $msg);
+        $fs->write('lti_' . $this->exception->getKey() . '.log', $msg);
     }
 }
