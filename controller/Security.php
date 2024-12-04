@@ -21,6 +21,7 @@
 namespace oat\taoLti\controller;
 
 use League\OAuth2\Server\Exception\OAuthServerException;
+use OAT\Library\Lti1p3Core\Exception\LtiBadRequestException;
 use OAT\Library\Lti1p3Core\Registration\RegistrationRepositoryInterface;
 use OAT\Library\Lti1p3Core\Security\Key\KeyChainRepositoryInterface;
 use OAT\Library\Lti1p3Core\Security\OAuth2\Factory\AuthorizationServerFactory;
@@ -29,7 +30,6 @@ use OAT\Library\Lti1p3Core\Security\OAuth2\Generator\AccessTokenResponseGenerato
 use OAT\Library\Lti1p3Core\Security\Oidc\OidcInitiator;
 use oat\tao\model\http\Controller;
 use oat\tao\model\security\Business\Contract\JwksRepositoryInterface;
-use oat\taoLti\models\classes\Platform\Repository\Lti1p3RegistrationRepository;
 use oat\taoLti\models\classes\Platform\Service\Oidc\OidcLoginAuthenticatorInterface;
 use oat\taoLti\models\classes\Platform\Service\Oidc\OidcLoginAuthenticatorProxy;
 use oat\taoLti\models\classes\Security\DataAccess\Repository\CachedPlatformJwksRepository;
@@ -37,6 +37,7 @@ use oat\taoLti\models\classes\Security\DataAccess\Repository\CachedPlatformKeyCh
 use oat\taoLti\models\classes\Security\DataAccess\Repository\PlatformKeyChainRepository;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorAwareTrait;
+use common_exception_BadRequest;
 
 use function GuzzleHttp\Psr7\stream_for;
 
@@ -70,23 +71,31 @@ class Security extends Controller implements ServiceLocatorAwareInterface
 
     public function oidc(): void
     {
-        $response = $this->getOidcLoginAuthenticator()
-            ->authenticate($this->getPsrRequest(), $this->getPsrResponse());
+        try {
+            $response = $this->getOidcLoginAuthenticator()
+                ->authenticate($this->getPsrRequest(), $this->getPsrResponse());
 
-        $this->setResponse($response);
+            $this->setResponse($response);
+        } catch (LtiBadRequestException $exception) {
+            throw new common_exception_BadRequest($exception->getMessage());
+        }
     }
 
     public function oidcInitiation(): void
     {
-        // Create the OIDC initiator
-        $initiator = new OidcInitiator(
-            $this->getPsrContainer()->get(RegistrationRepositoryInterface::class)
-        );
+        try {
+            // Create the OIDC initiator
+            $initiator = new OidcInitiator(
+                $this->getPsrContainer()->get(RegistrationRepositoryInterface::class)
+            );
 
-        // Perform the OIDC initiation (including state generation)
-        $message = $initiator->initiate($this->getPsrRequest());
+            // Perform the OIDC initiation (including state generation)
+            $message = $initiator->initiate($this->getPsrRequest());
 
-        $this->redirect($message->toUrl());
+            $this->redirect($message->toUrl());
+        } catch (LtiBadRequestException $exception) {
+            throw new common_exception_BadRequest($exception->getMessage());
+        }
     }
 
     private function getKeyChainRepository(): KeyChainRepositoryInterface
