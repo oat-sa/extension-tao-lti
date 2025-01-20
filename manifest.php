@@ -86,6 +86,11 @@ return [
             LtiRoles::CONTEXT_LTI1P3_ADMINISTRATOR_SUB_DEVELOPER,
             ['ext' => 'taoLti', 'mod' => 'AuthoringTool', 'act' => 'run']
         ],
+        [
+            AccessRule::GRANT,
+            LtiRoles::CONTEXT_LTI1P3_CONTENT_DEVELOPER_SUB_CONTENT_EXPERT,
+            ['ext' => 'taoLti', 'mod' => 'AuthoringTool', 'act' => 'run']
+        ],
     ],
     'constants' => [
         # controller directory
