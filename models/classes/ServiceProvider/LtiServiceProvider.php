@@ -103,7 +103,6 @@ class LtiServiceProvider implements ContainerServiceProviderInterface
             [
                 'help' => self::PORTAL_ACCESS_ROLES,
                 'settings_my_password' => self::PORTAL_ACCESS_ROLES,
-                'settings_my_settings' => self::PORTAL_ACCESS_ROLES
             ]
         );
 
