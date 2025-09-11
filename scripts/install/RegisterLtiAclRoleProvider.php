@@ -24,12 +24,19 @@ namespace oat\taoLti\scripts\install;
 
 use oat\oatbox\extension\InstallAction;
 use oat\tao\model\accessControl\AclRoleProvider;
+use oat\tao\model\search\SearchProxy;
 use oat\taoLti\models\classes\Acl\LtiAclRoleProvider;
+use oat\taoLti\models\classes\LtiRoles;
 
 class RegisterLtiAclRoleProvider extends InstallAction
 {
     public function __invoke($params)
     {
         $this->getServiceManager()->register(AclRoleProvider::SERVICE_ID, new LtiAclRoleProvider());
+        $searchProxy = $this->getServiceManager()->get(SearchProxy::SERVICE_ID);
+        $generisSearchWhiteList = $searchProxy->getOption(SearchProxy::OPTION_GENERIS_SEARCH_WHITELIST);
+        $generisSearchWhiteList[] = LtiRoles::ACL_CLASS_URI;
+        $searchProxy->setOption(SearchProxy::OPTION_GENERIS_SEARCH_WHITELIST, $generisSearchWhiteList);
+        $this->getServiceManager()->register(SearchProxy::SERVICE_ID, $searchProxy);
     }
 }
