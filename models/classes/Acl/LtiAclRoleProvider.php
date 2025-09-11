@@ -22,11 +22,11 @@ declare(strict_types=1);
 
 namespace oat\taoLti\models\classes\Acl;
 
+use oat\generis\model\data\Ontology;
 use oat\generis\model\GenerisRdf;
 use oat\oatbox\service\ConfigurableService;
 use oat\oatbox\session\SessionService;
 use oat\tao\model\accessControl\AclRoleProvider;
-use oat\taoDelivery\model\execution\OntologyService;
 use oat\taoLti\models\classes\LtiLaunchData;
 use oat\taoLti\models\classes\LtiRoles;
 use oat\taoLti\models\classes\TaoLtiSession;
@@ -56,9 +56,9 @@ class LtiAclRoleProvider extends ConfigurableService implements AclRoleProvider
         return GenerisRdf::CLASS_ROLE;
     }
 
-    private function getOntologyService(): OntologyService
+    private function getOntologyService(): Ontology
     {
-        return $this->getServiceManager()->get(OntologyService::class);
+        return $this->getServiceManager()->get(Ontology::SERVICE_ID);
     }
 
     private function getSessionService(): SessionService
