@@ -62,7 +62,7 @@
         "oat-sa/lib-lti1p3-ags": "~2",
         "oat-sa/lib-lti1p3-core": "~7.2",
         "oat-sa/generis": ">=16.0.0",
-        "oat-sa/tao-core": ">=54.26.0"
+        "oat-sa/tao-core": ">=54.43.0"
     },
     "autoload" : {
         "psr-4" : {

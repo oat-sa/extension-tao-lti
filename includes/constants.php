@@ -34,6 +34,7 @@ $todefine = [
     'PROPERTY_USER_LTICONSUMER'     => 'http://www.tao.lu/Ontologies/TAOLTI.rdf#UserConsumer',
 
     'CLASS_LTI_ROLES'               => 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole',
+    'CLASS_ACL_ROLES'               => 'http://www.tao.lu/Ontologies/TAOLTI.rdf#ACLRole',
     'PROPERTY_LTI_ROLES_URN'        => 'http://www.tao.lu/Ontologies/TAOLTI.rdf#RoleURN',
 
     'CLASS_LTI_TOOL'                => 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTITool',
