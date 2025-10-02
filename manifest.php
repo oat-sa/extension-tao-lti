@@ -28,6 +28,7 @@ use oat\taoLti\models\classes\ServiceProvider\LtiServiceProvider;
 use oat\taoLti\scripts\install\CreateLti1p3RegistrationSnapshotSchema;
 use oat\taoLti\scripts\install\GenerateKeys;
 use oat\taoLti\scripts\install\GenerisSearchWhitelist;
+use oat\taoLti\scripts\install\RegisterLtiAclRoleProvider;
 use oat\taoLti\scripts\install\RegisterPortalThemeDetailProvider;
 use oat\taoLti\scripts\install\SetupServices;
 use oat\taoLti\scripts\install\MapLtiSectionVisibility;
@@ -66,6 +67,7 @@ return [
             GenerisSearchWhitelist::class,
             CreateLti1p3RegistrationSnapshotSchema::class,
             RegisterPortalThemeDetailProvider::class,
+            RegisterLtiAclRoleProvider::class,
         ]
     ],
     'update' => Updater::class,

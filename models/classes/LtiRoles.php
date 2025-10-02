@@ -30,6 +30,8 @@ interface LtiRoles
 {
     public const CLASS_URI = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole';
 
+    public const ACL_CLASS_URI = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#AclRole';
+
     public const PROPERTY_URN = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#RoleURN';
 
     public const INSTANCE_LTI_BASE = 'http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiBaseRole';

@@ -52,7 +52,7 @@
     <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership#Learner">
-      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#AclRole"/>
       <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 Learner]]></rdfs:label>
       <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context Learner Role]]></rdfs:comment>
       <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiBaseRole"/>
@@ -187,7 +187,7 @@
       <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership#Instructor">
-      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#AclRole"/>
       <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 Instructor]]></rdfs:label>
       <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context Instructor Role]]></rdfs:comment>
       <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiBaseRole"/>
@@ -293,7 +293,7 @@
       <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership/Administrator#Developer">
-      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#AclRole"/>
       <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 Developer]]></rdfs:label>
       <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context Developer Role]]></rdfs:comment>
       <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#GenerisRole"/>
@@ -381,7 +381,7 @@
       <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership/ContentDeveloper#ContentDeveloper">
-      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#AclRole"/>
       <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 Content Developer]]></rdfs:label>
       <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context Content Developer Role]]></rdfs:comment>
       <generis:includesRole rdf:resource="http://purl.imsglobal.org/vocab/lis/v2/membership#ContentDeveloper"/>

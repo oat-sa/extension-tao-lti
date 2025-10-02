@@ -10,7 +10,12 @@
     <rdfs:subClassOf rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#ClassRole"/>
     <rdfs:label xml:lang="en-US"><![CDATA[LTI Roles]]></rdfs:label>
   </rdf:Description>
-  
+
+  <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOLTI.rdf#AclRole">
+    <rdfs:subClassOf rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#ClassRole"/>
+    <rdfs:label xml:lang="en-US"><![CDATA[ACL Roles]]></rdfs:label>
+  </rdf:Description>
+
   <rdf:Description rdf:about="http://www.tao.lu/Ontologies/TAOLTI.rdf#RoleURN">
     <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
     <rdfs:label xml:lang="en-US"><![CDATA[URN]]></rdfs:label>
