@@ -52,8 +52,8 @@
     <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership#Learner">
-      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#AclRole"/>
-      <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 Learner]]></rdfs:label>
+      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+      <rdfs:label xml:lang="en-US"><![CDATA[Learner (LTI 1.3)]]></rdfs:label>
       <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context Learner Role]]></rdfs:comment>
       <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiBaseRole"/>
       <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAO.rdf#DeliveryRole"/>
@@ -187,8 +187,8 @@
       <generis:isSystem rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#True"/>
   </rdf:Description>
   <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership#Instructor">
-      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#AclRole"/>
-      <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 Instructor]]></rdfs:label>
+      <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LTIRole"/>
+      <rdfs:label xml:lang="en-US"><![CDATA[Instructor (LTI 1.3)]]></rdfs:label>
       <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context Instructor Role]]></rdfs:comment>
       <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#LtiBaseRole"/>
       <generis:includesRole rdf:resource="http://purl.imsglobal.org/vocab/lis/v2/membership/ContentDeveloper#ContentDeveloper"/>
@@ -294,7 +294,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership/Administrator#Developer">
       <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#AclRole"/>
-      <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 Developer]]></rdfs:label>
+      <rdfs:label xml:lang="en-US"><![CDATA[Admin (TAO Portal)]]></rdfs:label>
       <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context Developer Role]]></rdfs:comment>
       <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#GenerisRole"/>
       <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/TAOItem.rdf#ItemAuthor"/>
@@ -382,7 +382,7 @@
   </rdf:Description>
   <rdf:Description rdf:about="http://purl.imsglobal.org/vocab/lis/v2/membership/ContentDeveloper#ContentDeveloper">
       <rdf:type rdf:resource="http://www.tao.lu/Ontologies/TAOLTI.rdf#AclRole"/>
-      <rdfs:label xml:lang="en-US"><![CDATA[LTI 1p3 Content Developer]]></rdfs:label>
+      <rdfs:label xml:lang="en-US"><![CDATA[Content Developer (TAO Portal)]]></rdfs:label>
       <rdfs:comment xml:lang="en-US"><![CDATA[The LTI 1p3 Context Content Developer Role]]></rdfs:comment>
       <generis:includesRole rdf:resource="http://purl.imsglobal.org/vocab/lis/v2/membership#ContentDeveloper"/>
       <generis:includesRole rdf:resource="http://www.tao.lu/Ontologies/generis.rdf#taoDeliveryRdfManager"/>
