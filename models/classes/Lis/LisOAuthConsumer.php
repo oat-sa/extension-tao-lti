@@ -30,10 +30,7 @@ use oat\taoLti\models\classes\LtiProvider\LtiProvider;
  */
 class LisOAuthConsumer extends OAuthConsumer
 {
-    /**
-     * @var LtiProvider
-     */
-    private $ltiProvider;
+    private LtiProvider $ltiProvider;
 
     public function __construct(LtiProvider $ltiProvider, $callback_url = null)
     {
