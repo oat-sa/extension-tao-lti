@@ -24,6 +24,7 @@ namespace oat\taoLti\models\classes\LtiProvider;
 
 use InvalidArgumentException;
 use oat\oatbox\service\ConfigurableService;
+use ReturnTypeWillChange;
 
 /**
  * Service methods to manage the LTI provider business objects.
@@ -48,6 +49,7 @@ class ConfigurableLtiProviderRepository extends ConfigurableService implements L
      */
     private $providers;
 
+    #[ReturnTypeWillChange]
     public function count()
     {
         return count($this->getProviders());

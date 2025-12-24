@@ -27,6 +27,7 @@ use oat\generis\model\kernel\persistence\smoothsql\search\ComplexSearchService;
 use oat\generis\model\OntologyRdfs;
 use oat\tao\model\oauth\DataStore;
 use oat\tao\model\OntologyClassService;
+use ReturnTypeWillChange;
 
 /**
  * Service methods to manage the LTI provider business objects.
@@ -67,6 +68,7 @@ class RdfLtiProviderRepository extends OntologyClassService implements LtiProvid
      *
      * @return int
      */
+    #[ReturnTypeWillChange]
     public function count()
     {
         return $this->queryResources([], 'count', 0);

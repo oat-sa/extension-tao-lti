@@ -1,77 +1,76 @@
 {
-    "authors" : [
-          {
-          "name" : "Open Assessment Technologies S.A.",
-          "homepage" : "http://www.taotesting.com"
-          },
-          {
-          "name": "Jérôme Bogaerts",
-          "role": "Developer"
-          },
-          {
-          "name": "Joel Bout",
-          "role": "Developer"
-          },
-          {
-          "name": "Bertrand Chevrier",
-          "role": "Developer"
-          },
-          {
-          "name": "Lionel Lecaque",
-          "role": "Developer"
-          },
-          {
-          "name": "Patrick Plichart",
-          "role": "Developer"
-          },
-          {
-          "name": "Dieter Raber",
-          "role": "Developer"
-          },
-          {
-          "name": "Somsack Sipasseuth",
-          "role": "Developer"
-          }
-     ],
-     "description" : "extension to manage LTI services for TAO",
-     "support": {
-     "forum": "http://forum.taotesting.com",
-     "issues": "http://forge.taotesting.com"
+  "authors": [
+    {
+      "name": "Open Assessment Technologies S.A.",
+      "homepage": "http://www.taotesting.com"
     },
-    "homepage" : "http://www.taotesting.com",
-    "license" : [
-          "GPL-2.0-only"
-     ],
-    "keywords" : [
-          "tao",
-          "oat",
-          "LTI",
-          "computer-based-assessment"
-     ],
-
-    "name": "oat-sa/extension-tao-lti",
-    "type" : "tao-extension",
-    "extra" : {
-    	"tao-extension-name" : "taoLti"
+    {
+      "name": "Jérôme Bogaerts",
+      "role": "Developer"
     },
-    "require": {
-        "php": "~8",
-        "ext-openssl": "*",
-        "guzzlehttp/guzzle": "^6.5 || ^7.0",
-        "oat-sa/oatbox-extension-installer": "~1.1||dev-master",
-        "oat-sa/lib-lti1p3-ags": "~2",
-        "oat-sa/lib-lti1p3-core": "~7.2",
-        "oat-sa/generis": ">=16.0.0",
-        "oat-sa/tao-core": ">=54.43.0"
+    {
+      "name": "Joel Bout",
+      "role": "Developer"
     },
-    "autoload" : {
-        "psr-4" : {
-            "oat\\taoLti\\" : ""
-        }
+    {
+      "name": "Bertrand Chevrier",
+      "role": "Developer"
     },
-    "autoload-dev" : {
-      "psr-4" : {
-        "OAT\\Library\\Lti1p3Core\\Tests\\": "../vendor/oat-sa/lib-lti1p3-core/tests/"
-      }
+    {
+      "name": "Lionel Lecaque",
+      "role": "Developer"
+    },
+    {
+      "name": "Patrick Plichart",
+      "role": "Developer"
+    },
+    {
+      "name": "Dieter Raber",
+      "role": "Developer"
+    },
+    {
+      "name": "Somsack Sipasseuth",
+      "role": "Developer"
     }
+  ],
+  "description": "extension to manage LTI services for TAO",
+  "support": {
+    "forum": "http://forum.taotesting.com",
+    "issues": "http://forge.taotesting.com"
+  },
+  "homepage": "http://www.taotesting.com",
+  "license": [
+    "GPL-2.0-only"
+  ],
+  "keywords": [
+    "tao",
+    "oat",
+    "LTI",
+    "computer-based-assessment"
+  ],
+  "name": "oat-sa/extension-tao-lti",
+  "type": "tao-extension",
+  "extra": {
+    "tao-extension-name": "taoLti"
+  },
+  "require": {
+    "php": "~8",
+    "ext-openssl": "*",
+    "guzzlehttp/guzzle": "^6.5 || ^7.0",
+    "oat-sa/oatbox-extension-installer": "~1.1||dev-master",
+    "oat-sa/lib-lti1p3-ags": "~2",
+    "oat-sa/lib-lti1p3-core": "~7.2",
+    "oat-sa/generis": ">=16.2.2",
+    "oat-sa/tao-core": ">=54.49.5"
+  },
+  "autoload": {
+    "psr-4": {
+      "oat\\taoLti\\": ""
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "OAT\\Library\\Lti1p3Core\\Tests\\": "../vendor/oat-sa/lib-lti1p3-core/tests/"
+    }
+  }
 }
