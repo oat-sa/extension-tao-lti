@@ -26,6 +26,8 @@ use oat\taoLti\models\classes\Tool\Exception\WrongLtiRolesException;
 
 class AuthoringLtiRoleService
 {
+    private array $roleAllowed;
+
     public function __construct(array $roleAllowed)
     {
         $this->roleAllowed = $roleAllowed;

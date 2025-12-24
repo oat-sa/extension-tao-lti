@@ -29,6 +29,8 @@ use PHPUnit\Framework\TestCase;
 
 class AuthoringLtiRoleServiceTest extends TestCase
 {
+    private AuthoringLtiRoleService $subject;
+
     public function setUp(): void
     {
         $this->subject = new AuthoringLtiRoleService(

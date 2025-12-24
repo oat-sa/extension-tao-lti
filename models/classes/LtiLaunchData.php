@@ -241,7 +241,7 @@ class LtiLaunchData implements \JsonSerializable
     {
         $returnValue = [];
 
-        parse_str(parse_url($url, PHP_URL_QUERY), $returnValue);
+        parse_str(parse_url($url, PHP_URL_QUERY) ?? '', $returnValue);
 
         // encoded in url
         $parts = explode('/', tao_helpers_Request::getRelativeUrl($url), 4);
@@ -557,7 +557,7 @@ class LtiLaunchData implements \JsonSerializable
                 if (filter_var($returnUrl, FILTER_VALIDATE_URL)) {
                     return true;
                 } else {
-                    $this->logWarning("Invalid LTI Return URL '${returnUrl}'.");
+                    $this->logWarning("Invalid LTI Return URL '{$returnUrl}'.");
                 }
             }
         }
