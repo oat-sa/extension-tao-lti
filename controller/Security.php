@@ -38,8 +38,7 @@ use oat\taoLti\models\classes\Security\DataAccess\Repository\PlatformKeyChainRep
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorAwareTrait;
 use common_exception_BadRequest;
-
-use function GuzzleHttp\Psr7\stream_for;
+use GuzzleHttp\Psr7\Utils;
 
 class Security extends Controller implements ServiceLocatorAwareInterface
 {
@@ -64,7 +63,7 @@ class Security extends Controller implements ServiceLocatorAwareInterface
     {
         $response = $this->getPsrResponse()
             ->withHeader('ContentType', 'application/json')
-            ->withBody(stream_for(json_encode($this->getJwksRepository()->find())));
+            ->withBody(Utils::streamFor(json_encode($this->getJwksRepository()->find())));
 
         $this->setResponse($response);
     }
