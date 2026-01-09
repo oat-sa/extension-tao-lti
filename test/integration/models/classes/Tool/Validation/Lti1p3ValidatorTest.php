@@ -71,8 +71,6 @@ class Lti1p3ValidatorTest extends TestCase
     public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
-
-        require_once ROOT_PATH . 'vendor/oat-sa/lib-lti1p3-core/tests/Traits/OidcTestingTrait.php';
     }
 
     protected function setUp(): void
