@@ -58,7 +58,7 @@ class RdfLtiPlatformRepository extends OntologyClassService implements LtiPlatfo
     /**
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         return $this->queryResources([], 'count', 0);
     }
