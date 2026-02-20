@@ -61,7 +61,7 @@
     "oat-sa/lib-lti1p3-ags": "~2",
     "oat-sa/lib-lti1p3-core": "~7.2",
     "oat-sa/generis": ">=17.0.0",
-    "oat-sa/tao-core": ">=dev-fix/update-dependency as 99.99.99"
+    "oat-sa/tao-core": "dev-fix/update-dependency as 99.99.99"
   },
   "autoload": {
     "psr-4": {
