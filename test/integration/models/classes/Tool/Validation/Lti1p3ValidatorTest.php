@@ -144,22 +144,12 @@ uRQa1b83fSwj0MKYiZAHQ2xAInIWpK4bPyLOgRNKtUsNsT1HQQk=
         );
 
 
-        $this->subject = new Lti1p3Validator();
-
         $mockRegistrationRepository = $this->getMockBuilder(Lti1p3RegistrationRepository::class)->getMock();
         $mockRegistrationRepository
             ->method('findByPlatformIssuer')
             ->willReturn($this->registration);
 
-
-        $this->subject->setServiceLocator(
-            $this->getServiceLocatorMock(
-                [
-                    Lti1p3RegistrationRepository::SERVICE_ID => $mockRegistrationRepository,
-                    ItemPoolSimpleCacheAdapter::class => $this->createArrayCache()
-                ]
-            )
-        );
+        $this->subject = new Lti1p3Validator($mockRegistrationRepository, $this->createArrayCache());
     }
 
     public function testItGetsValidatedPayload(): void
@@ -232,49 +222,61 @@ uRQa1b83fSwj0MKYiZAHQ2xAInIWpK4bPyLOgRNKtUsNsT1HQQk=
     private function createArrayCache(): CacheItemPoolInterface
     {
         return new class () implements CacheItemPoolInterface {
-            private $cache = [];
+            private array $cache = [];
 
-            public function getItem($key)
+            public function getItem(string $key): CacheItemInterface
             {
                 return $this->cache[$key] ?? new CacheItem($key);
             }
 
-            public function getItems(array $keys = array())
+            public function getItems(array $keys = []): iterable
             {
-                return $this->cache;
+                $items = [];
+                foreach ($keys as $key) {
+                    $items[$key] = $this->getItem($key);
+                }
+                return $items;
             }
 
-            public function hasItem($key)
+            public function hasItem(string $key): bool
             {
-                return !empty($this->cache[$key]);
+                return isset($this->cache[$key]);
             }
 
-            public function clear()
+            public function clear(): bool
             {
                 $this->cache = [];
+                return true;
             }
 
-            public function deleteItem($key)
+            public function deleteItem(string $key): bool
             {
                 unset($this->cache[$key]);
+                return true;
             }
 
-            public function deleteItems(array $keys)
+            public function deleteItems(array $keys): bool
             {
-                $this->clear();
+                foreach ($keys as $key) {
+                    $this->deleteItem($key);
+                }
+                return true;
             }
 
-            public function save(CacheItemInterface $item)
+            public function save(CacheItemInterface $item): bool
             {
                 $this->cache[$item->getKey()] = $item;
+                return true;
             }
 
-            public function saveDeferred(CacheItemInterface $item)
+            public function saveDeferred(CacheItemInterface $item): bool
             {
+                return true;
             }
 
-            public function commit()
+            public function commit(): bool
             {
+                return true;
             }
         };
     }
