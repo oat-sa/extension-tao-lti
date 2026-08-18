@@ -23,13 +23,14 @@ declare(strict_types=1);
 namespace oat\taoLti\controller;
 
 use ActionEnforcingException;
+use common_session_SessionManager;
 use common_exception_Error;
 use core_kernel_classes_Resource;
 use helpers_Random;
 use InterruptedActionException;
 use OAT\Library\Lti1p3Core\Message\Payload\LtiMessagePayloadInterface;
 use oat\oatbox\event\EventManager;
-use oat\tao\model\theme\ThemeService;
+use oat\tao\model\session\source\SessionSourceMatcher;
 use oat\taoLti\models\classes\LtiException;
 use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
 use oat\taoLti\models\classes\LtiService;
@@ -136,30 +137,42 @@ class AuthoringTool extends ToolModule
         return $message;
     }
 
+    private function triggerContentBankAccessEvent(LtiMessagePayloadInterface $ltiMessage): void
+    {
+        if (!$this->isPortalLaunch()) {
+            return;
+        }
+
+        $userIdentity = $ltiMessage->getUserIdentity();
+        $this->getEventManager()->trigger(
+            new ContentBankAccessedFromPortalEvent(
+                $userIdentity?->getIdentifier() ?? '',
+                $userIdentity?->getName() ?? '',
+                $ltiMessage->getRoles()
+            )
+        );
+    }
+
+    private function isPortalLaunch(): bool
+    {
+        return $this->getSessionSourceMatcher()->matchesSource(
+            SessionSourceMatcher::SOURCE_PORTAL,
+            common_session_SessionManager::getSession()
+        );
+    }
+
     private function getAuthoringRoleService(): AuthoringLtiRoleService
     {
         return $this->getPsrContainer()->get(AuthoringLtiRoleService::class);
     }
 
-    private function triggerContentBankAccessEvent(LtiMessagePayloadInterface $ltiMessage): void
+    private function getSessionSourceMatcher(): SessionSourceMatcher
     {
-        $custom = $ltiMessage->getCustom();
-        $isPortalLaunch = isset($custom['portalLaunch'])
-            && filter_var($custom['portalLaunch'], FILTER_VALIDATE_BOOLEAN);
+        return $this->getPsrContainer()->get(SessionSourceMatcher::class);
+    }
 
-        if (!$isPortalLaunch) {
-            return;
-        }
-
-        $userIdentity = $ltiMessage->getUserIdentity();
-        /** @var EventManager $eventManager */
-        $eventManager = $this->getServiceManager()->get(EventManager::SERVICE_ID);
-        $eventManager->trigger(
-            new ContentBankAccessedFromPortalEvent(
-                $userIdentity ? $userIdentity->getIdentifier() : '',
-                $userIdentity ? (string) $userIdentity->getName() : '',
-                $ltiMessage->getRoles()
-            )
-        );
+    private function getEventManager(): EventManager
+    {
+        return $this->getPsrContainer()->get(EventManager::class);
     }
 }
