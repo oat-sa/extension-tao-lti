@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2023 (original work) Open Assessment Technologies SA;
+ * Copyright (c) 2023-2026 (original work) Open Assessment Technologies SA;
  */
 
 declare(strict_types=1);
@@ -28,10 +28,12 @@ use core_kernel_classes_Resource;
 use helpers_Random;
 use InterruptedActionException;
 use OAT\Library\Lti1p3Core\Message\Payload\LtiMessagePayloadInterface;
+use oat\oatbox\event\EventManager;
 use oat\tao\model\theme\ThemeService;
 use oat\taoLti\models\classes\LtiException;
 use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
 use oat\taoLti\models\classes\LtiService;
+use oat\taoLti\models\classes\event\ContentBankAccessedFromPortalEvent;
 use oat\taoLti\models\classes\Tool\Exception\WrongLtiRolesException;
 use oat\taoLti\models\classes\Tool\Service\AuthoringLtiRoleService;
 use oat\taoLti\models\classes\Tool\Validation\Lti1p3Validator;
@@ -102,6 +104,8 @@ class AuthoringTool extends ToolModule
             ->get(LtiService::class)
             ->startLti1p3Session($ltiMessage, $user);
 
+        $this->triggerContentBankAccessEvent($ltiMessage);
+
         $this->forward('run', null, null, $_GET);
     }
 
@@ -135,5 +139,27 @@ class AuthoringTool extends ToolModule
     private function getAuthoringRoleService(): AuthoringLtiRoleService
     {
         return $this->getPsrContainer()->get(AuthoringLtiRoleService::class);
+    }
+
+    private function triggerContentBankAccessEvent(LtiMessagePayloadInterface $ltiMessage): void
+    {
+        $custom = $ltiMessage->getCustom();
+        $isPortalLaunch = isset($custom['portalLaunch'])
+            && filter_var($custom['portalLaunch'], FILTER_VALIDATE_BOOLEAN);
+
+        if (!$isPortalLaunch) {
+            return;
+        }
+
+        $userIdentity = $ltiMessage->getUserIdentity();
+        /** @var EventManager $eventManager */
+        $eventManager = $this->getServiceManager()->get(EventManager::SERVICE_ID);
+        $eventManager->trigger(
+            new ContentBankAccessedFromPortalEvent(
+                $userIdentity ? $userIdentity->getIdentifier() : '',
+                $userIdentity ? (string) $userIdentity->getName() : '',
+                $ltiMessage->getRoles()
+            )
+        );
     }
 }
