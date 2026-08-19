@@ -23,6 +23,7 @@ declare(strict_types=1);
 namespace oat\taoLti\models\classes\session\source\ServiceProvider;
 
 use oat\generis\model\DependencyInjection\ContainerServiceProviderInterface;
+use oat\tao\model\session\source\SessionSource;
 use oat\tao\model\session\source\SessionSourceMatcher;
 use oat\taoLti\models\classes\session\source\PortalSessionSourceMatcher;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
@@ -43,7 +44,7 @@ class SessionSourceServiceProvider implements ContainerServiceProviderInterface
             ->get(SessionSourceMatcher::class)
             ->call(
                 'addSessionSourceMatcher',
-                [SessionSourceMatcher::SOURCE_PORTAL, service(PortalSessionSourceMatcher::class)]
+                [SessionSource::EXTERNAL_PORTAL->value, service(PortalSessionSourceMatcher::class)]
             );
     }
 }

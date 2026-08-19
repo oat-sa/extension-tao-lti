@@ -30,11 +30,12 @@ use helpers_Random;
 use InterruptedActionException;
 use OAT\Library\Lti1p3Core\Message\Payload\LtiMessagePayloadInterface;
 use oat\oatbox\event\EventManager;
+use oat\tao\model\event\LoginSucceedEvent;
+use oat\tao\model\session\source\SessionSource;
 use oat\tao\model\session\source\SessionSourceMatcher;
 use oat\taoLti\models\classes\LtiException;
 use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
 use oat\taoLti\models\classes\LtiService;
-use oat\taoLti\models\classes\event\ContentBankAccessedFromPortalEvent;
 use oat\taoLti\models\classes\Tool\Exception\WrongLtiRolesException;
 use oat\taoLti\models\classes\Tool\Service\AuthoringLtiRoleService;
 use oat\taoLti\models\classes\Tool\Validation\Lti1p3Validator;
@@ -105,7 +106,7 @@ class AuthoringTool extends ToolModule
             ->get(LtiService::class)
             ->startLti1p3Session($ltiMessage, $user);
 
-        $this->triggerContentBankAccessEvent($ltiMessage);
+        $this->triggerLoginSucceedEvent($ltiMessage);
 
         $this->forward('run', null, null, $_GET);
     }
@@ -137,7 +138,7 @@ class AuthoringTool extends ToolModule
         return $message;
     }
 
-    private function triggerContentBankAccessEvent(LtiMessagePayloadInterface $ltiMessage): void
+    private function triggerLoginSucceedEvent(LtiMessagePayloadInterface $ltiMessage): void
     {
         if (!$this->isPortalLaunch()) {
             return;
@@ -145,10 +146,9 @@ class AuthoringTool extends ToolModule
 
         $userIdentity = $ltiMessage->getUserIdentity();
         $this->getEventManager()->trigger(
-            new ContentBankAccessedFromPortalEvent(
-                $userIdentity?->getIdentifier() ?? '',
-                $userIdentity?->getName() ?? '',
-                $ltiMessage->getRoles()
+            new LoginSucceedEvent(
+                login: $userIdentity?->getIdentifier() ?? '',
+                source: SessionSource::EXTERNAL_PORTAL->value
             )
         );
     }
@@ -156,7 +156,7 @@ class AuthoringTool extends ToolModule
     private function isPortalLaunch(): bool
     {
         return $this->getSessionSourceMatcher()->matchesSource(
-            SessionSourceMatcher::SOURCE_PORTAL,
+            SessionSource::EXTERNAL_PORTAL->value,
             common_session_SessionManager::getSession()
         );
     }
