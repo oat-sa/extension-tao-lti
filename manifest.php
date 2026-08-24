@@ -16,7 +16,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2013-2021 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
+ * Copyright (c) 2013-2026 (original work) Open Assessment Technologies SA (under the project TAO-PRODUCT);
  */
 
 use oat\tao\model\accessControl\func\AccessRule;
@@ -25,6 +25,7 @@ use oat\taoLti\controller\CookieUtils;
 use oat\taoLti\controller\Security;
 use oat\taoLti\models\classes\LtiRoles;
 use oat\taoLti\models\classes\ServiceProvider\LtiServiceProvider;
+use oat\taoLti\models\classes\session\source\ServiceProvider\SessionSourceServiceProvider;
 use oat\taoLti\scripts\install\CreateLti1p3RegistrationSnapshotSchema;
 use oat\taoLti\scripts\install\GenerateKeys;
 use oat\taoLti\scripts\install\GenerisSearchWhitelist;
@@ -117,5 +118,6 @@ return [
     ],
     'containerServiceProviders' => [
         LtiServiceProvider::class,
+        SessionSourceServiceProvider::class,
     ],
 ];

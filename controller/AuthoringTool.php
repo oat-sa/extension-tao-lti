@@ -15,7 +15,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * Copyright (c) 2023 (original work) Open Assessment Technologies SA;
+ * Copyright (c) 2023-2026 (original work) Open Assessment Technologies SA;
  */
 
 declare(strict_types=1);
@@ -23,12 +23,16 @@ declare(strict_types=1);
 namespace oat\taoLti\controller;
 
 use ActionEnforcingException;
+use common_session_SessionManager;
 use common_exception_Error;
 use core_kernel_classes_Resource;
 use helpers_Random;
 use InterruptedActionException;
 use OAT\Library\Lti1p3Core\Message\Payload\LtiMessagePayloadInterface;
-use oat\tao\model\theme\ThemeService;
+use oat\oatbox\event\EventManager;
+use oat\tao\model\event\LoginSucceedEvent;
+use oat\tao\model\session\source\SessionSource;
+use oat\tao\model\session\source\SessionSourceMatcher;
 use oat\taoLti\models\classes\LtiException;
 use oat\taoLti\models\classes\LtiMessages\LtiErrorMessage;
 use oat\taoLti\models\classes\LtiService;
@@ -102,6 +106,8 @@ class AuthoringTool extends ToolModule
             ->get(LtiService::class)
             ->startLti1p3Session($ltiMessage, $user);
 
+        $this->triggerLoginSucceedEvent($ltiMessage);
+
         $this->forward('run', null, null, $_GET);
     }
 
@@ -132,8 +138,41 @@ class AuthoringTool extends ToolModule
         return $message;
     }
 
+    private function triggerLoginSucceedEvent(LtiMessagePayloadInterface $ltiMessage): void
+    {
+        if (!$this->isPortalLaunch()) {
+            return;
+        }
+
+        $userIdentity = $ltiMessage->getUserIdentity();
+        $this->getEventManager()->trigger(
+            new LoginSucceedEvent(
+                login: $userIdentity?->getIdentifier() ?? '',
+                source: SessionSource::EXTERNAL_PORTAL->value
+            )
+        );
+    }
+
+    private function isPortalLaunch(): bool
+    {
+        return $this->getSessionSourceMatcher()->matchesSource(
+            SessionSource::EXTERNAL_PORTAL->value,
+            common_session_SessionManager::getSession()
+        );
+    }
+
     private function getAuthoringRoleService(): AuthoringLtiRoleService
     {
         return $this->getPsrContainer()->get(AuthoringLtiRoleService::class);
+    }
+
+    private function getSessionSourceMatcher(): SessionSourceMatcher
+    {
+        return $this->getPsrContainer()->get(SessionSourceMatcher::class);
+    }
+
+    private function getEventManager(): EventManager
+    {
+        return $this->getPsrContainer()->get(EventManager::class);
     }
 }
