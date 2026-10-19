@@ -50,11 +50,9 @@ use oat\oatbox\log\LoggerService;
 use oat\oatbox\session\SessionService;
 use oat\tao\model\DynamicConfig\DynamicConfigProviderInterface;
 use oat\tao\model\accessControl\RoleBasedContextRestrictAccess;
-use oat\tao\model\featureFlag\FeatureFlagConfigSwitcher;
 use oat\tao\model\menu\SectionVisibilityByRoleFilter;
 use oat\taoLti\models\classes\Client\LtiClientFactory;
 use oat\taoLti\models\classes\DynamicConfig\LtiConfigProvider;
-use oat\taoLti\models\classes\FeatureFlag\WProofreaderClientConfigHandler;
 use oat\taoLti\models\classes\LtiAgs\LtiAgsScoreService;
 use oat\taoLti\models\classes\LtiAgs\LtiAgsScoreServiceInterface;
 use oat\taoLti\models\classes\LtiRoles;
@@ -300,14 +298,5 @@ class LtiServiceProvider implements ContainerServiceProviderInterface
                     service(LoggerService::SERVICE_ID),
                 ]
             );
-
-        $services
-            ->set(WProofreaderClientConfigHandler::class)
-            ->public()
-            ->args([service(SessionService::SERVICE_ID)]);
-
-        $services
-            ->get(FeatureFlagConfigSwitcher::class)
-            ->call('addClientConfigHandler', [WProofreaderClientConfigHandler::class]);
     }
 }

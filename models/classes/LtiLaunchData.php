@@ -70,8 +70,6 @@ class LtiLaunchData implements \JsonSerializable
 
     public const LTI_TAO_LOGIN_URL = 'authoringSettings.taoLoginUrl';
 
-    public const LTI_SPELL_CHECK_CONFIG = 'authoringSettings.spellCheckConfig';
-
     // for user claim
     private const LTI_FOR_USER_ID = 'lti_for_user_id';
     private const LTI_FOR_USER_EMAIL = 'lti_for_user_email';
