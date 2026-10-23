@@ -213,7 +213,7 @@ class LtiUser extends \common_user_User implements ServiceLocatorAwareInterface,
      */
     public function refresh()
     {
-        // nothing to do
+        $this->roles = [];
     }
 
     public function jsonSerialize(): array
